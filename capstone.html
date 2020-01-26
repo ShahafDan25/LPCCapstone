@@ -32,7 +32,7 @@
             <img src = "pics/lpcLogo.png" class = "lpcLogo">
             <button class = "goToAdmin"> Admin </button>
             <h1> The Market </h1>
-            
+            <h4> Date: ______ (RETRIEVE FROM DATABSE, TBD BY THE ADMIN)</h4>
         </div>
 
 
@@ -51,8 +51,46 @@
             <span class = "right">
                 <h3> Newcoming Patrons</h3>
                 <p>Please Click the Button below if you're new to the market, and enter the information as instructed</p> 
-                <button class = "newPatsInfoReveal"> I am new to the markey </button>
+                <button class = "newPatsInfoReveal" data-toggle = "collapse" data-target = "#newPats_div"> I am new to the market </button>
             </span>
+            <div class = "newPats_div" id = "newPats_div">
+                <h3> Please fill out the following information :)</h3>
+                <p> The boxes with red borders are mandatory to be fillde <br><br> <strong> ----------------------------- </strong> <br><br></p>
+                <div class = "name">
+                    <p> Please enter you first and last names</p>
+                    <input type = "text" placeholder="Please enter your first name" class = "firstName" id = "firstName"> &nbsp;
+                    <input type = "text" placeholder="Please enter your last name" class = "lastName" id = "lastName"> &nbsp;
+                </div>
+                <br><br>
+                <div class = "student?">
+                    <p> Are you a student as Las Positas? </p>
+                    <input type = "radio" name = "student?" value = "yes"> Yes <br>
+                    <input type = "radio" name = "student?" value = "no"> No <br>
+                </div>
+                <br><br>
+                <div class = "household">
+                    <p> Please enter the corresponding number of people in your household (based on age) </p>
+                    <input type = "number" placeholder="Children (Ages 0 - 17)"><br>
+                    <input type = "number" placeholder="Adults (Ages 18 - 64)"><br>
+                    <input type = "number" placeholder="Seniors (Ages 64 +)"><br>
+                </div>
+                <br><br>
+                <div class = "PersonalInfo">
+                    <p> the following information is not mandatory, yet recommended.</p>
+                    <input type = "text" placeholder="email address"><br>
+                    <input type = "text" placeholder="phone number"><br>
+                </div>
+                <br><br>
+                <div class = "Promotion">
+                    <p> How did you hear about the market?</p>
+                    <input type = "radio" name = "promotion" value = "Classroom">Classroom Annoucement<br>
+                    <input type = "radio" name = "promotion" value = "FriendsAndFamily">Friends or Family<br>
+                    <input type = "radio" name = "promotion" value = "Classroom">Classroom Annoucement<br>
+                    <input type = "radio" name = "promotion" value = "Other">Other<br> <!--INSERT TEXT OPTION-->
+
+                </div>
+
+            </div>
         </div>
     </body>
 </html>

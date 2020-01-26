@@ -1,0 +1,54 @@
+.btn
+{
+    border: 1px solid black !important;
+}
+.lpcLogo
+{
+    border-radius: 15px;
+    height: 10%;
+    width: 20%;
+}
+/* .otherPromotionText
+{
+    visibility: hidden;
+    border: 2px solid black;
+} */
+.body
+{
+    text-align: center;
+    background-image: linear-gradient( rgb(207, 73, 73), rgb(235, 154, 154)) !important;
+}
+.infoDiv
+{
+    border-radius: 12px;
+    /* border: 2px solid rgb(87, 10, 10) !important; */
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-left: 25%;
+    margin-right: 25%;
+
+}
+.admin
+{
+    border: 1.5px solid black !important;
+}
+.upperPortion
+{
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+}
+.optional
+{
+    border: 1.5px solid black !important;
+}
+.mandatory
+{
+    border: 1.5px solid red !important;
+}
+hr
+{
+    width: 65% !important;
+    border-top: 1.8px solid white !important;
+}

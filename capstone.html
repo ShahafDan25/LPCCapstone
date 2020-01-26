@@ -30,8 +30,13 @@
             
                 <img src = "pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
                 <img src = "pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
-            
-            <button id = "goToAdmin" class = "btn btn-primary pull-left admin"> Admin </button><br>    
+            <div class = "pull-left">
+                <button id = "goToAdmin" class = "btn btn-primary pull-left admin" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button><br><br> 
+                <div class = "collapse" id = "adminPagePW">
+                    <input type = "text" class = "optional form-control" placeholder="insert password here" class = "password" id = "input" name = "input" required pattern = "\S+.*"> 
+                    <button class = "btn btn-info pull-left submitPW" onclick = "checkAdminPW()"> Submit </button>
+                </div>  
+            </div>
             <br><br><br>
             <h1 class = "mid"> The Market </h1>
             <h4 class = "mid"> MONTH / YEAR</h4>

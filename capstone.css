@@ -17,10 +17,14 @@
     width: 6%;
     margin-right: 2%;
 }
+.submitPW
+{
+    margin-top: 2%;
+}
 .body
 {
     text-align: center;
-    background-image: linear-gradient( rgb(207, 73, 73), rgb(235, 154, 154)) !important;
+    background-image: linear-gradient(  rgb(235, 154, 154), rgb(207, 73, 73)) !important;
 }
 .mid
 {

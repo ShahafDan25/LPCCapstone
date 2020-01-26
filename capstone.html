@@ -1,10 +1,8 @@
 <html !DOCTYPE>
     <head>
         <title> The Market </title>
-        <style>
-                    </style>
 
-        <link rel="shortcut icon" href="Logos/s-logo.jpg"/>
+        <link rel="shortcut icon" href="pics/lpcsgLogo.jpg"/>
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -29,10 +27,14 @@
         <!-- THIS IS THE HEAD OF THE PAGE: LOGO, TITLE, ADMIN, etc.-->
         
         <div class = "upperPortion">
-            <img src = "pics/lpcLogo.png" class = "lpcLogo">
+            
+                <img src = "pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
+                <img src = "pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
+            
             <button id = "goToAdmin" class = "btn btn-primary pull-left admin"> Admin </button><br>    
-            <h1> The Market </h1>
-            <h4> MONTH / YEAR</h4>
+            <br><br><br>
+            <h1 class = "mid"> The Market </h1>
+            <h4 class = "mid"> MONTH / YEAR</h4>
         </div>
 
 
@@ -57,12 +59,12 @@
                 <button id = "newPatsInfoReveal" class = "btn btn-warning" data-toggle = "collapse" data-target = "#newPats_div" > It's my first time here </button>
             
             <div class = "collapse" id = "newPats_div">
-                <h3> Please fill out the following information :)</h3>
+                <h3> Please fill out the followings</h3>
                 <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Filled </p> 
                 <div id = "name" class = "infoDiv">
-                    <h4> Please enter you first and last names </h4>
-                    <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" id = "firstName" required> &nbsp;
-                    <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" id = "lastName" required> &nbsp;
+                    <h4> Please enter you first and last name </h4>
+                    <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" id = "input" name = "input" required pattern = "\S+.*"> &nbsp;
+                    <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" id = "input" name = "input" required pattern = "\S+.*"> &nbsp;
                 </div>
                 <hr>
                 <div id = "student?" class = "infoDiv">
@@ -78,16 +80,16 @@
                 </div>
                 <hr>
                 <div id = "household" class = "infoDiv">
-                    <h4> Please enter the corresponding number of people in your household (based on age) </h4>
-                    <input type = "number" class = "mandatory form-control" placeholder="Children (Ages 0 - 17)" required><br>
-                    <input type = "number" class = "mandatory form-control" placeholder="Adults (Ages 18 - 64)" required><br>
-                    <input type = "number" class = "mandatory form-control" placeholder="Seniors (Ages 64 +)" required><br>
+                    <h4> How many people are in your family? (per age) </h4>
+                    <input type = "number" class = "mandatory form-control" id = "input" name = "input" placeholder="Children (Ages 0 - 17)" required pattern="\S+.*"><br>
+                    <input type = "number" class = "mandatory form-control" id = "input" name = "input" placeholder="Adults (Ages 18 - 64)" required pattern = "\S+.*"><br>
+                    <input type = "number" class = "mandatory form-control" id = "input" name = "input" placeholder="Seniors (Ages 64 +)" required pattern = "\S+.*"><br>
                 </div>
                 <hr>
                 <div id = "PersonalInfo" class = "infoDiv">
-                    <h4> the following information is optional</h4>
-                    <input type = "text" class = "optional form-control" placeholder="email address" ><br>
-                    <input type = "text" class = "optional form-control" placeholder="phone number"><br>
+                    <h4> Contact Information </h4>
+                    <input type = "text" class = "optional form-control" id = "input" name = "input" placeholder="email address" ><br>
+                    <input type = "text" class = "optional form-control" id = "input" name = "input" placeholder="phone number"><br>
                 </div>
                 <hr>
                 <div id = "Promotion" class = "infoDiv">

@@ -4,19 +4,27 @@
 }
 .lpcLogo
 {
-    border-radius: 15px;
+    border-radius: 3px;
     height: 10%;
     width: 20%;
 }
-/* .otherPromotionText
+
+.lpcsgLogo
 {
-    visibility: hidden;
-    border: 2px solid black;
-} */
+    border: 2px solid black !important;
+    border-radius: 150px !important;
+    height: 10%;
+    width: 6%;
+    margin-right: 2%;
+}
 .body
 {
     text-align: center;
     background-image: linear-gradient( rgb(207, 73, 73), rgb(235, 154, 154)) !important;
+}
+.mid
+{
+    text-align: center;
 }
 .infoDiv
 {
@@ -46,6 +54,13 @@
 .mandatory
 {
     border: 1.5px solid red !important;
+}
+input:not(:placeholder-shown) {
+    border-color: hsl(0, 76%, 50%) !important;
+}
+input:not(:placeholder-shown) 
+{
+    border-color: hsl(120, 76%, 50%) !important;
 }
 hr
 {

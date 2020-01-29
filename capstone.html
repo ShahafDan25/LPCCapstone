@@ -49,13 +49,23 @@
             <span class = "left" >
                 <h3> Returning Patrons </h3> 
                 <button class = "btn btn-warning" data-toggle = "collapse" data-target = "#oldPats_div"> I have been here before </button>
-                <div class = "collapse" id = "oldPats_div">
+                <div class = "collapse retPats" id = "oldPats_div">
+                    <br><br>
                     <p> please choose your name from the dropdown below </p>
-                    <div class = "retsDropDown">
-                        <!-- LINK CAN BE FOUND HERE:
-                        https://www.w3schools.com/howto/howto_js_filter_dropdown.asp
-                        -->
+                    <!-- DROP DOWN STARTS HERE -->
+                    <div id="myDropdown" class="dropdown-content">
+                       <input type="text" placeholder="Search..." id="myInput" onkeyup="filterFunction()">
+                        <a href="#about">About</a>
+                        <a href="#base">Base</a>
+                        <a href="#blog">Blog</a>
+                        <a href="#contact">Contact</a>
+                        <a href="#custom">Custom</a>
+                        <a href="#support">Support</a> 
+                        <a href="#tools">Tools</a>
                     </div>
+                    <!-- DROPDOWN ENDS HERE -->
+                    <br>
+                    <button class = "btn btn-secondary" id = submitRetPatBtn> SUBMIT </button>
                 </div>
             </span>
             <span class = "right">
@@ -114,11 +124,10 @@
                         </label> 
                     </div>
                 </div>
+                <button class = "btn btn-secondary" id = submitBtn> SUBMIT </button>
 
             </div> 
             </span>
-            <br><br>
-            <button class = "btn btn-secondary" id = submitBtn> SUBMIT </button>
             <br><br><br>
         </div><!-- END OF operational div-->
     </body>

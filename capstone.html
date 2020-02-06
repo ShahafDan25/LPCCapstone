@@ -12,6 +12,8 @@
 
         <!-- Bootstrap for JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 
         <!-- Bootstrap for JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -129,11 +131,28 @@
                         </label> 
                     </div>
                 </div>
-                <button class = "btn btn-secondary" id = submitBtn> SUBMIT </button>
+                <button class = "btn btn-secondary" id = "submitBtn" onclick = "submitNewPatron()"> SUBMIT </button>
                 </form> <!-- WE END THE FORM FOR NEW PATRONS -->
             </div> 
             </span>
             <br><br><br>
         </div><!-- END OF operational div-->
     </body>
+
+    <script type = "text/JavaScript">
+        function submitNewPatron()
+        {
+            alert("FUNCTION CALLED");
+            $.ajax({
+                url: "capstone.php",
+                type: "POST",
+                success: function() {alert("congrats");},
+                error: function() {alert("damn");}
+            })
+            
+        }
+
+
+  
+    </script>
 </html>

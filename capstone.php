@@ -1,47 +1,38 @@
 <?php
-    // $servername = "localhost";
+    // $servername = "localhost"; //we should use teh IP address 127.0.0.1
     //$conn; //variable declaration - am I allowed to do this in PHP?
     //connectDB();
+    $username = "root";
+    $password = "MMB3189@A";
+    $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
+      
+    //try and catch block to connect to MySQL, or throw an error
+    try {
+        $conn = new PDO($dsn, $username, $password);
+    } catch (PDOException $e) {
+        echo 'Connection Failed: ' . $e -> getMessage();
+    } // end of try and catch
 
-    function connectDB()
+
+    //DATA BASE ACTIOTS POST METHODS
+    if($_POST["message"] == 'insertNewPats')
     {
-        $username = "root";
-        $password = "MMB3189@A";
-        $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
-        
-        //try and catch block to connect to PMySQL
-        try{
-            $conn = new PDO($dsn, $username, $password);
-        }
-        catch (PDOException $e)
-        {
-            echo 'Connection Failed: ' . $e -> getMessage();
-        }
-        //dont forget to close connectio later!
-        echo 'connectDB() Completed\n';
-        //might need to transfer to html page? should I make that a php file?
+        echo "HELLO WORLD OF SUCCESS!";
+        insertPat();
     }
 
-    function insertPat(/*$f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm*/)
+    /* ***************************************************************** */
+    // -------------------------- FUNCTION ACTION -----------------------//
+    /* ***************************************************************** */
+    function insertPat()
     {
-        $username = "root";
-        $password = "MMB3189@A";
-        $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
         
-        //try and catch block to connect to PMySQL
-        try{
-            $conn = new PDO($dsn, $username, $password);
-        }
-        catch (PDOException $e)
-        {
-            echo 'Connection Failed: ' . $e -> getMessage();
-        }
         //dont forget to close connectio later!
         echo 'connectDB() Completed \n';
         //might need to transfer to html page? should I make that a php file?
         
-        $first_name = "Final"; //filter_input(INPUT_POST, 'first_name');
-        $last_name = "Test";
+        $first_name = filter_input(INPUT_POST, 'first_name');
+        $last_name = filter_input(INPUT_POST, 'last_name'); //retrieve information from HTML
         $student_status = True;
         $children_amount = 3;
         $adults_amount = 5;

@@ -2,7 +2,6 @@
     // $servername = "localhost";
     //$conn; //variable declaration - am I allowed to do this in PHP?
     //connectDB();
-    insertPat();
 
     function connectDB()
     {
@@ -38,21 +37,22 @@
             echo 'Connection Failed: ' . $e -> getMessage();
         }
         //dont forget to close connectio later!
-        echo 'connectDB() Completed\n';
+        echo 'connectDB() Completed \n';
         //might need to transfer to html page? should I make that a php file?
         
-        $first_name = "Frank2"; //filter_input(INPUT_POST, 'first_name');
-        $last_name = "Polanco";
-        $student_status = FALSE;
-        $children_amount = 2;
-        $adults_amount = 2;
-        $seniors_amount = 1;
-        $email_address = NULL;
+        $first_name = "Final"; //filter_input(INPUT_POST, 'first_name');
+        $last_name = "Test";
+        $student_status = True;
+        $children_amount = 3;
+        $adults_amount = 5;
+        $seniors_amount = 0;
+        $email_address = "some@email.com";
         $phone_number = NULL;
-        $promotion_method = NULL;
+        $promotion_method = 'Classroom';
         //sql insert new patron code
 
-        $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod) VALUES ('".$first_name."', 'Polanco', TRUE, 2, 2, 1, 'Classroom')";
+        $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod) VALUES 
+        ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', '".$pomotion_method."')";
         // just to note: we use the period sign (.) to concatenate in php!!!
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query

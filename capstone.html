@@ -131,6 +131,7 @@
                         </label> 
                     </div>
                 </div>
+                <input type="hidden" value = "insertNewPats" name = "message">
                 <button class = "btn btn-secondary" id = "submitBtn" onclick = "submitNewPatron()"> SUBMIT </button>
                 </form> <!-- WE END THE FORM FOR NEW PATRONS -->
             </div> 
@@ -144,8 +145,9 @@
         {
             alert("FUNCTION CALLED");
             $.ajax({
-                url: "capstone.php",
+                url: 'capstone.php',
                 type: "POST",
+                data: {message: 'insertNewPats'},
                 success: function() {alert("congrats");},
                 error: function() {alert("damn");}
             })

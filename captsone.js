@@ -1,5 +1,5 @@
 
-
+/// NO NEED FOR AN AJAX CALL ///
 // function submitNewPatron()
 // {
 //   //ajax call:

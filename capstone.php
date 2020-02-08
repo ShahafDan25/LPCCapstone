@@ -14,45 +14,56 @@
         echo 'Connection Failed: ' . $e -> getMessage();
     } // end of try and catch
 
-    echo "BEGINNING";
-    var_dump($_POST);
+    // echo "BEGINNING"; //used for debuggin purposes
+    var_dump($_POST); // we use var dump as console.log
     //DATA BASE ACTIOTS POST METHODS
     if($_POST['message'] == 'insertNewPats')
     {
-        echo "HELLO WORLD OF SUCCESS!";
-        insertPat($conn);
+        insertPat($conn, $_POST["first_name"], 
+                        $_POST["last_name"],
+                        $_POST["student?"],
+                        $_POST["children_amount"], 
+                        $_POST["adults_amount"],
+                        $_POST["seniors_amount"], 
+                        $_POST["email_address"], 
+                        $_POST["phone_number"], 
+                        $_POST["promotion"]);
     }
 
     /* ***************************************************************** */
     // -------------------------- FUNCTION ACTION -----------------------//
     /* ***************************************************************** */
-    function insertPat($conn)
+    function insertPat($conn, $f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm)
     {
         
-        //dont forget to close connectio later!
-        echo 'insertPat Check';
+        //dont forget to close connection later!
         //might need to transfer to html page? should I make that a php file?
-        var_dump($conn);
-        $first_name = "Hope";//filter_input(INPUT_POST, 'first_name');
-        $last_name = "Fully";//filter_input(INPUT_POST, 'last_name'); //retrieve information from HTML
-        $student_status = True;
-        $children_amount = 1;
-        $adults_amount = 2;
-        $seniors_amount = 3;
-        $email_address = "An@email.com";
-        $phone_number = NULL;
-        $promotion_method = "Testing";
-        //sql insert new patron code
+        $first_name = $f;//filter_input(INPUT_POST, 'first_name');
+        $last_name = $l;//filter_input(INPUT_POST, 'last_name'); //retrieve information from HTML
+        
+        if($ss == "yes") $student_status = TRUE;
+        else $student_status = FALSE;
 
-        $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod) VALUES 
-        ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', '".$pomotion_method."')";
+        $children_amount = $ca;
+        $adults_amount = $aa;
+        $seniors_amount = $sa;
+
+        $email_address = $ea;
+        $phone_number = $pn;
+
+        $promotion_method = $pm;
+
+        //sql insert new patron code:
+        $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
+        ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNubmerPromotionMethod)
+        VALUES ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', 
+        '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', 
+        '".$email_address."', '".$phone_number."', '".$promotion_method."')";
+
+
         // just to note: we use the period sign (.) to concatenate in php!!!
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
-        
-        
-        echo 'insertPat() Completed\n';
-        
     }
     
 ?>

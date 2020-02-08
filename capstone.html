@@ -110,8 +110,8 @@
                 -->
                 <div id = "PersonalInfo" class = "infoDiv">
                     <h4> Contact Information </h4>
-                    <input type = "text" class = "optional form-control" id = "input" name = "input" placeholder="email address" ><br>
-                    <input type = "text" class = "optional form-control" id = "input" name = "input" placeholder="phone number"><br>
+                    <input type = "text" class = "optional form-control" id = "EmailInput" name = "email_address" placeholder="email address" ><br>
+                    <input type = "text" class = "optional form-control" id = "PhoneNumberInput" name = "phone_number" placeholder="phone number"><br>
                 </div>
                 <hr>
                 <div id = "Promotion" class = "infoDiv">
@@ -132,29 +132,11 @@
                     </div>
                 </div>
                 <input type="hidden" value = "insertNewPats" name = "message">
-                <button class = "btn btn-secondary" id = "submitBtn" onclick = "submitNewPatron()"> SUBMIT </button>
+                <button class = "btn btn-secondary" id = "submitBtn"> SUBMIT </button>
                 </form> <!-- WE END THE FORM FOR NEW PATRONS -->
             </div> 
             </span>
             <br><br><br>
         </div><!-- END OF operational div-->
     </body>
-
-    <script type = "text/JavaScript">
-        function submitNewPatron()
-        {
-            alert("FUNCTION CALLED");
-            $.ajax({
-                url: 'capstone.php',
-                type: "POST",
-                data: {message: 'insertNewPats'},
-                success: function() {alert("congrats");},
-                error: function() {alert("damn");}
-            })
-            
-        }
-
-
-  
-    </script>
 </html>

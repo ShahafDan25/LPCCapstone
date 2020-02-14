@@ -1,4 +1,4 @@
-<?php
+<?php //THIS IS A PHP FILE WITH EMBEDED HTML CODE
     include "capstone.php";
 ?>
 <html !DOCTYPE>
@@ -62,23 +62,8 @@
                     <div id="myDropdown" class="dropdown-content">
                        <input type="text" placeholder="Search..." id="myInput" onkeyup="filterFunction()">
                         <?php  
-                            $conn = connDB();
-                            $all_options = "";
-                            $sql = "SELECT DISTINCT FirstName, LastName FROM Patrons";
-                            $stmt = $conn -> prepare($sql);
-                            $stmt -> execute(); ///execute the query to the database
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-                            {
-                                echo "<a value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."</a>";
-                            }
+                            echo populate_dropdown(connDB());
                         ?>
-                        <a href="#about">About</a>
-                        <a href="#base">Base</a>
-                        <a href="#blog">Blog</a>
-                        <a href="#contact">Contact</a>
-                        <a href="#custom">Custom</a>
-                        <a href="#support">Support</a> 
-                        <a href="#tools">Tools</a>
                     </div>
                     <!-- DROPDOWN ENDS HERE -->
                     <br>

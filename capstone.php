@@ -1,37 +1,10 @@
 <?php
-    // $servername = "localhost"; //we should use teh IP address 127.0.0.1
-    //$conn; //variable declaration - am I allowed to do this in PHP?
-    //connectDB();
-    function connDB()
-    {
-        $username = "root";
-        $password = "MMB3189@A";
-        $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
-      
-
-        //try and catch block to connect to MySQL, or throw an error
-        try {
-             $conn = new PDO($dsn, $username, $password);
-        } catch (PDOException $e) {
-             echo 'Connection Failed: ' . $e -> getMessage();
-        } // end of try and catch
-        return $conn;
-    }
-    $username = "root";
-    $password = "MMB3189@A";
-    $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
-      
-
-    //try and catch block to connect to MySQL, or throw an error
-    try {
-        $conn = new PDO($dsn, $username, $password);
-    } catch (PDOException $e) {
-        echo 'Connection Failed: ' . $e -> getMessage();
-    } // end of try and catch
+    
+    
+    $conn = connDB(); // get the connection string to the Database
 
     populate_dropdown($conn); //call the drop down populate function as soon as the page loads
-    // echo "BEGINNING"; //used for debuggin purposes
-   // var_dump($_POST); // we use var dump as console.log
+ 
     //DATA BASE ACTIOTS POST METHODS
     if($_POST['message'] == 'insertNewPats')
     {
@@ -79,7 +52,7 @@
 
         //sql insert new patron code:
         $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
-        ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNubmerPromotionMethod)
+        ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod)
         VALUES ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', 
         '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', 
         '".$email_address."', '".$phone_number."', '".$promotion_method."')";
@@ -93,13 +66,31 @@
     
     function populate_dropdown($conn)
     {
+        $conn = connDB();
         $all_options = "";
-        $sql = "SELECT FirstName, LastNAme FROM Patrons";
+        $sql = "SELECT DISTINCT FirstName, LastName FROM Patrons";
         $stmt = $conn -> prepare($sql);
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo "<a href='".$row['FirstName'].$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."</a><br>";
-            //<a href ='testingThis'>testingThis</a>
+        $stmt -> execute(); ///execute the query to the database
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+        { //concatinate to huge string to be passed
+            $all_options += "<a value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."</a>";
         }
         return $all_options; //return the final string to echo on the html page
+    }
+     
+    function connDB() //call to get connection
+    {
+        $username = "root";
+        $password = "MMB3189@A";
+        $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
+      
+
+        //try and catch block to connect to MySQL, or throw an error
+        try {
+             $conn = new PDO($dsn, $username, $password);
+        } catch (PDOException $e) {
+             echo 'Connection Failed: ' . $e -> getMessage();
+        } // end of try and catch
+        return $conn;
     }
 ?>

@@ -1,26 +1,3 @@
-
-/// NO NEED FOR AN AJAX CALL ///
-// function submitNewPatron()
-// {
-//   //ajax call:
-//   $.ajax({
-//     message: 'insertNewPats',
-//     type: "POST",
-//     url: 'capstone.php',
-//     data: $(this).serialize(),
-//     success: function(response)
-//     {
-//       alert("WOW PART 1");
-//     },
-//     error: function()
-//     {
-//       alert("BOOO");
-//     } 
-//   });
-//   alert ("OMG IT WORKED");
-// }
-
-
 // red/green input texts in HTML
 function filterFunction()
 {

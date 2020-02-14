@@ -14,8 +14,9 @@
         echo 'Connection Failed: ' . $e -> getMessage();
     } // end of try and catch
 
+    populate_dropdown($conn); //call the drop down populate function as soon as the page loads
     // echo "BEGINNING"; //used for debuggin purposes
-    var_dump($_POST); // we use var dump as console.log
+   // var_dump($_POST); // we use var dump as console.log
     //DATA BASE ACTIOTS POST METHODS
     if($_POST['message'] == 'insertNewPats')
     {
@@ -29,6 +30,14 @@
                         $_POST["phone_number"], 
                         $_POST["promotion"]);
     }
+
+    if($_POST['message'] == 'getPassword')
+    {
+        
+    }
+
+
+
 
     /* ***************************************************************** */
     // -------------------------- FUNCTION ACTION -----------------------//
@@ -64,6 +73,17 @@
         // just to note: we use the period sign (.) to concatenate in php!!!
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
+        /// NEXT STEP IS TO CLOSE CONNECTION - BUT WHERE?
     }
     
+    function populate_dropdown($conn)
+    {
+        $all_options = "";
+        $sql = "SELECT FirstName, LastNAme FROM Patrons";
+        $stmt = $pdo->query($sql);
+        while ($row = $stmt->fetch()) {
+            $all_options += "<option value='".$row['FirstName'].'" "'.$row['LastName']."'>".$row['FirstName']." ".$row['LastNAme']."</option><br>";
+        }
+        return $all_options; //return the final string to echo on the html page
+    }
 ?>

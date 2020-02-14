@@ -131,7 +131,7 @@
                     </div>
                 </div>
                 <input type="hidden" value = "insertNewPats" name = "message">
-                <button class = "btn btn-secondary" id = "submitBtn"> SUBMIT </button>
+                <button class = "btn btn-secondary" id = "newPatSubmission"> SUBMIT </button>
                 </form> <!-- WE END THE FORM FOR NEW PATRONS -->
             </div> 
             </span>

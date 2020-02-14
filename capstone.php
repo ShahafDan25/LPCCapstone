@@ -72,8 +72,8 @@
         $stmt = $conn -> prepare($sql);
         $stmt -> execute(); ///execute the query to the database
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-        { //concatinate to huge string to be passed
-            $all_options += "<a value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."</a>";
+        { //concatinate to huge string to be passed //concatinaton in php is done with '.='
+            $all_options .= "<a value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."</a>";
         }
         return $all_options; //return the final string to echo on the html page
     }

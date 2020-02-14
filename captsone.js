@@ -15,3 +15,9 @@ function filterFunction()
     }
   }
 }
+
+//SEND BACK TO PAGE WITHIN SUBMISSION
+document.getElementById("newPatSubmission").onclick = function()
+{
+  window.location = "index.php";
+};

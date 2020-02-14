@@ -1,3 +1,6 @@
+<?php
+    include "capstone.php";
+?>
 <html !DOCTYPE>
     <head>
         <title> The Market </title>
@@ -58,6 +61,17 @@
                     <!-- TAKE CARE OF THAT LATER... POST OR PULL? (What is the oppositve of a pull form?)-->
                     <div id="myDropdown" class="dropdown-content">
                        <input type="text" placeholder="Search..." id="myInput" onkeyup="filterFunction()">
+                        <?php  
+                            $conn = connDB();
+                            $all_options = "";
+                            $sql = "SELECT DISTINCT FirstName, LastName FROM Patrons";
+                            $stmt = $conn -> prepare($sql);
+                            $stmt -> execute(); ///execute the query to the database
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+                            {
+                                echo "<a value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."</a>";
+                            }
+                        ?>
                         <a href="#about">About</a>
                         <a href="#base">Base</a>
                         <a href="#blog">Blog</a>

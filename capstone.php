@@ -2,6 +2,21 @@
     // $servername = "localhost"; //we should use teh IP address 127.0.0.1
     //$conn; //variable declaration - am I allowed to do this in PHP?
     //connectDB();
+    function connDB()
+    {
+        $username = "root";
+        $password = "MMB3189@A";
+        $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
+      
+
+        //try and catch block to connect to MySQL, or throw an error
+        try {
+             $conn = new PDO($dsn, $username, $password);
+        } catch (PDOException $e) {
+             echo 'Connection Failed: ' . $e -> getMessage();
+        } // end of try and catch
+        return $conn;
+    }
     $username = "root";
     $password = "MMB3189@A";
     $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
@@ -80,9 +95,10 @@
     {
         $all_options = "";
         $sql = "SELECT FirstName, LastNAme FROM Patrons";
-        $stmt = $pdo->query($sql);
-        while ($row = $stmt->fetch()) {
-            $all_options += "<option value='".$row['FirstName'].'" "'.$row['LastName']."'>".$row['FirstName']." ".$row['LastNAme']."</option><br>";
+        $stmt = $conn -> prepare($sql);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<a href='".$row['FirstName'].$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."</a><br>";
+            //<a href ='testingThis'>testingThis</a>
         }
         return $all_options; //return the final string to echo on the html page
     }

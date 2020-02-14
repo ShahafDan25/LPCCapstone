@@ -16,9 +16,10 @@ function filterFunction()
   }
 }
 
-//SEND BACK TO PAGE WITHIN SUBMISSION
-document.getElementById("newPatSubmission").onclick = function()
+
+
+function hw()
 {
-  console.log("WORKING");
-  window.location = "index.php";
-};
+  console.log(document.getElementById("myInput"));
+}
+

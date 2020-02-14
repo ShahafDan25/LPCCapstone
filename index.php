@@ -53,7 +53,7 @@
             
             <span class = "left" >
                 <h3> Returning Patrons </h3> 
-                <button class = "btn btn-warning" data-toggle = "collapse" data-target = "#oldPats_div" onclick = "popdd()"> I have been here before </button>
+                <button class = "btn btn-warning" data-toggle = "collapse" data-target = "#oldPats_div"> I have been here before </button>
                 <div class = "collapse retPats" id = "oldPats_div">
                     <br><br>
                     <p> please choose your name from the dropdown below </p>
@@ -67,7 +67,7 @@
                     </div>
                     <!-- DROPDOWN ENDS HERE -->
                     <br>
-                    <button class = "btn btn-secondary" id = submitRetPatBtn> SUBMIT </button>
+                    <button class = "btn btn-secondary" id = "retPatSubmission"> SUBMIT </button>
                 </div>
             </span>
             <span class = "right">

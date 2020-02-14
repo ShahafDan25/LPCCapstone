@@ -19,5 +19,6 @@ function filterFunction()
 //SEND BACK TO PAGE WITHIN SUBMISSION
 document.getElementById("newPatSubmission").onclick = function()
 {
+  console.log("WORKING");
   window.location = "index.php";
 };

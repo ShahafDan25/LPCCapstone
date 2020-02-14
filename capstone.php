@@ -62,6 +62,7 @@
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
         /// NEXT STEP IS TO CLOSE CONNECTION - BUT WHERE?
+        header("Location: index.php"); //redirect to the main index.php page
     }
     
     function populate_dropdown($conn)

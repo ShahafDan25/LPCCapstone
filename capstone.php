@@ -64,10 +64,20 @@
         /// NEXT STEP IS TO CLOSE CONNECTION - BUT WHERE?
         header("Location: index.php"); //redirect to the main index.php page
     }
-    
+    function getPassword($conn)
+    {
+        $sql = "SELECT passwords FROM AdminPW";
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
+        while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
+        {
+            $pwHidden = "<input type='hidden' value = '".$row['passwords']."' id = 'passwordHidden'>";
+        }
+        return $pwHidden;
+    }
+
     function populate_dropdown($conn)
     {
-        $conn = connDB();
         $all_options = "";
         $sql = "SELECT DISTINCT FirstName, LastName FROM Patrons";
         $stmt = $conn -> prepare($sql);

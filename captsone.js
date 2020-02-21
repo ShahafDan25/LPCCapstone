@@ -18,8 +18,12 @@ function filterFunction()
 
 
 
-function hw()
+function checkAdminPW()
 {
-  console.log(document.getElementById("myInput"));
+  alert ("HELLO WORLD");
+  if(document.getElementById('passwordHidden').value == document.getElementById('inputAdminPW').value)
+  {
+    alert ("SUCCESS!!");
+  }
 }
 

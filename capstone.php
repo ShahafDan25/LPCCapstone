@@ -19,23 +19,6 @@
                         $_POST["promotion"]);
     }
 
-    if($_POST['message'] == 'verifyPassword')
-    {
-        if($_POST['inputAdminPW'] == getPassword($conn))
-        {   
-            header("Location: admin.html");
-            return;
-        }
-        else
-        {
-            header("Location: index.php");
-            $alert = '<script>
-                alert("Password Incorrect, Please Try Again!");
-             </script>';
-             echo $alert;
-             return;
-        }
-    }
 
 
 

@@ -37,13 +37,13 @@
                 <img src = "pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
             <div class = "pull-left">
                 <button id = "goToAdmin" class = "btn btn-primary pull-left admin" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button><br><br> 
-                <div class = "collapse" id = "adminPagePW">
-                    <input type = "text" class = "optional form-control" placeholder="insert password here" class = "password" id = "inputAdminPW" name = "input" required pattern = "\S+.*"> 
-                    <button class = "btn btn-info pull-left submitPW" onclick = "checkAdminPW()"> Submit </button>
-                    <?php
-                        echo getPassword(connDB()); //will echo a hidden html element with the value of the password
-                    ?>
-                </div>  
+                <form method="post" action="capstone.php">
+                    <div class = "collapse" id = "adminPagePW">
+                        <input type = "text" class = "optional form-control" placeholder="insert password here" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*"> 
+                        <input type="hidden" value = "verifyPassword" name = "message">
+                        <button class = "btn btn-info pull-left submitPW"> Submit </button>
+                    </div>  
+                </form>
             </div>
             <br><br><br>
             <h1 class = "mid"> The Market </h1>

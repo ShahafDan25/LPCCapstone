@@ -19,9 +19,22 @@
                         $_POST["promotion"]);
     }
 
-    if($_POST['message'] == 'getPassword')
+    if($_POST['message'] == 'verifyPassword')
     {
-        
+        if($_POST['inputAdminPW'] == getPassword($conn))
+        {   
+            header("Location: admin.html");
+            return;
+        }
+        else
+        {
+            header("Location: index.php");
+            $alert = '<script>
+                alert("Password Incorrect, Please Try Again!");
+             </script>';
+             echo $alert;
+             return;
+        }
     }
 
 
@@ -64,6 +77,7 @@
         /// NEXT STEP IS TO CLOSE CONNECTION - BUT WHERE?
         header("Location: index.php"); //redirect to the main index.php page
     }
+
     function getPassword($conn)
     {
         $sql = "SELECT passwords FROM AdminPW";
@@ -71,7 +85,7 @@
         $stmt -> execute();
         while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
         {
-            $pwHidden = "<input type='hidden' value = '".$row['passwords']."' id = 'passwordHidden'>";
+            $pwHidden = $row['passwords'];
         }
         return $pwHidden;
     }

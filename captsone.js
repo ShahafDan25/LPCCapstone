@@ -16,7 +16,10 @@ function filterFunction()
   }
 }
 
-
+function alert()
+{
+  alert("password incorrect, please try again!");
+}
 
 function checkAdminPW()
 {

@@ -5,7 +5,7 @@
         if($_POST['inputAdminPW'] == getPassword($conn))
         { 
         //echo '<script> alert("Moving to Admin Page") </script>';  
-            header("Location: admin.html");
+            header("Location: admin.php");
         }
         else
         {
@@ -96,7 +96,7 @@
             <div class = "collapse" id = "newPats_div">
                 <form method = "post" action = "capstone.php"> <!-- FORM FOR NEW PATRONS -->
                 <h3> Please fill out the followings</h3>
-                <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Filled </p> 
+                <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Approved </p> 
                 <div id = "name" class = "infoDiv">
                     <h4> Please enter you first and last name </h4>
                     <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" id = "input" name = "first_name" required pattern = "\S+.*"> &nbsp;

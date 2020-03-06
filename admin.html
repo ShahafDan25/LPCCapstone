@@ -8,14 +8,50 @@
 
 
 
-<html !DOCTYPE>
+<html !DOCTYPE="">
     <head>
-        <title>Market's Admin Page</title>
+        <title> The Market </title>
+
+        <link rel="shortcut icon" href="./The Market_files/lpcsgLogo.jpg">
+
+        <!-- Bootstrap for CSS -->
+        <link rel="stylesheet" href="./The Market_files/bootstrap.min.css">
+        
+        <!-- CSS HARDCODE FILE LINK -->
+        <link rel="stylesheet" type="text/css" href="./The Market_files/capstone.css">
+
+        <!-- Bootstrap for JQuery -->
+        <script src="./The Market_files/jquery.min.js"></script>
+
+        <!-- Bootstrap for JavaScript -->
+        <script src="./The Market_files/bootstrap.min.js"></script>
+
+        <!-- Bootstrap for CSS Icon -->
+        <script src="./The Market_files/a076d05399.js"></script><link rel="stylesheet" href="./The Market_files/free.min.css" media="all">
+
+        <!-- JAVASCRIPT PAGE CONNECTION-->
+        <script src="./The Market_files/captsone.js"></script>
     </head>
 
-    <body>
-        <div>
-            <h1> THIS IS THE ADMIN PAGE</h1>
+    <body class = "body">
+        <div class = "upper_portion">
+            <h1> Admin and Management Page</h1>
+
+        </div>
+        <br>
+        <div class = "lower_portion">
+            <!-- COLLAPSE FOR NEW MARKET -->
+            <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>
+            <div id = "new_market" class = "collapse">
+                <h3> Choose A Month </h3>
+                <input type = "date" placeholder = "Choose a Month" class  = "date_input">
+            </div>
+            <br> <br> <br> <!-- SOME SPACING THAT MIGHT BE NEEDED-->
+            <!-- COLLAPSE FOR REPOTR GENERATION -->
+            <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false"> Generate A Report </button>
+            <div id = "generate_repot" class = "collapse">
+
+            </div>
         </div>
         
     </body>

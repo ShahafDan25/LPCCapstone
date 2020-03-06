@@ -1,3 +1,4 @@
+/* NOW TO BE USED BY Market PAGE */
 .btn
 {
     border: 1px solid black !important;
@@ -135,4 +136,13 @@ hr
 {
     width: 65% !important;
     border-top: 1.8px solid white !important;
+}
+
+/* NOW TO BE USED BY ADMIN PAGE */
+.date_input
+{
+    border: 1px solid black !important;
+    border-radius: 10px !important;
+    padding: 1px !important;
+
 }

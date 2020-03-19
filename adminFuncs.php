@@ -54,24 +54,34 @@ function connDB() //call to get connection
 
     if($_POST['message'] == 'invokeOrReport')
     {
+        if($_POST['marketDate'] == "Choose a market (by date)")
+        {
+            
+            echo '<script>alert("Please choose a date");</script>';
+            echo '<script> location.replace("admin.php") </script>';
+            return;
+        }
         $date = $_POST['marketDate'];
-        $date_format = substr($date,0,4).substr($date,5,2).substr($date,8,2);
+        $date_format = substr($date,10,4).substr($date,0,2).substr($date,5,2);
         if($_POST['invokeOrReport'] == "invoke")//invoke
         {
             $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date_format; //we use the period dot to concatinate
             $conn = connDB(); //justin casey
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
-            var_dump($date_format);
-            //$sql = "UPDATE Markets SET active = 0 WHERE idByDate NOT = ".$date; //we use the period dot to concatinate
-            //$conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            //$conn -> exec($sql);
+            //var_dump($date_dormat);
+
+            // BELOW: change all other markets to non active
+            $sql = "UPDATE Markets SET active = 0 WHERE NOT idByDate = ".$date_format; //we use the period dot to concatinate
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
         }
         if($_POST['invokeOrReport'] == "report")//report
         {
             generate_report($conn);
         }
-        header("Location: admin.php");
+        echo '<script> location.replace("admin.php") </script>'; //instead of using header, we will use js to change window location
+        return;
     }
 
     function generate_report($conn)

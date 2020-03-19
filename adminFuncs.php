@@ -38,7 +38,7 @@ function connDB() //call to get connection
         //else statement
         while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
         { //new format: mm / dd / yyyy
-            echo '&nbsp;<a class = "dropdown-item midbigger" href="#">'.substr($row['idByDate'],4,2).' / '.substr($row['idByDate'],6,2).' / '.substr($row['idByDate'],0,4).'</a><br>';
+            echo '&nbsp;<option class = "dropdown-item midbigger" href="#">'.substr($row['idByDate'],4,2).' / '.substr($row['idByDate'],6,2).' / '.substr($row['idByDate'],0,4).'</option><br>';
         }
         return; //justin casey
     }
@@ -49,7 +49,7 @@ function connDB() //call to get connection
         $date_format_int = substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2);
         //var_dump($date_format_int);
         newMarket(connDB(), $date_format_int);
-        //header("Location: admin.php"); //redirect to the main index.php page
+        //header("Location: admin.php"); //just gonna use javascript
     }
 
     if($_POST['message'] == 'invokeOrReport')
@@ -82,17 +82,19 @@ function connDB() //call to get connection
     }
     function newMarket($conn, $date)
     {
-        $sql_existence = "SELECT * FROM Markets WEHERE idByDate = ".$date;
+        $sql_existence = "SELECT * FROM Markets WHERE idByDate = ".$date;
         $stmt = $conn -> prepare($sql_existence); //create the statment
         $stmt -> execute(); //execute the statement
         if($stmt -> fetch(PDO::FETCH_ASSOC))
         {
             echo '<script> alert("Sorry, This market already exists in the database. Only one market per day."); </script>';
+            echo '<script> location.replace("admin.php") </script>';
             return; //this market already exists in the data base
         }
         $sql = "INSERT INTO Markets (idByDate, active) VALUES (".$date.", 0);"; //0 = not active, 1 = active (tiny int sserving as boolean)
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
+        echo '<script> location.replace("admin.php") </script>'; //change location
         //header("Location: admin.php"); //redirect to the main index.php page
     }
     //IDEA: ADD LATER CHANGE PASSWORD OPTION

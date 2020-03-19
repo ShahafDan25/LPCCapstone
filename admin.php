@@ -59,17 +59,21 @@
                 <form method = "post" action = "adminFuncs.php">
                     <h3> Choose a Market</h3>
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Market By Date &nbsp;
                             <i class="fa fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu midbigger" aria-labelledby="dropdownMenuButton" name = "marketDate">
+
+aria-labelledby="dropdownMenuButton"
+
+                        </button>-->
+                        <select class="btn btn-secondary midbigger"  name = "marketDate">
+                            <option> Choose a market (by date) </option>
                           <?php
                                 echo populate_market_dropdown($conn); //pass the connection
                           ?>
-                        </div>
+                        </select>
                     </div> <!-- END OF DROPDOWN -->
-                    <br><br><br>
+                    <br><br>
                     <p> <!-- RADIO BUTTONS -->
                     <label>
                         <input id = "invokeRadio" name="invokeOrReport" value = "invoke" type="radio" checked />

@@ -101,4 +101,33 @@
         } // end of try and catch
         return $conn;
     }
+
+    // ======================================================== //
+    // ------------- ADMIN PAGE FUNCTIONS ----------------------//
+    // ======================================================== //
+
+    function populate_market_dropdown($conn)
+    {
+        $sql = "SELECT * FROM Markets";
+        $stmt = $conn -> prepare($sql); //create the statment
+        $stmt -> execute(); //execute the statement
+        $stmt_existness_check = $conn ->prepare($sql);
+        $stmt_existness_check -> execute();
+        //check if ther are any markets stored in the database
+        if(!$stmt_existness_check -> fetch(PDO::FETCH_ASSOC))
+        {
+            echo '<a class="dropdown-item" href="#">No Markets Have Been Found</a>';
+            return; //return if no markets have been found from the database
+        }
+
+        // while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
+        // {
+        //     $pwHidden = $row['passwords'];
+        // }
+        return; //justin casey
+    }
+
+
+
+
 ?>

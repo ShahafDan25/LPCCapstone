@@ -63,7 +63,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <?php
-                                echo populate_market_dropdown();
+                                echo populate_market_dropdown(connDB()); //pass the connection
                           ?>
                         </div>
                     </div>

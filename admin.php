@@ -63,7 +63,7 @@
                             Market By Date &nbsp;
                             <i class="fa fa-chevron-down"></i>
                         </button>
-                        <div class="dropdown-menu midbigger" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu midbigger" aria-labelledby="dropdownMenuButton" name = "marketDate">
                           <?php
                                 echo populate_market_dropdown($conn); //pass the connection
                           ?>

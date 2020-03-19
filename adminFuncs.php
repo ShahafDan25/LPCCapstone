@@ -51,6 +51,23 @@ function connDB() //call to get connection
         newMarket(connDB(), $date_format_int);
         //header("Location: admin.php"); //redirect to the main index.php page
     }
+    if($_POST['message'] == 'report')
+    {
+        // CODE TO GENERATE A REPORT
+    }
+    if($_POST['message'] == 'invoke')
+    {
+        $date = $_POST['marketDate'];
+        $date_format = substr($date,0,4).substr($date,5,2).substr($date,8,2);
+        $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date; //we use the period dot to concatinate
+        $conn = connDB(); //justin casey
+        $conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn -> exec($sql);
+        $sql = "UPDATE Markets SET active = 0 WHERE idByDate NOT = ".$date; //we use the period dot to concatinate
+        $conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn -> exec($sql);
+
+    }
     function newMarket($conn, $date)
     {
         $sql_existence = "SELECT * FROM Markets WEHERE idByDate = ".$date;

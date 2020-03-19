@@ -1,14 +1,8 @@
-<!--
 <?php
-    include "index.php"; ///access for everything in the index.php
-    include "capstone.php"; //access to everuthing in the capstone.php file
-    $conn = connDB(); //function from capstone.php
+    include "adminFuncs.php";
+    $conn = connDB();
 ?>
--->
-
-
-
-<html !DOCTYPE="">
+<html !DOCTYPE>
     <head>
         <title> The Market </title>
 
@@ -43,9 +37,10 @@
             <!-- COLLAPSE FOR NEW MARKET -->
             <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>
             <div id = "new_market" class = "collapse">
-                <form method = "post" action = "capstone.php">
+                <form method = "post" action = "adminFuncs.php">
                     <h3> Choose A Date </h3>
                     <input type = "date" placeholder = "Choose a Month" class  = "btn" name = "new_market_date">
+                    <input type="hidden" value = "submitNewMarket" name = "message">
                     <button class = "btn btn-success"> Submit </button>
 
                 </form>
@@ -61,9 +56,9 @@
                             Market By Date &nbsp;
                             <i class="fa fa-chevron-down"></i>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu midbigger" aria-labelledby="dropdownMenuButton">
                           <?php
-                                echo populate_market_dropdown(connDB()); //pass the connection
+                                echo populate_market_dropdown($conn); //pass the connection
                           ?>
                         </div>
                     </div>

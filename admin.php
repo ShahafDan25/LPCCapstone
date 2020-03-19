@@ -34,8 +34,8 @@
             <ul>
                 <li> 1.  Create a new market by choosing a date </li>
                 <li> 2.  Choose a Market by Clicking the Second Button </li>
-                <li> 3.  To generate a report, click "report" after selecting a Market's date" </li>
-                <li> 4.  To invoke a market's registration page, click "invoke" after selecting a Market's date </li>
+                <li> 3.  Choose either to invoke a market, or to generate a report of one </li>
+                <li> 4.  Click the submit button! </li>
             </ul>
         </div>
         <br><br>
@@ -56,6 +56,7 @@
             
                 <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Choose a Market </button>
                 <div id = "generate_report" class = "collapse">
+                <form method = "post" action = "post">
                     <h3> Choose a Market</h3>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,9 +70,21 @@
                         </div>
                     </div> <!-- END OF DROPDOWN -->
                     <br><br><br>
-                    <button class = "btn btn-success"> REPORT </button> &nbsp;
-                    <button class = "btn btn-success"> INVOKE </button>
-
+                    <p> <!-- RADIO BUTTONS -->
+                    <label>
+                        <input id = "invokeRadio" name="group1" type="radio" checked />
+                        <span>Invoke</span>
+                    </label>
+                    </p>
+                    <p>
+                    <label>
+                        <input id = "reportRadio" name="group1" type="radio" />
+                        <span>Report</span>
+                    </label>
+                    <!-- END OF RADIO BUTTONS -->
+                    <input id = "hiddenMessage" type="hidden" value = "invokeOrReport" name = "message">
+                    <button class = "btn btn-success" id = "submit" onclick = invokeOrReport()> SUBMIT </button>
+                </form>                     
                 <!-- ADD PHP CODE -->
                 </div>
            

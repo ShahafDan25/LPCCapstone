@@ -30,3 +30,19 @@ function checkAdminPW()
   }
 }
 
+function invokeOrReport()
+{
+  if(document.getElemenyByID("reportRadio").checked == true)
+  {
+    document.getElementById("hiddenMessgae").value = "report";
+  }
+  else if(document.getElementById("invokeRadio").checked ==  true)
+  {
+    document.getElementById("hiddenMessage").value = "invoke";
+  }
+  else
+  {
+    alert("Please Choosen either to invoke a market or to generate a report");
+    location.replace("admin.php"); //go back to the admin page
+  }
+}

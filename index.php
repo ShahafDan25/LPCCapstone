@@ -61,7 +61,11 @@
             </div>
             <br><br><br>
             <h1 class = "mid"> The Market </h1>
-            <h4 class = "mid"> MONTH / YEAR</h4>
+            <h4 class = "mid"> 
+                <?php
+                    echo current_market_date();
+                ?>
+            </h4>
         </div>
 
 

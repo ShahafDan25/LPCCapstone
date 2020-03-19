@@ -103,9 +103,28 @@
         return $conn;
     }
 
-   
-
-
-
+    function current_market_date()
+    {
+        $conn = connDB();
+        //return month and date as a string
+        $sql = "SELECT idByDate FROM Markets WHERE active = 1";
+        $stmt_check_existence = $conn -> prepare($sql);
+        $stmt_check_existence -> execute();
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute(); ///execute the query to the database
+        if(!$stmt_check_existence -> fetch(PDO::FETCH_ASSOC))
+        {
+            return "WARNING: No Market has been invoked, ask the admi to invoke a market";
+        }
+        else
+        {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            { //concatinate to huge string to be passed //concatinaton in php is done with '.='
+                $final_date = substr($row['idByDate'], 4, 2)." / ".substr($row['idByDate'],0, 4);
+            }
+            return $final_date;
+        }
+        
+    }
 
 ?>

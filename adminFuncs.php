@@ -1,4 +1,3 @@
-
 <?php
 
 function connDB() //call to get connection
@@ -36,10 +35,10 @@ function connDB() //call to get connection
             echo '<a class="dropdown-item midbigger" href="#">No Markets to Show</a>';
             return; //return if no markets have been found from the database
         }
-
+        //else statement
         while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
-        {
-            $pwHidden = $row['passwords'];
+        { //new format: mm / dd / yyyy
+            echo '&nbsp;<a class = "dropdown-item midbigger" href="#">'.substr($row['idByDate'],4,2).' / '.substr($row['idByDate'],6,2).' / '.substr($row['idByDate'],0,4).'</a><br>';
         }
         return; //justin casey
     }
@@ -62,10 +61,10 @@ function connDB() //call to get connection
             echo '<script> alert("Sorry, This market already exists in the database. Only one market per day."); </script>';
             return; //this market already exists in the data base
         }
-        $sql = "INSERT INTO Markets (idByDate) VALUES (".$date.");";
+        $sql = "INSERT INTO Markets (idByDate, active) VALUES (".$date.", 0);"; //0 = not active, 1 = active (tiny int sserving as boolean)
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
-        header("Location: admin.php"); //redirect to the main index.php page
+        //header("Location: admin.php"); //redirect to the main index.php page
     }
     //IDEA: ADD LATER CHANGE PASSWORD OPTION
 ?>

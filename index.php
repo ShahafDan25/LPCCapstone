@@ -99,6 +99,7 @@
                 <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Approved </p> 
                 <div id = "name" class = "infoDiv">
                     <h4> Please enter you first and last name </h4>
+                    <input type = "text" class = "mandatory form-control" placeholder="Choose an ID number (6 digits)" class = "idChosen" id = "input" name = "patron_id" required pattern = "\S+.*"> &nbsp;
                     <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" id = "input" name = "first_name" required pattern = "\S+.*"> &nbsp;
                     <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" id = "input" name = "last_name" required pattern = "\S+.*"> &nbsp;
                 </div>

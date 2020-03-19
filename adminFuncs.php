@@ -1,7 +1,6 @@
 
 <?php
 
-
 function connDB() //call to get connection
     {
         $username = "root";
@@ -55,9 +54,18 @@ function connDB() //call to get connection
     }
     function newMarket($conn, $date)
     {
-        $sql = "INSERT INTO Markets (Date) VALUES (".$date.");";
+        $sql_existence = "SELECT * FROM Markets WEHERE idByDate = ".$date;
+        $stmt = $conn -> prepare($sql_existence); //create the statment
+        $stmt -> execute(); //execute the statement
+        if($stmt -> fetch(PDO::FETCH_ASSOC))
+        {
+            echo '<script> alert("Sorry, This market already exists in the database. Only one market per day."); </script>';
+            return; //this market already exists in the data base
+        }
+        $sql = "INSERT INTO Markets (idByDate) VALUES (".$date.");";
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
-        header("Location: admin.php");
+        header("Location: admin.php"); //redirect to the main index.php page
     }
+    //IDEA: ADD LATER CHANGE PASSWORD OPTION
 ?>

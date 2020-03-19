@@ -16,7 +16,8 @@
                         $_POST["seniors_amount"], 
                         $_POST["email_address"], 
                         $_POST["phone_number"], 
-                        $_POST["promotion"]);
+                        $_POST["promotion"],
+                        $_POST["patron_id"]);
     }
 
 
@@ -26,7 +27,7 @@
     /* ***************************************************************** */
     // -------------------------- FUNCTION ACTION -----------------------//
     /* ***************************************************************** */
-    function insertPat($conn, $f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm)
+    function insertPat($conn, $f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id)
     {
         
         //dont forget to close connection later!
@@ -48,10 +49,10 @@
 
         //sql insert new patron code:
         $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
-        ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod)
+        ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod, patID)
         VALUES ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', 
         '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', 
-        '".$email_address."', '".$phone_number."', '".$promotion_method."')";
+        '".$email_address."', '".$phone_number."', '".$promotion_method."', ".$id.")";
 
 
         // just to note: we use the period sign (.) to concatenate in php!!!

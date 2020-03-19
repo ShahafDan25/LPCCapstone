@@ -51,22 +51,34 @@ function connDB() //call to get connection
         newMarket(connDB(), $date_format_int);
         //header("Location: admin.php"); //redirect to the main index.php page
     }
-    if($_POST['message'] == 'report')
-    {
-        // CODE TO GENERATE A REPORT
-    }
-    if($_POST['message'] == 'invoke')
+
+    if($_POST['message'] == 'invokeOrReport')
     {
         $date = $_POST['marketDate'];
         $date_format = substr($date,0,4).substr($date,5,2).substr($date,8,2);
-        $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date; //we use the period dot to concatinate
-        $conn = connDB(); //justin casey
-        $conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $conn -> exec($sql);
-        $sql = "UPDATE Markets SET active = 0 WHERE idByDate NOT = ".$date; //we use the period dot to concatinate
-        $conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $conn -> exec($sql);
+        if($_POST['invokeOrReport'] == "invoke")//invoke
+        {
+            $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date_format; //we use the period dot to concatinate
+            $conn = connDB(); //justin casey
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
+            var_dump($date_format);
+            //$sql = "UPDATE Markets SET active = 0 WHERE idByDate NOT = ".$date; //we use the period dot to concatinate
+            //$conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            //$conn -> exec($sql);
+        }
+        if($_POST['invokeOrReport'] == "report")//report
+        {
+            generate_report($conn);
+        }
+        header("Location: admin.php");
+    }
 
+    function generate_report($conn)
+    {
+        $conn; //connection is already passed // Do something with it
+    // CODE IS YET TO COME;
+        return;
     }
     function newMarket($conn, $date)
     {

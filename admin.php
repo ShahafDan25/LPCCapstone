@@ -56,7 +56,7 @@
             
                 <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Choose a Market </button>
                 <div id = "generate_report" class = "collapse">
-                <form method = "post" action = "post">
+                <form method = "post" action = "adminFuncs.php">
                     <h3> Choose a Market</h3>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -72,18 +72,19 @@
                     <br><br><br>
                     <p> <!-- RADIO BUTTONS -->
                     <label>
-                        <input id = "invokeRadio" name="group1" type="radio" checked />
+                        <input id = "invokeRadio" name="invokeOrReport" value = "invoke" type="radio" checked />
                         <span>Invoke</span>
                     </label>
                     </p>
                     <p>
                     <label>
-                        <input id = "reportRadio" name="group1" type="radio" />
+                        <input id = "reportRadio" name="invokeOrReport" value = "report" type="radio" />
                         <span>Report</span>
                     </label>
+                    <br><br>
                     <!-- END OF RADIO BUTTONS -->
                     <input id = "hiddenMessage" type="hidden" value = "invokeOrReport" name = "message">
-                    <button class = "btn btn-success" id = "submit" onclick = invokeOrReport()> SUBMIT </button>
+                    <button class = "btn btn-success" id = "submit"> SUBMIT </button>
                 </form>                     
                 <!-- ADD PHP CODE -->
                 </div>

@@ -21,7 +21,10 @@
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-        
+        <!-- newer addition 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        -->
+
         <!-- CSS HARDCODE FILE LINK -->
         <link rel = "stylesheet" type = "text/css" href = "capstone.css">
 
@@ -59,7 +62,7 @@
 
             
             </div>
-            <br><br><br>
+            <br><br><br><br><br>
             <h1 class = "mid"> The Market </h1>
             <h4 class = "mid"> 
                 <?php
@@ -76,19 +79,33 @@
                 <h3> Returning Patrons </h3> 
                 <button class = "btn btn-warning" data-toggle = "collapse" data-target = "#oldPats_div"> I have been here before </button>
                 <div class = "collapse retPats" id = "oldPats_div">
-                    <br><br>
-                    <p> please choose your name from the dropdown below </p>
-                    <!-- DROP DOWN STARTS HERE -->
-                    <!-- TAKE CARE OF THAT LATER... POST OR PULL? (What is the oppositve of a pull form?)-->
-                    <div id="myDropdown" class="dropdown-content">
-                       <input type="text" placeholder="Search..." id="myInput" onkeyup="filterFunction()">
-                        <?php  
-                            echo populate_dropdown(connDB());
-                        ?>
+                    <br> <!-- BEGIN LOGIN FORM -->
+                    <form method = "post" action = "capstone.php">
+                    <button class = "btn blackback" data-toggle = "collapse" data-target = "#byID"> Login Using ID </button><br>
+                    <div class = "collapse loginById" id = "byID">
+                        <h4> Please insert you Market ID below </h4>
+                        <input type = "text" class = "mandatory form-control" placeholder = "Market ID">
+                        <hr>
                     </div>
-                    <!-- DROPDOWN ENDS HERE -->
                     <br>
-                    <button class = "btn btn-secondary" id = "retPatSubmission"> SUBMIT </button>
+                    
+                    <button class = "btn blackback" data-toggle = "collapse" data-target = "#byName"> Forgot your ID? </button><br>
+                    <div class = "collapse loginById" id = "byName">
+                        <p> please look for your name from the dropdown below </p> <br>
+                        <p> After finding your ID, please insert it in the box above </p>
+                        <!-- DROP DOWN STARTS HERE -->
+                        <!-- TAKE CARE OF THAT LATER... POST OR PULL? (What is the oppositve of a pull form?)-->
+                        <div id="myDropdown" class="dropdown-content">
+                        <input type="text" placeholder="Search..." id="myInput" onkeyup="filterFunction()">
+                            <?php  
+                                echo populate_dropdown(connDB());
+                            ?>
+                        </div><!-- DROPDOWN ENDS HERE -->
+                    </div>  <!-- END OF LOGIN OPTIONS -->
+                    
+                    <br>
+                    <button class = "btn btn-success" id = "retPatSubmission"> SUBMIT </button>
+                    </form> <!-- END OF LOGIN FORM -->
                 </div>
             </span>
             <span class = "right">
@@ -99,7 +116,7 @@
 
             <div class = "collapse" id = "newPats_div">
                 <form method = "post" action = "capstone.php"> <!-- FORM FOR NEW PATRONS -->
-                <h3> Please fill out the followings</h3>
+                <h4> Please fill out the followings</h4>
                 <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Approved </p> 
                 <div id = "name" class = "infoDiv">
                     <h4> Please enter you first and last name </h4>

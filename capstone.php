@@ -82,7 +82,7 @@
         $stmt -> execute(); ///execute the query to the database
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
         { //concatinate to huge string to be passed //concatinaton in php is done with '.='
-            $all_options .= "<a value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."</a>";
+            $all_options .= "<option value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."      -       ".$row['patID']."</option>";
         }
         return $all_options; //return the final string to echo on the html page
     }
@@ -114,7 +114,7 @@
         $stmt -> execute(); ///execute the query to the database
         if(!$stmt_check_existence -> fetch(PDO::FETCH_ASSOC))
         {
-            return "WARNING: No Market has been invoked, ask the admi to invoke a market";
+            return "WARNING: No Market has been invoked, ask the admin to invoke a market";
         }
         else
         {

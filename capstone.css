@@ -160,5 +160,13 @@ hr
     width: 200% !important;
     padding: 5% !important;
 }
+.blackback
+{
+    background-color: #90aecc !important;
+}
+.btn-success
+{
+    background-color: #28a745;
+}
 
 /* RADIO BUTTONS CSS CODE */

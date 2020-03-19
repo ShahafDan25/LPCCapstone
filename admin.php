@@ -52,11 +52,24 @@
             </div>
             <br> <br> <br> <!-- SOME SPACING THAT MIGHT BE NEEDED-->
             <!-- COLLAPSE FOR REPOTR GENERATION -->
-            <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false"> Generate A Report </button>
-            <div id = "generate_repot" class = "collapse">
-                <h3> Choose A Market </h3>
+            
+                <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Generate A Report </button>
+                <div id = "generate_report" class = "collapse">
+                    <h3> Choose a Market</h3>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Market By Date &nbsp;
+                            <i class="fa fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <?php
+                                echo populate_market_dropdown();
+                          ?>
+                        </div>
+                    </div>
                 <!-- ADD PHP CODE -->
-            </div>
+                </div>
+           
         </div>
         
     </body>

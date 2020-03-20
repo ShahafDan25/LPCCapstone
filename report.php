@@ -75,7 +75,7 @@
                                 $addline = "<tr><td scope='row'>";
                                 $totalPeople++;
                                 $totalKids += $row_b['ChildrenAmount'];
-                                $totalAdultls += $row_b['AdultsAmount'];
+                                $totalAdults += $row_b['AdultsAmount'];
                                 $totalSeniors += $row_b['SeniorsAmount'];
                                 $addline .= $row_b['patID']."</td>";
                                 $addline .= "<th>".$row_b['FirstName']."</th>";
@@ -94,6 +94,22 @@
                     ?>
                 </tbody>
             </table>
+            <br><br>
+            <p class = "totalInfo"> 
+                        <strong><u> Total Attendees</u></strong>: 
+                        <?php echo $totalPeople ?>
+                        &nbsp;&nbsp;&nbsp;&nbsp;  <!--some formatting -->
+                        <strong><u> Total Children (0 - 17)</u></strong>: 
+                        <?php echo $totalKids ?>
+                        <br>
+                        <strong><u> Total Adults (18 - 64)</u></strong>: 
+                        <?php echo $totalAdults ?>
+                        &nbsp; &nbsp;&nbsp;&nbsp;
+                        <strong><u> Total Sernios (65 +)</u></strong>: 
+                        <?php echo $totalSeniors ?>
+                        <br>
+            </p>
+            <br>
         </div>
     </body>
 

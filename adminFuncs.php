@@ -34,9 +34,12 @@
             echo '<script>alert("Passwords Do not match");</script>';
             echo '<script>location.replace("admin.php");</script>';
         }
-        if($a && $b) changePWinDB($conn, $_POST['newPW1']);
-        echo '<script>alert("Password Changed Successfully!");</script>';
-        echo '<script>location.replace("admin.php");</script>';
+        if($a && $b)
+        {
+            changePWinDB($conn, $_POST['newPW1']);
+            echo '<script>alert("Password Changed Successfully!");</script>';
+            echo '<script>location.replace("admin.php");</script>';
+        } 
         return;
     }
 
@@ -136,8 +139,8 @@
 
     function verifyOld($conn, $oldPW)
     {
-        $sql = "SELECT passwords from AdminPW";
-        $stmt = $conn -> prepare($sql_existence); //create the statment
+        $sql = "SELECT passwords FROM AdminPW";
+        $stmt = $conn -> prepare($sql); //create the statment
         $stmt -> execute(); //execute the statement
         $row = $stmt -> fetch(PDO::FETCH_ASSOC);
         $oldPWfromDB = $row['passwords'];
@@ -147,11 +150,9 @@
 
     function changePWinDB($conn, $newPW)
     {
-        $sql = "UPDATE AdminPW SET password =".$newPW; //update password in the database, add secuirty features later
+        $sql = "UPDATE AdminPW SET passwords = '".$newPW."'"; //update password in the database, add secuirty features later
         $stmt = $conn -> prepare($sql);
         $stmt -> execute();
-        echo '<script>alert("Admin Password has changed");</script>';
-        echo '<script>location.reaplec("admin.php");</script>';
         return;
     }
     //IDEA: ADD LATER CHANGE PASSWORD OPTION --done

@@ -33,14 +33,14 @@
             <div>
                 <button id = "goToMarket" class = "btn btn-primary admin" onclick = location.replace('index.php')> Market </button>
                 &nbsp; &nbsp;
-                <button id = "changePW" class = "btn btn-primary admin" data-toggle = "collapse" data-target = "#chagnePWDiv" aria-expanded="false"> CHange Password </button>
+                <button id = "changePW" class = "btn btn-primary admin" data-toggle = "collapse" data-target = "#changePWDiv" aria-expanded="false"> Change Password </button>
                 <div id = "changePWDiv" class = "changePW collapse">
                     <form method = "post" action = "adminFuncs.php">
                         <h4> Change you Password </h4>
-                        <input type = "password" placeholder = "Old Password" class = "btn" name = "oldPW"><br>
-                        <input type = "password" placeholder = "New Password" class = "btn" name = "newPW1"><br>
-                        <input type = "password" placeholder = "Verify New Password" class = "btn" name = "newPW2"> <br>
-                        <input type = "hideen" value = "changePW" name = "message"> <!-- USE THIS TO SEND THE MESSAGE TO THE PHP PAGE -->
+                        <input type = "password" placeholder = "Old Password" class = "btn" name = "oldPW"> &nbsp; &nbsp;
+                        <input type = "password" placeholder = "New Password" class = "btn" name = "newPW1"> &nbsp; &nbsp;
+                        <input type = "password" placeholder = "Verify New Password" class = "btn" name = "newPW2"> <br><br> 
+                        <input type = "hidden" value = "changePW" name = "message"> <!-- USE THIS TO SEND THE MESSAGE TO THE PHP PAGE -->
                         <button class = "btn btn-success" id = "submit">  Change Password </button>
                     </form>
                 </div>

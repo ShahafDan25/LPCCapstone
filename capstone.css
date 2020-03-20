@@ -1,3 +1,16 @@
+/* ------------ CODE FOR REPORT PAGE -------------- */
+.report_box_class
+{
+    text-align: center !important;
+    border: 2px solid black !important;
+    border-radius: 2px !important;
+    padding: 5% !important;
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+    background-color: white !important;
+
+}
+
 /* NOW TO BE USED BY Market PAGE */
 .btn
 {

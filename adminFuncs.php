@@ -2,7 +2,7 @@
     <head>
         <title> Market - Admin </title>
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel="stylesheet" type="text/css" href="./The Market_files/capstone.css">
+        <link rel="stylesheet" type="text/css" href="capstone.css">
     </head>
     <body class = "body">
         <div class = "midPage">
@@ -170,6 +170,8 @@
         #$pdf->Output();
         //Will use FPDF to generate a PDF report (later use angular.sj is possible)
 
+        //simply, for now, just go to the report page, it will be easier I guess
+        echo '<script>location.replace("report.php");</script>';
 
     }
     //IDEA: ADD LATER CHANGE PASSWORD OPTION --done

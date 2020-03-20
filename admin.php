@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="./The Market_files/bootstrap.min.css">
         
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel="stylesheet" type="text/css" href="./The Market_files/capstone.css">
+        <link rel="stylesheet" type="text/css" href="capstone.css"> 
 
         <!-- Bootstrap for JQuery -->
         <script src="./The Market_files/jquery.min.js"></script>

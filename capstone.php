@@ -2,7 +2,7 @@
     <head>
         <title> Market - Admin </title>
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel="stylesheet" type="text/css" href="./The Market_files/capstone.css">
+        <link rel="stylesheet" type="text/css" href="capstone.css">
     </head>
     <body class = "body">
         <div class = "midPage">

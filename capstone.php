@@ -20,6 +20,34 @@
                         $_POST["patron_id"]);
     }
 
+    if($_POST['message'] == 'patronLogin')
+    {
+        //1. connect
+        //2. verify that the id does not already exist in the database
+        //3. if verified: insert to M:M mid relationship table
+        $conn = connDB();
+        
+        if(!verifyExistence($conn, $_POST['patronID']))
+        {
+            echo '<script>alert ("Your ID was not found")</script>';
+            echo '<script>location.replace("index.php")</script>';
+        }
+        else
+        {
+            // id verified!
+            // a. retrive current market's date
+            // b. insert the patron's id to the table by calling a function
+            // c. change back to index.php
+            $sql_a = "SELECT idByDate FROM Markets WHERE active = 1";
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute(); ///execute the query to the database
+            $row = $stmt->fetch(PDO::FETCH_ASSOC); //becasue we are onlu fetching one line
+            loginPat($conn, $row['idBydate'], $_POST['patronID']);
+            echo '<script>location.replace("index.php");</script>';
+
+        }
+    }
+
 
 
 
@@ -127,4 +155,25 @@
         
     }
 
+    function verifyExistence($conn, $id)
+    {
+        $sql = "SELECT * FROM Patrons WHERE patID = ".$id;
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute(); ///execute the query to the database
+        if(!$stmt->fetch(PDO::FETCH_ASSOC)) //meaning if not results have been found in the database
+        {
+            return false; //person not found in the database 
+        }
+        else return true; //else, the ID already exists in the database
+
+    }
+
+    function loginPat($conn, $date, $id)
+    {
+        //GOAL: insert the two into the mid m:m table
+        $sql = "INSERT INTO Markets_has_Patrons (Markets_idbyDate, Patrons_patID) VALUES (".$date.", ".$id.");";
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->exec($sql); //execute the sql inset query (insert to data base)
+        return;
+    }
 ?>

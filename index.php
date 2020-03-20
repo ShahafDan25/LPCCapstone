@@ -81,18 +81,12 @@
                 <div class = "collapse retPats" id = "oldPats_div">
                     <br> <!-- BEGIN LOGIN FORM -->
                     <form method = "post" action = "capstone.php">
-                    <button class = "btn blackback" data-toggle = "collapse" data-target = "#byID"> Login Using ID </button><br>
-                    <div class = "collapse loginById" id = "byID">
-                        <h4> Please insert you Market ID below </h4>
-                        <input type = "text" class = "mandatory form-control" placeholder = "Market ID">
-                        <hr>
-                    </div>
+                        <h4> Insert Your Market ID <i class="fa fa-chevron-down"></i> </h4>
+                        <input type = "text" class = "mandatory form-control" placeholder = "Market ID" name = "patronID">
                     <br>
                     
-                    <button class = "btn blackback" data-toggle = "collapse" data-target = "#byName"> Forgot your ID? </button><br>
-                    <div class = "collapse loginById" id = "byName">
-                        <p> please look for your name from the dropdown below </p> <br>
-                        <p> After finding your ID, please insert it in the box above </p>
+                    
+                        <p> please look for your name from the dropdown below <br>  After finding your ID, please insert it in the box above </p>
                         <!-- DROP DOWN STARTS HERE -->
                         <!-- TAKE CARE OF THAT LATER... POST OR PULL? (What is the oppositve of a pull form?)-->
                         <div id="myDropdown" class="dropdown-content">
@@ -101,13 +95,15 @@
                                 echo populate_dropdown(connDB());
                             ?>
                         </div><!-- DROPDOWN ENDS HERE -->
-                    </div>  <!-- END OF LOGIN OPTIONS -->
+                  
                     
                     <br>
+                    <input type="hidden" value = "patronLogin" name = "message">
                     <button class = "btn btn-success" id = "retPatSubmission"> SUBMIT </button>
                     </form> <!-- END OF LOGIN FORM -->
                 </div>
             </span>
+            <hr><hr>
             <span class = "right">
                 <h3> Newcoming Patrons</h3>
                 

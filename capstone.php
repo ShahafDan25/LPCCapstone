@@ -38,11 +38,11 @@
             // a. retrive current market's date
             // b. insert the patron's id to the table by calling a function
             // c. change back to index.php
-            $sql_a = "SELECT idByDate FROM Markets WHERE active = 1";
+            $sql = "SELECT idByDate FROM Markets WHERE active = 1";
             $stmt = $conn -> prepare($sql);
             $stmt -> execute(); ///execute the query to the database
             $row = $stmt->fetch(PDO::FETCH_ASSOC); //becasue we are onlu fetching one line
-            loginPat($conn, $row['idBydate'], $_POST['patronID']);
+            loginPat($conn, $row['idByDate'], $_POST['patronID']);
             echo '<script>location.replace("index.php");</script>';
 
         }
@@ -170,8 +170,9 @@
 
     function loginPat($conn, $date, $id)
     {
+        var_dump($date, $id);
         //GOAL: insert the two into the mid m:m table
-        $sql = "INSERT INTO Markets_has_Patrons (Markets_idbyDate, Patrons_patID) VALUES (".$date.", ".$id.");";
+        $sql = "INSERT INTO Markets_has_Patrons (Markets_idByDate, Patrons_patID) VALUES (".$date.", ".$id.");";
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql inset query (insert to data base)
         return;

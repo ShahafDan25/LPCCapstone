@@ -31,8 +31,4 @@ function checkAdminPW()
 }
 
 
-//funcstion for the admin.php page
-function marketPage()
-{
-  
-}
+//funcstion for the admin.php page below (was one, got deleted)

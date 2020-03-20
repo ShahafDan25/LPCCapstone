@@ -47,14 +47,16 @@
 
             </div><br>
             <h3> <u> Instructions </u> </h3>
-            <ul>
-                <li> 1.  Create a new market by choosing a date </li>
-                <li> 2.  Choose a Market by Clicking the Second Button </li>
-                <li> 3.  Choose either to invoke a market, or to generate a report of one </li>
-                <li> 4.  Click the submit button! </li>
+            <ul class = "pull-left instructions">
+                <li class = "pull-left"> 1.  Create a new market by choosing a date </li>
+                <li class = "pull-left"> 2.  Choose a Market by Clicking the Second Button </li>
+                <li class = "pull-left"> 3.  Choose either to invoke a market, or to generate a report, or terminate a market </li>
+                <li class = "pull-left"> 4.  Note: In order to generate a report of a market, it must be active! </li>
+                <li class = "pull-left"> 5.  Click the submit button! </li>
             </ul>
         </div>
-        <br><br>
+        <br><br><br><br><br> <br> 
+        <!-- SAFETY SPACING I GUESS YOU COULD CALL THIS -->
         <div class = "lower_portion">
             <!-- COLLAPSE FOR NEW MARKET -->
             <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>
@@ -67,7 +69,7 @@
 
                 </form>
             </div>
-            <br> <br> <br> <!-- SOME SPACING THAT MIGHT BE NEEDED-->
+            <br> <br> <!-- SOME SPACING THAT MIGHT BE NEEDED-->
             <!-- COLLAPSE FOR REPOTR GENERATION -->
             
                 <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Choose a Market </button>
@@ -82,7 +84,7 @@
 aria-labelledby="dropdownMenuButton"
 
                         </button>-->
-                        <select class="btn btn-secondary midbigger"  name = "marketDate">
+                        <select class="btn midbigger browser-default custom-select"  name = "marketDate">
                             <option> Choose a market (by date) </option>
                           <?php
                                 echo populate_market_dropdown($conn); //pass the connection
@@ -91,16 +93,23 @@ aria-labelledby="dropdownMenuButton"
                     </div> <!-- END OF DROPDOWN -->
                     <br><br>
                     <p> <!-- RADIO BUTTONS -->
-                    <label>
+                    <label class = "pull-left radioBtn">
                         <input id = "invokeRadio" name="invokeOrReport" value = "invoke" type="radio" checked />
-                        <span>Invoke</span>
+                        &nbsp;<span> Activate</span>
+                    </label>
+                    </p><br><br>
+                    <p>
+                    <label class = "pull-left radioBtn">
+                        <input id = "reportRadio" name="invokeOrReport" value = "report" type="radio" />
+                        &nbsp;<span> Report</span>
+                    </label>
+                    </p> <br><br>
+                    <p>
+                    <label class = "pull-left radioBtn">
+                        <input id = "reportRadio" name="invokeOrReport" value = "terminate" type="radio" />
+                        &nbsp;<span> Terminate</span>
                     </label>
                     </p>
-                    <p>
-                    <label>
-                        <input id = "reportRadio" name="invokeOrReport" value = "report" type="radio" />
-                        <span>Report</span>
-                    </label>
                     <br><br>
                     <!-- END OF RADIO BUTTONS -->
                     <input id = "hiddenMessage" type="hidden" value = "invokeOrReport" name = "message">

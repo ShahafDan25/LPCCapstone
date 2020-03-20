@@ -10,6 +10,12 @@
     background-color: white !important;
 
 }
+/* ------------ CODE FOR INDEX [REGISTRATION] PAGE -------------- */
+.ddOption
+{
+    margin-left: 20% !important;
+    padding: 1.5% !important;
+}
 
 /* NOW TO BE USED BY Market PAGE */
 .btn
@@ -62,7 +68,11 @@
 {
     outline: 3px solid #ddd;
 }
-  
+.instructions
+{
+    margin-right:20% !important;
+    margin-left: 20% !important;
+} 
 .dropdown
 {
     position: relative;
@@ -183,8 +193,9 @@ hr
 }
 .midbigger
 {
-    width: 200% !important;
+    width: 110% !important;
     padding: 5% !important;
+    height: 5% !important;
 }
 .blackback
 {
@@ -201,4 +212,17 @@ hr
 .checkIDInput
 {
    width: 150% !important;
+}
+.radioBtn
+{
+    margin-left: 35% !important;
+    padding: 1% !important;
+    font-size: 1.2vw !important;
+}
+.lower_portion
+{
+    width: 50% !important;
+    text-align: center !important;
+    margin-left: 20% !important;
+    margin-right: 30% !important;
 }

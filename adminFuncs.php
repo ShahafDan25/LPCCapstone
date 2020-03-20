@@ -83,16 +83,21 @@
             $conn = connDB(); //justin casey
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
-            //var_dump($date_dormat);
+            //var_dump($date_format);
 
             // BELOW: change all other markets to non active
             $sql = "UPDATE Markets SET active = 0 WHERE NOT idByDate = ".$date_format; //we use the period dot to concatinate
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
         }
-        if($_POST['invokeOrReport'] == "report")//report
+        elseif($_POST['invokeOrReport'] == "report")//report
         {
-            generate_report($conn);
+            generate_report($conn, $date_format);
+
+        }
+        elseif($_POST['invokeOrReport'] == "terminate")
+        {
+            terminateActiveMarket($conn, $date_format); // that way we only allow one active market at a time
         }
         echo '<script> location.replace("admin.php") </script>'; //instead of using header, we will use js to change window location
         return;
@@ -110,6 +115,7 @@
         $stmt -> execute(); //execute the statement
         $stmt_existness_check = $conn ->prepare($sql);
         $stmt_existness_check -> execute();
+        $active = "Closed";
         //check if ther are any markets stored in the database
         if(!$stmt_existness_check -> fetch(PDO::FETCH_ASSOC))
         {
@@ -119,7 +125,8 @@
         //else statement
         while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
         { //new format: mm / dd / yyyy
-            echo '&nbsp;<option class = "dropdown-item midbigger" href="#">'.substr($row['idByDate'],4,2).' / '.substr($row['idByDate'],6,2).' / '.substr($row['idByDate'],0,4).'</option><br>';
+            if($row['active'] == 1) $active = "Active!";
+            echo '&nbsp;<option class = "dropdown-item midbigger" href="#">'.substr($row['idByDate'],4,2).' / '.substr($row['idByDate'],6,2).' / '.substr($row['idByDate'],0,4).' - '.$active.'</option><br>';
         }
         return; //justin casey
     }
@@ -173,6 +180,15 @@
         //simply, for now, just go to the report page, it will be easier I guess
         echo '<script>location.replace("report.php");</script>';
 
+    }
+    function terminateActiveMarket($conn, $d)
+    {
+        $conn = connDB();
+        $sql = "UPDATE Markets SET active = 0 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
+        echo '<script> location.replace("admin.php") </script>';
+        return;
     }
     //IDEA: ADD LATER CHANGE PASSWORD OPTION --done
     //IDEA: add IP address, hashing, etc. (seurity features) later

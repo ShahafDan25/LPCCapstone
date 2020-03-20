@@ -38,6 +38,7 @@
         $stmt -> execute(); ///execute the query to the database
         $row = $stmt->fetch(PDO::FETCH_ASSOC); //becasue we are onlu fetching one line
         loginPat($conn, $row['idByDate'], $_POST['patron_id']);
+        echo '<script> location.replace("index.php") </script>';
     }
 
     if($_POST['message'] == 'patronLogin')
@@ -147,7 +148,7 @@
         $stmt -> execute(); ///execute the query to the database
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
         { //concatinate to huge string to be passed //concatinaton in php is done with '.='
-            $all_options .= "<option value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."      -       ".$row['patID']."</option><br>";
+            $all_options .= "<option class = 'pull-left ddOption' value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."      -       ".$row['patID']."</option><br>";
         }
         return $all_options; //return the final string to echo on the html page
     }

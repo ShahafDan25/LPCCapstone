@@ -1,5 +1,18 @@
+<html !DOCTYPE>
+    <head>
+        <title> Market - Admin </title>
+        <!-- CSS HARDCODE FILE LINK -->
+        <link rel="stylesheet" type="text/css" href="./The Market_files/capstone.css">
+    </head>
+    <body class = "body">
+        <div class = "midPage">
+            <input type = "hidden" id = "justToTest">
+        </div>
+    </body>
+</html>
 <?php
-
+    //define('FPDF_FONTPATH','/home/www/font/');
+    //require('fpdf_lib'); //include library for pdf generation
     function connDB() //call to get connection
     {
         $username = "root";
@@ -112,13 +125,6 @@
     }
 
     
-
-    function generate_report($conn)
-    {
-        $conn; //connection is already passed // Do something with it
-    // CODE IS YET TO COME;
-        return;
-    }
     function newMarket($conn, $date)
     {
         $sql_existence = "SELECT * FROM Markets WHERE idByDate = ".$date;
@@ -155,6 +161,18 @@
         $stmt -> execute();
         return;
     }
+    function generate_report($conn)
+    {
+        #$pdf = new FPDF(); //generate a new pdf
+        #$pdf -> AddPage(); //add page
+        #$pdf ->SetFont('Arial', 'B', 16); //Font: arial. Bolden. size 16
+        #$pdf->Cell(40,10,'Hello World!');
+        #$pdf->Output();
+        //Will use FPDF to generate a PDF report (later use angular.sj is possible)
+
+
+    }
     //IDEA: ADD LATER CHANGE PASSWORD OPTION --done
     //IDEA: add IP address, hashing, etc. (seurity features) later
+
 ?>

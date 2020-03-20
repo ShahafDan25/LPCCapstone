@@ -112,6 +112,19 @@
 {
     border: 1.5px solid black !important;
 }
+.marketPage
+{
+    border: 1.5px solid black !important;
+    margin-left: 3% !important;
+    margin-right: 3% !important;
+    padding: 1% !important;
+
+}
+.body
+{
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+}
 .upperPortion
 {
     margin-left: 5% !important;

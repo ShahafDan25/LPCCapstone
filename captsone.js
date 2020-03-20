@@ -30,3 +30,9 @@ function checkAdminPW()
   }
 }
 
+
+//funcstion for the admin.php page
+function marketPage()
+{
+  
+}

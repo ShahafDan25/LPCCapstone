@@ -105,12 +105,12 @@
     function populate_dropdown($conn)
     {
         $all_options = "";
-        $sql = "SELECT DISTINCT FirstName, LastName FROM Patrons";
+        $sql = "SELECT DISTINCT FirstName, LastName, patID FROM Patrons";
         $stmt = $conn -> prepare($sql);
         $stmt -> execute(); ///execute the query to the database
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
         { //concatinate to huge string to be passed //concatinaton in php is done with '.='
-            $all_options .= "<option value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."      -       ".$row['patID']."</option>";
+            $all_options .= "<option value = '".$row['FirstName']."".$row['LastName']."'>".$row['FirstName']." ".$row['LastName']."      -       ".$row['patID']."</option><br>";
         }
         return $all_options; //return the final string to echo on the html page
     }

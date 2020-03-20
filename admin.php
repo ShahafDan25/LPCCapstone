@@ -28,6 +28,7 @@
     </head>
 
     <body class = "body">
+    <button id = "goToAdmin" class = "btn btn-primary pull-left admin" onclick = location.replace('index.php')> Market </button>
         <div class = "upper_portion_admin">
             <h1> Admin and Management Page</h1>
             <h3> <u> Instructions </u> </h3>

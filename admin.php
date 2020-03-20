@@ -4,7 +4,7 @@
 ?>
 <html !DOCTYPE>
     <head>
-        <title> The Market </title>
+        <title> Market - Admin </title>
 
         <link rel="shortcut icon" href="./The Market_files/lpcsgLogo.jpg">
 

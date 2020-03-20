@@ -181,5 +181,11 @@ hr
 {
     background-color: #28a745;
 }
-
-/* RADIO BUTTONS CSS CODE */
+.checkID
+{
+    display: inline-block !important;
+}
+.checkIDInput
+{
+   width: 150% !important;
+}

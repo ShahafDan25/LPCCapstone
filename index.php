@@ -5,11 +5,11 @@
         if($_POST['inputAdminPW'] == getPassword($conn))
         { 
         //echo '<script> alert("Moving to Admin Page") </script>';  
-            header("Location: admin.php");
+            echo '<script>location.replace("admin.php");</script>';
         }
         else
         {
-            echo '<script> alert("Password Incorrect, Please Try Again!") </script>';
+            echo '<script> alert("Password Incorrect, Please Try Again!"); </script>';
         }
     }
 ?>
@@ -21,7 +21,7 @@
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-        <!-- newer addition 
+        <!-- newer addition - we don't wanna use this
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         -->
 
@@ -111,12 +111,24 @@
             
 
             <div class = "collapse" id = "newPats_div">
+                <!-- FORM TO VERIFY ID VALIDITY -->
+                <form method = "post" action = "capstone.php"> 
+                    <br>
+                    <input type = "text" class = "mandatory btn form-not-form" placeholder="Choose ID (6 Digits)" class = "idChosen" id = "input" name = "patron_id" required pattern = "\S+.*"> &nbsp;
+                    <input type = "hidden" value = "checkID" name = "message" id = "input">
+                    <button class = "btn blackback"> Check ID </button> <br>
+                    
+                </form>
+                <hr>
+                <!-- FORM TO FILL INFO -->
                 <form method = "post" action = "capstone.php"> <!-- FORM FOR NEW PATRONS -->
                 <h4> Please fill out the followings</h4>
                 <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Approved </p> 
                 <div id = "name" class = "infoDiv">
                     <h4> Please enter you first and last name </h4>
-                    <input type = "text" class = "mandatory form-control" placeholder="Choose an ID number (6 digits)" class = "idChosen" id = "input" name = "patron_id" required pattern = "\S+.*"> &nbsp;
+                    <br>
+                    <p> First, check to see if the ID is available before you proceed [SEE ABOVE]</p>
+                    <input type = "text" class = "mandatory form-control" placeholder="Enter the ID you chose above" class = "idChosen" id = "input" name = "patron_id" required pattern = "\S+.*"> &nbsp;
                     <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" id = "input" name = "first_name" required pattern = "\S+.*"> &nbsp;
                     <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" id = "input" name = "last_name" required pattern = "\S+.*"> &nbsp;
                 </div>
@@ -166,7 +178,7 @@
                     </div>
                 </div>
                 <input type="hidden" value = "insertNewPats" name = "message">
-                <button class = "btn btn-secondary" id = "newPatSubmission"> SUBMIT </button>
+                <button class = "btn btn-success" id = "newPatSubmission"> SUBMIT </button>
                 </form> <!-- WE END THE FORM FOR NEW PATRONS -->
             </div> 
             </span>

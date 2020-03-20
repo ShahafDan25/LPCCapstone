@@ -1,6 +1,18 @@
-<?php
-    
-    
+<html !DOCTYPE>
+    <head>
+        <title> Market - Admin </title>
+        <!-- CSS HARDCODE FILE LINK -->
+        <link rel="stylesheet" type="text/css" href="./The Market_files/capstone.css">
+    </head>
+    <body class = "body">
+        <div class = "midPage">
+            <input type = "hidden" id = "justToTest">
+        </div>
+    </body>
+</html>
+
+<?php  
+//it should load the html part first, for the background
     $conn = connDB(); // get the connection string to the Database
 
     populate_dropdown($conn); //call the drop down populate function as soon as the page loads
@@ -18,6 +30,14 @@
                         $_POST["phone_number"], 
                         $_POST["promotion"],
                         $_POST["patron_id"]);
+
+        //since the are not just adding them to the general database, but also to the mid m:m table we should call:
+        //first we need to retirved the date
+        $sql = "SELECT idByDate FROM Markets WHERE active = 1";
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute(); ///execute the query to the database
+        $row = $stmt->fetch(PDO::FETCH_ASSOC); //becasue we are onlu fetching one line
+        loginPat($conn, $row['idByDate'], $_POST['patron_id']);
     }
 
     if($_POST['message'] == 'patronLogin')
@@ -48,6 +68,23 @@
         }
     }
 
+    //code to verify that the ID is avilable
+    if($_POST['message'] == 'checkID')
+    {
+        $conn = connDB(); //justin casey
+        $sql = "SELECT * FROM Patrons WHERE patID = ".$_POST['patron_id'];
+        $stmt = $conn -> prepare($sql); //create the statment
+        $stmt -> execute(); //execute the statement
+        if(!$stmt -> fetch(PDO::FETCH_ASSOC)) //if there is no id found
+        {
+            echo '<script> alert("ID confirmed! Please insert it now in the registration page"); </script>'; //id is confirmed
+        }
+        else
+        {   //id is already used by someone else
+            echo '<script> alert("ID is already in use by someone else. Choose a different ID!");</script>';
+        }
+        echo '<script> location.replace("index.php");</script>';
+    }
 
 
 
@@ -87,7 +124,7 @@
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
         /// NEXT STEP IS TO CLOSE CONNECTION - BUT WHERE?
-        header("Location: index.php"); //redirect to the main index.php page
+        echo '<script>location.reaplec("index.php");</script>'; //instead of using header (gives e problem ugh)
     }
 
     function getPassword($conn)
@@ -177,3 +214,4 @@
         return; // end function
     }
 ?>
+

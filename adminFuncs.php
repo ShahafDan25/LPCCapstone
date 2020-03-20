@@ -144,5 +144,16 @@
         if ($oldPW == $oldPWfromDB) return true;
         else return false;
     }
-    //IDEA: ADD LATER CHANGE PASSWORD OPTION
+
+    function changePWinDB($conn, $newPW)
+    {
+        $sql = "UPDATE AdminPW SET password =".$newPW; //update password in the database, add secuirty features later
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
+        echo '<script>alert("Admin Password has changed");</script>';
+        echo '<script>location.reaplec("admin.php");</script>';
+        return;
+    }
+    //IDEA: ADD LATER CHANGE PASSWORD OPTION --done
+    //IDEA: add IP address, hashing, etc. (seurity features) later
 ?>

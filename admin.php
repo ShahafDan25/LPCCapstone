@@ -28,9 +28,24 @@
     </head>
 
     <body class = "body">
-    <button id = "goToAdmin" class = "btn btn-primary pull-left admin" onclick = location.replace('index.php')> Market </button>
         <div class = "upper_portion_admin">
-            <h1> Admin and Management Page</h1>
+            <h1> Admin and Management Page</h1> <br>
+            <div>
+                <button id = "goToMarket" class = "btn btn-primary admin" onclick = location.replace('index.php')> Market </button>
+                &nbsp; &nbsp;
+                <button id = "changePW" class = "btn btn-primary admin" data-toggle = "collapse" data-target = "#chagnePWDiv" aria-expanded="false"> CHange Password </button>
+                <div id = "changePWDiv" class = "changePW collapse">
+                    <form method = "post" action = "adminFuncs.php">
+                        <h4> Change you Password </h4>
+                        <input type = "password" placeholder = "Old Password" class = "btn" name = "oldPW"><br>
+                        <input type = "password" placeholder = "New Password" class = "btn" name = "newPW1"><br>
+                        <input type = "password" placeholder = "Verify New Password" class = "btn" name = "newPW2"> <br>
+                        <input type = "hideen" value = "changePW" name = "message"> <!-- USE THIS TO SEND THE MESSAGE TO THE PHP PAGE -->
+                        <button class = "btn btn-success" id = "submit">  Change Password </button>
+                    </form>
+                </div>
+
+            </div><br>
             <h3> <u> Instructions </u> </h3>
             <ul>
                 <li> 1.  Create a new market by choosing a date </li>

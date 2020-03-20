@@ -165,16 +165,15 @@
             return false; //person not found in the database 
         }
         else return true; //else, the ID already exists in the database
-
     }
 
     function loginPat($conn, $date, $id)
     {
-        var_dump($date, $id);
-        //GOAL: insert the two into the mid m:m table
+        // var_dump($date, $id);
+        //    GOAL    : insert the two into the mid m:m table
         $sql = "INSERT INTO Markets_has_Patrons (Markets_idByDate, Patrons_patID) VALUES (".$date.", ".$id.");";
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql inset query (insert to data base)
-        return;
+        return; // end function
     }
 ?>

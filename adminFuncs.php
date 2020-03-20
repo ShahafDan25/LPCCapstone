@@ -1,6 +1,6 @@
 <?php
 
-function connDB() //call to get connection
+    function connDB() //call to get connection
     {
         $username = "root";
         $password = "MMB3189@A";
@@ -16,31 +16,28 @@ function connDB() //call to get connection
         return $conn;
     }
 
-
-    // ======================================================== //
-    // ------------- ADMIN PAGE FUNCTIONS ----------------------//
-    // ======================================================== //
-
-    function populate_market_dropdown($conn)
+    if($_POST['message'] == "changePW")
     {
         $conn = connDB();
-        $sql = "SELECT * FROM Markets";
-        $stmt = $conn -> prepare($sql); //create the statment
-        $stmt -> execute(); //execute the statement
-        $stmt_existness_check = $conn ->prepare($sql);
-        $stmt_existness_check -> execute();
-        //check if ther are any markets stored in the database
-        if(!$stmt_existness_check -> fetch(PDO::FETCH_ASSOC))
+        //1. verify old password is correct
+        //2. verify new password 1 matches new password 2
+        //3. insert new password to database
+        $a = verifyOld($conn, $_POST['oldPW']);
+        if(!$a)
         {
-            echo '<option class="dropdown-item midbigger" href="#">No Markets to Show</option>';
-            return; //return if no markets have been found from the database
+            echo '<script>alert("Old Password Inserted is Incorrect");</script>';
+            echo '<script>location.replace("admin.php");</script>';
         }
-        //else statement
-        while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
-        { //new format: mm / dd / yyyy
-            echo '&nbsp;<option class = "dropdown-item midbigger" href="#">'.substr($row['idByDate'],4,2).' / '.substr($row['idByDate'],6,2).' / '.substr($row['idByDate'],0,4).'</option><br>';
+        $b = $_POST['newPW1'] == $_POST['newPW2'];
+        if(!$b)
+        {
+            echo '<script>alert("Passwords Do not match");</script>';
+            echo '<script>location.replace("admin.php");</script>';
         }
-        return; //justin casey
+        if($a && $b) changePWinDB($conn, $_POST['newPW1']);
+        echo '<script>alert("Password Changed Successfully!");</script>';
+        echo '<script>location.replace("admin.php");</script>';
+        return;
     }
 
     if($_POST['message'] == 'submitNewMarket')
@@ -85,6 +82,34 @@ function connDB() //call to get connection
         return;
     }
 
+    // ======================================================== //
+    // ------------- ADMIN PAGE FUNCTIONS ----------------------//
+    // ======================================================== //
+
+    function populate_market_dropdown($conn)
+    {
+        $conn = connDB();
+        $sql = "SELECT * FROM Markets";
+        $stmt = $conn -> prepare($sql); //create the statment
+        $stmt -> execute(); //execute the statement
+        $stmt_existness_check = $conn ->prepare($sql);
+        $stmt_existness_check -> execute();
+        //check if ther are any markets stored in the database
+        if(!$stmt_existness_check -> fetch(PDO::FETCH_ASSOC))
+        {
+            echo '<option class="dropdown-item midbigger" href="#">No Markets to Show</option>';
+            return; //return if no markets have been found from the database
+        }
+        //else statement
+        while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
+        { //new format: mm / dd / yyyy
+            echo '&nbsp;<option class = "dropdown-item midbigger" href="#">'.substr($row['idByDate'],4,2).' / '.substr($row['idByDate'],6,2).' / '.substr($row['idByDate'],0,4).'</option><br>';
+        }
+        return; //justin casey
+    }
+
+    
+
     function generate_report($conn)
     {
         $conn; //connection is already passed // Do something with it
@@ -107,6 +132,17 @@ function connDB() //call to get connection
         $conn->exec($sql); //execute the sql update query
         echo '<script> location.replace("admin.php") </script>'; //change location
         //header("Location: admin.php"); //redirect to the main index.php page
+    }
+
+    function verifyOld($conn, $oldPW)
+    {
+        $sql = "SELECT passwords from AdminPW";
+        $stmt = $conn -> prepare($sql_existence); //create the statment
+        $stmt -> execute(); //execute the statement
+        $row = $stmt -> fetch(PDO::FETCH_ASSOC);
+        $oldPWfromDB = $row['passwords'];
+        if ($oldPW == $oldPWfromDB) return true;
+        else return false;
     }
     //IDEA: ADD LATER CHANGE PASSWORD OPTION
 ?>

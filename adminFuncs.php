@@ -11,6 +11,7 @@
     </body>
 </html>
 <?php
+    $CHOSEN_DATE = ""; //MAKE THIS AN GLOBAL VARIABLE (I think this is kinda cheating, but whatever)
     //define('FPDF_FONTPATH','/home/www/font/');
     //require('fpdf_lib'); //include library for pdf generation
     function connDB() //call to get connection
@@ -190,6 +191,7 @@
     }
     function terminateActiveMarket($conn, $d)
     {
+        $CHOSEN_DATE = $d; //save the date :) in the global variable
         $conn = connDB();
         $sql = "UPDATE Markets SET active = 0 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
         $stmt = $conn -> prepare($sql);
@@ -210,14 +212,16 @@
     function getAttData($conn)
     {
 
-        $sql = "SELECT time_stamp FROM MarketLogins ORDER BY time_stamp";
-        $stmt = $conn -> prepare($sql); //create the statment
-        $stmt -> execute(); //execute the statement
-        $row = $stmt -> fetch(PDO::FETCH_ASSOC);
-        while($row = mysqli_fetch_array($result))
-        {
-            $chart_data .= "{ TIME:'".$row["time_stamp"]."', profit:".$row["profit"]."}, ";
-        }
+        ///SCRATCH WORK BELOW
+        $sql_count = "SELECT COUNT() FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = $CHOSEN_DATE)";
+        $stmt_count = $conn -> prepare($sql_count); //create the statment
+        $stmt_count -> execute(); //execute the statement
+        $total_patrons = $stmt -> fetch(PDO::FETCH_ASSOC);
+        
+       // while($row = mysqli_fetch_array($result))
+        //{
+        //    //$chart_data .= "{ TIME:'".$row["time_stamp"]."', profit:".$row["profit"]."}, ";
+        //}
         $chart_data = substr($chart_data, 0, -2); //for formatting purposes
     }
     

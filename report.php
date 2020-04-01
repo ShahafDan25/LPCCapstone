@@ -42,7 +42,13 @@
             $stmt = $conn -> prepare($sql); //create the statment
             $stmt -> execute(); //execute the statement
             $row = $stmt -> fetch(PDO::FETCH_ASSOC);
-            echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
+            if(len($row) == 0) // meaning no markets ae currently active, that means a market has been closed and the $CHOSEN_DATE global variable contains some data for sure
+            {
+                echo substr($CHOSEN_DATE, 4, 2)." - ".substr($CHOSEN_DATE, 6, 2)." - ".substr($CHOSEN_DATE, 0, 4);
+            }else
+            {
+                echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
+            }
         ?>
         </h4>
         <br><br>

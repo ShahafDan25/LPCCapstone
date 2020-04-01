@@ -118,22 +118,24 @@
                         <br>
             </p>
             <br>
-            <!-- GRAPH WILL BE INSERTED HERE --><br><br>
-            <div id = "att_graph"> </div>
+           
+            
         </div>
+         <!-- GRAPH WILL BE INSERTED HERE --><br><br>
+        <div id = "att_graph" class = "report_box_class"> </div>
     </body>
 
     <!-- ---------------------------------------------------------------- -->
     <script>
         //add morris.js code right here to populate the graph inside the "att_graph" html div block
         Morris.Bar({
-        element : 'att_grph', //referring to the graph's html div block
-        data:[<?php echo getAttData(connDB()); ?>], //get the variable from the adminFuncs.php file (already included)
-        xkey:'TIME',
-        ykeys:['att'],
-        labels:['Attendance'],
-        hideHover:'auto',
-        stacked:true
-});
+            element : 'att_grph', //referring to the graph's html div block
+            data:[<?php echo getAttData(connDB()); ?>], //get the variable from the adminFuncs.php file (already included)
+            xkey:'TIME',
+            ykeys:['att'],
+            labels:['Attendance'],
+            hideHover:'auto',
+            stacked:true
+        });
     </script>
 </html>

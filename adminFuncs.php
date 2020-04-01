@@ -79,12 +79,19 @@
                 echo '<script> location.replace("admin.php") </script>';
                 return; //end function
             }
-            $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date_format; //we use the period dot to concatinate
             $conn = connDB(); //justin casey
+
+            $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date_format; //we use the period dot to concatinate
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
             //var_dump($date_format);
-
+            //now: set opening time of the market (for graphing purposes)
+            date_default_timezone_set("America/Los_Angeles"); //set time zone
+            $starttime = date("H:i"); //only hours and minutes
+            $start_time_format = substr($time, 0, 2).substr($time, 3, 2);//take only numerical values, to create a flow of values in graphs
+            $sql = "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date_format; //we use the period dot to concatinate
+            $stmt = $conn -> prepare($sql);
+            $stmt -> execute();
             // BELOW: change all other markets to non active
             $sql = "UPDATE Markets SET active = 0 WHERE NOT idByDate = ".$date_format; //we use the period dot to concatinate
             $stmt = $conn -> prepare($sql);
@@ -187,6 +194,13 @@
         $sql = "UPDATE Markets SET active = 0 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
         $stmt = $conn -> prepare($sql);
         $stmt -> execute();
+        //also change closing time
+        date_default_timezone_set("America/Los_Angeles"); //set time zone
+        $closetime = date("H:i");
+        $close_time_digits = substr($time, 0, 2).substr($time, 3, 2);//take only numerical values, to create a flow of values in graphs
+        $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$d; //update password in the database, add secuirty features later
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
         echo '<script> location.replace("admin.php") </script>';
         return;
     }
@@ -195,13 +209,14 @@
 
     function getAttData($conn)
     {
+
         $sql = "SELECT time_stamp FROM MarketLogins ORDER BY time_stamp";
         $stmt = $conn -> prepare($sql); //create the statment
         $stmt -> execute(); //execute the statement
         $row = $stmt -> fetch(PDO::FETCH_ASSOC);
         while($row = mysqli_fetch_array($result))
         {
-            $chart_data .= "{ time:'".$row["year"]."', profit:".$row["profit"].", purchase:".$row["purchase"].", sale:".$row["sale"]."}, ";
+            $chart_data .= "{ TIME:'".$row["time_stamp"]."', profit:".$row["profit"]."}, ";
         }
         $chart_data = substr($chart_data, 0, -2); //for formatting purposes
     }

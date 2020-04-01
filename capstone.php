@@ -207,9 +207,12 @@
 
     function loginPat($conn, $date, $id)
     {
+        //first, make sure to get the current time (military time, since we will be using it to conduct a graph later)
+        date_default_timezone_set("America/Los_Angeles");
+        echo date("H:i");
         // var_dump($date, $id);
         //    GOAL    : insert the two into the mid m:m table
-        $sql = "INSERT INTO Markets_has_Patrons (Markets_idByDate, Patrons_patID) VALUES (".$date.", ".$id.");";
+        $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID) VALUES (".$date.", ".$id.");";
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql inset query (insert to data base)
         return; // end function

@@ -45,9 +45,13 @@
             if(len($row) == 0) // meaning no markets ae currently active, that means a market has been closed and the $CHOSEN_DATE global variable contains some data for sure
             {
                 echo substr($CHOSEN_DATE, 4, 2)." - ".substr($CHOSEN_DATE, 6, 2)." - ".substr($CHOSEN_DATE, 0, 4);
+                $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate =".$CHOSEN_DATE; //in case no markets are currently active
+                $data_temp = getAttData(connDB(), $CHOSEN_DATE);
             }else
             {
                 echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
+                $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = 1)";
+                $data_temp = getAttData(connDB(), $row['idByDate']);
             }
         ?>
         </h4>
@@ -72,7 +76,7 @@
                     <?php
                         $addline = ""; //just kinda declare the variable (idk if its necessary in php but bbsts)
                         //we already berify in previous pages that there exists a market that is
-                        $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = 1)";
+                        
                         $stmt_a = $conn -> prepare($sql_a); //create the statment
                         $stmt_a -> execute(); //execute the statement
                         $totalPeople = 0;
@@ -136,7 +140,7 @@
         //add morris.js code right here to populate the graph inside the "att_graph" html div block
         Morris.Bar({
             element : 'att_grph', //referring to the graph's html div block
-            data:[<?php echo getAttData(connDB()); ?>], //get the variable from the adminFuncs.php file (already included)
+            data:[<?php echo $data_temp; ?>], //get the variable from the adminFuncs.php file (already included)
             xkey:'TIME',
             ykeys:['att'],
             labels:['Attendance'],

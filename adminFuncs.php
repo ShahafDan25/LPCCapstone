@@ -209,20 +209,25 @@
     //IDEA: ADD LATER CHANGE PASSWORD OPTION --done
     //IDEA: add IP address, hashing, etc. (seurity features) later
 
-    function getAttData($conn)
+    function getAttData($conn, $d)
     {
+        $sql_times = "SELECT starttime, closetime FROM Markeys WHERE idByDate = ".$d;
+        $stmt_times = $conn -> prepare($sql_times);
+        $stmt_times -> execute();
+        $times = $stmt_times -> fetch(PDO::FETCH_ASSOC);
+        //first find hours:
+        $hours = intval(subtr($times,0,2)) - inval(substr($times, 0, 2));
+        $reps = ((intavl($times['starttime']) - intval($times['closetime'])) % 5) - $hours*8;
 
-        ///SCRATCH WORK BELOW
-        $sql_count = "SELECT COUNT() FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = $CHOSEN_DATE)";
-        $stmt_count = $conn -> prepare($sql_count); //create the statment
-        $stmt_count -> execute(); //execute the statement
-        $total_patrons = $stmt -> fetch(PDO::FETCH_ASSOC);
+        //now number of rep repsents the number of 5 minute inetrvals from the imte the market was openeed, to the time it was closed
+        for($x = 0; $x < $reps; $x++)
+        {
+            $chart_data .= "{ TIME:'".$row["time_stamp"]."', profit:".$row["profit"]."}, ";
+        }
         
-       // while($row = mysqli_fetch_array($result))
-        //{
-        //    //$chart_data .= "{ TIME:'".$row["time_stamp"]."', profit:".$row["profit"]."}, ";
-        //}
         $chart_data = substr($chart_data, 0, -2); //for formatting purposes
+        //we want to return the data to populate the graph with, hence:
+        return $chart_data;
     }
     
 ?>

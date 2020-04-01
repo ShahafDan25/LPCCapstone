@@ -222,7 +222,10 @@
         //now number of rep repsents the number of 5 minute inetrvals from the imte the market was openeed, to the time it was closed
         for($x = 0; $x < $reps; $x++)
         {
-            $chart_data .= "{ TIME:'".$row["time_stamp"]."', profit:".$row["profit"]."}, ";
+            $current_lowtime_limit = intval($times['starttime']) + 5*$x;
+            $current_hightime_limit = "";
+            $sql = "SELECT COUNT(Patron_patID) FROM MarketLogins WHERE (Market_idByDate = ".$d.")";
+            $chart_data .= "{ TIME:'".$row["time_stamp"]."', amount:".$row["profit"]."}, ";
         }
         
         $chart_data = substr($chart_data, 0, -2); //for formatting purposes

@@ -193,4 +193,17 @@
     //IDEA: ADD LATER CHANGE PASSWORD OPTION --done
     //IDEA: add IP address, hashing, etc. (seurity features) later
 
+    function getAttData($conn)
+    {
+        $sql = "SELECT time_stamp FROM MarketLogins ORDER BY time_stamp";
+        $stmt = $conn -> prepare($sql); //create the statment
+        $stmt -> execute(); //execute the statement
+        $row = $stmt -> fetch(PDO::FETCH_ASSOC);
+        while($row = mysqli_fetch_array($result))
+        {
+            $chart_data .= "{ time:'".$row["year"]."', profit:".$row["profit"].", purchase:".$row["purchase"].", sale:".$row["sale"]."}, ";
+        }
+        $chart_data = substr($chart_data, 0, -2); //for formatting purposes
+    }
+    
 ?>

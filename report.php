@@ -23,6 +23,13 @@
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="./The Market_files/captsone.js"></script>
+
+        <!-- MORRIS.JS (for graphing utilities from PHP data) LINKS -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+ 
     </head>
 
     <!-- ---------------------------------------------------------------- -->
@@ -59,7 +66,7 @@
                     <?php
                         $addline = ""; //just kinda declare the variable (idk if its necessary in php but bbsts)
                         //we already berify in previous pages that there exists a market that is
-                        $sql_a = "SELECT Patrons_patID FROM Markets_has_Patrons WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = 1)";
+                        $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = 1)";
                         $stmt_a = $conn -> prepare($sql_a); //create the statment
                         $stmt_a -> execute(); //execute the statement
                         $totalPeople = 0;
@@ -111,11 +118,22 @@
                         <br>
             </p>
             <br>
+            <!-- GRAPH WILL BE INSERTED HERE --><br><br>
+            <div id = "att_graph"> </div>
         </div>
     </body>
 
     <!-- ---------------------------------------------------------------- -->
     <script>
-        //add some javascript code here later (for angular JS specifically)
+        //add morris.js code right here to populate the graph inside the "att_graph" html div block
+        Morris.Bar({
+        element : 'att_grph', //referring to the graph's html div block
+        data:[<?php echo getAttData(connDB()); ?>], //get the variable from the adminFuncs.php file (already included)
+        xkey:'TIME',
+        ykeys:['att'],
+        labels:['Attendance'],
+        hideHover:'auto',
+        stacked:true
+});
     </script>
 </html>

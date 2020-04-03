@@ -229,24 +229,25 @@
         //now number of rep repsents the number of 5 minute inetrvals from the imte the market was openeed, to the time it was closed
         while(($interval + 10) < $ct)
         {
-            $interval_b = $interval + 10;
-            $sql = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp > ".$interval.";"; 
             //one condition for it to work:
             if($interval % 100 == 60) {$interval += 40;} // go to the next hour
+            $interval_b = $interval + 10; // follow up build up
 
-            $current_lowtime_limit = intval($times['starttime']) + 5*$x;
-            $current_hightime_limit = "";
-            $sql_i = "SELECT COUNT(Patron_patID) FROM MarketLogins WHERE (Market_idByDate = ".$d.")";
+            $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp > ".$interval.";"; 
             $stmt_i = $conn -> prepare($sql_i);
             $stmt_i -> execute();
-            $amount = $stmt_times -> fetch(PDO::FETCH_ASSOC);
+            $amount = $stmt_i -> fetch(PDO::FETCH_ASSOC);
             $chart_data .= ", {TIME: ".$interval.", AMOUNT: ".$amount."}";
             $interval = $interval_b;
             $interval_b += 10;
         }
         //add the last data piece
-       
-
+        $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp > ".$interval.";"; 
+        $stmt_i_b= $conn -> prepare($sql_i_b);
+        $stmt_i_b -> execute();
+        $amount = $stmt_i_b -> fetch(PDO::FETCH_ASSOC);
+        $chart_data .= ", {TIME: ".$interval.", AMOUNT: ".$amount."}";
+        //return final string (data to graph)
         return $chart_data;
     }
     

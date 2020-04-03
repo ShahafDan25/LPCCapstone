@@ -176,7 +176,7 @@
         $stmt -> execute();
         return;
     }
-    function generate_report($conn)
+    function generate_report($conn) //create a pdf later
     {
         #$pdf = new FPDF(); //generate a new pdf
         #$pdf -> AddPage(); //add page
@@ -215,21 +215,38 @@
         $stmt_times = $conn -> prepare($sql_times);
         $stmt_times -> execute();
         $times = $stmt_times -> fetch(PDO::FETCH_ASSOC);
-        //first find hours:
-        $hours = intval(subtr($times,0,2)) - inval(substr($times, 0, 2));
-        $reps = ((intavl($times['starttime']) - intval($times['closetime'])) % 5) - $hours*8;
+        $st = $times['starttime']; //market opening time
+        $ct = $times['closetime']; //market closing time
 
+
+        $interval = $st + (10 - ($st%1000)); //formula just to get the first interval
+        $sql_amount_a = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp < ".($interval).";";
+        $stmt_amount_a = $conn -> prepare($sql_amount_a);
+        $stmt_amount_a -> execute();
+        $first_amount = $stmt_amount_a -> fetch(PDO::FETCH_ASSOC);
+        $chart_data = "{ TIME:'".$st."', AMOUNT:".$first_amount."}";
+        if($interval % 100 == 60) {$interval += 40;} // go to the next hour
         //now number of rep repsents the number of 5 minute inetrvals from the imte the market was openeed, to the time it was closed
-        for($x = 0; $x < $reps; $x++)
+        while(($interval + 10) < $ct)
         {
+            $interval_b = $interval + 10;
+            $sql = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp > ".$interval.";"; 
+            //one condition for it to work:
+            if($interval % 100 == 60) {$interval += 40;} // go to the next hour
+
             $current_lowtime_limit = intval($times['starttime']) + 5*$x;
             $current_hightime_limit = "";
-            $sql = "SELECT COUNT(Patron_patID) FROM MarketLogins WHERE (Market_idByDate = ".$d.")";
-            $chart_data .= "{ TIME:'".$row["time_stamp"]."', amount:".$row["profit"]."}, ";
+            $sql_i = "SELECT COUNT(Patron_patID) FROM MarketLogins WHERE (Market_idByDate = ".$d.")";
+            $stmt_i = $conn -> prepare($sql_i);
+            $stmt_i -> execute();
+            $amount = $stmt_times -> fetch(PDO::FETCH_ASSOC);
+            $chart_data .= ", {TIME: ".$interval.", AMOUNT: ".$amount."}";
+            $interval = $interval_b;
+            $interval_b += 10;
         }
-        
-        $chart_data = substr($chart_data, 0, -2); //for formatting purposes
-        //we want to return the data to populate the graph with, hence:
+        //add the last data piece
+       
+
         return $chart_data;
     }
     

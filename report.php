@@ -142,7 +142,7 @@
             element : 'att_grph', //referring to the graph's html div block
             data:[<?php echo $data_temp; ?>], //get the variable from the adminFuncs.php file (already included)
             xkey:'TIME',
-            ykeys:['att'],
+            ykeys:['AMOUNT'],
             labels:['Attendance'],
             hideHover:'auto',
             stacked:true

@@ -126,10 +126,10 @@
         </div>
          <!-- GRAPH WILL BE INSERTED HERE --><br><br>
          <h3> Attendance Graph </h3>
-        <div id = "att_graph" class = "report_box_class tryheight"> 
- 
-
+         <div class = "report_box_class">
+         <div id = "chart"></div>
         </div>
+        
         <br><br>
     </body>
 
@@ -137,16 +137,13 @@
     <script>
         //add morris.js code right here to populate the graph inside the "att_graph" html div block
         Morris.Bar({
-            element : 'att_graph', //referring to the graph's html div block
+            element : 'chart', //referring to the graph's html div block
             data:[<?php echo $data_temp;?>], //get the variable from the adminFuncs.php file (already included)
             xkey:'TIME',
-            ykeys:'AMOUNT',
-            labels:'Attendance',
+            ykeys:['AMOUNT'],
+            labels:['Attendance'],
             hideHover:'auto',
-            stacked:true,
-            xmin: '0030',
-            xLabels: "10min"
-
+            stacked:true
         });
     </script>
 </html>

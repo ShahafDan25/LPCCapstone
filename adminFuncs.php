@@ -234,7 +234,7 @@
         $stmt_amount_a = $conn -> query($sql_amount_a);
         //$stmt_amount_a -> execute();
         $first_amount = $stmt_amount_a -> fetchColumn();
-        $chart_data = "{TIME:'".$sti."',AMOUNT:".$first_amount[0]."}";
+        $chart_data = "{TIME:'".$sti."',AMOUNT:'".$first_amount."'}";
         if($interval % 100 == 60) {$interval += 40;} // go to the next hour
         //now number of rep repsents the number of 5 minute inetrvals from the imte the market was openeed, to the time it was closed
         while(($interval + 10) < intval($ct))
@@ -247,7 +247,7 @@
             $stmt_i = $conn -> query($sql_i);
             //$stmt_i -> execute();
             $amount = $stmt_i -> fetchColumn();
-            $chart_data .= ", {TIME:'".$interval."',AMOUNT:".$amount."}";
+            $chart_data .= ", {TIME:'".$interval."',AMOUNT:'".$amount."'}";
             $interval = $interval_b;
             $interval_b += 10;
         }
@@ -256,7 +256,7 @@
         $stmt_i_b= $conn -> query($sql_i_b);
         //$stmt_i_b -> execute();
         $amount = $stmt_i_b -> fetchColumn();
-        $chart_data .= ", {TIME:'".$interval."',AMOUNT:".$amount."}";
+        $chart_data .= ", {TIME:'".$interval."',AMOUNT:'".$amount."'}";
         //return final string (data to graph)
         return $chart_data;
     }

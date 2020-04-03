@@ -34,7 +34,8 @@
 
     <!-- ---------------------------------------------------------------- -->
     <body class = "body_report">
-    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
+    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button><button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
+
         <h1> MARKET REPORT </h1> <!-- PHP: ADD DATE LATER -->
         <h4>
         <?php

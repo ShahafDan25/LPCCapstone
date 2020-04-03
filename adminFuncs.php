@@ -149,7 +149,7 @@
             echo '<script> location.replace("admin.php") </script>';
             return; //this market already exists in the data base
         }
-        $sql = "INSERT INTO Markets (idByDate, active) VALUES (".$date.", 0);"; //0 = not active, 1 = active (tiny int sserving as boolean)
+        $sql = "INSERT INTO Markets (idByDate, active, reported) VALUES (".$date.", 0, 0);"; //0 = not active, 1 = active (tiny int sserving as boolean)
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
         echo '<script> location.replace("admin.php") </script>'; //change location

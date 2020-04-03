@@ -215,10 +215,21 @@
         $time_digits = substr($time, 0, 2).substr($time, 3, 2);//take only numerical values, to create a flow of values in graphs
         // var_dump($date, $id);
         //    GOAL    : insert the two into the mid m:m table
+
+        //first: check if already signed in
+        $sql = "SELECT Patron_patID FROM MarketLogins WHERE patID = ".$id." AND idByDate = ".$date.";";
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute(); ///execute the query to the database
+        if($stmt->fetch(PDO::FETCH_ASSOC)) //meaning if not results have been found in the database
+        {
+            echo '<script> alert("You are already logged in"); </script>';
+            return; //person not found in the database 
+        }
         // NOTE: time stamp is a string (varchar of 45 characters)
         $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES (".$date.", ".$id."., '".$time_digits."');";
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql inset query (insert to data base)
+        echo '<script>alert("WELCOME TO THE MARKET");</script>';
         return; // end function
     }
 ?>

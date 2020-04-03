@@ -33,7 +33,7 @@
     </head>
 
     <!-- ---------------------------------------------------------------- -->
-    <body class = "body">
+    <body class = "body_report">
     <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
         <h1> MARKET REPORT </h1> <!-- PHP: ADD DATE LATER -->
         <h4>
@@ -44,6 +44,7 @@
             $row = $stmt -> fetch(PDO::FETCH_ASSOC);
             echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
             $data_temp = getAttData(connDB(), $row['idByDate']);
+
         ?>
         </h4>
         <br><br>
@@ -67,7 +68,7 @@
                     <?php
                         $addline = ""; //just kinda declare the variable (idk if its necessary in php but bbsts)
                         //we already berify in previous pages that there exists a market that is
-                        
+                        $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE reported = 1)";
                         $stmt_a = $conn -> prepare($sql_a); //create the statment
                         $stmt_a -> execute(); //execute the statement
                         $totalPeople = 0;
@@ -123,18 +124,26 @@
             
         </div>
          <!-- GRAPH WILL BE INSERTED HERE --><br><br>
-        <div id = "att_graph" class = "report_box_class"> </div>
+         <h3> Attendance Graph </h3>
+        <div id = "att_graph" class = "report_box_class tryhieght"> 
+            <br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br>
+
+        </div>
+        <br><br>
     </body>
 
     <!-- ---------------------------------------------------------------- -->
     <script>
         //add morris.js code right here to populate the graph inside the "att_graph" html div block
         Morris.Bar({
-            element : 'att_grph', //referring to the graph's html div block
+            element : 'att_graph', //referring to the graph's html div block
             data:[<?php echo $data_temp; ?>], //get the variable from the adminFuncs.php file (already included)
             xkey:'TIME',
-            ykeys:['AMOUNT'],
-            labels:['Attendance'],
+            ykeys:'AMOUNT',
+            labels:'Attendance',
             hideHover:'auto',
             stacked:true
         });

@@ -248,7 +248,7 @@
             $stmt_i = $conn -> prepare($sql_i);
             $stmt_i -> execute();
             $amount = $stmt_i -> fetch(PDO::FETCH_ASSOC);
-            $chart_data .= ", {TIME: ".$interval.", AMOUNT: ".$amount."}";
+            $chart_data .= ", { TIME:'".$interval."', AMOUNT:".$amount."}";
             $interval = $interval_b;
             $interval_b += 10;
         }
@@ -257,7 +257,7 @@
         $stmt_i_b= $conn -> prepare($sql_i_b);
         $stmt_i_b -> execute();
         $amount = $stmt_i_b -> fetch(PDO::FETCH_ASSOC);
-        $chart_data .= ", {TIME: ".$interval.", AMOUNT: ".$amount."}";
+        $chart_data .= ", { TIME:'".$interval."', AMOUNT:".$amount."}";
         //return final string (data to graph)
         return $chart_data;
     }

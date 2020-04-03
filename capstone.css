@@ -10,6 +10,14 @@
     background-color: white !important;
 
 }
+.tryheight
+{
+    height: 100px !important;
+}
+.body_report
+{
+    padding: 5% !important;
+}
 /* ------------ CODE FOR INDEX [REGISTRATION] PAGE -------------- */
 .ddOption
 {
@@ -105,7 +113,7 @@
 {
     margin-top: 2%;
 }
-.body
+.body, .body_report
 {
     text-align: center;
     background-image: linear-gradient(  rgb(235, 154, 154), rgb(207, 73, 73)) !important;

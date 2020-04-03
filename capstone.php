@@ -219,13 +219,6 @@
         $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES (".$date.", ".$id."., '".$time_digits."');";
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql inset query (insert to data base)
-        // //next : update counter of current flux
-        // $sql_counter = "SELECT Counter FROM GraphCounter";
-        // $stmt_counter = $conn -> prepare($sql_counter);
-        // $stmt_counter -> execute(); ///execute the query to the database
-        // $counter = $stmt->fetch(PDO::FETCH_ASSOC); //only one variable, so it is not fetched out as an array, right?
-        // $sql_counter++; //incerase value by one for existing counter value
-        // $sql_counter_b = "UPDATE GraphCounter SET Counter"
         return; // end function
     }
 ?>

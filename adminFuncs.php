@@ -11,7 +11,6 @@
     </body>
 </html>
 <?php
-    $CHOSEN_DATE = ""; //MAKE THIS AN GLOBAL VARIABLE (I think this is kinda cheating, but whatever)
     //define('FPDF_FONTPATH','/home/www/font/');
     //require('fpdf_lib'); //include library for pdf generation
     function connDB() //call to get connection
@@ -89,10 +88,10 @@
             //now: set opening time of the market (for graphing purposes)
             date_default_timezone_set("America/Los_Angeles"); //set time zone
             $starttime = date("H:i"); //only hours and minutes
-            $start_time_format = substr($time, 0, 2).substr($time, 3, 2);//take only numerical values, to create a flow of values in graphs
-            $sql = "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date_format; //we use the period dot to concatinate
-            $stmt = $conn -> prepare($sql);
-            $stmt -> execute();
+            $start_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);//take only numerical values, to create a flow of values in graphs
+            $sql_a = "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date_format; //we use the period dot to concatinate
+            $stmt_a = $conn -> prepare($sql_a);
+            $stmt_a -> execute();
             // BELOW: change all other markets to non active
             $sql = "UPDATE Markets SET active = 0 WHERE NOT idByDate = ".$date_format; //we use the period dot to concatinate
             $stmt = $conn -> prepare($sql);
@@ -101,7 +100,6 @@
         elseif($_POST['invokeOrReport'] == "report")//report
         {
             generate_report($conn, $date_format);
-
         }
         elseif($_POST['invokeOrReport'] == "terminate")
         {
@@ -176,8 +174,21 @@
         $stmt -> execute();
         return;
     }
-    function generate_report($conn) //create a pdf later
+    function generate_report($conn, $d) //create a pdf later
     {
+        $conn = connDB();
+        //selected which market to report
+        $sql = "UPDATE Markets SET reported = 1 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
+
+        //select which markets not to report
+        $sql = "UPDATE Markets SET reported = 0 WHERE NOT idByDate = ".$d; //update password in the database, add secuirty features later
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
+
+
+        //below if pdf generation code that did not work
         #$pdf = new FPDF(); //generate a new pdf
         #$pdf -> AddPage(); //add page
         #$pdf ->SetFont('Arial', 'B', 16); //Font: arial. Bolden. size 16
@@ -199,7 +210,7 @@
         //also change closing time
         date_default_timezone_set("America/Los_Angeles"); //set time zone
         $closetime = date("H:i");
-        $close_time_digits = substr($time, 0, 2).substr($time, 3, 2);//take only numerical values, to create a flow of values in graphs
+        $close_time_digits = substr($closetime, 0, 2).substr($closetime, 3, 2);//take only numerical values, to create a flow of values in graphs
         $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$d; //update password in the database, add secuirty features later
         $stmt = $conn -> prepare($sql);
         $stmt -> execute();
@@ -233,7 +244,7 @@
             if($interval % 100 == 60) {$interval += 40;} // go to the next hour
             $interval_b = $interval + 10; // follow up build up
 
-            $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp > ".$interval.";"; 
+            $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp >= ".$interval.";"; 
             $stmt_i = $conn -> prepare($sql_i);
             $stmt_i -> execute();
             $amount = $stmt_i -> fetch(PDO::FETCH_ASSOC);
@@ -242,7 +253,7 @@
             $interval_b += 10;
         }
         //add the last data piece
-        $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp > ".$interval.";"; 
+        $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval.";"; 
         $stmt_i_b= $conn -> prepare($sql_i_b);
         $stmt_i_b -> execute();
         $amount = $stmt_i_b -> fetch(PDO::FETCH_ASSOC);

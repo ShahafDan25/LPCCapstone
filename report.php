@@ -38,21 +38,12 @@
         <h1> MARKET REPORT </h1> <!-- PHP: ADD DATE LATER -->
         <h4>
         <?php
-            $sql = "SELECT idByDate FROM Markets WHERE active = 1"; //add the date pf the marlet of which we generate the report
+            $sql = "SELECT idByDate FROM Markets WHERE reported = 1"; //add the date pf the marlet of which we generate the report
             $stmt = $conn -> prepare($sql); //create the statment
             $stmt -> execute(); //execute the statement
             $row = $stmt -> fetch(PDO::FETCH_ASSOC);
-            if(len($row) == 0) // meaning no markets ae currently active, that means a market has been closed and the $CHOSEN_DATE global variable contains some data for sure
-            {
-                echo substr($CHOSEN_DATE, 4, 2)." - ".substr($CHOSEN_DATE, 6, 2)." - ".substr($CHOSEN_DATE, 0, 4);
-                $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate =".$CHOSEN_DATE; //in case no markets are currently active
-                $data_temp = getAttData(connDB(), $CHOSEN_DATE);
-            }else
-            {
-                echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
-                $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = 1)";
-                $data_temp = getAttData(connDB(), $row['idByDate']);
-            }
+            echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
+            $data_temp = getAttData(connDB(), $row['idByDate']);
         ?>
         </h4>
         <br><br>

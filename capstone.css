@@ -2,13 +2,12 @@
 .report_box_class
 {
     text-align: center !important;
-    border: 2px solid black !important;
+    border: 25px solid black !important;
     border-radius: 2px !important;
     padding: 1% !important;
     margin-left: 2% !important;
     margin-right: 2% !important;
     background-color: white !important;
-    height: 100% !important;
 
 }
 .testheight

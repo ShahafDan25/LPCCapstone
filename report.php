@@ -34,7 +34,8 @@
 
     <!-- ---------------------------------------------------------------- -->
     <body class = "body_report">
-    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button><button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
+    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
+    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
 
         <h1> MARKET REPORT </h1> <!-- PHP: ADD DATE LATER -->
         <h4>
@@ -106,7 +107,7 @@
                     ?>
                 </tbody>
             </table>
-            <br><br>
+            
             <p class = "totalInfo"> 
                         <strong><u> Total Attendees</u></strong>: 
                         <?php echo $totalPeople ?>
@@ -125,10 +126,10 @@
            
             
         </div>
-         <!-- GRAPH WILL BE INSERTED HERE --><br><br>
-         <h3> Attendance Graph </h3>
-         <div class = "report_box_class">
-         <div id = "chart"></div>
+        <!-- GRAPH WILL BE INSERTED HERE --><br><br>
+        <h3> Attendance Graph </h3>
+        <div class = "report_box_class">
+            <div id = "chart"></div>
         </div>
         
         <br><br>

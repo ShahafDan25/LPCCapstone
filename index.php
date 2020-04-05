@@ -170,10 +170,10 @@
                             <input type = "radio" name = "promotion" value = "FriendsAndFamily"> Friends / Family
                         </label> 
                         <label class="btn btn-info active">
-                            <input type = "radio" name = "promotion" value = "FriendsAndFamily"> Community
+                            <input type = "radio" name = "promotion" value = "Community"> Community
                         </label> 
                         <label class="btn btn-info active">
-                            <input type = "radio" name = "promotion" value = "FriendsAndFamily"> Other
+                            <input type = "radio" name = "promotion" value = "Other"> Other
                         </label> 
                     </div>
                 </div>

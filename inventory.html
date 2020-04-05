@@ -25,6 +25,32 @@
 
     <body class = "body">
         <h1> MARKET'S INVENTORY </h1>
+        <br>
+        <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#edit_inv" aria-expanded="false" id = "submit"> EDIT INVENTORY </button><br>
+        <div class = "inv_box_class collapse" id = "edit_inv">
+            <h4><u> EDIT INVENTORY </u></h4>
+            <br>
+            <input type = "text" name = "item_name" class = "inv_input" placeholder="Item Name">
+            <input type = "number" name = "item_number" class = "inv_input" placeholder="Quantity">
+            <button class = "btn btn-success inv_input_btn"> Insert </button>
+        </div>
+        <br><br>
+        <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#view_inv" aria-expanded="false" id = "submit"> VIEW INVENTORY </button><br>
+        <div class = "inv_box_class collapse" id = "view_inv">
+            <h4><u> VIEW INVENTORY </u></h4>
+            <br>
+            <table class = "table inv_table">
+                <thead>
+                    <tr>
+                        <th scope = "col" class = "inv_label"> ITEM NAME </th>
+                        <th scope = "col" class = "inv_label"> QUANTITY </th>
+                        <th scope = "col" class = "inv_edit_btn pull-left"> ~ EDIT ~ </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </body>
 
 </html>

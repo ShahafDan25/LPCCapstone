@@ -1,9 +1,51 @@
+
+/* ------------ CODE FOR REPORT PAGE -------------- */
+.inv_edit_btn
+{
+    /*width: 20% !important;*/
+}
+.inv_label
+{
+    width: 40% !important;
+}
+.inv_box_class
+{
+    text-align: center !important;
+    border: 1.5px solid black !important;
+    border-radius: 4px !important;
+    margin-left: 2% !important;
+    margin-right: 2% !important;
+    background-color: rgba(238, 229, 229, 0.842) !important;
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+    padding-top: 1% !important;
+    padding-bottom: 1% !important;
+    margin-top: 2% !important;
+
+}
+.inv_input
+{
+    height: 5% !important;
+    border: 1px solid rgba(50, 50, 85, 0.692) !important;
+    border-radius: 4px !important;
+    padding-right: 1% !important;
+    padding-left: 1% !important;
+    margin-right: 3% !important;
+    width: 20% !important;
+}
+.inv_table
+{
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+
+}
+.int_input_btn {height: 4% !important; padding: 1% !important; margin-bottom: 50% !important;}
 /* ------------ CODE FOR REPORT PAGE -------------- */
 .report_box_class
 {
     text-align: center !important;
-    border: 25px solid black !important;
-    border-radius: 2px !important;
+    border: 2px solid black !important;
+    border-radius: 5px !important;
     padding: 1% !important;
     margin-left: 2% !important;
     margin-right: 2% !important;

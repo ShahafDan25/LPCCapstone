@@ -106,17 +106,23 @@ aria-labelledby="dropdownMenuButton"
                     </p><br><br>
                     <p>
                     <label class = "pull-left radioBtn">
-                        <input id = "reportRadio" name="invokeOrReport" value = "report" type="radio" />
-                        &nbsp;<span> Report</span>
+                        <input id = "reportRadio" name="invokeOrReport" value = "terminate" type="radio" />
+                        &nbsp;<span> Terminate</span>
                     </label>
                     </p> <br><br>
                     <p>
                     <label class = "pull-left radioBtn">
-                        <input id = "reportRadio" name="invokeOrReport" value = "terminate" type="radio" />
-                        &nbsp;<span> Terminate</span>
+                        <input id = "reportRadio" name="invokeOrReport" value = "report" type="radio" />
+                        &nbsp;<span> Report</span>
                     </label>
                     </p>
                     <br><br>
+                    <p>
+                    <label class = "pull-left radioBtn">
+                        <input id = "reportRadio" name="invokeOrReport" value = "inventory" type="radio" />
+                        &nbsp;<span> Inventory</span>
+                    </label>
+                    </p><br><br>
                     <!-- END OF RADIO BUTTONS -->
                     <input id = "hiddenMessage" type="hidden" value = "invokeOrReport" name = "message">
                     <button class = "btn btn-success" id = "submit"> SUBMIT </button>

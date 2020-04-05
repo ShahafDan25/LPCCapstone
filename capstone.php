@@ -207,6 +207,7 @@
 
     function loginPat($conn, $date, $id)
     {
+        $conn = connDB();
         //first, make sure to get the current time (military time, since we will be using it to conduct a graph later)
         date_default_timezone_set("America/Los_Angeles");
         $time = date("H:i");
@@ -217,19 +218,24 @@
         //    GOAL    : insert the two into the mid m:m table
 
         //first: check if already signed in
-        $sql = "SELECT Patron_patID FROM MarketLogins WHERE patID = ".$id." AND idByDate = ".$date.";";
+        $sql = "SELECT time_stamp FROM MarketLogins WHERE Patrons_patID = ".$id." AND Markets_idByDate = ".$date.";";
         $stmt = $conn -> prepare($sql);
-        $stmt -> execute(); ///execute the query to the database
-        if($stmt->fetch(PDO::FETCH_ASSOC)) //meaning if not results have been found in the database
+        $stmt -> execute();
+        if(!$stmt->fetch(PDO::FETCH_ASSOC)) //meaning if not results have been found in the database
+        {
+            $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES (".$date.", ".$id."., '".$time_digits."');";
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $conn->exec($sql); //execute the sql inset query (insert to data base)
+            echo '<script>alert("WELCOME TO THE MARKET");</script>';
+            return;
+        }
+        else
         {
             echo '<script> alert("You are already logged in"); </script>';
             return; //person not found in the database 
         }
         // NOTE: time stamp is a string (varchar of 45 characters)
-        $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES (".$date.", ".$id."., '".$time_digits."');";
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $conn->exec($sql); //execute the sql inset query (insert to data base)
-        echo '<script>alert("WELCOME TO THE MARKET");</script>';
+       
         return; // end function
     }
 ?>

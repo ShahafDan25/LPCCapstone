@@ -230,7 +230,7 @@
 
         $sti = intval($st); //calculation purposes
         $interval = $sti + (10 - ($sti%10)); //formula just to get the first interval
-        $sql_amount_a = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp < ".($interval).";";
+        $sql_amount_a = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp < ".($interval)." AND Markets_idByDate = ".$d.";";
         $stmt_amount_a = $conn -> query($sql_amount_a);
         //$stmt_amount_a -> execute();
         $first_amount = $stmt_amount_a -> fetchColumn();
@@ -243,16 +243,18 @@
             if($interval % 100 == 60) {$interval += 40;} // go to the next hour
             $interval_b = $interval + 10; // follow up build up
 
-            $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp >= ".$interval.";"; 
+            $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
+            $stmt_amount_a = $conn -> query($sql_amount_a);
             $stmt_i = $conn -> query($sql_i);
             //$stmt_i -> execute();
             $amount = $stmt_i -> fetchColumn();
             $chart_data .= ", {TIME:'".$interval."',AMOUNT:'".$amount."'}";
             $interval = $interval_b;
-            $interval_b += 10;
+            // $interval_b += 10;
         }
         //add the last data piece
-        $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval.";"; 
+        $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
+        $stmt_amount_a = $conn -> query($sql_amount_a);
         $stmt_i_b= $conn -> query($sql_i_b);
         //$stmt_i_b -> execute();
         $amount = $stmt_i_b -> fetchColumn();

@@ -45,7 +45,9 @@
             $stmt -> execute(); //execute the statement
             $row = $stmt -> fetch(PDO::FETCH_ASSOC);
             echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
-
+            $d = $row['idByDate'];
+            $promGraphData = promGraphData(connDB(), $d);
+            $attGraphData = getAttData(connDB(), $d);
         ?>
         </h4>
         <br><br>
@@ -139,7 +141,7 @@
         <!-- GRAPH WILL BE INSERTED HERE --><br><br>
         <h3> Attendance Graph </h3>
         <div class = "report_box_class">
-            <div id = "attGraph"></div>
+            <div id = "chart"></div>
         </div>
         <br><br>
         <h3> Advertisement and Promotions </h3>
@@ -153,8 +155,8 @@
     <script>
         //add morris.js code right here to populate the graph inside the "att_graph" html div block
         Morris.Bar({
-            element : 'attGraph', //referring to the graph's html div block
-            data:[<?php echo getAttData(connDB(), $row['idByDate']); ?>], //get the variable from the adminFuncs.php file (already included)
+            element : 'chart', //referring to the graph's html div block
+            data:[<?php echo $attGraphData; ?>], //get the variable from the adminFuncs.php file (already included)
             xkey:'TIME',
             ykeys:['AMOUNT'],
             labels:['Attendance'],
@@ -163,8 +165,8 @@
         });
 
         Morris.Bar({
-            element : 'promGraph', 
-            data:[<?php echo promGraphData(connDB(), $row['idByDate']);?>], 
+            element: 'promGraph', 
+            data:[<?php echo $promGraphData;?>], 
             xkey:'METHOD',
             ykeys:['AMOUNT'],
             labels:['Impact'],

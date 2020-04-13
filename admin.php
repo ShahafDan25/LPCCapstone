@@ -1,7 +1,4 @@
-<?php
-    include "adminFuncs.php";
-    $conn = connDB();
-?>
+<?php include "adminFuncs.php"; ?>
 <html !DOCTYPE>
     <head>
         <title> Market - Admin </title>
@@ -86,7 +83,7 @@
                         <select class="btn midbigger browser-default custom-select"  name = "marketDate">
                             <option> Choose a market (by date) </option>
                           <?php
-                                echo populate_market_dropdown($conn); //pass the connection
+                                echo populate_market_dropdown(connDB());
                           ?>
                         </select>
                     </div> <!-- END OF DROPDOWN -->

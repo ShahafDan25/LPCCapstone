@@ -3,7 +3,6 @@
 <html !DOCTYPE>
     <head>
         <title> Market - Admin </title>
-        <!-- CSS HARDCODE FILE LINK -->
         <link rel="stylesheet" type="text/css" href="capstone.css">
     </head>
     <body class = "body">
@@ -13,8 +12,15 @@
     </body>
 </html>
 <?php
-    //define('FPDF_FONTPATH','/home/www/font/');
-    //require('fpdf_lib'); //include library for pdf generation
+/*
+c = connection
+d = date
+a = amount
+n = name
+s = satetment
+r = row / result
+*/
+
 
 //POSTS FOR INVENTORY
     if($_POST['message'] == "insertItem")
@@ -29,9 +35,6 @@
     if($_POST['message'] == "changePW")
     {
         $conn = connDB();
-        //1. verify old password is correct
-        //2. verify new password 1 matches new password 2
-        //3. insert new password to database
         $a = verifyOld($conn, $_POST['oldPW']);
         if(!$a)
         {
@@ -57,9 +60,7 @@
     {
         $date_format_d = $_POST['new_market_date'];
         $date_format_int = substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2);
-        //var_dump($date_format_int);
         newMarket(connDB(), $date_format_int);
-        //header("Location: admin.php"); //just gonna use javascript
     }
 
     if($_POST['message'] == 'invokeOrReport')
@@ -67,42 +68,45 @@
         
         $date = $_POST['marketDate'];
         $date_format = substr($date,10,4).substr($date,0,2).substr($date,5,2);
-        if($_POST['invokeOrReport'] == "invoke")//invoke
+        if($_POST['invokeOrReport'] == "invoke")
         {
             if($_POST['marketDate'] == "Choose a market (by date)" || $_POST['marketDate'] == "No Markets to Show")
             {
-            
                 echo '<script>alert("Please choose a date");</script>';
                 echo '<script> location.replace("admin.php") </script>';
-                return; //end function
+                return; 
             }
-            $conn = connDB(); //justin casey
+            $conn = connDB(); 
 
             $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date_format; //we use the period dot to concatinate
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
-            //var_dump($date_format);
-            //now: set opening time of the market (for graphing purposes)
-            date_default_timezone_set("America/Los_Angeles"); //set time zone
-            $starttime = date("H:i"); //only hours and minutes
+            date_default_timezone_set("America/Los_Angeles"); 
+            $starttime = date("H:i"); 
+
             $start_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);//take only numerical values, to create a flow of values in graphs
             $sql_a = "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date_format; //we use the period dot to concatinate
             $stmt_a = $conn -> prepare($sql_a);
             $stmt_a -> execute();
-            // BELOW: change all other markets to non active
+
             $sql = "UPDATE Markets SET active = 0 WHERE NOT idByDate = ".$date_format; //we use the period dot to concatinate
             $stmt = $conn -> prepare($sql);
             $stmt -> execute();
         }
-        elseif($_POST['invokeOrReport'] == "report")//report
+        elseif($_POST['invokeOrReport'] == "report")
         {
             generate_report($conn, $date_format);
         }
         elseif($_POST['invokeOrReport'] == "terminate")
         {
-            terminateActiveMarket($conn, $date_format); // that way we only allow one active market at a time
+            terminateActiveMarket($conn, $date_format); 
         }
-        echo '<script> location.replace("admin.php") </script>'; //instead of using header, we will use js to change window location
+        elseif($_POST['invokeOrReport'] == "inventory")
+        {
+            changeInventoryStatus($conn);
+        }
+
+        echo '<script> location.replace("admin.php") </script>'; 
         return;
     }
 
@@ -114,20 +118,19 @@
     {
         $conn = connDB();
         $sql = "SELECT * FROM Markets";
-        $stmt = $conn -> prepare($sql); //create the statment
-        $stmt -> execute(); //execute the statement
+        $stmt = $conn -> prepare($sql); 
+        $stmt -> execute();
         $stmt_existness_check = $conn ->prepare($sql);
         $stmt_existness_check -> execute();
         $active = "Closed";
-        //check if ther are any markets stored in the database
+
+
         if(!$stmt_existness_check -> fetch(PDO::FETCH_ASSOC))
         {
-            echo '<option class="dropdown-item midbigger" href="#">No Markets to Show</option>';
-            return; //return if no markets have been found from the database
+            return '<option class="dropdown-item midbigger" href="#">No Markets to Show</option>'; 
         }
-        //else statement
         while($row = $stmt -> fetch(PDO::FETCH_ASSOC))
-        { //new format: mm / dd / yyyy
+        { 
             if($row['active'] == 1) $active = "Active!";
             echo '&nbsp;<option class = "dropdown-item midbigger" href="#">'.substr($row['idByDate'],4,2).' / '.substr($row['idByDate'],6,2).' / '.substr($row['idByDate'],0,4).' - '.$active.'</option><br>';
         }
@@ -213,8 +216,6 @@
         echo '<script> location.replace("admin.php") </script>';
         return;
     }
-    //IDEA: ADD LATER CHANGE PASSWORD OPTION --done
-    //IDEA: add IP address, hashing, etc. (seurity features) later
 
     function getAttData($conn, $d)
     {
@@ -232,46 +233,47 @@
         //$stmt_amount_a -> execute();
         $first_amount = $stmt_amount_a -> fetchColumn();
         $chart_data = "{TIME:'".$sti."',AMOUNT:'".$first_amount."'}";
-        if($interval % 100 == 60) {$interval += 40;} // go to the next hour
-        //now number of rep repsents the number of 5 minute inetrvals from the imte the market was openeed, to the time it was closed
+        if($interval % 100 == 60) {$interval += 40;} 
         while(($interval + 10) < intval($ct))
         {
-            //one condition for it to work:
-            if($interval % 100 == 60) {$interval += 40;} // go to the next hour
-            $interval_b = $interval + 10; // follow up build up
+            
+            if($interval % 100 == 60) {$interval += 40;} 
+            $interval_b = $interval + 10; 
 
             $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
             $stmt_amount_a = $conn -> query($sql_amount_a);
             $stmt_i = $conn -> query($sql_i);
-            //$stmt_i -> execute();
+
             $amount = $stmt_i -> fetchColumn();
             $chart_data .= ", {TIME:'".$interval."',AMOUNT:'".$amount."'}";
             $interval = $interval_b;
-            // $interval_b += 10;
         }
-        //add the last data piece
         $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
         $stmt_amount_a = $conn -> query($sql_amount_a);
         $stmt_i_b= $conn -> query($sql_i_b);
-        //$stmt_i_b -> execute();
+
         $amount = $stmt_i_b -> fetchColumn();
         $chart_data .= ", {TIME:'".$interval."',AMOUNT:'".$amount."'}";
-        //return final string (data to graph)
+
         return $chart_data;
     }
     
-//CODE FOR INVENTORY FUNCTIONS
-    function insertItem($c, $n, $a) //corresponds to connection, name, amount
+
+    // ======================================================== //
+    // -------------- INVENTORY PAGE FUNCTIONS -----------------//
+    // ======================================================== //
+
+    function insertItem($c, $n, $a)
     {
-        //step 1) select the date from market with inventory = 1
-        //step 2) insert item to items, with fk being the date we just retrieved
+
+
         $sql = "SELECT idByDate FROM Markets WHERE inventory = 1";
-        $s = $c -> prepare($sql); //corresponds to statements
+        $s = $c -> prepare($sql); 
         $s -> execute(); 
-        $d = $stmt -> fetch(PDO::FETCH_ASSOC); //corresponds to date, should only return one object, instead of an array
-        $sql = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."', '".$a."'".$d.");"; //0 = not active, 1 = active (tiny int sserving as boolean)
+        $d = $stmt -> fetch(PDO::FETCH_ASSOC); 
+        $sql = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."', '".$a."'".$d.");"; 
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $conn->exec($sql); //execute the sql update query
+        $conn->exec($sql); 
         echo '<script> location.replace("inventory.php"); </script>';
         return;
     }
@@ -284,7 +286,7 @@
         $d = $s_date -> fetch(PDO::FETCH_ASSOC);
 
 
-        $tableItemData = ""; //initiate
+        $tableItemData = ""; 
         $sql = "SELECT Name, Amount FROM Items WHERE Markets_idByDate = ".$d;
         $s = $conn -> prepare($sql); 
         $s -> execute(); 

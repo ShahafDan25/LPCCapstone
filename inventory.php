@@ -52,7 +52,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php populateItemTable(connDB()); ?>
+                    <?php echo populateItemTable(connDB()); ?>
                 </tbody>
             </table>
         </div>

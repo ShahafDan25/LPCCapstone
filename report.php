@@ -45,7 +45,6 @@
             $stmt -> execute(); //execute the statement
             $row = $stmt -> fetch(PDO::FETCH_ASSOC);
             echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
-            $data_temp = getAttData(connDB(), $row['idByDate']);
 
         ?>
         </h4>
@@ -110,17 +109,28 @@
             
             <p class = "totalInfo"> 
                         <strong><u> Total Attendees</u></strong>: 
-                        <?php echo $totalPeople ?>
+                        <?php echo $totalPeople; ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;  <!--some formatting -->
                         <strong><u> Total Children (0 - 17)</u></strong>: 
-                        <?php echo $totalKids ?>
-                        <br>
+                        <?php echo $totalKids; ?>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
                         <strong><u> Total Adults (18 - 64)</u></strong>: 
-                        <?php echo $totalAdults ?>
+                        <?php echo $totalAdults; ?>
                         &nbsp; &nbsp;&nbsp;&nbsp;
                         <strong><u> Total Sernios (65 +)</u></strong>: 
-                        <?php echo $totalSeniors ?>
+                        <?php echo $totalSeniors; ?>
                         <br>
+                        <strong><u> Average Children (0 - 17)</u></strong>: 
+                        <?php echo round($totalKids/$totalPeople, 2); ?>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <strong><u>  Average Adults (18 - 64)</u></strong>: 
+                        <?php echo round($totalAdults/$totalPeople, 2); ?>
+                        &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <strong><u>  Average Sernios (65 +)</u></strong>: 
+                        <?php echo round($totalSeniors/$totalPeople, 2); ?>
+                        <br>
+                        * Avergae is per attendee
+
             </p>
             <br>
            
@@ -129,9 +139,13 @@
         <!-- GRAPH WILL BE INSERTED HERE --><br><br>
         <h3> Attendance Graph </h3>
         <div class = "report_box_class">
-            <div id = "chart"></div>
+            <div id = "attGraph"></div>
         </div>
-        
+        <br><br>
+        <h3> Advertisement and Promotions </h3>
+        <div class = "report_box_class">
+            <div id = "promGraph"></div>
+        </div>
         <br><br>
     </body>
 
@@ -139,11 +153,21 @@
     <script>
         //add morris.js code right here to populate the graph inside the "att_graph" html div block
         Morris.Bar({
-            element : 'chart', //referring to the graph's html div block
-            data:[<?php echo $data_temp;?>], //get the variable from the adminFuncs.php file (already included)
+            element : 'attGraph', //referring to the graph's html div block
+            data:[<?php echo getAttData(connDB(), $row['idByDate']); ?>], //get the variable from the adminFuncs.php file (already included)
             xkey:'TIME',
             ykeys:['AMOUNT'],
             labels:['Attendance'],
+            hideHover:'auto',
+            stacked:true
+        });
+
+        Morris.Bar({
+            element : 'promGraph', 
+            data:[<?php echo promGraphData(connDB(), $row['idByDate']);?>], 
+            xkey:'METHOD',
+            ykeys:['AMOUNT'],
+            labels:['Impact'],
             hideHover:'auto',
             stacked:true
         });

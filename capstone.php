@@ -145,7 +145,7 @@
     function populate_dropdown($conn)
     {
         $all_options = "";
-        $sql = "SELECT DISTINCT FirstName, LastName, patID FROM Patrons";
+        $sql = "SELECT DISTINCT FirstName, LastName, patID FROM Patrons ORDER BY FirstName";
         $stmt = $conn -> prepare($sql);
         $stmt -> execute(); ///execute the query to the database
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC))

@@ -25,7 +25,12 @@
     </head>
 
     <body class = "body">
-        <h1> MARKET'S INVENTORY </h1>
+    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
+    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
+    <br>    
+    <span style = "text-align:center!important;">
+            <h1 > MARKET'S INVENTORY </h1>
+        </span>
         <br>
         <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#edit_inv" aria-expanded="false" id = "submit"> EDIT INVENTORY </button><br>
         <div class = "inv_box_class collapse" id = "edit_inv">

@@ -82,13 +82,17 @@
                     <br> <!-- BEGIN LOGIN FORM -->
                     <form method = "post" action = "capstone.php">
                         <h4> Insert Your Market ID <i class="fa fa-chevron-down"></i> </h4>
-                        <input type = "text" class = "mandatory form-control" placeholder = "Market ID" name = "patronID">
+                        <span style = "display: inline-block">
+                            <input type = "text" class = "mandatory form-control" placeholder = "Market ID" name = "patronID"> &nbsp;
+                            <button class = "btn btn-success" id = "retPatSubmission"> SUBMIT </button>
+                        </span>
                     <br>
                     
                     
                         <p> please look for your name from the dropdown below <br>  After finding your ID, please insert it in the box above </p>
                         <!-- DROP DOWN STARTS HERE -->
                         <!-- TAKE CARE OF THAT LATER... POST OR PULL? (What is the oppositve of a pull form?)-->
+                        
                         <div id="myDropdown" class="dropdown-content">
                         <input type="text" placeholder="Search..." id="myInput" onkeyup="filterFunction()">
                             <?php  
@@ -99,7 +103,7 @@
                     
                     <br>
                     <input type="hidden" value = "patronLogin" name = "message">
-                    <button class = "btn btn-success" id = "retPatSubmission"> SUBMIT </button>
+                    
                     </form> <!-- END OF LOGIN FORM -->
                 </div>
             </span>

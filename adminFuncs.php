@@ -27,10 +27,9 @@ r = row / result
 
     if($_POST['message'] == "insertItem")
     {
-        $conn = connDB();
         $itemName = $_POST['item_name'];
         $amount = $_POST['item_number'];
-        insertItem($conn, $itemName, $amonut);
+        insertItem(connDB(), $itemName, $amount);
     }
     
     if($_POST['message'] == "changePW")
@@ -96,15 +95,15 @@ r = row / result
         }
         elseif($_POST['invokeOrReport'] == "report")
         {
-            generate_report($conn, $date_format);
+            generate_report(connDB(), $date_format);
         }
         elseif($_POST['invokeOrReport'] == "terminate")
         {
-            terminateActiveMarket($conn, $date_format); 
+            terminateActiveMarket(connDB(), $date_format); 
         }
         elseif($_POST['invokeOrReport'] == "inventory")
         {
-            changeInventoryStatus($conn, $date_format);
+            changeInventoryStatus(connDB(), $date_format);
         }
 
         echo '<script> location.replace("admin.php") </script>'; 
@@ -259,6 +258,11 @@ r = row / result
         return $chart_data;
     }
     
+    function promGraphData($conn, $d)
+    {
+        
+        return;
+    }
 
     // ======================================================== //
     // -------------- INVENTORY PAGE FUNCTIONS -----------------//
@@ -266,15 +270,15 @@ r = row / result
 
     function insertItem($c, $n, $a)
     {
-
-
         $sql = "SELECT idByDate FROM Markets WHERE inventory = 1";
         $s = $c -> prepare($sql); 
         $s -> execute(); 
-        $d = $stmt -> fetch(PDO::FETCH_ASSOC); 
-        $sql = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."', '".$a."'".$d.");"; 
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $conn->exec($sql); 
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $d = $r['idByDate']; 
+
+        $sqlb = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."',".$a.",".$d.");"; 
+        $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c->exec($sqlb); 
         echo '<script> location.replace("inventory.php"); </script>';
         return;
     }
@@ -282,45 +286,50 @@ r = row / result
     function populateItemTable($c)
     {
         $sql_date = "SELECT idByDate FROM Markets WHERE inventory = 1";
-        $s_date = $c -> prepare($sql_d);
+        $s_date = $c -> prepare($sql_date);
         $s_date -> execute();
-        $d = $s_date -> fetch(PDO::FETCH_ASSOC);
-
+        $r = $s_date -> fetch(PDO::FETCH_ASSOC);
+        $d = $r['idByDate'];
 
         $tableItemData = ""; 
         $sql = "SELECT Name, Amount FROM Items WHERE Markets_idByDate = ".$d;
-        $s = $conn -> prepare($sql); 
-        $s -> execute(); 
 
-
-        $stmt_existness_check = $conn ->prepare($sql);
-        $stmt_existness_check -> execute();
-        if(!$stmt_existness_check -> fetch(PDO::FETCH_ASSOC))
+        $s_ec = $c -> prepare($sql); //ec = exitence check
+        $s_ec -> execute();
+        $r_ec = $s_ec -> fetch(PDO::FETCH_ASSOC);
+        if(count($r_ec) == 0)
         {
             return '<p> NO ITEMS TO DISPLAY AT THE MOMENT </p>';
         }
 
-        $buttonInsert = "<button class = 'btn btn-warning' id = 'editbtn'> EDIT <button>";
+        $buttonInsert = "<button class = 'btn btn-warning' id = 'editbtn'> EDIT </button>";
+        $s = $c -> prepare($sql); 
+        $s -> execute(); 
         while($r = $s -> fetch(PDO::FETCH_ASSOC))
         { 
             $tableItemData .= "<tr>";
-                $tableItemData.= "<td>".$r['Name']."</td>";
-                $tableItemData.= "<td>".$r['Amount']."</td>";
+                $tableItemData .= "<td>".$r['Name']."</td>";
+                $tableItemData .= "<td>".$r['Amount']."</td>";
+                $tableItemData .= "<td>".$buttonInsert."</td>";
             $tableItemData .= "</tr>";
         }
+       
         return $tableItemData;
     }
 
     function changeInventoryStatus($c, $d)
     {
-        $sql = "UPDATE Markets SET inventory = 0"; //update all
-        $s = $c -> prepare($sql);
-        $s -> execute();
-        
-
         $sql = "UPDATE Markets SET inventory = 1 WHERE idByDate = ".$d;
         $s = $c -> prepare($sql);
         $s -> execute();
+
+        
+        $sql = "UPDATE Markets SET inventory = 0 WHERE NOT idByDate = ".$d; //update all
+        $s = $c -> prepare($sql);
+        $s -> execute();
+
+        echo '<script>location.replace("inventory.php");</script>';
+
         return;
     }
 ?>

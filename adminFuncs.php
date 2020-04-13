@@ -21,8 +21,10 @@ s = satetment
 r = row / result
 */
 
+    // ======================================================== //
+    // -------------------- POSTS MESSAGES ---------------------//
+    // ======================================================== //
 
-//POSTS FOR INVENTORY
     if($_POST['message'] == "insertItem")
     {
         $conn = connDB();
@@ -31,7 +33,6 @@ r = row / result
         insertItem($conn, $itemName, $amonut);
     }
     
-// OTHER POSTS
     if($_POST['message'] == "changePW")
     {
         $conn = connDB();
@@ -103,7 +104,7 @@ r = row / result
         }
         elseif($_POST['invokeOrReport'] == "inventory")
         {
-            changeInventoryStatus($conn);
+            changeInventoryStatus($conn, $date_format);
         }
 
         echo '<script> location.replace("admin.php") </script>'; 
@@ -111,7 +112,7 @@ r = row / result
     }
 
     // ======================================================== //
-    // ------------- ADMIN PAGE FUNCTIONS ----------------------//
+    // ---------------- ADMIN PAGE FUNCTIONS -------------------//
     // ======================================================== //
 
     function populate_market_dropdown($conn)
@@ -156,6 +157,10 @@ r = row / result
         //header("Location: admin.php"); //redirect to the main index.php page
     }
 
+    // ======================================================== //
+    // ---------------- ADMIN PAGE FUNCTIONS -------------------//
+    // ======================================================== //
+
     function verifyOld($conn, $oldPW)
     {
         $sql = "SELECT passwords FROM AdminPW";
@@ -174,32 +179,7 @@ r = row / result
         $stmt -> execute();
         return;
     }
-    function generate_report($conn, $d) //create a pdf later
-    {
-        $conn = connDB();
-        //selected which market to report
-        $sql = "UPDATE Markets SET reported = 1 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
-        $stmt = $conn -> prepare($sql);
-        $stmt -> execute();
 
-        //select which markets not to report
-        $sql = "UPDATE Markets SET reported = 0 WHERE NOT idByDate = ".$d; //update password in the database, add secuirty features later
-        $stmt = $conn -> prepare($sql);
-        $stmt -> execute();
-
-
-        //below if pdf generation code that did not work
-        #$pdf = new FPDF(); //generate a new pdf
-        #$pdf -> AddPage(); //add page
-        #$pdf ->SetFont('Arial', 'B', 16); //Font: arial. Bolden. size 16
-        #$pdf->Cell(40,10,'Hello World!');
-        #$pdf->Output();
-        //Will use FPDF to generate a PDF report (later use angular.sj is possible)
-
-        //simply, for now, just go to the report page, it will be easier I guess
-        echo '<script>location.replace("report.php");</script>';
-
-    }
     function terminateActiveMarket($conn, $d)
     {
         $conn = connDB();
@@ -215,6 +195,27 @@ r = row / result
         $stmt -> execute();
         echo '<script> location.replace("admin.php") </script>';
         return;
+    }
+
+    // ======================================================== //
+    // -------------- REPORT PAGE FUNCTIONS --------------------//
+    // ======================================================== //
+
+    function generate_report($conn, $d) //create a pdf later
+    {
+        $conn = connDB();
+        //selected which market to report
+        $sql = "UPDATE Markets SET reported = 1 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
+
+        //select which markets not to report
+        $sql = "UPDATE Markets SET reported = 0 WHERE NOT idByDate = ".$d; //update password in the database, add secuirty features later
+        $stmt = $conn -> prepare($sql);
+        $stmt -> execute();
+
+        echo '<script>location.replace("report.php");</script>';
+
     }
 
     function getAttData($conn, $d)
@@ -310,4 +311,16 @@ r = row / result
         return $tableItemData;
     }
 
+    function changeInventoryStatus($c, $d)
+    {
+        $sql = "UPDATE Markets SET inventory = 0"; //update all
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        
+
+        $sql = "UPDATE Markets SET inventory = 1 WHERE idByDate = ".$d;
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        return;
+    }
 ?>

@@ -15,8 +15,17 @@
 <?php
     //define('FPDF_FONTPATH','/home/www/font/');
     //require('fpdf_lib'); //include library for pdf generation
-   
 
+//POSTS FOR INVENTORY
+    if($_POST['message'] == "insertItem")
+    {
+        $conn = connDB();
+        $itemName = $_POST['item_name'];
+        $amount = $_POST['item_number'];
+        insertItem($conn, $itemName, $amonut);
+    }
+    
+// OTHER POSTS
     if($_POST['message'] == "changePW")
     {
         $conn = connDB();
@@ -251,4 +260,52 @@
         return $chart_data;
     }
     
+//CODE FOR INVENTORY FUNCTIONS
+    function insertItem($c, $n, $a) //corresponds to connection, name, amount
+    {
+        //step 1) select the date from market with inventory = 1
+        //step 2) insert item to items, with fk being the date we just retrieved
+        $sql = "SELECT idByDate FROM Markets WHERE inventory = 1";
+        $s = $c -> prepare($sql); //corresponds to statements
+        $s -> execute(); 
+        $d = $stmt -> fetch(PDO::FETCH_ASSOC); //corresponds to date, should only return one object, instead of an array
+        $sql = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."', '".$a."'".$d.");"; //0 = not active, 1 = active (tiny int sserving as boolean)
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->exec($sql); //execute the sql update query
+        echo '<script> location.replace("inventory.php"); </script>';
+        return;
+    }
+
+    function populateItemTable($c)
+    {
+        $sql_date = "SELECT idByDate FROM Markets WHERE inventory = 1";
+        $s_date = $c -> prepare($sql_d);
+        $s_date -> execute();
+        $d = $s_date -> fetch(PDO::FETCH_ASSOC);
+
+
+        $tableItemData = ""; //initiate
+        $sql = "SELECT Name, Amount FROM Items WHERE Markets_idByDate = ".$d;
+        $s = $conn -> prepare($sql); 
+        $s -> execute(); 
+
+
+        $stmt_existness_check = $conn ->prepare($sql);
+        $stmt_existness_check -> execute();
+        if(!$stmt_existness_check -> fetch(PDO::FETCH_ASSOC))
+        {
+            return '<p> NO ITEMS TO DISPLAY AT THE MOMENT </p>';
+        }
+
+        $buttonInsert = "<button class = 'btn btn-warning' id = 'editbtn'> EDIT <button>";
+        while($r = $s -> fetch(PDO::FETCH_ASSOC))
+        { 
+            $tableItemData .= "<tr>";
+                $tableItemData.= "<td>".$r['Name']."</td>";
+                $tableItemData.= "<td>".$r['Amount']."</td>";
+            $tableItemData .= "</tr>";
+        }
+        return $tableItemData;
+    }
+
 ?>

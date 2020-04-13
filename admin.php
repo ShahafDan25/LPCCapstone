@@ -83,13 +83,6 @@
                 <form method = "post" action = "adminFuncs.php">
                     <h3> Choose a Market</h3>
                     <div class="dropdown">
-                        <!--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Market By Date &nbsp;
-                            <i class="fa fa-chevron-down"></i>
-
-aria-labelledby="dropdownMenuButton"
-
-                        </button>-->
                         <select class="btn midbigger browser-default custom-select"  name = "marketDate">
                             <option> Choose a market (by date) </option>
                           <?php

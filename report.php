@@ -171,7 +171,10 @@
             ykeys:['AMOUNT'],
             labels:['Impact'],
             hideHover:'auto',
-            stacked:true
+            stacked:true,
+            barColors: ['#4DA74D'],
+            barSizeRatio:0.40,
+            resize:false
         });
     </script>
 </html>

@@ -1,3 +1,5 @@
+<?php include "connDB.php"; ?>
+
 <html !DOCTYPE>
     <head>
         <title> Market - Admin </title>
@@ -13,21 +15,7 @@
 <?php
     //define('FPDF_FONTPATH','/home/www/font/');
     //require('fpdf_lib'); //include library for pdf generation
-    function connDB() //call to get connection
-    {
-        $username = "root";
-        $password = "MMB3189@A";
-        $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
-      
-
-        //try and catch block to connect to MySQL, or throw an error
-        try {
-             $conn = new PDO($dsn, $username, $password);
-        } catch (PDOException $e) {
-             echo 'Connection Failed: ' . $e -> getMessage();
-        } // end of try and catch
-        return $conn;
-    }
+   
 
     if($_POST['message'] == "changePW")
     {

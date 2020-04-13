@@ -1,4 +1,7 @@
+<?php include "connDB.php"; ?>
+
 <?php
+
     $conn = connDB();
     $d = 20200416;
     $sql_times = "SELECT starttime, closetime FROM Markets WHERE idByDate = ".$d;
@@ -39,21 +42,4 @@
     $chart_data .= ", {TIME:'".$interval."',AMOUNT:".$amount."}";
 
     echo $chart_data."\n\n";
-
-    //functions:
-    function connDB() //call to get connection
-    {
-        $username = "root";
-        $password = "MMB3189@A";
-        $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';
-      
-
-        //try and catch block to connect to MySQL, or throw an error
-        try {
-             $conn = new PDO($dsn, $username, $password);
-        } catch (PDOException $e) {
-             echo 'Connection Failed: ' . $e -> getMessage();
-        } // end of try and catch
-        return $conn;
-    }
 ?>

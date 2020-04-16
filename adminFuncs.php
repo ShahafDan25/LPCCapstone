@@ -149,7 +149,7 @@ r = row / result
             echo '<script> location.replace("admin.php") </script>';
             return; //this market already exists in the data base
         }
-        $sql = "INSERT INTO Markets (idByDate, active, reported) VALUES (".$date.", 0, 0);"; //0 = not active, 1 = active (tiny int sserving as boolean)
+        $sql = "INSERT INTO Markets (idByDate, active, reported, inventory) VALUES (".$date.", 0, 0, 0);"; //0 = not active, 1 = active (tiny int sserving as boolean)
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
         echo '<script> location.replace("admin.php") </script>'; //change location
@@ -167,13 +167,13 @@ r = row / result
         $stmt -> execute(); //execute the statement
         $row = $stmt -> fetch(PDO::FETCH_ASSOC);
         $oldPWfromDB = $row['passwords'];
-        if ($oldPW == $oldPWfromDB) return true;
+        if (md5($oldPW) == $oldPWfromDB) return true;
         else return false;
     }
 
     function changePWinDB($conn, $newPW)
     {
-        $sql = "UPDATE AdminPW SET passwords = '".$newPW."'"; //update password in the database, add secuirty features later
+        $sql = "UPDATE AdminPW SET passwords = '".md5($newPW)."'"; //update password in the database, add secuirty features later
         $stmt = $conn -> prepare($sql);
         $stmt -> execute();
         return;

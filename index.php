@@ -2,7 +2,7 @@
     include "capstone.php";
     if($_POST['message'] == 'verifyPassword')
     {
-        if($_POST['inputAdminPW'] == getPassword($conn))
+        if(md5($_POST['inputAdminPW']) == getPassword($conn))
         { 
         //echo '<script> alert("Moving to Admin Page") </script>';  
             echo '<script>location.replace("admin.php");</script>';

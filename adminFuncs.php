@@ -110,6 +110,12 @@ r = row / result
         return;
     }
 
+    if($_POST['message'] == 'editThatItem')
+    {
+        updateInventoryItem(connDB(), $_POST['editItemName'], $_POST['editItemAmount']);
+        echo '<script> location.replace("inventory.php") </script>';
+    }
+
     // ======================================================== //
     // ---------------- ADMIN PAGE FUNCTIONS -------------------//
     // ======================================================== //
@@ -153,7 +159,6 @@ r = row / result
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $conn->exec($sql); //execute the sql update query
         echo '<script> location.replace("admin.php") </script>'; //change location
-        //header("Location: admin.php"); //redirect to the main index.php page
     }
 
     // ======================================================== //
@@ -292,6 +297,7 @@ r = row / result
 
     function insertItem($c, $n, $a)
     {
+        var_dump($c);
         $sql = "SELECT idByDate FROM Markets WHERE inventory = 1";
         $s = $c -> prepare($sql); 
         $s -> execute(); 
@@ -307,6 +313,8 @@ r = row / result
 
     function populateItemTable($c)
     {
+        // ====================================== //
+
         $sql_date = "SELECT idByDate FROM Markets WHERE inventory = 1";
         $s_date = $c -> prepare($sql_date);
         $s_date -> execute();
@@ -324,16 +332,27 @@ r = row / result
             return '<p> NO ITEMS TO DISPLAY AT THE MOMENT </p>';
         }
 
-        $buttonInsert = "<button class = 'btn btn-warning' id = 'editbtn'> EDIT </button>";
         $s = $c -> prepare($sql); 
         $s -> execute(); 
+        $collapseCounter = 0;
         while($r = $s -> fetch(PDO::FETCH_ASSOC))
         { 
+            $counter++;
+            $buttonInsert = "<button class = 'btn btn-warning collapsed' id = 'editbtn' data-toggle='collapse' data-target='#formToEditItem".strval($counter)."' aria-expanded='false'> EDIT </button>";
+            $editForm = '<form action = "adminFuncs.php" method = "post">';
+            $editForm .= '<td><input type = "text" class = "inv_input inline" name = "editItemName" placeholder = "'.$r['Name'].'" value = "'.$r['Name'].'" style = "width: 60% !important;"></td>';
+            $editForm .= '<td><input type = "text" class = "inv_input inline" name = "editItemAmount" placeholder = "'.$r['Amount'].'" value = "'.$r['Amount'].'"></td>';
+            $editForm .= '<td><input type = "hidden" class = "inline" name = "message" value = "editThatItem">';
+            $editForm .= '<button class = "btn btn-success inv_input_btn inline"> SUBMIT </button></td>';
+            $editForm .= '</form>';
+            // ============================================================== //
             $tableItemData .= "<tr>";
                 $tableItemData .= "<td>".$r['Name']."</td>";
                 $tableItemData .= "<td>".$r['Amount']."</td>";
                 $tableItemData .= "<td>".$buttonInsert."</td>";
             $tableItemData .= "</tr>";
+            
+            $tableItemData .= "<tr class = 'collapse whiteOut' id = 'formToEditItem".strval($counter)."'>".$editForm."</tr>";
         }
        
         return $tableItemData;
@@ -352,6 +371,14 @@ r = row / result
 
         echo '<script>location.replace("inventory.php");</script>';
 
+        return;
+    }
+
+    function updateInventoryItem($c, $n, $a)
+    {
+        $sql = "UPDATE Items SET Amount = ".intval($a)." WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
+        $s = $c -> prepare($sql);
+        $s -> execute();
         return;
     }
 ?>

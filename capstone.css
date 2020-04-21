@@ -8,6 +8,13 @@
 {
     width: 40% !important;
 }
+.whiteOut
+{
+    background-color: white !important ;
+    border-radius: 25px !important ;
+    border-right: 2px solid black !important ;
+    border-left: 2px solid black !important ;
+}
 .inv_box_class
 {
     text-align: center !important;

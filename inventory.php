@@ -32,7 +32,7 @@
             <h1 > MARKET'S INVENTORY </h1>
         </span>
         <br>
-        <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#edit_inv" aria-expanded="false" id = "submit"> EDIT INVENTORY </button><br>
+        <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#edit_inv" aria-expanded="false" id = "submit"> ADD TO INVENTORY </button><br>
         <div class = "inv_box_class collapse" id = "edit_inv">
             <h4><u> ADD TO INVENTORY </u></h4>
             <br>
@@ -46,7 +46,7 @@
         <br><br>
         <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#view_inv" aria-expanded="false" id = "submit"> VIEW INVENTORY </button><br>
         <div class = "inv_box_class collapse" id = "view_inv">
-            <h4><u> VIEW INVENTORY </u></h4>
+            <h4><u> CURRENT INVENTORY </u></h4>
             <br>
             <table class = "table inv_table">
                 <thead>

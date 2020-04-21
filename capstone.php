@@ -98,10 +98,10 @@
     function insertPat($conn, $f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id)
     {
         //also need the date of the currently active market
-        $sql = "SELECT idBydate FROM Markets WHERE active = 1";
+        $sql = "SELECT idByDate FROM Markets WHERE active = 1";
         $s = $conn -> prepare($sql);
         $s -> execute();
-        $r =  $s(PDO::FETCH_ASSOC);
+        $r =  $s->fetch(PDO::FETCH_ASSOC);
         $d = $r['idByDate'];
 
         //dont forget to close connection later!
@@ -126,7 +126,7 @@
         ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod, patID, firstMarket)
         VALUES ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', 
         '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', 
-        '".$email_address."', '".$phone_number."', '".$promotion_method."', ".$id.", ".$d.")";
+        '".$email_address."', '".$phone_number."', '".$promotion_method."', ".$id.", ".$d.");";
 
 
         // just to note: we use the period sign (.) to concatenate in php!!!

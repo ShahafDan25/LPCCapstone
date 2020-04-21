@@ -307,7 +307,16 @@ r = row / result
     function getRetVSNew($c, $d)
     {
         $data = "";
-        
+        $sql_newPs = "SELECT COUNT(*) FROM Patrons WHERE firstMarket = ".$d;
+        $s_newPs = $c -> query($sql_newPs);
+        $noobies = $s_newPs -> fetchColumn();
+
+        $sql_allPs = "SELECT COUNT(*) FROM Patrons";
+        $s_allPs = $c -> query($sql_allPs);
+        $all = $s_allPs -> fetchColumn();
+
+        $oldies = $all - $noobies;
+        $data = "{value: ".$noobies.", label: 'New Patrons'},{value: ".$oldies.", label: 'Returning Patrons'}";
         return $data;
     }
 

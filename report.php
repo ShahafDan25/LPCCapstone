@@ -40,6 +40,7 @@
         <h1> MARKET REPORT </h1> <!-- PHP: ADD DATE LATER -->
         <h4>
         <?php
+
             $sql = "SELECT idByDate FROM Markets WHERE reported = 1"; //add the date pf the marlet of which we generate the report
             $stmt = $conn -> prepare($sql); //create the statment
             $stmt -> execute(); //execute the statement
@@ -48,6 +49,7 @@
             $d = $row['idByDate'];
             $promGraphData = promGraphData(connDB(), $d);
             $attGraphData = getAttData(connDB(), $d);
+            $retvsnew = getRetVSNew(connDB(), $d);
         ?>
         </h4>
         <br><br>
@@ -185,5 +187,11 @@
             barSizeRatio:0.40,
             resize:false
         });
+
+        Morris.Donut({
+            element: 'retvsnew',
+            data: [<?php echo $retvsnew; ?>],
+            colors:['#994d00','#ffa64d']
+        })
     </script>
 </html>

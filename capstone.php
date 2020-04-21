@@ -97,7 +97,13 @@
     /* ***************************************************************** */
     function insertPat($conn, $f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id)
     {
-        
+        //also need the date of the currently active market
+        $sql = "SELECT idBydate FROM Markets WHERE active = 1";
+        $s = $conn -> prepare($sql);
+        $s -> execute();
+        $r =  $s(PDO::FETCH_ASSOC);
+        $d = $r['idByDate'];
+
         //dont forget to close connection later!
         //might need to transfer to html page? should I make that a php file?
         $first_name = $f;//filter_input(INPUT_POST, 'first_name');
@@ -117,10 +123,10 @@
 
         //sql insert new patron code:
         $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
-        ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod, patID)
+        ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod, patID, firstMarket)
         VALUES ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', 
         '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', 
-        '".$email_address."', '".$phone_number."', '".$promotion_method."', ".$id.")";
+        '".$email_address."', '".$phone_number."', '".$promotion_method."', ".$id.", ".$d.")";
 
 
         // just to note: we use the period sign (.) to concatenate in php!!!

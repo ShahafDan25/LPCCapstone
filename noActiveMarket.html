@@ -10,6 +10,21 @@
 
         <!-- CSS HARDCODE FILE LINK -->
         <link rel = "stylesheet" type = "text/css" href = "capstone.css">
+        <style>
+            html, body
+            {
+                margin: 0;
+                height: 100%;
+            }
+            .body_noMarket
+            {
+                text-align: center;
+                background-image: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
+                height: 100% !important;
+                padding-top: 10% !important;
+                padding-bottom: 10% !important;
+            }
+        </style>
     </head>
     <body class = "body_noMarket">
         <br><br><br>
@@ -18,7 +33,7 @@
             <div class = "midPageMsg">
                 <h2> No Market is Currently Active. Please Go to the Admin Page, and Activate One!</h2>
                 <br>
-                <button class = "btn btn-primary admin">ADMIN PAGE</button>
+                <button class = "btn btn-primary admin" onclick = location.replace('admin.php')>ADMIN PAGE</button>
                 <br>
                 <h4> SEE YOU LATER </h4>
                 <br>

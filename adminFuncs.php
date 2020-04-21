@@ -224,6 +224,7 @@ r = row / result
 
     function getAttData($conn, $d)
     {
+        $dformat = substr($d,0,4)."-".substr($d,4,2)."-".substr($d,6,2)." ";
         $sql_times = "SELECT starttime, closetime FROM Markets WHERE idByDate = ".$d;
         $stmt_times = $conn -> prepare($sql_times);
         $stmt_times -> execute();
@@ -237,7 +238,11 @@ r = row / result
         $stmt_amount_a = $conn -> query($sql_amount_a);
         //$stmt_amount_a -> execute();
         $first_amount = $stmt_amount_a -> fetchColumn();
-        $chart_data = "{TIME:'".$sti."',AMOUNT:'".$first_amount."'}";
+        #stite = Start Time Integer To Enter
+        if(strlen(strval($sti)) == 3) $stite = substr(strval($sti), 0, 1).":".substr(strval($sti), 1, 2);
+        elseif(strlen(Strval($sti)) == 4) $stite = substr(strval($sti),0,2).":".substr(strval($sti),2,2);
+        
+        $chart_data = "{TIME:'".$dformat.$stite."',AMOUNT:'".$first_amount."'}";
         if($interval % 100 == 60) {$interval += 40;} 
         while(($interval + 10) < intval($ct))
         {
@@ -249,16 +254,24 @@ r = row / result
             $stmt_amount_a = $conn -> query($sql_amount_a);
             $stmt_i = $conn -> query($sql_i);
 
+            #intervalte = Interval To Enter
+            if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
+            elseif(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
+
             $amount = $stmt_i -> fetchColumn();
-            $chart_data .= ", {TIME:'".$interval."',AMOUNT:'".$amount."'}";
+            $chart_data .= ", {TIME:'".$dformat.$intervalte."',AMOUNT:'".$amount."'}";
             $interval = $interval_b;
         }
         $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
         $stmt_amount_a = $conn -> query($sql_amount_a);
         $stmt_i_b= $conn -> query($sql_i_b);
 
+        if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
+        elseif(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
+
+
         $amount = $stmt_i_b -> fetchColumn();
-        $chart_data .= ", {TIME:'".$interval."',AMOUNT:'".$amount."'}";
+        $chart_data .= ", {TIME:'".$dformat.$intervalte."',AMOUNT:'".$amount."'}";
 
         return $chart_data;
     }

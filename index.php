@@ -83,8 +83,8 @@
                     <form method = "post" action = "capstone.php">
                         <h4> Insert Your Market ID <i class="fa fa-chevron-down"></i> </h4>
                         <span style = "display: inline-block">
-                            <input type = "text" class = "mandatory form-control" placeholder = "Market ID" name = "patronID"> &nbsp;
-                            <button class = "btn btn-success" id = "retPatSubmission"> SUBMIT </button>
+                            <input type = "text" class = "mandatory form-control inline" placeholder = "Market ID" name = "patronID"><button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
+                            
                         </span>
                     <br>
                     

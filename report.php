@@ -144,17 +144,26 @@
             <div id = "chart"></div>
         </div>
         <br><br>
-        <h3> Advertisement and Promotions </h3>
-        <div class = "report_box_class">
-            <div id = "promGraph"></div>
-        </div>
+        <span>
+            <div class = "inline w55">
+                <h3> Advertisement and Promotions </h3>
+                <div class = "report_box_class">
+                    <div id = "promGraph"></div>
+                </div>
+            </div>
+            <div class = "inline w25">
+                <h3> New VS. Returning Patrons </h3>
+                <div class = "report_box_class">
+                    <div id = "retvsnew"></div>
+                </div>
+        </span>
         <br><br>
     </body>
 
     <!-- ---------------------------------------------------------------- -->
     <script>
         //add morris.js code right here to populate the graph inside the "att_graph" html div block
-        Morris.Bar({
+        Morris.Line({
             element : 'chart', //referring to the graph's html div block
             data:[<?php echo $attGraphData; ?>], //get the variable from the adminFuncs.php file (already included)
             xkey:'TIME',

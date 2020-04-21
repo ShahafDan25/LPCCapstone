@@ -166,7 +166,7 @@
         $stmt -> execute(); ///execute the query to the database
         if(!$stmt_check_existence -> fetch(PDO::FETCH_ASSOC))
         {
-            return "WARNING: No Market has been invoked, ask the admin to invoke a market";
+            return "WARNING: No Market has been invoked, ask the admin to invoke a market<br><script>location.replace('noActiveMarket.html');</script>";
         }
         else
         {

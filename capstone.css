@@ -195,7 +195,7 @@ hr
     width: 65% !important;
     border-top: 1.8px solid white !important;
 }
-
+.inline{display: inline-block !important;}
 /* NOW TO BE USED BY ADMIN PAGE */
 .date_input
 {

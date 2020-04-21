@@ -30,6 +30,12 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
  
+
+        <style>
+            .inline{display: inline-block !important;}
+            .w25{width: 30% !important;}
+            .w55{width: 60% !important;}
+        </style>
     </head>
 
     <!-- ---------------------------------------------------------------- -->
@@ -153,12 +159,15 @@
                     <div id = "promGraph"></div>
                 </div>
             </div>
+            
             <div class = "inline w25">
                 <h3> New VS. Returning Patrons </h3>
                 <div class = "report_box_class">
                     <div id = "retvsnew"></div>
                 </div>
+            </div>
         </span>
+        <br><br>
         <br><br>
     </body>
 

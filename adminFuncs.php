@@ -237,12 +237,11 @@ r = row / result
         $pdf -> AddPage(); //add page
         $pdf ->SetFont('Arial', 'B', 16); //Font: arial. Bolden. size 16
         $pdf->Cell(40,10,'Hello World!');
+
+        
         $pdf->Output("~report_".$d.".pdf");
-
-
-
         echo '<script>alert("YOUR PDF IS GENERATED AS:  ~report_'.$d.'.pdf  ");</script>';
-
+        return; //it will then switch back to the report page
     }
 
     function getAttData($conn, $d)

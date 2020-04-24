@@ -107,7 +107,11 @@
                                 $addline .= $row_b['patID']."</td>";
                                 $addline .= "<th>".$row_b['FirstName']."</th>";
                                 $addline .= "<th>".$row_b['LastName']."</th>";
-                                $addline .= "<td>".$row_b['StudentStatus']."</td>";
+
+                                if($row_b['StudentStatus'] == 1) $addline .= "<td><div style = 'background-color:  #99ffcc; padding-right: 5% !important; text-align: center; '>  ✓  </div></td>";
+                                else $addline .= "<td>    </td>";
+
+
                                 $addline .= "<td>".$row_b['ChildrenAmount']."</td>";
                                 $addline .= "<td>".$row_b['AdultsAmount']."</td>";
                                 $addline .= "<td>".$row_b['SeniorsAmount']."</td>";

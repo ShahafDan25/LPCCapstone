@@ -1,20 +1,23 @@
 <?php include "connDB.php"; ?>
-
+<?php include "fpdf_lib/fpdf.php"; ?> 
 <?php
 
     $c = connDB();
     $d = 20200416;
     
-    $sql = "SELECT passwords FROM AdminPW";
-    $s = $c -> prepare ($sql);
-    $s -> execute();
-    $row = $s -> fetch(PDO::FETCH_ASSOC);
-    $oldpw = $row['passwords'];
-    $hashpw = md5($oldpw, FALSE); //32character hexa hash
-    $sql2 = "UPDATE AdminPW SET passwords = '".$hashpw."'";
-    $s2 = $c -> prepare($sql2);
-    $s2 -> execute();
+    function generate_report($c, $d)
+    {
+        $pdf = new FPDF(); //generate a new pdf
+        $pdf -> AddPage(); //add page
+        $pdf ->SetFont('Arial', 'B', 16); //Font: arial. Bolden. size 16
+        $pdf->Cell(40,10,'Hello World!');
+        $pdf->Output("rt.pdf");
+        
 
-    echo $oldpw."\n";
-    echo $hashpw."\n";
+        //Will use FPDF to generate a PDF report (later use angular.sj is possible)
+
+
+    }
+
+    generate_report($c);
 ?>

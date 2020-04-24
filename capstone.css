@@ -64,7 +64,7 @@ html, body
 {
     text-align: center;
     background-color: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
-
+    background-attachment: fixed;
 }
 .midPageMsg
 {
@@ -151,6 +151,8 @@ html, body
 {
     text-align: center;
     background-image: linear-gradient(  rgb(235, 154, 154), rgb(207, 73, 73)) !important;
+    background-attachment: fixed;
+
 }
 .mid{text-align: center;}
 .retPats

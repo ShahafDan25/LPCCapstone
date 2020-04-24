@@ -205,21 +205,29 @@ r = row / result
     // -------------- REPORT PAGE FUNCTIONS --------------------//
     // ======================================================== //
 
-    function generate_report($conn, $d) //create a pdf later
+    function generate_report($c, $d) //create a pdf later
     {
-        $conn = connDB();
+        $c = connDB();
         //selected which market to report
         $sql = "UPDATE Markets SET reported = 1 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
-        $stmt = $conn -> prepare($sql);
-        $stmt -> execute();
+        $s = $conn -> prepare($sql);
+        $s -> execute();
 
         //select which markets not to report
         $sql = "UPDATE Markets SET reported = 0 WHERE NOT idByDate = ".$d; //update password in the database, add secuirty features later
-        $stmt = $conn -> prepare($sql);
-        $stmt -> execute();
+        $s = $c -> prepare($sql);
+        $s -> execute();
 
         echo '<script>location.replace("report.php");</script>';
+    }
 
+    function pdf_report($c, $d)
+    {
+        $pdf = new FPDF(); //generate a new pdf
+        $pdf -> AddPage(); //add page
+        $pdf ->SetFont('Arial', 'B', 16); //Font: arial. Bolden. size 16
+        $pdf->Cell(40,10,'Hello World!');
+        $pdf->Output("rt.pdf");
     }
 
     function getAttData($conn, $d)

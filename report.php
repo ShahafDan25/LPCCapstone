@@ -40,9 +40,12 @@
 
     <!-- ---------------------------------------------------------------- -->
     <body class = "body_report">
-    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
-    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
-
+        <button id = "goToAdmin" class = "inline btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
+        <button id = "goToMarket" class = "inline btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
+        <form>
+            <button  class = "inline btn btn-success admin pull-right"> Generate Report </button>
+            <input type = "hidden" value = "pdfreport" name = "message">
+        </form>
         <h1> MARKET REPORT </h1> <!-- PHP: ADD DATE LATER -->
         <h4>
         <?php
@@ -58,6 +61,8 @@
             $retvsnew = getRetVSNew(connDB(), $d);
         ?>
         </h4>
+    
+
         <br><br>
         
         <div class = "report_box_class" id = "repot_box_id">

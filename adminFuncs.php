@@ -58,9 +58,7 @@ r = row / result
 
     if($_POST['message'] == 'submitNewMarket')
     {
-        $date_format_d = $_POST['new_market_date'];
-        $date_format_int = substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2);
-        newMarket(connDB(), $date_format_int);
+        newMarket(connDB(), substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2));
     }
 
     if($_POST['message'] == 'invokeOrReport')
@@ -114,6 +112,12 @@ r = row / result
     {
         updateInventoryItem(connDB(), $_POST['editItemName'], $_POST['editItemAmount']);
         echo '<script> location.replace("inventory.php") </script>';
+    }
+
+    if($_POST['message'] == 'pdfreport')
+    {
+        pdf_report(connDB());
+        echo '<script> location.replace("report.pdf");</script>';
     }
 
     // ======================================================== //
@@ -184,19 +188,19 @@ r = row / result
         return;
     }
 
-    function terminateActiveMarket($conn, $d)
+    function terminateActiveMarket($c, $d)
     {
-        $conn = connDB();
+        $c = connDB();
         $sql = "UPDATE Markets SET active = 0 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
-        $stmt = $conn -> prepare($sql);
-        $stmt -> execute();
+        $s = $c -> prepare($sql);
+        $s -> execute();
         //also change closing time
         date_default_timezone_set("America/Los_Angeles"); //set time zone
         $closetime = date("H:i");
         $close_time_digits = substr($closetime, 0, 2).substr($closetime, 3, 2);//take only numerical values, to create a flow of values in graphs
         $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$d; //update password in the database, add secuirty features later
-        $stmt = $conn -> prepare($sql);
-        $stmt -> execute();
+        $s = $c -> prepare($sql);
+        $s -> execute();
         echo '<script> location.replace("admin.php") </script>';
         return;
     }
@@ -210,7 +214,7 @@ r = row / result
         $c = connDB();
         //selected which market to report
         $sql = "UPDATE Markets SET reported = 1 WHERE idByDate = ".$d; //update password in the database, add secuirty features later
-        $s = $conn -> prepare($sql);
+        $s = $c -> prepare($sql);
         $s -> execute();
 
         //select which markets not to report
@@ -221,13 +225,24 @@ r = row / result
         echo '<script>location.replace("report.php");</script>';
     }
 
-    function pdf_report($c, $d)
+    function pdf_report($c)
     {
+        $sql = "SELECT idByDate FROM Markets WHERE active = 1";
+        $s = $c -> prepare ($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+
+        //--------------- report code ---------------------//
         $pdf = new FPDF(); //generate a new pdf
         $pdf -> AddPage(); //add page
         $pdf ->SetFont('Arial', 'B', 16); //Font: arial. Bolden. size 16
         $pdf->Cell(40,10,'Hello World!');
-        $pdf->Output("rt.pdf");
+        $pdf->Output("~report_".$d.".pdf");
+
+
+
+        echo '<script>alert("YOUR PDF IS GENERATED AS:  ~report_'.$d.'.pdf  ");</script>';
+
     }
 
     function getAttData($conn, $d)

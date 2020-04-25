@@ -1,4 +1,19 @@
 <?php include "adminFuncs.php"; ?>
+<?php
+    date_default_timezone_set("America/Los_Angeles");
+    $today = intval(date("Y").date("m").date("d"));
+    $sql = "SELECT changeDate FROM AdminPW WHERE current = 1";
+    $c = connDB();
+    $s = $c -> prepare($sql);
+    $s -> execute();
+    $r = $s -> fetch(PDO::FETCH__ASSOC);
+    $d = intval(substr($r['changeDate'],0,4).substr($r['changeDate'],5,2).substr($r['changeDate'],8,2));
+    if($today < $date && $today > $date - 12) //12 days before password will expire
+    {
+        echo '<script>alert("Your password will expire on '.$date.'. Make sure to change it beforehand!");</script>';
+    }
+    elseif($today > $date) echo '<script> Your password is expired...</script>';
+?>
 <html !DOCTYPE>
     <head>
         <title> Market - Admin </title>
@@ -51,10 +66,10 @@
             </div><br>
             <h3> <u> Instructions </u> </h3>
             <ul class = "pull-left instructions">
-                <li class = "pull-left"> 1.  Create a new market by choosing a date </li>
-                <li class = "pull-left"> 2.  Choose a Market by Clicking the Second Button </li>
-                <li class = "pull-left"> 3.  Choose either to invoke a market, or to generate a report, or terminate a market </li>
-                <li class = "pull-left"> 4.  Note: In order to generate a report of a market, it must be active! </li>
+                <li class = "pull-left"> 1.  Create a new market by choosing a date </li><br>
+                <li class = "pull-left"> 2.  Choose a Market by Clicking the Second Button </li><br>
+                <li class = "pull-left"> 3.  Choose either to invoke a market, or to generate a report, or terminate a market </li><br>
+                <li class = "pull-left"> 4.  Note: In order to generate a report of a market, it must be active! </li><br>
                 <li class = "pull-left"> 5.  Click the submit button! </li>
             </ul>
         </div>

@@ -1,4 +1,4 @@
-<?php include "moreFPDF.php"; //include the conn DB function ?>
+<?php include "moreFPDF.php"; ?>
 
 
 <html !DOCTYPE>
@@ -21,6 +21,8 @@ n = name
 s = satetment
 r = row / result
 */
+
+    
 
     // ======================================================== //
     // -------------------- POSTS MESSAGES ---------------------//

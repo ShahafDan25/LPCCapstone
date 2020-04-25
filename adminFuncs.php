@@ -1,5 +1,5 @@
-<?php include "connDB.php"; ?>
-<?php include "fpdf_lib/fpdf.php"; ?> 
+<?php include "moreFPDF.php"; //include the conn DB function ?>
+
 
 <html !DOCTYPE>
     <head>
@@ -118,7 +118,7 @@ r = row / result
     if($_POST['message'] == 'pdfreport')
     {
         pdf_report(connDB());
-        //echo '<script> location.replace("report.pdf");</script>';
+        echo '<script> location.replace("report.php");</script>';
     }
 
     // ======================================================== //
@@ -228,7 +228,7 @@ r = row / result
 
     function pdf_report($c)
     {
-        $sql = "SELECT idByDate FROM Markets WHERE active = 1";
+        $sql = "SELECT idByDate FROM Markets WHERE reported = 1";
         $s = $c -> prepare ($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
@@ -237,16 +237,23 @@ r = row / result
         //--------------- report code ---------------------//
 
 
-        $pdf = new FPDF(); //generate a new pdf
+        $pdf = new myFPDFClass(); //generate a new pdf
         $pdf -> AddPage(); //add page
-        $pdf ->SetFont('Arial', 'B', 28); //Font: arial. Bolden. size 16
-        $pdf->Cell(40,10,'Hello World!');
+        $pdf -> SetFont('Arial', 'B', 20); //Font: arial. Bolden. size 16
+        $pdf -> Cell(40,10,'The Market - Report from '.substr($d,4,2)." / ".substr($d,6,2)." / ".substr($d,0,4),'C');
+        $pdf -> Ln(); //endl;
+
+        $pdf -> tableHead();
+        $pdf -> tableBody(connDB());
+
+        
+
 
 
         //$pdf->Output("~report_".$d.".pdf", 'D'); 
         // IMPORTANT NOTE: had to change the modifications of rt.pdf to in order ot edit it with chmod 777 rt.pdf
         $pdf -> Output('rt.pdf', 'F');
-        //echo '<script>alert("YOUR PDF IS GENERATED AS:  ~report_'.$d.'.pdf  ");</script>';
+        echo '<script>alert("YOUR PDF IS GENERATED AS:  ~report_'.$d.'.pdf  ");</script>';
         return; //it will then switch back to the report page
     }
 

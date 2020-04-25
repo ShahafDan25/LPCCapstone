@@ -189,6 +189,7 @@ html, body
     margin-left: 5% !important;
     margin-right: 5% !important;
 }
+.centrize {text-align: center !important;}
 .optional{border: 1.5px solid black !important;}
 .mandatory{border: 1.5px solid red !important;}
 input:not(:placeholder-shown) {border-color: hsl(0, 76%, 50%) !important;}

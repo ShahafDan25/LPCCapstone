@@ -1,18 +1,4 @@
-<?php //THIS IS A PHP FILE WITH EMBEDED HTML CODE
-    include "capstone.php";
-    if($_POST['message'] == 'verifyPassword')
-    {
-        if(md5($_POST['inputAdminPW']) == getPassword($conn))
-        { 
-        //echo '<script> alert("Moving to Admin Page") </script>';  
-            echo '<script>location.replace("admin.php");</script>';
-        }
-        else
-        {
-            echo '<script> alert("Password Incorrect, Please Try Again!"); </script>';
-        }
-    }
-?>
+<?php include "adminFuncs.php";?>
 <html !DOCTYPE>
     <head>
         <title> The Market </title>

@@ -10,15 +10,6 @@
 
         <!-- CSS HARDCODE FILE LINK -->
         <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
-
-        <!-- Boostrap For JQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-
-        <!-- Bootstrap for JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
         <style>
             html, body
             {
@@ -40,18 +31,12 @@
         <div>
             <br>
             <div>
-                <h2> No Market is Currently Active. Please Go to the Admin Page, and Activate One!</h2>
+                <h2> Nothing to report at the moment. No Attendance has been recorded yet.</h2>
                 <br>
-                <button id = "goToAdmin" class = "btn btn-primary admin centerize" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button><br><br> 
-                <form method="post" action="adminFuncs.php">
-                    <div class = "collapse" id = "adminPagePW">
-                        <input type = "password" class = "optional form-control" placeholder="insert password here" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*"> 
-                        <input type="hidden" value = "verifyPassword" name = "message">
-                        <button class = "btn btn-info pull-left submitPW"> Submit </button>
-                    </div>  
-                </form>
+                <h4 class = "inline"> You can sign in to the market by clicking this button! </h4> &nbsp; &nbsp;
+                <button class = "inline btn btn-primary admin" onclick = "location.replace('index.php')">THE MARKET </button>
                 <br>
-                <h4> SEE YOU LATER </h4>
+                <h4>  </h4>
                 <br>
                 <img src = "pics/lpcLogo.png" class = "lpcLogo"> &nbsp; &nbsp;
                 <img src = "pics/lpcsgLogo.jpg" class = "lpcsgLogo">

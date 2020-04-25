@@ -210,7 +210,7 @@
         Morris.Donut({
             element: 'retvsnew',
             data: [<?php echo $retvsnew; ?>],
-            colors:['#994d00','#ffa64d']
+            colors:['#994d00','#ffa64d', '#ff8000']
         })
     </script>
 </html>

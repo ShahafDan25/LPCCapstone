@@ -22,7 +22,7 @@ s = satetment
 r = row / result
 */
 
-    
+
 
     // ======================================================== //
     // -------------------- POSTS MESSAGES ---------------------//
@@ -622,16 +622,21 @@ r = row / result
     function getRetVSNew($c, $d)
     {
         $data = "";
-        $sql_newPs = "SELECT COUNT(*) FROM Patrons WHERE firstMarket = ".$d;
+        $sql_newPs = "SELECT COUNT(*) FROM Patrons WHERE firstMarket = ".$d.";";
         $s_newPs = $c -> query($sql_newPs);
         $noobies = $s_newPs -> fetchColumn();
+
+        $sql_oldPs = "SELECT COUNT(*) FROM Patrons WHERE firstMarket < ".$d.";";
+        $s_oldPs = $c -> query($sql_oldPs);
+        $oldies = $s_oldPs -> fetchColumn();
 
         $sql_allPs = "SELECT COUNT(*) FROM Patrons";
         $s_allPs = $c -> query($sql_allPs);
         $all = $s_allPs -> fetchColumn();
 
-        $oldies = $all - $noobies;
-        $data = "{value: ".$noobies.", label: 'New Patrons'},{value: ".$oldies.", label: 'Returning Patrons'}";
+        $futuristics = $all - $noobies - $oldies;
+        if($futuristics == 0)$data = "{value: ".$noobies.", label: 'New Patrons'}";
+        else $data = "{value: ".$noobies.", label: 'New Patrons'},{value: ".$oldies.", label: 'Returning Patrons'},{value: ".$futuristics.", label: 'Future Markets'}";
         return $data;
     }
 

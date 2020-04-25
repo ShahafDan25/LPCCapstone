@@ -6,7 +6,7 @@
     $c = connDB();
     $s = $c -> prepare($sql);
     $s -> execute();
-    $r = $s -> fetch(PDO::FETCH__ASSOC);
+    $r = $s -> fetch(PDO::FETCH_ASSOC);
     $d = intval(substr($r['changeDate'],0,4).substr($r['changeDate'],5,2).substr($r['changeDate'],8,2));
     if($today < $date && $today > $date - 12) //12 days before password will expire
     {

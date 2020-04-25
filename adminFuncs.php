@@ -10,7 +10,7 @@
         <div class = "midPage">
             <input type = "hidden" id = "justToTest">
         </div>
-    </body>
+    </body>    
 </html>
 <?php
 /*
@@ -104,13 +104,11 @@ r = row / result
         {
             changeInventoryStatus(connDB(), $date_format);
         }
-        elseif($_POST['invokeOrReport'] == 'deleteMarket')
+        elseif($_POST['invokeOrReport'] == "deleteMarket")
         {
             changeToDeleteStatus(connDB(), $date_format);
-            echo '<script>';
-                echo 'if(confirm("WARNING: Deleting a market will also delete any record of the people for whom it was the first market! Are you sure you would like to continue with the deletion?")){<?php deleteMarket()?>}';
-                echo 'else { alert("Ok, this market will not be deleted"); location.replace("admin.php");}';
-            echo '</script>';
+            deleteMarket(connDB());
+           // echo '<script>location.replace("admin.php")</script>';
         }
 
         echo '<script> location.replace("admin.php") </script>'; 
@@ -434,27 +432,26 @@ r = row / result
 
     function changeToDeleteStatus($c, $d)
     {
-        $sql = "UPDATE Markets SET toDelete = 1 WHERE idByDate = ".$d;
-        $sql .= "UPDATE Markets SET toDelete = 1 WHERE idByDate <> ".$d;
-        $s = $c -> preapre($sql);
+        $sql = "UPDATE Markets SET toDelete = 1 WHERE idByDate = ".$d.";";
+        $sql .= "UPDATE Markets SET toDelete = 0 WHERE idByDate <> ".$d.";";
+        $s = $c -> prepare($sql);
         $s -> execute();
         return;
     }
 
-    function deleteMarket()
+    function deleteMarket($c)
     {
-        $c = connDB();
         $sql = "SELECT idByDate FROM Markets WHERE toDelete = 1";
-        $s = $c -> preapre($sql);
+        $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
         $d = $r['idByDate'];
 
         //risky moves now
-        $sql = "DELETE FROM MarketLogins WHERE Markets_idByDate = ".$d;
-        $sql .= "DELETE FROM Patrons WHERE firstMarket = ".$d;
-        $sql .= "DELETE FROM Items WHERE Markets_idByDate = ".$d;
-        $sql .= "DELETE FROM Markets WHERE idByDate = ".$d;
+        $sql = "DELETE FROM MarketLogins WHERE Markets_idByDate = ".$d.";";
+        $sql .= "DELETE FROM Patrons WHERE firstMarket = ".$d.";";
+        $sql .= "DELETE FROM Items WHERE Markets_idByDate = ".$d.";";
+        $sql .= "DELETE FROM Markets WHERE idByDate = ".$d.";";
         $s = $c -> prepare($sql);
         $s -> execute();
         return;

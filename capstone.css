@@ -228,6 +228,7 @@ hr
     padding: 5% !important;
     height: 5% !important;
 }
+.tinyText {font-size:10px;}
 .blackback{background-color: #90aecc !important;}
 .btn-success{background-color: #28a745;}
 .checkID{display: inline-block !important;}

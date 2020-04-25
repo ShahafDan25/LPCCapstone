@@ -88,37 +88,40 @@
                         </select>
                     </div> <!-- END OF DROPDOWN -->
                     <br><br>
-                    <p> <!-- RADIO BUTTONS -->
-                    <label class = "pull-left radioBtn">
-                        <input id = "invokeRadio" name="invokeOrReport" value = "invoke" type="radio" checked />
-                        &nbsp;<span> Activate</span>
-                    </label>
-                    </p><br><br>
-                    <p>
-                    <label class = "pull-left radioBtn">
-                        <input id = "reportRadio" name="invokeOrReport" value = "terminate" type="radio" />
-                        &nbsp;<span> Terminate</span>
-                    </label>
-                    </p> <br><br>
-                    <p>
-                    <label class = "pull-left radioBtn">
-                        <input id = "reportRadio" name="invokeOrReport" value = "report" type="radio" />
-                        &nbsp;<span> Report</span>
+                    <p class = "inline"> <!-- RADIO BUTTONS -->
+                    <label class = "pull-left radioBtn ">
+                        <input class = "inline" id = "invokeRadio" name="invokeOrReport" value = "invoke" type="radio" checked />
+                        &nbsp;<span class = "inline"> Activate</span>
                     </label>
                     </p>
-                    <br><br>
-                    <p>
+                    <p class = "inline">
                     <label class = "pull-left radioBtn">
-                        <input id = "reportRadio" name="invokeOrReport" value = "inventory" type="radio" />
-                        &nbsp;<span> Inventory</span>
+                        <input class = "inline" id = "reportRadio" name="invokeOrReport" value = "terminate" type="radio" />
+                        &nbsp;<span class = "inline"> Terminate</span>
+                    </label>    
+                    </p>
+                    <p class = "inline">
+                    <label class = "pull-left radioBtn">
+                        <input class = "inline" id = "reportRadio" name="invokeOrReport" value = "report" type="radio" />
+                        &nbsp;<span class = "inline"> Report</span>
                     </label>
                     </p>
-                    <br><br>
+                   
+                    <p class = "inline">
+                    <label class = "pull-left radioBtn">
+                        <input class = "inline" id = "reportRadio" name="invokeOrReport" value = "inventory" type="radio" />
+                        &nbsp;<span class = "inline"> Inventory</span>
+                    </label>
+                    </p>
+                    <p class = "inline">
                     <label class = "pull-left radioBtn"> <!-- LATER CHANGE THE NAME FROM invokeOrReport TO something more realizable -->
-                        <input id = "reportRadio" name="invokeOrReport" value = "deleteMarket" type="radio" />
-                        &nbsp;<span> Delete Records</span>
+                        <input class = "inline" id = "reportRadio" name="invokeOrReport" value = "deleteMarket" type="radio" />
+                        &nbsp;<span class = "inline"> Delete</span>
                     </label>
                     </p>
+                    <!-- <p class = "inline tinyText">
+                        WARNING: Deleting a market will also delete any record of the people for whom it was the first market!
+                    </p> -->
                     <br><br>
                     <!-- END OF RADIO BUTTONS -->
                     <input id = "hiddenMessage" type="hidden" value = "invokeOrReport" name = "message">

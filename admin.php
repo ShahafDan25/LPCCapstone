@@ -8,7 +8,7 @@
     $s -> execute();
     $r = $s -> fetch(PDO::FETCH_ASSOC);
     $d = intval(substr($r['changeDate'],0,4).substr($r['changeDate'],5,2).substr($r['changeDate'],8,2));
-    if($today < $date && $today > $date - 12) //12 days before password will expire
+    if($today < $date && $today > $date - 12) 
     {
         echo '<script>alert("Your password will expire on '.$date.'. Make sure to change it beforehand!");</script>';
     }
@@ -64,7 +64,7 @@
                 </div>
 
             </div><br>
-            <h3> <u> Instructions </u> </h3>
+            <h3 class = "pull-left instructions"> <u> Instructions </u> </h3>
             <ul class = "pull-left instructions">
                 <li class = "pull-left"> 1.  Create a new market by choosing a date </li><br>
                 <li class = "pull-left"> 2.  Choose a Market by Clicking the Second Button </li><br>
@@ -74,9 +74,7 @@
             </ul>
         </div>
         <br><br><br><br><br> <br> 
-        <!-- SAFETY SPACING I GUESS YOU COULD CALL THIS -->
         <div class = "lower_portion">
-            <!-- COLLAPSE FOR NEW MARKET -->
             <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>
             <div id = "new_market" class = "collapse">
                 <form method = "post" action = "adminFuncs.php">
@@ -87,8 +85,7 @@
 
                 </form>
             </div>
-            <br> <br> <!-- SOME SPACING THAT MIGHT BE NEEDED-->
-            <!-- COLLAPSE FOR REPOTR GENERATION -->
+            <br> <br> 
             
                 <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Choose a Market </button>
                 <div id = "generate_report" class = "collapse">
@@ -101,48 +98,45 @@
                                 echo populate_market_dropdown(connDB());
                           ?>
                         </select>
-                    </div> <!-- END OF DROPDOWN -->
+                    </div> 
                     <br><br>
-                    <p class = "inline"> <!-- RADIO BUTTONS -->
+                    <p class = "inline"> 
                     <label class = "pull-left radioBtn ">
-                        <input class = "inline" id = "invokeRadio" name="invokeOrReport" value = "invoke" type="radio" checked />
+                        <input class = "inline" id = "invokeRadio" name="adminOption" value = "invoke" type="radio" checked />
                         &nbsp;<span class = "inline"> Activate</span>
                     </label>
                     </p>
                     <p class = "inline">
                     <label class = "pull-left radioBtn">
-                        <input class = "inline" id = "reportRadio" name="invokeOrReport" value = "terminate" type="radio" />
+                        <input class = "inline" id = "reportRadio" name="adminOption" value = "terminate" type="radio" />
                         &nbsp;<span class = "inline"> Terminate</span>
                     </label>    
                     </p>
                     <p class = "inline">
                     <label class = "pull-left radioBtn">
-                        <input class = "inline" id = "reportRadio" name="invokeOrReport" value = "report" type="radio" />
+                        <input class = "inline" id = "reportRadio" name="adminOption" value = "report" type="radio" />
                         &nbsp;<span class = "inline"> Report</span>
                     </label>
                     </p>
                    
                     <p class = "inline">
                     <label class = "pull-left radioBtn">
-                        <input class = "inline" id = "reportRadio" name="invokeOrReport" value = "inventory" type="radio" />
+                        <input class = "inline" id = "reportRadio" name="adminOption" value = "inventory" type="radio" />
                         &nbsp;<span class = "inline"> Inventory</span>
                     </label>
                     </p>
                     <p class = "inline">
-                    <label class = "pull-left radioBtn"> <!-- LATER CHANGE THE NAME FROM invokeOrReport TO something more realizable -->
-                        <input class = "inline" id = "reportRadio" name="invokeOrReport" value = "deleteMarket" type="radio" />
+                    <label class = "pull-left radioBtn"> 
+                        <input class = "inline" id = "reportRadio" name="adminOption" value = "deleteMarket" type="radio" />
                         &nbsp;<span class = "inline"> Delete</span>
                     </label>
                     </p>
-                    <!-- <p class = "inline tinyText">
-                        WARNING: Deleting a market will also delete any record of the people for whom it was the first market!
-                    </p> -->
+                   
                     <br><br>
-                    <!-- END OF RADIO BUTTONS -->
-                    <input id = "hiddenMessage" type="hidden" value = "invokeOrReport" name = "message">
+                    
+                    <input id = "hiddenMessage" type="hidden" value = "adminOption" name = "message">
                     <button class = "btn btn-success" id = "submit"> SUBMIT </button>
                 </form>                     
-                <!-- ADD PHP CODE -->
                 </div>
            
         </div>

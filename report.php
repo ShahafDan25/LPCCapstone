@@ -1,6 +1,6 @@
 <?php
     include "adminFuncs.php";
-    $conn = connDB(); //first and foremost, establish a database connection
+    $conn = connDB(); 
 ?>
 <html !DOCTYPE>
     <head>
@@ -40,20 +40,20 @@
 
     <!-- ---------------------------------------------------------------- -->
     <body class = "body_report">
-        <button id = "goToAdmin" class = "inline btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
-        <button id = "goToMarket" class = "inline btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
+        <button id = "goToAdmin" class = "inline btn btn-primary admin pull-left" onclick = "location.replace('admin.php')"> Admin Page </button>
+        <button id = "goToMarket" class = "inline btn btn-primary admin pull-left" onclick = "location.replace('index.php')"> The Market </button>
         <form action = "adminFuncs.php" method = "post">
             <input type = "hidden" value = "pdfreport" name = "message">
 
             <button  class = "inline btn btn-success admin pull-right"> Generate Report </button>
         </form>
-        <h1> MARKET REPORT </h1> <!-- PHP: ADD DATE LATER -->
+        <h1> MARKET REPORT </h1>
         <h4>
         <?php
 
-            $sql = "SELECT idByDate FROM Markets WHERE reported = 1"; //add the date pf the marlet of which we generate the report
-            $stmt = $conn -> prepare($sql); //create the statment
-            $stmt -> execute(); //execute the statement
+            $sql = "SELECT idByDate FROM Markets WHERE reported = 1"; 
+            $stmt = $conn -> prepare($sql); 
+            $stmt -> execute(); 
             $row = $stmt -> fetch(PDO::FETCH_ASSOC);
             echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
             $d = $row['idByDate'];
@@ -84,21 +84,20 @@
                 </thead>
                 <tbody>
                     <?php
-                        $addline = ""; //just kinda declare the variable (idk if its necessary in php but bbsts)
-                        //we already berify in previous pages that there exists a market that is
+                        $addline = ""; 
                         $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE reported = 1)";
-                        $stmt_a = $conn -> prepare($sql_a); //create the statment
-                        $stmt_a -> execute(); //execute the statement
+                        $stmt_a = $conn -> prepare($sql_a);
+                        $stmt_a -> execute(); 
                         $totalPeople = 0;
                         $totalKids = 0;
                         $totalAdults = 0;
                         $totalSeniors = 0;
                         while($row_a = $stmt_a -> fetch(PDO::FETCH_ASSOC))
-                        { //new format: mm / dd / yyyy
+                        { 
                             $sql_b = "SELECT * FROM Patrons WHERE patID = ".$row_a['Patrons_patID'];
                             $stmt_b = $conn -> prepare($sql_b);
                             $stmt_b -> execute();
-                            while($row_b = $stmt_b -> fetch(PDO::FETCH_ASSOC)) //nested while loop for SQL query by Date
+                            while($row_b = $stmt_b -> fetch(PDO::FETCH_ASSOC)) 
                             {
                                 $addline = "<tr><td scope='row'>";
                                 $totalPeople++;
@@ -119,7 +118,6 @@
                                 $addline .= "<td>".$row_b['EmailAdd']."</td>";
                                 $addline .= "<td>".$row_b['PhoneNumber']."</td>";
                                 $addline .= "<td>".$row_b['PromotionMethod']."</td></tr>";
-                                //after building the string, echo and reset when the loop start again
                                 echo $addline;
                             }
                         }                        
@@ -130,7 +128,7 @@
             <p class = "totalInfo"> 
                         <strong><u> Total Attendees</u></strong>: 
                         <?php echo $totalPeople; ?>
-                        &nbsp;&nbsp;&nbsp;&nbsp;  <!--some formatting -->
+                        &nbsp;&nbsp;&nbsp;&nbsp;  
                         <strong><u> Total Children (0 - 17)</u></strong>: 
                         <?php echo $totalKids; ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -156,7 +154,7 @@
            
             
         </div>
-        <!-- GRAPH WILL BE INSERTED HERE --><br><br>
+        <br><br>
         <h3> Attendance Graph </h3>
         <div class = "report_box_class">
             <div id = "chart"></div>
@@ -183,10 +181,9 @@
 
     <!-- ---------------------------------------------------------------- -->
     <script>
-        //add morris.js code right here to populate the graph inside the "att_graph" html div block
         Morris.Line({
-            element : 'chart', //referring to the graph's html div block
-            data:[<?php echo $attGraphData; ?>], //get the variable from the adminFuncs.php file (already included)
+            element : 'chart', 
+            data:[<?php echo $attGraphData; ?>], ]
             xkey:'TIME',
             ykeys:['AMOUNT'],
             labels:['Attendance'],
@@ -210,7 +207,7 @@
         Morris.Donut({
             element: 'retvsnew',
             data: [<?php echo $retvsnew; ?>],
-            colors:['#994d00','#ffa64d', '#ff8000']
+            colors:['#994d00','#ffa64d']
         })
     </script>
 </html>

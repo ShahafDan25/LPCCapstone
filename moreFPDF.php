@@ -1,28 +1,27 @@
-<?php //include "fpdf_lib/fpdf.php"; ?> 
 <?php include "connDB.php"; ?>
 
 <?php
-require "fpdf_lib/fpdf.php";
+require "otherFiles/fpdf_lib/fpdf.php";
     class myFPDFClass extends FPDF
     {
         public $totalAdults = 0;
         public $totalKids = 0;
         public $totalPeople = 0;
         public $totalSeniors = 0;
-        function tableHead() //used to set the header of our table in the pdf report
+        function tableHead() 
         {
             $this -> SetFont('Arial', 'B', 14); 
-            $this -> Cell(60, 10, 'Name', 1, 0, 'C'); //'C' feature will centrize th text within the cell
+            $this -> Cell(60, 10, 'Name', 1, 0, 'C'); 
             $this -> Cell(25, 10, 'Student ?', 1, 0, 'C');
             $this -> Cell(90, 10, 'People in Household', 1, 0, 'C');
-            $this -> Ln(); // move to the next line in the table
+            $this -> Ln(); 
             $this -> SetFont('Arial', 'B', 12); 
             $this -> Cell(60, 8, '   -   ', 1, 0, 'C');
             $this -> Cell(25, 8, '   -   ', 1, 0, 'C');
             $this -> Cell(30, 8, 'Kids', 1, 0, 'C');
             $this -> Cell(30, 8, 'Adults', 1, 0, 'C');
             $this -> Cell(30, 8, 'Seniors', 1, 0, 'C');
-            $this -> Ln(); //now to the body of the table
+            $this -> Ln(); 
             return;
         }
 
@@ -30,18 +29,18 @@ require "fpdf_lib/fpdf.php";
         {
             $this -> SetFont('Arial', 'B', 10); 
             $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE reported = 1)";
-            $s_a = $c -> prepare($sql_a); //create the statment
-            $s_a -> execute(); //execute the statement
+            $s_a = $c -> prepare($sql_a); 
+            $s_a -> execute(); 
             $totalPeople = 0;
             $totalKids = 0;
             $totalAdults = 0;
             $totalSeniors = 0;
             while($r_a = $s_a -> fetch(PDO::FETCH_ASSOC))
-            { //new format: mm / dd / yyyy
+            { 
                 $sql_b = "SELECT FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount FROM Patrons WHERE patID = ".$r_a['Patrons_patID'];
                 $s_b = $c -> prepare($sql_b);
                 $s_b -> execute();
-                while($r_b = $s_b -> fetch(PDO::FETCH_ASSOC)) //nested while loop for SQL query by Date
+                while($r_b = $s_b -> fetch(PDO::FETCH_ASSOC)) 
                 {
                     $this -> Cell(60, 7, $r_b['FirstName']."  ".$r_b['LastName'], 1, 0, 'C');
                     
@@ -51,7 +50,7 @@ require "fpdf_lib/fpdf.php";
                     $this -> Cell(30, 7, $r_b['ChildrenAmount'], 1, 0, 'C');
                     $this -> Cell(30, 7, $r_b['AdultsAmount'], 1, 0, 'C');
                     $this -> Cell(30, 7, $r_b['SeniorsAmount'], 1, 0, 'C');
-                    $this -> Ln(); //endl
+                    $this -> Ln(); 
 
                     $totalPeople++;
                     $totalKids += $r_b['ChildrenAmount'];
@@ -60,7 +59,7 @@ require "fpdf_lib/fpdf.php";
                     
                 }
             }   
-            // also pront the average statistics
+            // ------------------ averages and statistics ---------------------//
             $this -> Ln();
             $this -> SetFont('Arial', 'B', 14); 
             $this -> Cell(30, 10, 'Statistics: ');

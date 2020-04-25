@@ -25,8 +25,8 @@
     </head>
 
     <body class = "body">
-    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
-    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
+    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = "location.replace('admin.php')"> Admin Page </button>
+    <button id = "goToMarket" class = "btn btn-primary admin pull-left" onclick = "location.replace('index.php')"> The Market </button>
     <br>    
     <span style = "text-align:center!important;">
             <h1 > MARKET'S INVENTORY </h1>

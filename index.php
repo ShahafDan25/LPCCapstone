@@ -7,9 +7,6 @@
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-        <!-- newer addition - we don't wanna use this
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        -->
 
         <!-- CSS HARDCODE FILE LINK -->
         <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
@@ -30,8 +27,7 @@
     </head>
     <body class = "body">
         <br><br>
-        <!-- THIS IS THE HEAD OF THE PAGE: LOGO, TITLE, ADMIN, etc.-->
-        <!-- LOOK INTO FLEX BOXED: DIVIDE THIS DIV INTO 3 SEGMENTS -->
+       
         <div class = "upperPortion">
             
                 <img src = "pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
@@ -58,14 +54,14 @@
         </div>
 
 
-        <!-- THIS IS THE BODY OF THE PAGE -->
+        
         <div class = "operational"> 
             
             <span class = "left" >
                 <h3> Returning Patrons </h3> 
                 <button class = "btn btn-warning" data-toggle = "collapse" data-target = "#oldPats_div"> I have been here before </button>
                 <div class = "collapse retPats" id = "oldPats_div">
-                    <br> <!-- BEGIN LOGIN FORM -->
+                    <br> 
                     <form method = "post" action = "capstone.php">
                         <h4> Insert Your Market ID <i class="fa fa-chevron-down"></i> </h4>
                         <span style = "display: inline-block">
@@ -76,21 +72,19 @@
                     
                     
                         <p> please look for your name from the dropdown below <br>  After finding your ID, please insert it in the box above </p>
-                        <!-- DROP DOWN STARTS HERE -->
-                        <!-- TAKE CARE OF THAT LATER... POST OR PULL? (What is the oppositve of a pull form?)-->
-                        
+                       
                         <div id="myDropdown" class="dropdown-content">
                         <input type="text" placeholder="Search..." id="myInput" onkeyup="filterFunction()">
                             <?php  
                                 echo populate_dropdown(connDB());
                             ?>
-                        </div><!-- DROPDOWN ENDS HERE -->
+                        </div>
                   
                     
                     <br>
                     <input type="hidden" value = "patronLogin" name = "message">
                     
-                    </form> <!-- END OF LOGIN FORM -->
+                    </form>
                 </div>
             </span>
             <hr><hr>
@@ -101,7 +95,6 @@
             
 
             <div class = "collapse" id = "newPats_div">
-                <!-- FORM TO VERIFY ID VALIDITY -->
                 <form method = "post" action = "capstone.php"> 
                     <br>
                     <input type = "text" class = "mandatory btn form-not-form" placeholder="Choose ID (6 Digits)" class = "idChosen" id = "input" name = "patron_id" required pattern = "\S+.*"> &nbsp;
@@ -110,8 +103,8 @@
                     
                 </form>
                 <hr>
-                <!-- FORM TO FILL INFO -->
-                <form method = "post" action = "capstone.php"> <!-- FORM FOR NEW PATRONS -->
+ 
+                <form method = "post" action = "capstone.php"> 
                 <h4> Please fill out the followings</h4>
                 <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Approved </p> 
                 <div id = "name" class = "infoDiv">
@@ -142,8 +135,7 @@
                     <input type = "number" class = "mandatory form-control" id = "input" name = "seniors_amount" placeholder="Seniors (Ages 64 +)" required pattern = "\S+.*"><br>
                 </div>
                 <hr>
-                <!----- MAKE EMAIL MANDATORY !!!
-                -->
+
                 <div id = "PersonalInfo" class = "infoDiv">
                     <h4> Contact Information </h4>
                     <input type = "text" class = "optional form-control" id = "EmailInput" name = "email_address" placeholder="email address" ><br>
@@ -169,10 +161,10 @@
                 </div>
                 <input type="hidden" value = "insertNewPats" name = "message">
                 <button class = "btn btn-success" id = "newPatSubmission"> SUBMIT </button>
-                </form> <!-- WE END THE FORM FOR NEW PATRONS -->
+                </form> 
             </div> 
             </span>
             <br><br><br>
-        </div><!-- END OF operational div-->
+        </div>
     </body>
 </html>

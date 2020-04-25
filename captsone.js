@@ -1,4 +1,3 @@
-// red/green input texts in HTML
 function filterFunction()
 {
   var input, filter, ul, li, a, i;
@@ -30,4 +29,3 @@ function checkAdminPW()
   }
 }
 
-//funcstion for the admin.php page below (was one, got deleted)

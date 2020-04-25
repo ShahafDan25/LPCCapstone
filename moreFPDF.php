@@ -16,18 +16,19 @@ require "fpdf_lib/fpdf.php";
             $this -> Cell(25, 10, 'Student ?', 1, 0, 'C');
             $this -> Cell(90, 10, 'People in Household', 1, 0, 'C');
             $this -> Ln(); // move to the next line in the table
-            $this -> Cell(60, 10, '   -   ', 1, 0, 'C');
-            $this -> Cell(25, 10, '   -   ', 1, 0, 'C');
-            $this -> Cell(30, 10, 'Kids', 1, 0, 'C');
-            $this -> Cell(30, 10, 'Adults', 1, 0, 'C');
-            $this -> Cell(30, 10, 'Seniors', 1, 0, 'C');
+            $this -> SetFont('Arial', 'B', 12); 
+            $this -> Cell(60, 8, '   -   ', 1, 0, 'C');
+            $this -> Cell(25, 8, '   -   ', 1, 0, 'C');
+            $this -> Cell(30, 8, 'Kids', 1, 0, 'C');
+            $this -> Cell(30, 8, 'Adults', 1, 0, 'C');
+            $this -> Cell(30, 8, 'Seniors', 1, 0, 'C');
             $this -> Ln(); //now to the body of the table
             return;
         }
 
         function tableBody($c)
         {
-            $this -> SetFont('Arial', 'B', 11); 
+            $this -> SetFont('Arial', 'B', 10); 
             $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE reported = 1)";
             $s_a = $c -> prepare($sql_a); //create the statment
             $s_a -> execute(); //execute the statement
@@ -42,14 +43,14 @@ require "fpdf_lib/fpdf.php";
                 $s_b -> execute();
                 while($r_b = $s_b -> fetch(PDO::FETCH_ASSOC)) //nested while loop for SQL query by Date
                 {
-                    $this -> Cell(60, 8, $r_b['FirstName']."  ".$r_b['LastName'], 1, 0, 'C');
+                    $this -> Cell(60, 7, $r_b['FirstName']."  ".$r_b['LastName'], 1, 0, 'C');
                     
-                    if($r_b['StudentStatus'] == 1) $this -> Cell(25, 8, "  YES   ", 1, 0, 'C');
-                    else $this -> Cell(25, 8, " ", 1, 0, 'C');                    
+                    if($r_b['StudentStatus'] == 1) $this -> Cell(25, 7, "  YES   ", 1, 0, 'C');
+                    else $this -> Cell(25, 7, " ", 1, 0, 'C');                    
                     
-                    $this -> Cell(30, 8, $r_b['ChildrenAmount'], 1, 0, 'C');
-                    $this -> Cell(30, 8, $r_b['AdultsAmount'], 1, 0, 'C');
-                    $this -> Cell(30, 8, $r_b['SeniorsAmount'], 1, 0, 'C');
+                    $this -> Cell(30, 7, $r_b['ChildrenAmount'], 1, 0, 'C');
+                    $this -> Cell(30, 7, $r_b['AdultsAmount'], 1, 0, 'C');
+                    $this -> Cell(30, 7, $r_b['SeniorsAmount'], 1, 0, 'C');
                     $this -> Ln(); //endl
 
                     $totalPeople++;
@@ -64,14 +65,21 @@ require "fpdf_lib/fpdf.php";
             $this -> SetFont('Arial', 'B', 14); 
             $this -> Cell(30, 10, 'Statistics: ');
             $this -> Ln();
-            $this -> SetFont('Arial','B', 11); 
-            $this -> Cell(20, 10, 'Total Kids Reported: '.$totalKids.'.  Average Kids Per Household: '.$totalKids/$totalPeople);
+            $this -> SetFont('Arial','B', 10); 
+            $this -> Cell(20, 6, 'Total Patrons: '.$totalPeople.'.  Total People Reported: '.strval($totalAdults+$totalKids+$totalSeniors));
             $this -> Ln();
-            $this -> Cell(20, 10, 'Total Adults Reported: '.$totalAdults.'.  Average Adults Per Household: '.$totalAdults/$totalPeople);
+            $this -> Cell(20, 6, 'Total Kids Reported: '.$totalKids.'.  Average Kids Per Household: '.strval(round($totalKids/$totalPeople, 2)));
             $this -> Ln();
-            $this -> Cell(20, 10, 'Total Seniors Reported: '.$totalSeniors.'.  Average Seniors Per Household: '.$totalSeniors/$totalPeople);
+            $this -> Cell(20, 6, 'Total Adults Reported: '.$totalAdults.'.  Average Adults Per Household: '.strval(round($totalAdults/$totalPeople, 2)));
+            $this -> Ln();
+            $this -> Cell(20, 6, 'Total Seniors Reported: '.$totalSeniors.'.  Average Seniors Per Household: '.strval(round($totalSeniors/$totalPeople, 2)));
             $this -> Ln();
             return;      
+        }
+        function pasteAttendanceGraph()
+        {
+            
+            return;
         }
     }
 ?>

@@ -33,6 +33,11 @@
                 padding-top: 10% !important;
                 padding-bottom: 10% !important;
             }
+            .goToAdminForm
+            {
+                margin-right: 42% !important;
+                margin-left: 42% !important;
+            }
         </style>
     </head>
     <body class = "body_noMarket">
@@ -42,15 +47,15 @@
             <div>
                 <h2> No Market is Currently Active. Please Go to the Admin Page, and Activate One!</h2>
                 <br>
-                <button id = "goToAdmin" class = "btn btn-primary admin centerize" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button><br><br> 
-                <form method="post" action="adminFuncs.php">
+                <button id = "goToAdmin" class = "btn btn-primary admin centrize" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button>
+                <form method="post" action="adminFuncs.php" class = "centrize goToAdminForm">
                     <div class = "collapse" id = "adminPagePW">
                         <input type = "password" class = "optional form-control" placeholder="insert password here" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*"> 
                         <input type="hidden" value = "verifyPassword" name = "message">
                         <button class = "btn btn-info pull-left submitPW"> Submit </button>
                     </div>  
                 </form>
-                <br>
+                <br><br><br>
                 <h4> SEE YOU LATER </h4>
                 <br>
                 <img src = "pics/lpcLogo.png" class = "lpcLogo"> &nbsp; &nbsp;

@@ -112,7 +112,14 @@
                         <input id = "reportRadio" name="invokeOrReport" value = "inventory" type="radio" />
                         &nbsp;<span> Inventory</span>
                     </label>
-                    </p><br><br>
+                    </p>
+                    <br><br>
+                    <label class = "pull-left radioBtn"> <!-- LATER CHANGE THE NAME FROM invokeOrReport TO something more realizable -->
+                        <input id = "reportRadio" name="invokeOrReport" value = "deleteMarket" type="radio" />
+                        &nbsp;<span> Delete Records</span>
+                    </label>
+                    </p>
+                    <br><br>
                     <!-- END OF RADIO BUTTONS -->
                     <input id = "hiddenMessage" type="hidden" value = "invokeOrReport" name = "message">
                     <button class = "btn btn-success" id = "submit"> SUBMIT </button>

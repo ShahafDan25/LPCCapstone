@@ -19,5 +19,5 @@
 
     }
 
-    generate_report($c);
+    generate_report($c, $d);
 ?>

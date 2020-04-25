@@ -1,4 +1,5 @@
 <?php include "connDB.php"; ?>
+<?php include "fpdf_lib/fpdf.php"; ?> 
 
 <html !DOCTYPE>
     <head>
@@ -117,7 +118,7 @@ r = row / result
     if($_POST['message'] == 'pdfreport')
     {
         pdf_report(connDB());
-        echo '<script> location.replace("report.pdf");</script>';
+        //echo '<script> location.replace("report.pdf");</script>';
     }
 
     // ======================================================== //
@@ -231,16 +232,21 @@ r = row / result
         $s = $c -> prepare ($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $d = $r['idByDate'];
 
         //--------------- report code ---------------------//
+
+
         $pdf = new FPDF(); //generate a new pdf
         $pdf -> AddPage(); //add page
-        $pdf ->SetFont('Arial', 'B', 16); //Font: arial. Bolden. size 16
+        $pdf ->SetFont('Arial', 'B', 28); //Font: arial. Bolden. size 16
         $pdf->Cell(40,10,'Hello World!');
 
-        
-        $pdf->Output("~report_".$d.".pdf");
-        echo '<script>alert("YOUR PDF IS GENERATED AS:  ~report_'.$d.'.pdf  ");</script>';
+
+        //$pdf->Output("~report_".$d.".pdf", 'D'); 
+        // IMPORTANT NOTE: had to change the modifications of rt.pdf to in order ot edit it with chmod 777 rt.pdf
+        $pdf -> Output('rt.pdf', 'F');
+        //echo '<script>alert("YOUR PDF IS GENERATED AS:  ~report_'.$d.'.pdf  ");</script>';
         return; //it will then switch back to the report page
     }
 

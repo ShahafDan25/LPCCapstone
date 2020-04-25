@@ -42,9 +42,10 @@
     <body class = "body_report">
         <button id = "goToAdmin" class = "inline btn btn-primary admin pull-left" onclick = location.replace('admin.php')> Admin Page </button>
         <button id = "goToMarket" class = "inline btn btn-primary admin pull-left" onclick = location.replace('index.php')> The Market </button>
-        <form>
-            <button  class = "inline btn btn-success admin pull-right"> Generate Report </button>
+        <form action = "adminFuncs.php" method = "post">
             <input type = "hidden" value = "pdfreport" name = "message">
+
+            <button  class = "inline btn btn-success admin pull-right"> Generate Report </button>
         </form>
         <h1> MARKET REPORT </h1> <!-- PHP: ADD DATE LATER -->
         <h4>
@@ -108,7 +109,7 @@
                                 $addline .= "<th>".$row_b['FirstName']."</th>";
                                 $addline .= "<th>".$row_b['LastName']."</th>";
 
-                                if($row_b['StudentStatus'] == 1) $addline .= "<td><div style = 'background-color:  #99ffcc; padding-right: 5% !important; text-align: center; '>  ✓  </div></td>";
+                                if($row_b['StudentStatus'] == 1) $addline .= "<td><div style = 'background-color:  #99ffcc; padding-right: 5% !important; text-align: center; border-radius: 150px'>  ✓  </div></td>";
                                 else $addline .= "<td>    </td>";
 
 

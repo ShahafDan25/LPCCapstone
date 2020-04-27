@@ -49,7 +49,7 @@
         <div class = "upper_portion_admin">
             <h1> Admin and Management Page</h1> <br>
             <div>
-                <button id = "goToMarket" class = "btn btn-primary admin" onclick = location.replace('index.php')> Market </button>
+                <button id = "goToMarket" class = "btn btn-primary admin" onclick = "location.replace('index.php')"> Market </button>
                 &nbsp; &nbsp;
                 <button id = "changePW" class = "btn btn-primary admin" data-toggle = "collapse" data-target = "#changePWDiv" aria-expanded="false"> Change Password </button>
                 <div id = "changePWDiv" class = "changePW collapse">

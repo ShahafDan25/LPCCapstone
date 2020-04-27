@@ -183,7 +183,7 @@
     <script>
         Morris.Line({
             element : 'chart', 
-            data:[<?php echo $attGraphData; ?>], ]
+            data:[<?php echo $attGraphData; ?>], 
             xkey:'TIME',
             ykeys:['AMOUNT'],
             labels:['Attendance'],

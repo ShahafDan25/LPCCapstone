@@ -53,14 +53,14 @@ t = time
         }
         if($A && $B)
         {
-            if(verifyPastPasswords($c, $_POST['newPW1'])) 
+            if(verifyPastPasswords(connDB(), $_POST['newPW1'])) 
             {
                 echo '<script>alert("This password was already used in the past, try a different one!");</script>';
             }
             else
             {
-                changePWinDB($c, $_POST['newPW1']);
-                updatePWHistory($c, $_POST['oldPW']);
+                updatePWHistory(connDB(), $_POST['oldPW']);
+                changePWinDB(connDB(), $_POST['newPW1']);
                 echo '<script>alert("Password Changed Successfully!");</script>';
             }
             echo '<script>location.replace("admin.php");</script>'; 
@@ -87,38 +87,10 @@ t = time
         }
         else
         {
-            if($_POST['adminOption'] == "invoke")
-            {
-                
-                $c = connDB(); 
-    
-                $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$d_f; 
-                $s = $c -> prepare($sql);
-                $s -> execute();
-                date_default_timezone_set("America/Los_Angeles"); 
-                $starttime = date("H:i"); 
-    
-                $start_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
-                $sql_a = "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$d_f; 
-                $s_a = $c -> prepare($sql_a);
-                $s_a -> execute();
-    
-                $sql = "UPDATE Markets SET active = 0 WHERE NOT idByDate = ".$d_f;
-                $s = $c -> prepare($sql);
-                $s -> execute();
-            }
-            elseif($_POST['adminOption'] == "report")
-            {
-                generate_report(connDB(), $d_f);
-            }
-            elseif($_POST['adminOption'] == "terminate")
-            {
-                terminateActiveMarket(connDB(), $d_f); 
-            }
-            elseif($_POST['adminOption'] == "inventory")
-            {
-                changeInventoryStatus(connDB(), $d_f);
-            }
+            if($_POST['adminOption'] == "invoke") activateMarket(connDB(), $d_f);
+            elseif($_POST['adminOption'] == "report") generate_report(connDB(), $d_f);
+            elseif($_POST['adminOption'] == "terminate") terminateActiveMarket(connDB(), $d_f);
+            elseif($_POST['adminOption'] == "inventory") changeInventoryStatus(connDB(), $d_f);
             elseif($_POST['adminOption'] == "deleteMarket")
             {
                 changeToDeleteStatus(connDB(), $d_f);
@@ -149,13 +121,13 @@ t = time
         }
         else
         {
-            echo '<script> alert("Password Incorrect, Please Try Again!"); </script>';
+            echo '<script> alert("Password Incorrect, Please Try Again!"); location.replace("index.php"); </script>';
         }
     }
 
     if($_POST['message'] == 'insertNewPats')
     {
-        $c -> connDB();
+        $c = connDB();
         insertPat($c, $_POST["first_name"], 
                         $_POST["last_name"],
                         $_POST["student?"],
@@ -326,12 +298,12 @@ t = time
         
 
         
-        $sql = "SELECT time_stamp FROM MarketLogins WHERE Patrons_patID = ".$id." AND Markets_idByDate = ".$date.";";
+        $sql = "SELECT time_stamp FROM MarketLogins WHERE Patrons_patID = ".$id." AND Markets_idByDate = ".$d.";";
         $s = $c -> prepare($sql);
         $s -> execute();
         if(!$s->fetch(PDO::FETCH_ASSOC)) 
         {
-            $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES (".$date.", ".$id."., '".$time_digits."');";
+            $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES (".$d.", ".$id."., '".$time_digits."');";
             $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $c->exec($sql); 
             echo '<script>alert("WELCOME TO THE MARKET");</script>';
@@ -375,6 +347,17 @@ t = time
         return; 
     }
 
+    function verifyPastPasswords($c, $new)
+    {
+        $sql = "SELECT passwords FROM AdminPW";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        while($r = $s -> fetch(PDO::FETCH_ASSOC))
+        {
+            if($new == $r['passwords']) return true; //meaning the password has already been in use
+        }
+        return false;
+    }
     
     function newMarket($c, $d)
     {
@@ -420,14 +403,28 @@ t = time
         date_default_timezone_set("America/Los_Angeles");
         $today = date("Y-m-d");
         $sql = "UPDATE AdminPW SET current = 0, changeDate = '".$today."' WHERE passwords = '".md5($oldPW)."';";
+        $c -> prepare($sql) -> execute();
+        return;
+    }
+
+    function activateMarket($c, $d)
+    {
+        date_default_timezone_set("America/Los_Angeles"); 
+        $starttime = date("H:i"); 
+        $start_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
+
+        $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$d.";";
+        $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$d.";";
+        $c -> prepare($sql) -> execute();
+        return;
     }
 
     function terminateActiveMarket($c, $d)
     {
         $c = connDB();
-        $sql = "UPDATE Markets SET active = 0 WHERE idByDate = ".$d; 
-        $s = $c -> prepare($sql);
-        $s -> execute();
+        $sql = "UPDATE Markets SET active = 2 WHERE idByDate = ".$d; //active = 2, means closed for good
+        
+        $c -> prepare($sql) -> execute();
         date_default_timezone_set("America/Los_Angeles"); 
         $closetime = date("H:i");
         $close_time_digits = substr($closetime, 0, 2).substr($closetime, 3, 2);

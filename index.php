@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
+        <link rel = "stylesheet" type = "text/css" href = "adminFuncs.css"/>
 
         <!-- Bootstrap for JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -62,7 +62,7 @@
                 <button class = "btn btn-warning" data-toggle = "collapse" data-target = "#oldPats_div"> I have been here before </button>
                 <div class = "collapse retPats" id = "oldPats_div">
                     <br> 
-                    <form method = "post" action = "capstone.php">
+                    <form method = "post" action = "adminFuncs.php">
                         <h4> Insert Your Market ID <i class="fa fa-chevron-down"></i> </h4>
                         <span style = "display: inline-block">
                             <input type = "text" class = "mandatory form-control inline" placeholder = "Market ID" name = "patronID"><button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
@@ -95,7 +95,7 @@
             
 
             <div class = "collapse" id = "newPats_div">
-                <form method = "post" action = "capstone.php"> 
+                <form method = "post" action = "adminFuncs.php"> 
                     <br>
                     <input type = "text" class = "mandatory btn form-not-form" placeholder="Choose ID (6 Digits)" class = "idChosen" id = "input" name = "patron_id" required pattern = "\S+.*"> &nbsp;
                     <input type = "hidden" value = "checkID" name = "message" id = "input">
@@ -104,7 +104,7 @@
                 </form>
                 <hr>
  
-                <form method = "post" action = "capstone.php"> 
+                <form method = "post" action = "adminFuncs.php"> 
                 <h4> Please fill out the followings</h4>
                 <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Approved </p> 
                 <div id = "name" class = "infoDiv">

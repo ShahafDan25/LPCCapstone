@@ -3,13 +3,13 @@
     <head>
         <title> The Market </title>
 
-        <link rel="shortcut icon" href="pics/lpcsgLogo.jpg"/>
+        <link rel="shortcut icon" href="otherFiles/pics/lpcsgLogo.jpg"/>
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel = "stylesheet" type = "text/css" href = "adminFuncs.css"/>
+        <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
 
         <!-- Bootstrap for JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -30,8 +30,8 @@
        
         <div class = "upperPortion">
             <!-- UPPER PORTION: Admin Login, Title, Logos -->
-                <img src = "pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
-                <img src = "pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
+                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
+                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
             <div class = "pull-left">
                 <button id = "goToAdmin" class = "btn btn-primary pull-left admin" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button><br><br> 
                 <form method="post" action="index.php">
@@ -129,9 +129,9 @@
                 <hr>
                 <div id = "household" class = "infoDiv">
                     <h4> How many people are in your family? (per age) </h4>
-                    <input type = "number" class = "mandatory form-control" id = "input" name = "children_amount" placeholder="Children (Ages 0 - 17)" required pattern="\S+.*"><br>
-                    <input type = "number" class = "mandatory form-control" id = "input" name = "adults_amount" placeholder="Adults (Ages 18 - 64)" required pattern = "\S+.*"><br>
-                    <input type = "number" class = "mandatory form-control" id = "input" name = "seniors_amount" placeholder="Seniors (Ages 64 +)" required pattern = "\S+.*"><br>
+                    <input type = "number" class = "mandatory form-control" id = "input" name = "children_amount" placeholder="Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*"><br>
+                    <input type = "number" class = "mandatory form-control" id = "input" name = "adults_amount" placeholder="Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*"><br>
+                    <input type = "number" class = "mandatory form-control" id = "input" name = "seniors_amount" placeholder="Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*"><br>
                 </div>
                 <hr>
 

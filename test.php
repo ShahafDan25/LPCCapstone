@@ -1,5 +1,5 @@
 <?php include "connDB.php"; ?>
-<?php include "fpdf_lib/fpdf.php"; ?> 
+<?php include "fotherFiles/pdf_lib/fpdf.php"; ?> 
 <?php
 
     $c = connDB();

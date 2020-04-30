@@ -7,22 +7,22 @@
         <title> Market - Report </title>
 
         <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="./The Market_files/bootstrap.min.css">
+        <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
         
         <!-- CSS HARDCODE FILE LINK -->
         <link rel="stylesheet" type="text/css" href="capstone.css">
 
         <!-- Bootstrap for JQuery -->
-        <script src="./The Market_files/jquery.min.js"></script>
+        <script src="./otherFiles/jquery.min.js"></script>
 
         <!-- Bootstrap for JavaScript -->
-        <script src="./The Market_files/bootstrap.min.js"></script>
+        <script src="./otherFiles/bootstrap.min.js"></script>
 
         <!-- Bootstrap for CSS Icon -->
-        <script src="./The Market_files/a076d05399.js"></script><link rel="stylesheet" href="./The Market_files/free.min.css" media="all">
+        <script src="./otherFiles/a076d05399.js"></script><link rel="stylesheet" href="./otherFiles/free.min.css" media="all">
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
-        <script src="./The Market_files/captsone.js"></script>
+        <script src="captsone.js"></script>
 
         <!-- MORRIS.JS (for graphing utilities from PHP data) LINKS -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">

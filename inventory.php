@@ -33,6 +33,8 @@
         </span>
         <br>
         <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#edit_inv" aria-expanded="false" id = "submit"> ADD TO INVENTORY </button><br>
+        <!-- Add new item to the inventory -->
+
         <div class = "inv_box_class collapse" id = "edit_inv">
             <h4><u> ADD TO INVENTORY </u></h4>
             <br>
@@ -45,6 +47,7 @@
         </div>
         <br><br>
         <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#view_inv" aria-expanded="false" id = "submit"> VIEW INVENTORY </button><br>
+        <!-- Table with the current updated inventory -->
         <div class = "inv_box_class collapse" id = "view_inv">
             <h4><u> CURRENT INVENTORY </u></h4>
             <br>

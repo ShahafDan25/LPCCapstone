@@ -66,6 +66,7 @@
 
         <br><br>
         
+                    <!-- Table: Patrons in that specific market -->
         <div class = "report_box_class" id = "repot_box_id">
             <table class = "table">
                 <thead>
@@ -125,6 +126,7 @@
                 </tbody>
             </table>
             
+            <!-- Statistics: bottom of graph -->
             <p class = "totalInfo"> 
                         <strong><u> Total Attendees</u></strong>: 
                         <?php echo $totalPeople; ?>
@@ -179,8 +181,9 @@
         <br><br>
     </body>
 
-    <!-- ---------------------------------------------------------------- -->
+    <!-- ------------------------ SCRIPT GRAPHS ------------------------------>
     <script>
+        //attendance graph (linear) 
         Morris.Line({
             element : 'chart', 
             data:[<?php echo $attGraphData; ?>], 
@@ -191,6 +194,7 @@
             stacked:true
         });
 
+        //promotion method comparison graph (bars)
         Morris.Bar({
             element: 'promGraph', 
             data:[<?php echo $promGraphData;?>], 
@@ -204,6 +208,7 @@
             resize:false
         });
 
+        //return vs new patrons graph (donuts (pi chart))
         Morris.Donut({
             element: 'retvsnew',
             data: [<?php echo $retvsnew; ?>],

@@ -1,5 +1,6 @@
 <?php include "adminFuncs.php"; ?>
 <?php
+    //password expiration check
     date_default_timezone_set("America/Los_Angeles");
     $today = intval(date("Y").date("m").date("d"));
     $sql = "SELECT changeDate FROM AdminPW WHERE current = 1";
@@ -48,6 +49,7 @@
     <body class = "body">
         <div class = "upper_portion_admin">
             <h1> Admin and Management Page</h1> <br>
+            <!-- Password Modification: -->
             <div>
                 <button id = "goToMarket" class = "btn btn-primary admin" onclick = "location.replace('index.php')"> Market </button>
                 &nbsp; &nbsp;
@@ -64,6 +66,7 @@
                 </div>
 
             </div><br>
+            <!-- Page Instructions: -->
             <h3 class = "pull-left instructions"> <u> Instructions </u> </h3>
             <ul class = "pull-left instructions">
                 <li class = "pull-left"> 1.  Create a new market by choosing a date </li><br>
@@ -75,6 +78,7 @@
         </div>
         <br><br><br><br><br> <br> 
         <div class = "lower_portion">
+            <!-- Create New Market: -->
             <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>
             <div id = "new_market" class = "collapse">
                 <form method = "post" action = "adminFuncs.php">
@@ -86,7 +90,7 @@
                 </form>
             </div>
             <br> <br> 
-            
+                <!-- Choose a market and action: -->
                 <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Choose a Market </button>
                 <div id = "generate_report" class = "collapse">
                 <form method = "post" action = "adminFuncs.php">
@@ -100,6 +104,7 @@
                         </select>
                     </div> 
                     <br><br>
+                    <!-- Market Actions: -->
                     <p class = "inline"> 
                     <label class = "pull-left radioBtn ">
                         <input class = "inline" id = "invokeRadio" name="adminOption" value = "invoke" type="radio" checked />
@@ -118,7 +123,6 @@
                         &nbsp;<span class = "inline"> Report</span>
                     </label>
                     </p>
-                   
                     <p class = "inline">
                     <label class = "pull-left radioBtn">
                         <input class = "inline" id = "reportRadio" name="adminOption" value = "inventory" type="radio" />

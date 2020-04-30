@@ -2,7 +2,7 @@
 
 <?php
 require "otherFiles/fpdf_lib/fpdf.php";
-    class myFPDFClass extends FPDF
+    class myFPDFClass extends FPDF //extend all the features from the FPDF class, but more functions
     {
         public $totalAdults = 0;
         public $totalKids = 0;
@@ -25,6 +25,7 @@ require "otherFiles/fpdf_lib/fpdf.php";
             return;
         }
 
+        //table body: insert only necessary information from the report page
         function tableBody($c)
         {
             $this -> SetFont('Arial', 'B', 10); 
@@ -74,11 +75,6 @@ require "otherFiles/fpdf_lib/fpdf.php";
             $this -> Cell(20, 6, 'Total Seniors Reported: '.$totalSeniors.'.  Average Seniors Per Household: '.strval(round($totalSeniors/$totalPeople, 2)));
             $this -> Ln();
             return;      
-        }
-        function pasteAttendanceGraph()
-        {
-            
-            return;
         }
     }
 ?>

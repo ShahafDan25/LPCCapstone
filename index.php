@@ -29,7 +29,7 @@
         <br><br>
        
         <div class = "upperPortion">
-            
+            <!-- UPPER PORTION: Admin Login, Title, Logos -->
                 <img src = "pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
                 <img src = "pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
             <div class = "pull-left">
@@ -41,8 +41,6 @@
                         <button class = "btn btn-info pull-left submitPW"> Submit </button>
                     </div>  
                 </form>
-
-            
             </div>
             <br><br><br><br><br>
             <h1 class = "mid"> The Market </h1>
@@ -56,7 +54,7 @@
 
         
         <div class = "operational"> 
-            
+            <!-- Returning patrons: Login using ID -->
             <span class = "left" >
                 <h3> Returning Patrons </h3> 
                 <button class = "btn btn-warning" data-toggle = "collapse" data-target = "#oldPats_div"> I have been here before </button>
@@ -89,6 +87,7 @@
             </span>
             <hr><hr>
             <span class = "right">
+            <!-- Never been to the market before: sign up form -->
                 <h3> Newcoming Patrons</h3>
                 
                 <button id = "newPatsInfoReveal" class = "btn btn-warning" data-toggle = "collapse" data-target = "#newPats_div" > It's my first time here </button>

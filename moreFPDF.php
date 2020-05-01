@@ -4,6 +4,30 @@
 require "otherFiles/fpdf_lib/fpdf.php";
     class myFPDFClass extends FPDF //extend all the features from the FPDF class, but more functions
     {
+
+        function Heads($c)
+        {
+            $sql = "SELECT idByDate FROM Markets WHERE reported = 1";
+            $s = $c -> prepare ($sql);
+            $s -> execute();
+            $r = $s -> fetch(PDO::FETCH_ASSOC);
+            $d = $r['idByDate'];
+
+            $this -> SetFont('Arial', 'B', 20); 
+            $this -> Cell(40,12,'The Market   |   LPCSG ', 'C');
+            
+            $this->Cell( 40, 10, $this->Image("otherFiles/pics/lpcsgLogo.jpg", 120, 5, 35), 0, 0, 'L', false );
+            $this->Cell( 40, 10, $this->Image("otherFiles/pics/lpcLogo2.png", 160, 5, 35), 0, 0, 'L', false );
+
+            $this -> Ln();
+            $this -> SetFont('Arial', 'B', 12); 
+            $this -> Cell (40, 10, 'Report '.substr($d,4,2)." / ".substr($d,6,2)." / ".substr($d,0,4),'C');
+            $this -> Ln();
+            $this -> Ln();
+            return;
+        }
+
+
         public $totalAdults = 0;
         public $totalKids = 0;
         public $totalPeople = 0;
@@ -74,7 +98,35 @@ require "otherFiles/fpdf_lib/fpdf.php";
             $this -> Ln();
             $this -> Cell(20, 6, 'Total Seniors Reported: '.$totalSeniors.'.  Average Seniors Per Household: '.strval(round($totalSeniors/$totalPeople, 2)));
             $this -> Ln();
+            $this -> Ln();
+            // $sql = "SELECT COUNT(*) FROM Patrons WHERE firstMarket = ".$d.";";
+            // $s = $c -> query($sql);
+            // $noobies = $s -> fetchColumn();
+            // $this -> Cell(20, 6, 'New Patrons to the Market: '.$noobies);
+            // $this -> Ln();
+            // $this -> Cell(20, 6, 'Returning Patrons to the Market: '.$totalPeople-$noobies);
+
             return;      
+        }
+
+        function signature()
+        {
+            $this -> SetFont('Arial', 'B', 14); 
+            $this -> Cell(30, 10, 'Signatures: ');
+            $this -> Ln();
+            $this -> Ln();
+            $this -> SetFont('Arial'); 
+            $this -> Cell(40, 6, '_____________________');
+            $this -> Cell(40, 6, '                     ');
+            $this -> Cell(40, 6, '_____________________');
+            $this -> SetFont('Arial','B', 07); 
+            $this -> Ln();
+            $this -> Cell(40, 6, 'Student Life Advisor and Coordinator');
+            $this -> Cell(40, 6, '                     ');
+            $this -> Cell(40, 6, 'Director of Programs and Services');
+           
+
+            return;
         }
     }
 ?>

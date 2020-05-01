@@ -483,24 +483,17 @@ t = time
 
     function pdf_report($c) //generate pdf report
     {
-        $sql = "SELECT idByDate FROM Markets WHERE reported = 1";
-        $s = $c -> prepare ($sql);
-        $s -> execute();
-        $r = $s -> fetch(PDO::FETCH_ASSOC);
-        $d = $r['idByDate'];
+        
 
         //--------------- report code ---------------------//
 
 
         $pdf = new myFPDFClass(); 
         $pdf -> AddPage();
-        $pdf -> SetFont('Arial', 'B', 20); 
-        $pdf -> Cell(40,10,'The Market - Report from '.substr($d,4,2)." / ".substr($d,6,2)." / ".substr($d,0,4),'C');
-        $pdf -> Ln(); 
-
+        $pdf -> Heads(connDB());
         $pdf -> tableHead();
         $pdf -> tableBody(connDB());
-
+        $pdf -> signature();
         //$pdf->Output("~report_".$d.".pdf", 'D'); 
         // IMPORTANT NOTE: had to change the modifications of rt.pdf to in order ot edit it with chmod 777 rt.pdf
         $pdf -> Output('rt.pdf', 'F');

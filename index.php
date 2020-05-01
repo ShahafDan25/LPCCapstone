@@ -6,7 +6,7 @@
         <link rel="shortcut icon" href="otherFiles/pics/lpcsgLogo.jpg"/>
 
         <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
 
         <!-- CSS HARDCODE FILE LINK -->
         <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
@@ -27,33 +27,33 @@
     </head>
     <body class = "body">
         <br><br>
-       
-        <div class = "upperPortion">
-            <!-- UPPER PORTION: Admin Login, Title, Logos -->
-                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
-                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
-            <div class = "pull-left">
-                <button id = "goToAdmin" class = "btn btn-primary pull-left admin" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button><br><br> 
-                <form method="post" action="index.php">
-                    <div class = "collapse" id = "adminPagePW">
-                        <input type = "password" class = "optional form-control" placeholder="insert password here" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*"> 
-                        <input type="hidden" value = "verifyPassword" name = "message">
-                        <button class = "btn btn-info pull-left submitPW"> Submit </button>
-                    </div>  
-                </form>
-            </div>
-            <br><br><br><br><br>
-            <h1 class = "mid"> The Market </h1>
-            <h4 class = "mid"> 
-                <?php
-                    echo current_market_date();
-                ?>
-            </h4>
+        <div class="upperPortion">
+            <span class = "inline"> 
+
+            <button id = "goToAdmin" class = "btn btn-primary pull-left admin" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button>
+            </span>
+            <span class = "inline"> 
+                <h1> THE MARKET </h1>
+            </span>
+            <span class = "inline">
+                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo"> 
+                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo">
+            </span>
+
         </div>
 
+    
+        
 
+    
         
         <div class = "operational"> 
+            <h1 class = "mid"> The Market </h1>
+                <h4 class = "mid"> 
+                    <?php
+                        echo current_market_date();
+                    ?>
+                </h4>
             <!-- Returning patrons: Login using ID -->
             <span class = "left" >
                 <h3> Returning Patrons </h3> 

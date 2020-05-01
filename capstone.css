@@ -161,10 +161,11 @@ html, body
 .mid{text-align: center;}
 .retPats
 {
-    padding-right: 37% !important;
-    padding-left: 37% !important;
+    margin-right: 40%;
+    margin-left: 40%;
 
 }
+.operational{margin-top: 20% !important;}
 .infoDiv
 {
     border-radius: 12px;
@@ -193,6 +194,8 @@ html, body
 {
     margin-left: 5% !important;
     margin-right: 5% !important;
+    border: 1px solid black !important;
+    background-color: white!important;
 }
 .centrize {text-align: center !important;}
 .optional{border: 1.5px solid black !important;}

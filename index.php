@@ -1,13 +1,13 @@
 <?php include "adminFuncs.php";?>
-<html !DOCTYPE>
+<!DOCTYPE html>
+<html>
     <head>
-        <title> The Market </title>
+        <title><img src = "otherFiles/pics/lpcsgLogo.jpg">The Market </title>
 
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel="stylesheet" type="text/css" href="capstone.css">
-
+        <link rel="stylesheet" type="text/css" href="capstone.css"></link>
         <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"></link>
 
         <!-- Bootstrap for JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -32,6 +32,8 @@
             }
         </style>
     </head>
+
+    
     <body class = "indexBody">
         <div class = "header">
             <span>

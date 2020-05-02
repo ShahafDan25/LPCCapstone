@@ -21,11 +21,6 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;}
 .submitPW{margin-top: 2%;}
 
 /* ------------ General Application -------------- */
-html, body
-{
-    margin: 0;
-    height: 100%;
-}
 hr
 {
     width: 65% !important;
@@ -38,7 +33,7 @@ hr
     margin-right: 3% !important;
     margin-left: 3% !important;
 }
-.body_none
+.bodyNone
 {
     text-align: center;
     background-color: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
@@ -52,7 +47,7 @@ hr
 .lpcsgLogo
 {
     margin-right: 2%;
-    height: 85% !important;
+    height: 85%; 
     border-radius: 150px;
     border: 2px solid black;
 }

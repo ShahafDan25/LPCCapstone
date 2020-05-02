@@ -15,14 +15,17 @@
     }
     elseif($today > $date) echo '<script> Your password is expired...</script>';
 ?>
-<html !DOCTYPE>
-    <head>
+<!DOCTYPE html>
+<html>
         <title> Market - Admin </title>
-        <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
-        
+
+                
         <!-- CSS HARDCODE FILE LINK -->
         <link rel="stylesheet" type="text/css" href="capstone.css">
+        
+        <!-- Bootstrap for CSS -->
+        <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
+
 
         <!-- Bootstrap for JQuery -->
         <script src="./otherFiles/jquery.min.js"></script>

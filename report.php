@@ -2,8 +2,8 @@
     include "adminFuncs.php";
     $conn = connDB(); 
 ?>
-<html !DOCTYPE>
-    <head>
+<!DOCTYPE html>
+<html>
         <title> Market - Report </title>
 
         <!-- Bootstrap for CSS -->

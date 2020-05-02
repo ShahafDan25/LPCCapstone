@@ -1,22 +1,20 @@
 <?php include "adminFuncs.php"; ?> <!-- THIS WILL ALSO INCLUDE connDB() -->
-<html !DOCTYPE>
-    <head>
+<!DOCTYPE html>
+<html>
         <title> Market - Report </title>
+                
+        <!-- CSS HARDCODE FILE LINK -->
+        <link href='capstone.css?version=1' rel='stylesheet'></link>
+
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
-        
-        <!-- CSS HARDCODE FILE LINK -->
-        <link rel="stylesheet" type="text/css" href="capstone.css">
 
         <!-- Bootstrap for JQuery -->
         <script src="./otherFiles/jquery.min.js"></script>
 
         <!-- Bootstrap for JavaScript -->
         <script src="./otherFiles/bootstrap.min.js"></script>
-
-        <!-- Bootstrap for CSS Icon -->
-        <script src="./otherFiles/a076d05399.js"></script><link rel="stylesheet" href=".otherFiles/free.min.css" media="all">
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>

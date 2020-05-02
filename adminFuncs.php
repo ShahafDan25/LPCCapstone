@@ -6,11 +6,7 @@
         <title> Market - Admin </title>
         <link rel="stylesheet" type="text/css" href="capstone.css">
     </head>
-    <body class = "body">
-        <div class = "midPage">
-            <input type = "hidden" id = "justToTest">
-        </div>
-    </body>    
+    <body class = "body"></body>
 </html>
 <?php
 /*

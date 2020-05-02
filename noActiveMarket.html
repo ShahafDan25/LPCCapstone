@@ -2,53 +2,21 @@
 <html>
     <head>
         <title> The Market </title>
-
-        <link rel="shortcut icon" href="otherFiles/pics/lpcsgLogo.jpg"/>
-
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
 
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
-
-        <!-- Boostrap For JQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-
-        <!-- Bootstrap for JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-        <style>
-            html, body
-            {
-                margin: 0;
-                height: 100%;
-            }
-            .body_noMarket
-            {
-                text-align: center;
-                background-image: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
-                height: 100% !important;
-                padding-top: 10% !important;
-                padding-bottom: 10% !important;
-            }
-            .goToAdminForm
-            {
-                margin-right: 42% !important;
-                margin-left: 42% !important;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="capstone.css">
     </head>
-    <body class = "body_noMarket">
+    <body class = "body_none">
         <br><br><br>
         <div>
             <br>
             <div>
                 <h2> No Market is Currently Active. Please Go to the Admin Page, and Activate One!</h2>
                 <br>
-                <button id = "goToAdmin" class = "btn btn-primary admin centrize" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button>
-                <form method="post" action="adminFuncs.php" class = "centrize goToAdminForm">
+                <button id = "goToAdmin" class = "btn btn-primary sideBtn centrize" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button>
+                <form method="post" action="adminFuncs.php" class = "centrize w20">
                     <div class = "collapse" id = "adminPagePW">
                         <input type = "password" class = "optional form-control" placeholder="insert password here" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*"> 
                         <input type="hidden" value = "verifyPassword" name = "message">

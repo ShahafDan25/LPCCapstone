@@ -1,24 +1,171 @@
+/* ------------ ONSIES CSS ----------------------- */
+.w25{width: 25% !important;}
+.w55{width: 35% !important;}
+.inv_label{width: 40% !important;}
+.body_report{padding: 5% !important;}
+.btn{border: 1px solid black !important;}
+.dropdown a:hover {background-color: rgb(223, 76, 76) !important;} 
+.dropbtn:hover, .dropbtn:focus {background-color: #3e8e41;}
+.mid{text-align: center;}
+.tinyText {font-size:10px;}
+.blackback{background-color: #90aecc !important;}
+.btn-success{background-color: #28a745;}
+.checkID{display: inline-block !important;}
+.checkIDInput{width: 150% !important;}
+.centrize {text-align: center !important;}
+.optional{border: 1.5px solid black !important;}
+.mandatory{border: 1.5px solid red !important;}
+input:not(:placeholder-shown) {border-color: hsl(0, 76%, 50%) !important;}
+input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;}
+.inline{display: inline-block !important;}
+.submitPW{margin-top: 2%;}
+
+/* ------------ General Application -------------- */
 html, body
 {
     margin: 0;
     height: 100%;
 }
-/* ------------ CODE FOR REPORT PAGE -------------- */
-.w25{width: 25% !important;}
-.w55{width: 35% !important;}
-.inv_label{width: 40% !important;}
-.whiteOut
+hr
+{
+    width: 65% !important;
+    border-top: 1.8px solid white !important;
+}
+.sideBtn
+{
+    border: 1.5px solid black !important;
+    margin: 1% !important;
+    margin-right: 3% !important;
+    margin-left: 3% !important;
+}
+.body_none
+{
+    text-align: center;
+    background-color: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
+    background-attachment: fixed;
+}
+.w20
+{
+    margin-right: 40%;
+    margin-left: 40%;
+}
+.lpcsgLogo
+{
+    margin-right: 2%;
+    height: 85% !important;
+    border-radius: 150px;
+    border: 2px solid black;
+}
+.lpcLogo
+{
+    border-radius: 5px;
+    height: 85% !important;
+}
+/* ------------ Registration Page ---------------- */
+.operational{margin-top: 2% !important;}
+#myInput:focus {outline: 3px solid #ddd;}
+#myInput /* search box */
+{
+    box-sizing: border-box;
+    background-image: url('searchicon.png');
+    background-position: 14px 12px;
+    background-repeat: no-repeat;
+    font-size: 16px;
+    padding: 14px 20px 12px 45px;
+    border: none;
+    border-bottom: 2px solid rgb(68, 5, 5);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.dropdown
+{
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content 
+{    
+    background-color: #f6f6f6;
+    opacity: 0.75;
+    min-width: 230px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    z-index: 1;
+}
+.dropdown-content a 
+{
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.header
+{
+    padding-right: 5%;
+    padding-left: 5%;
+    padding-top: 2%;
+    border-bottom: 1px solid black;
+    background-color: rgba(193,66,66, 0.82);
+    height: 15% !important;
+}
+.infoDiv
+{
+    border-radius: 12px;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+/* ------------ Admin Page ----------------------- */
+.instructions
+{
+    margin-right:20% !important;
+    margin-left: 20% !important;
+} 
+.midbigger
+{
+    width: 110% !important;
+    padding: 5% !important;
+    height: 5% !important;
+}
+.radioBtn
+{
+    margin-left: 35% !important;
+    padding: 1% !important;
+    font-size: 1.2vw !important;
+}
+.upper_portion_admin
+{
+    text-align: center;
+    width: 80% !important;
+    margin-right: 5% !important;
+    margin-left: 5% !important;
+    padding-right: 3% !important;
+    padding-left: 3% !important;
+}
+.whiteOut /* adminFuncs */
 {
     background-color: white !important ;
     border-radius: 25px !important ;
     border-right: 2px solid black !important ;
     border-left: 2px solid black !important ;
 }
-.goToAdminForm
+.ddOption /* adminFuncs */
 {
-    margin-right: 35% !important;
-    margin-left: 35% !important;
+    margin-left: 20% !important;
+    padding: 1.5% !important;
 }
+/* ------------ Report Page ---------------------- */
+.body
+{
+    text-align: center;
+    background-image: linear-gradient(rgb(235, 154, 154), rgb(207, 73, 73));
+    background-attachment: fixed;
+}
+/* ------------ Inventory Page ------------------- */
 .inv_box_class
 {
     text-align: center !important;
@@ -50,7 +197,12 @@ html, body
     margin-right: 5% !important;
 
 }
-.int_input_btn {height: 4% !important; padding: 1% !important; margin-bottom: 50% !important;}
+.int_input_btn
+ {
+    height: 4% !important; 
+    padding: 1% !important; 
+    margin-bottom: 50% !important;
+}
 /* ------------ CODE FOR REPORT PAGE -------------- */
 .report_box_class
 {
@@ -63,176 +215,4 @@ html, body
     background-color: white !important;
 
 }
-.body_report{padding: 5% !important;}
-/* ------------ CODE FOR INDEX [REGISTRATION] PAGE -------------- */
-.body_noMarket
-{
-    text-align: center;
-    background-color: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
-    background-attachment: fixed;
-}
-.midPageMsg
-{
-    width: 60% !important;
-    text-align: center;
-    padding-top: 30% !important;
-    padding-bottom: 30% !important;
-    height: 100% !important;
-    margin-top: 30% !important;
-    margin-bottom:  30% !important;
-}
-.ddOption
-{
-    margin-left: 20% !important;
-    padding: 1.5% !important;
-}
-/* NOW TO BE USED BY Market PAGE */
-.btn{border: 1px solid black !important;}
-/* drop down style sheet */
-.dropdown a:hover {background-color: rgb(223, 76, 76) !important;} 
-.dropbtn:hover, .dropbtn:focus {background-color: #3e8e41;}
-#myInput /* search box */
-{
-    box-sizing: border-box;
-    background-image: url('searchicon.png');
-    background-position: 14px 12px;
-    background-repeat: no-repeat;
-    font-size: 16px;
-    padding: 14px 20px 12px 45px;
-    border: none;
-    border-bottom: 2px solid rgb(68, 5, 5);
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-}
-  
-#myInput:focus {outline: 3px solid #ddd;}
-.instructions
-{
-    margin-right:20% !important;
-    margin-left: 20% !important;
-} 
-.dropdown
-{
-    position: relative;
-    display: inline-block;
-}
-  
-.dropdown-content 
-{    
-    background-color: #f6f6f6;
-    opacity: 0.75;
-    min-width: 230px;
-    overflow: auto;
-    border: 1px solid #ddd;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    z-index: 1;
-}
-.dropdown-content a 
-{
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-/* end of dropdown stylesheet */
-.submitPW{margin-top: 2%;}
-.body, .body_report
-{
-    text-align: center;
-    background-image: linear-gradient(  rgb(235, 154, 154), rgb(207, 73, 73)) !important;
-    background-attachment: fixed;
 
-}
-.mid{text-align: center;}
-.retPats
-{
-    margin-right: 40%;
-    margin-left: 40%;
-
-}
-.operational{margin-top: 2% !important;}
-.infoDiv
-{
-    border-radius: 12px;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    margin-left: 25%;
-    margin-right: 25%;
-}
-.admin
-{
-    border: 1.5px solid black !important;
-    margin: 1% !important;
-    margin-right: 3% !important;
-    margin-left: 3% !important;
-}
-.marketPage
-{
-    border: 1.5px solid black !important;
-    margin-left: 3% !important;
-    margin-right: 3% !important;
-    padding: 1% !important;
-}
-.upperPortion
-{
-    margin-left: 5% !important;
-    margin-right: 5% !important;
-    border: 1px solid black !important;
-    background-color: rgba(255, 245, 245, 80)!important;
-    padding: 2% !important;
-}
-.centrize {text-align: center !important;}
-.optional{border: 1.5px solid black !important;}
-.mandatory{border: 1.5px solid red !important;}
-input:not(:placeholder-shown) {border-color: hsl(0, 76%, 50%) !important;}
-input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;}
-hr
-{
-    width: 65% !important;
-    border-top: 1.8px solid white !important;
-}
-.inline{display: inline-block !important;}
-/* NOW TO BE USED BY ADMIN PAGE */
-.date_input
-{
-    border: 1px solid black !important;
-    border-radius: 10px !important;
-    padding: 1px !important;
-
-}
-.upper_portion_admin
-{
-    text-align: center;
-    width: 80% !important;
-    margin-right: 5% !important;
-    margin-left: 5% !important;
-    padding-right: 3% !important;
-    padding-left: 3% !important;
-}
-.midbigger
-{
-    width: 110% !important;
-    padding: 5% !important;
-    height: 5% !important;
-}
-.tinyText {font-size:10px;}
-.blackback{background-color: #90aecc !important;}
-.btn-success{background-color: #28a745;}
-.checkID{display: inline-block !important;}
-.checkIDInput{width: 150% !important;}
-.radioBtn
-{
-    margin-left: 35% !important;
-    padding: 1% !important;
-    font-size: 1.2vw !important;
-}
-.lower_portion
-{
-    width: 50% !important;
-    text-align: center !important;
-    margin-left: 20% !important;
-    margin-right: 30% !important;
-}

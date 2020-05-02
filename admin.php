@@ -18,23 +18,17 @@
 <html !DOCTYPE>
     <head>
         <title> Market - Admin </title>
-
-        <link rel="shortcut icon" href="./otherFiles/lpcsgLogo.jpg">
-
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
         
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel="stylesheet" type="text/css" href="capstone.css"> 
+        <link rel="stylesheet" type="text/css" href="capstone.css">
 
         <!-- Bootstrap for JQuery -->
         <script src="./otherFiles/jquery.min.js"></script>
 
         <!-- Bootstrap for JavaScript -->
         <script src="./otherFiles/bootstrap.min.js"></script>
-
-        <!-- Bootstrap for CSS Icon -->
-        <script src="./otherFiles/a076d05399.js"></script><link rel="stylesheet" href="./otherFiles/free.min.css" media="all">
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>
@@ -51,10 +45,10 @@
             <h1> Admin and Management Page</h1> <br>
             <!-- Password Modification: -->
             <div>
-                <button id = "goToMarket" class = "btn btn-primary admin" onclick = "location.replace('index.php')"> Market </button>
+                <button id = "goToMarket" class = "btn btn-primary sideBtn" onclick = "location.replace('index.php')"> Market </button>
                 &nbsp; &nbsp;
-                <button id = "changePW" class = "btn btn-primary admin" data-toggle = "collapse" data-target = "#changePWDiv" aria-expanded="false"> Change Password </button>
-                <div id = "changePWDiv" class = "changePW collapse">
+                <button id = "changePW" class = "btn btn-primary sideBtn" data-toggle = "collapse" data-target = "#changePWDiv" aria-expanded="false"> Change Password </button>
+                <div id = "changePWDiv" class = "collapse">
                     <form method = "post" action = "adminFuncs.php">
                         <h4> Change you Password </h4>
                         <input type = "password" placeholder = "Old Password" class = "btn" name = "oldPW"> &nbsp; &nbsp;
@@ -76,7 +70,7 @@
                 <li class = "pull-left"> 5.  Click the submit button! </li>
             </ul>
         </div>
-        <br><br><br><br><br> <br> 
+        <br><br><br><br><br> <br> <br><br> <br>
         <div class = "lower_portion">
             <!-- Create New Market: -->
             <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>

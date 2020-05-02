@@ -39,13 +39,13 @@
     </head>
 
     <!-- ---------------------------------------------------------------- -->
-    <body class = "body_report">
-        <button id = "goToAdmin" class = "inline btn btn-primary admin pull-left" onclick = "location.replace('admin.php')"> Admin Page </button>
-        <button id = "goToMarket" class = "inline btn btn-primary admin pull-left" onclick = "location.replace('index.php')"> The Market </button>
+    <body class = "body">
+        <button id = "goToAdmin" class = "inline btn btn-primary sideBtn pull-left" onclick = "location.replace('admin.php')"> Admin Page </button>
+        <button id = "goToMarket" class = "inline btn btn-primary sideBtn pull-left" onclick = "location.replace('index.php')"> The Market </button>
         <form action = "adminFuncs.php" method = "post">
             <input type = "hidden" value = "pdfreport" name = "message">
 
-            <button  class = "inline btn btn-success admin pull-right"> Generate Report </button>
+            <button  class = "inline btn btn-success sideBtn pull-right"> Generate Report </button>
         </form>
         <h1> MARKET REPORT </h1>
         <h4>
@@ -127,7 +127,7 @@
             </table>
             
             <!-- Statistics: bottom of graph -->
-            <p class = "totalInfo"> 
+            <p> 
                         <strong><u> Total Attendees</u></strong>: 
                         <?php echo $totalPeople; ?>
                         &nbsp;&nbsp;&nbsp;&nbsp;  

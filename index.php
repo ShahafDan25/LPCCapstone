@@ -3,61 +3,36 @@
     <head>
         <title> The Market </title>
 
-        <link rel="shortcut icon" href="otherFiles/pics/lpcsgLogo.jpg"/>
-
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
+        <link rel="stylesheet" type="text/css" href="capstone.css">
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
 
         <!-- Bootstrap for JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 
         <!-- Bootstrap for JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-        <!-- Bootstrap for CSS Icon -->
-        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src = "captsone.js"></script>
 
         <style>
-            .header
-            {
-                padding-right: 5%;
-                padding-left: 5%;
-                padding-top: 2%;
-                border-bottom: 1px solid black;
-                background-color: rgba(193,66,66, 0.82);
-                height: 15% !important;
-            }
-            .lpcsgLogo
-            {
-                margin-right: 2%;
-                height: 85% !important;
-                border-radius: 150px;
-                border: 2px solid black;
-            }
-            .lpcLogo
-            {
-                border-radius: 5px;
-                height: 85% !important;
-            }
-            .index_body
-            {
+            .indexBody 
+            { 
+                background: url('otherFiles/pics/lpc.jpg') no-repeat center center fixed; 
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
                 text-align: center;
-                background: url('otherFiles/pics/lpc.jpg') !important;
-                background-attachment: fixed;
+                background-attachment: fixed; 
+                width: 100% !important;
             }
-
-
         </style>
     </head>
-    <body>
+    <body class = "indexBody">
         <div class = "header">
             <span>
                 <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
@@ -74,16 +49,16 @@
                     ?>
                 </h4>
             <!-- Returning patrons: Login using ID -->
-            <span class = "left" >
+            <span>
                 <h3> Returning Patrons </h3> 
                 <button class = "btn btn-warning" data-toggle = "collapse" data-target = "#oldPats_div"> I have been here before </button>
-                <div class = "collapse retPats" id = "oldPats_div">
+                <div class = "collapse w20" id = "oldPats_div">
                     <br> 
                     <form method = "post" action = "adminFuncs.php">
                         <h4> Insert Your Market ID <i class="fa fa-chevron-down"></i> </h4>
-                        <span style = "display: inline-block">
-                            <input type = "text" class = "mandatory form-control inline" placeholder = "Market ID" name = "patronID"><button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
-                            
+                        <span>
+                            <input type = "text" class = "mandatory form-control inline" placeholder = "Market ID" name = "patronID">
+                            <button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
                         </span>
                     <br>
                     

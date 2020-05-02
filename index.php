@@ -5,11 +5,11 @@
 
         <link rel="shortcut icon" href="otherFiles/pics/lpcsgLogo.jpg"/>
 
-        <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
-
         <!-- CSS HARDCODE FILE LINK -->
         <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
+
+        <!-- Bootstrap for CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
 
         <!-- Bootstrap for JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -24,28 +24,47 @@
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src = "captsone.js"></script>
+
+        <style>
+            .header
+            {
+                padding-right: 5%;
+                padding-left: 5%;
+                padding-top: 2%;
+                border-bottom: 1px solid black;
+                background-color: rgba(193,66,66, 0.82);
+                height: 15% !important;
+            }
+            .lpcsgLogo
+            {
+                margin-right: 2%;
+                height: 85% !important;
+                border-radius: 150px;
+                border: 2px solid black;
+            }
+            .lpcLogo
+            {
+                border-radius: 5px;
+                height: 85% !important;
+            }
+            .index_body
+            {
+                text-align: center;
+                background: url('otherFiles/pics/lpc.jpg') !important;
+                background-attachment: fixed;
+            }
+
+
+        </style>
     </head>
-    <body class = "body">
-        <br><br>
-        <div class="upperPortion">
-            <span class = "inline"> 
-
-            <button id = "goToAdmin" class = "btn btn-primary pull-left admin" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button>
+    <body>
+        <div class = "header">
+            <span>
+                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
+                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
             </span>
-            <span class = "inline"> 
-                <h1> THE MARKET </h1>
-            </span>
-            <span class = "inline">
-                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo"> 
-                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo">
-            </span>
-
         </div>
-
-    
         
-
-    
         
         <div class = "operational"> 
             <h1 class = "mid"> The Market </h1>

@@ -44,36 +44,35 @@
     </head>
 
     <body class = "bodyRed">
+        <div class = "header">
+            <button id = "goToMarket" class = "btn btn-primary sideBtn pull-left" onclick = "location.replace('index.php')"> Market </button>
+            <button id = "changePW" class = "btn btn-primary sideBtn pull-left" data-toggle = "collapse" data-target = "#changePWDiv" aria-expanded="false"> Change Password </button>
+                <h1 class = "pull-left headerTitle"><strong> The Market  -  LPCSG </strong></h1>
+                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right inline"> &nbsp; &nbsp;
+                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right inline">
+        </div>
+        <div id = "changePWDiv" class = "collapse">
+            <form method = "post" action = "adminFuncs.php">
+                <h4> Change you Password </h4>
+                <input type = "password" placeholder = "Old Password" class = "btn" name = "oldPW"> &nbsp; &nbsp;
+                <input type = "password" placeholder = "New Password" class = "btn" name = "newPW1"> &nbsp; &nbsp;
+                <input type = "password" placeholder = "Verify New Password" class = "btn" name = "newPW2"> <br><br> 
+                <input type = "hidden" value = "changePW" name = "message"> <!-- USE THIS TO SEND THE MESSAGE TO THE PHP PAGE -->
+                <button class = "btn btn-success" id = "submit">  Change Password </button>
+            </form>
+        </div>
         <div class = "upper_portion_admin">
             <h1> Admin and Management Page</h1> <br>
-            <!-- Password Modification: -->
-            <div>
-                <button id = "goToMarket" class = "btn btn-primary sideBtn" onclick = "location.replace('index.php')"> Market </button>
-                &nbsp; &nbsp;
-                <button id = "changePW" class = "btn btn-primary sideBtn" data-toggle = "collapse" data-target = "#changePWDiv" aria-expanded="false"> Change Password </button>
-                <div id = "changePWDiv" class = "collapse">
-                    <form method = "post" action = "adminFuncs.php">
-                        <h4> Change you Password </h4>
-                        <input type = "password" placeholder = "Old Password" class = "btn" name = "oldPW"> &nbsp; &nbsp;
-                        <input type = "password" placeholder = "New Password" class = "btn" name = "newPW1"> &nbsp; &nbsp;
-                        <input type = "password" placeholder = "Verify New Password" class = "btn" name = "newPW2"> <br><br> 
-                        <input type = "hidden" value = "changePW" name = "message"> <!-- USE THIS TO SEND THE MESSAGE TO THE PHP PAGE -->
-                        <button class = "btn btn-success" id = "submit">  Change Password </button>
-                    </form>
-                </div>
-
-            </div><br>
             <!-- Page Instructions: -->
-            <h3 class = "pull-left instructions"> <u> Instructions </u> </h3>
+            <h3 class = "pull-left instructions"> <u> Instructions </u> </h3> <br>
             <ul class = "pull-left instructions">
-                <li class = "pull-left"> 1.  Create a new market by choosing a date </li><br>
-                <li class = "pull-left"> 2.  Choose a Market by Clicking the Second Button </li><br>
-                <li class = "pull-left"> 3.  Choose either to invoke a market, or to generate a report, or terminate a market </li><br>
-                <li class = "pull-left"> 4.  Note: In order to generate a report of a market, it must be active! </li><br>
-                <li class = "pull-left"> 5.  Click the submit button! </li>
+                <li class = "pull-left"> 1.  To Create a new Market: Click the First Button </li><br>
+                <li class = "pull-left"> 2.  To Choose a Market Action: Click the Second Button </li><br>
+                <li class = "pull-left"> 3.  Choose From the Shown Options </li><br>
+                <li class = "pull-left"> 4.  Click the submit button! </li>
             </ul>
         </div>
-        <br><br><br><br><br> <br> <br><br> <br>
+        <br>
         <div class = "lower_portion">
             <!-- Create New Market: -->
             <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>
@@ -88,16 +87,16 @@
             </div>
             <br> <br> 
                 <!-- Choose a market and action: -->
-                <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Choose a Market </button>
-                <div id = "generate_report" class = "collapse">
+            <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Choose a Market </button>
+            <div id = "generate_report" class = "collapse">
                 <form method = "post" action = "adminFuncs.php">
                     <h3> Choose a Market</h3>
                     <div class="dropdown">
                         <select class="btn midbigger browser-default custom-select"  name = "marketDate">
                             <option> Choose a market (by date) </option>
-                          <?php
+                            <?php
                                 echo populate_market_dropdown(connDB());
-                          ?>
+                            ?>
                         </select>
                     </div> 
                     <br><br>
@@ -132,13 +131,13 @@
                         &nbsp;<span class = "inline"> Delete</span>
                     </label>
                     </p>
-                   
+                    
                     <br><br>
                     
                     <input id = "hiddenMessage" type="hidden" value = "adminOption" name = "message">
                     <button class = "btn btn-success" id = "submit"> SUBMIT </button>
                 </form>                     
-                </div>
+            </div>
            
         </div>
         

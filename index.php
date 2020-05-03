@@ -53,7 +53,7 @@
                         <form method = "post" action = "adminFuncs.php">
                             <h4> Insert Your Market ID </h4>
                             <span>
-                                <input type = "text" class = "mandatory form-control w55 inline" placeholder = "Market ID" name = "patronID">
+                                <input type = "number" class = "mandatory form-control w55 inline" placeholder = "Market ID" name = "patronID">
                                 <button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
                             </span>
                         <br><br>
@@ -83,7 +83,7 @@
                     <div id = "name" class = "infoDiv">
                         <h4> Please enter your ID, first name, and last name </h4>
                         <br>
-                        <input type = "text" class = "mandatory form-control" placeholder="Enter the ID you chose above" class = "idChosen" id = "idSignUpInput" name = "patron_id" required pattern = "\S+.*" min = "6" max = "6" autocomplete = "off"> &nbsp;
+                        <input type = "number" class = "mandatory form-control" placeholder="Enter the ID you chose above" class = "idChosen" id = "idSignUpInput" name = "patron_id" required pattern = "\S+.*" min = "6" max = "6" autocomplete = "off"> &nbsp;
                         <p id = "alertedIDdiv"></p>
                         <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" name = "first_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                         <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" name = "last_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;

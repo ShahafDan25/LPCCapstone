@@ -152,10 +152,10 @@ hr
 }
 #myList li:nth-of-type(1n+7){display: none;}
 /* ------------ Admin Page ----------------------- */
-.instruction
+.instructions
 {
     margin-right:20% !important;
-    margin-left: 20% !important;
+    margin-left: 25% !important;
 } 
 .midbigger
 {
@@ -189,6 +189,11 @@ hr
 {
     margin-left: 20% !important;
     padding: 1.5% !important;
+}
+.lower_portion
+{
+    margin-top: 10% !important;
+    margin-bottom: 7% !important;
 }
 /* ------------ Report Page ---------------------- */
 .report_box_class

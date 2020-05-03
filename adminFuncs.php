@@ -98,7 +98,7 @@ t = time
     if($_POST['message'] == 'editThatItem') //edit an inventory item
     {
         updateInventoryItem(connDB(), $_POST['editItemName'], $_POST['editItemAmount']);
-        //echo '<script> location.replace("inventory.php") </script>';
+        echo '<script> location.replace("inventory.php") </script>';
     }
 
     if($_POST['message'] == 'pdfreport') //generate a pdf report
@@ -627,14 +627,17 @@ t = time
 
     function insertItem($c, $n, $a) //insert item to the database
     {
-        var_dump($c);
-        $sql = "SELECT idByDate FROM Markets WHERE inventory = 1";
+        $sql = "SELECT Name FROM Items WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
         $s = $c -> prepare($sql); 
         $s -> execute(); 
-        $r = $s -> fetch(PDO::FETCH_ASSOC);
-        $d = $r['idByDate']; 
+        if($s -> fetch(PDO::FETCH_ASSOC))
+        {
+            echo '<script>alert("This item is already found in the database for this market. Please edit its amount by click the View Inventory button");</script>';
+            return;
+        }
+         
 
-        $sqlb = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."',".$a.",".$d.");"; 
+        $sqlb = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."',".$a.", (SELECT idByDate FROM Markets WHERE inventory = 1);"; 
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c->exec($sqlb); 
         echo '<script> location.replace("inventory.php"); </script>';
@@ -681,7 +684,7 @@ t = time
             //add option to edit an item
             $editForm = '<form action = "adminFuncs.php" method = "post">';
             $editForm .= '<td><input type = "text" class = "inv_input inline" name = "editItemName" placeholder = "'.$r['Name'].'" value = "'.$r['Name'].'" style = "width: 60% !important;"></td>';
-            $editForm .= '<td><input type = "number" class = "inv_input inline" name = "editItemAmount" min = "0" placeholder = "'.$r['Amount'].'" value = "'.$r['Amount'].'"></td>';
+            $editForm .= '<td><input type = "number" class = "inv_input inline" name = "editItemAmount" min = "0" placeholder = "'.($r['Amount']+$total).'" value = "'.($r['Amount']+$total).'"></td>';
             $editForm .= '<td><input type = "hidden" class = "inline" name = "message" value = "editThatItem">';
             $editForm .= '<button class = "btn btn-success inv_input_btn inline"> SUBMIT </button></td>';
             $editForm .= '</form>';
@@ -739,12 +742,13 @@ t = time
         }
         elseif (intval($a) < $amountTodate)
         {
-            $sql = "UPDATE Items SET Amount = 0 WHERE Name = '".$n."' AND Markets_idByDate < (SELECT idByDate FROM Markets WHERE inventory = 1)";
-            $sql .= "UPDATE Items SET Amount = ".intval($a)." WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
+            $sql = "UPDATE Items SET Amount = 0 WHERE Name = '".$n."' AND Markets_idByDate < (SELECT idByDate FROM Markets WHERE inventory = 1);";
+            $sql .= "UPDATE Items SET Amount = ".intval($a)." WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1);";
         }
         elseif(intval($a) > $amountTodate && intval($a) < ($total+$amountTodate)) //or perhaps JUST else?
         {
-            $a_substract = $amountTodate-$a;
+            $a_substract = $amountTodate + $total - $a;
+            var_dump($a_substract."\n");
             //get array of all date so far, reduce the max amount from each market one by one
             $previousMarketDates = array();
             $sql_getDates = "SELECT Markets_idByDate FROM Items WHERE Markets_idByDate < (SELECT idByDate FROM Markets WHERE inventory = 1) AND Name = '".$n."';";
@@ -757,14 +761,18 @@ t = time
             //now for each one of the previous markets:
             foreach ($previousMarketDates as &$date)
             {
-                $sql_minor = "SELECT Amount FROM Items WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
+                $sql_minor = "SELECT Amount FROM Items WHERE Name = '".$n."' AND Markets_idByDate = ".$date.";";
                 $s_minor = $c -> prepare($sql_minor);
                 $s_minor -> execute();
-                $r_minor = $s_minr -> fetch(PDO::FETCH_ASSOC);
+                $r_minor = $s_minor -> fetch(PDO::FETCH_ASSOC);
                 $amount_minor = $r_minor['Amount'];
-                if($a_substract >= $amount_minor) $sql .= "UPDATE Items SET Amount = 0 WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1);";
-                else if($a_substract > $amount_minor) $a_substract -= $amount_minor;
-                elseif($a_substract < $amount_minor) $sql .= "UPDATE Items SET Amount = ".($amount_minor-$a_substract)." WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1);";
+                if($a_substract == $amount_minor) $sql .= "UPDATE Items SET Amount = 0 WHERE Markets_idByDate = ".$date." AND Name = '".$n."';";
+                else if($a_substract > $amount_minor) 
+                {
+                    $a_substract = $a_substract-$amount_minor;
+                    $sql .= "UPDATE Items SET Amount = 0 WHERE Markets_idByDate = ".$date." AND Name = '".$n."';";
+                }
+                elseif($a_substract < $amount_minor) $sql .= "UPDATE Items SET Amount = ".intval($amount_minor-$a_substract)." WHERE Markets_idByDate = ".$date." AND Name = '".$n."';";
             }
         }
         //push updates

@@ -732,6 +732,7 @@ t = time
         $amountTodate = $r['Amount'];
 
         //set sql query appropriately to data that needs to be updated
+        $sql = ""; //query line to add updates (in concatination)
         if(intval($a) > ($total+$amountTodate))
         {
             $sql = "UPDATE Items SET Amount = ".intval($a-$total)." WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
@@ -743,6 +744,7 @@ t = time
         }
         elseif(intval($a) > $amountTodate && intval($a) < ($total+$amountTodate)) //or perhaps JUST else?
         {
+            $a_substract = $amountTodate-$a;
             //get array of all date so far, reduce the max amount from each market one by one
             $previousMarketDates = array();
             $sql_getDates = "SELECT Markets_idByDate FROM Items WHERE Markets_idByDate < (SELECT idByDate FROM Markets WHERE inventory = 1) AND Name = '".$n."';";
@@ -750,16 +752,21 @@ t = time
             $s_getDates -> execute();
             while($r_getDates = $s_getDates -> fetch(PDO::FETCH_ASSOC))
             {
-                array_push($previousMarketDates, $r_getDates['Markets_idByDate']);
+                array_push($previousMarketDates, $r_getDates['Markets_idByDate']); //early markets come first (0,1,2,3...)
             }
             //now for each one of the previous markets:
             foreach ($previousMarketDates as &$date)
             {
-                var_dump($date);
+                $sql_minor = "SELECT Amount FROM Items WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
+                $s_minor = $c -> prepare($sql_minor);
+                $s_minor -> execute();
+                $r_minor = $s_minr -> fetch(PDO::FETCH_ASSOC);
+                $amount_minor = $r_minor['Amount'];
+                if($a_substract >= $amount_minor) $sql .= "UPDATE Items SET Amount = 0 WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1);";
+                else if($a_substract > $amount_minor) $a_substract -= $amount_minor;
+                elseif($a_substract < $amount_minor) $sql .= "UPDATE Items SET Amount = ".($amount_minor-$a_substract)." WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1);";
             }
-
         }
-
         //push updates
         $c -> prepare($sql) -> execute();
         return;

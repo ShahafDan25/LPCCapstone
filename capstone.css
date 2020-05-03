@@ -19,7 +19,6 @@
 input:not(:placeholder-shown) {border-color: hsl(0, 76%, 50%) !important;}
 input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;}
 .inline{display: inline-block !important;}
-.submitPW{margin-top: 2%;}
 .invi{display: none !important}
 /* ------------ General Application -------------- */
 hr

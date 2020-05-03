@@ -24,10 +24,13 @@
     <body class = "container">
         <!-- <div class = "container"> -->
             <div class = "header">
-                <span>
-                    <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
-                    <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right">
-                </span>
+                <button class = "sideBtn btn inline btn-primary pull-left" id = "goToAdminBtn"> Admin </button>
+                    <form class = "inline pull-left" id = "goToAdminForm" method="post" action="index.php" style = "display: none;">
+                        <input type = "password" class = "optional form-control inline" placeholder="  Password" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*"> <button class = "btn btn-info inline" id = "inputAdminBtn"> Submit </button>
+                        <input class = "inline" type="hidden" value = "verifyPassword" name = "message">
+                    </form>
+                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right inline"> &nbsp; &nbsp;
+                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right inline">
             </div>
             
             
@@ -79,8 +82,8 @@
                         <br>
                         <input type = "text" class = "mandatory form-control" placeholder="Enter the ID you chose above" class = "idChosen" id = "idSignUpInput" name = "patron_id" required pattern = "\S+.*" min = "6" max = "6" autocomplete = "off"> &nbsp;
                         <p id = "alertedIDdiv"></p>
-                        <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" id = "input" name = "first_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                        <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" id = "input" name = "last_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                        <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" name = "first_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                        <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" name = "last_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     </div>
                     <hr>
                     <div id = "student?" class = "infoDiv">
@@ -137,6 +140,15 @@
 
 
         <script>
+            var adminBtn = document.getElementById("goToAdminBtn");
+            var toAdminForm = document.getElementById("goToAdminForm");
+            var toAdminInput = document.getElementById("inputAdminBtn");
+            var toAdminBtn = document.getElementById("inputAdminPW");
+            toAdminForm.style.visibility = "hidden";
+            toAdminInput.style.visibility = "hidden";
+            toAdminBtn.style.visibility = "hidden";
+
+
             var ids = new Array(<?php echo populateArrayWithIds(connDB()); ?>);
             $(document).ready(function(){
                 $("#myInput").on("keyup", function() {
@@ -152,11 +164,16 @@
                 else if(event.target.value.length != 6) document.getElementById("alertedIDdiv").innerHTML = "ID has to be 6 digits!";
                 else 
                 {
-                    var match = false;
-                    if(ids.includes(event.target.value)) match = true;
-                    if(match) document.getElementById("alertedIDdiv").innerHTML = "ALERT: This ID is already in use!";
+                    if(ids.includes(event.target.value)) document.getElementById("alertedIDdiv").innerHTML = "ALERT: This ID is already in use!";
                     else document.getElementById("alertedIDdiv").innerHTML = "ID availability confirmed";
                 }
+            }
+
+            adminBtn.onclick = function(){
+                adminBtn.style.display = "none";
+                toAdminForm.style.visibility = "visible";
+                toAdminInput.style.visibility = "visible";
+                toAdminBtn.style.visibility = "visible";
             }
         </script>
 

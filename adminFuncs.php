@@ -98,7 +98,7 @@ t = time
     if($_POST['message'] == 'editThatItem') //edit an inventory item
     {
         updateInventoryItem(connDB(), $_POST['editItemName'], $_POST['editItemAmount']);
-        echo '<script> location.replace("inventory.php") </script>';
+        //echo '<script> location.replace("inventory.php") </script>';
     }
 
     if($_POST['message'] == 'pdfreport') //generate a pdf report
@@ -688,7 +688,7 @@ t = time
             // ============================================================== //
             $tableItemData .= "<tr>";
                 $tableItemData .= "<td>".$r['Name']."</td>";
-                $tableItemData .= "<td>".($r['Amount'] + $total)."  [ - ".$total." * ]</td>";
+                $tableItemData .= "<td><strong>".($r['Amount'] + $total)."</strong>\t[ ".$r['Amount']." + ".$total." * ]</td>";
                 $tableItemData .= "<td>".$buttonInsert."</td>";
             $tableItemData .= "</tr>";
             
@@ -731,6 +731,7 @@ t = time
         $r = $s_amount -> fetch(PDO::FETCH_ASSOC);
         $amountTodate = $r['Amount'];
 
+        //set sql query appropriately to data that needs to be updated
         if(intval($a) > ($total+$amountTodate))
         {
             $sql = "UPDATE Items SET Amount = ".intval($a-$total)." WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
@@ -745,12 +746,22 @@ t = time
             //get array of all date so far, reduce the max amount from each market one by one
             $previousMarketDates = array();
             $sql_getDates = "SELECT Markets_idByDate FROM Items WHERE Markets_idByDate < (SELECT idByDate FROM Markets WHERE inventory = 1) AND Name = '".$n."';";
-            
+            $s_getDates = $c -> prepare($sql_getDates);
+            $s_getDates -> execute();
+            while($r_getDates = $s_getDates -> fetch(PDO::FETCH_ASSOC))
+            {
+                array_push($previousMarketDates, $r_getDates['Markets_idByDate']);
+            }
+            //now for each one of the previous markets:
+            foreach ($previousMarketDates as &$date)
+            {
+                var_dump($date);
+            }
+
         }
 
-        $sql = "UPDATE Items SET Amount = ".intval($a)." WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
-        $s = $c -> prepare($sql);
-        $s -> execute();
+        //push updates
+        $c -> prepare($sql) -> execute();
         return;
     }
 ?>

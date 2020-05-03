@@ -52,7 +52,7 @@
             <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#view_inv" aria-expanded="false" id = "submit"> VIEW INVENTORY </button><br>
             <!-- Table with the current updated inventory -->
             <div class = "inv_box_class collapse" id = "view_inv">
-                <p class = "pull-left">* = From Previous Markets' Inventories</p>
+                <p class = "pull-left">*  From Previous Markets' Inventories</p>
                 <br><h4><u> CURRENT INVENTORY </u></h4>
                 <br>
                 <table class = "table inv_table">

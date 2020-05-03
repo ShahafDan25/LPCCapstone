@@ -39,7 +39,7 @@
     </head>
 
     <!-- ---------------------------------------------------------------- -->
-    <body class = "body">
+    <body class = "bodyRed">
         <button id = "goToAdmin" class = "inline btn btn-primary sideBtn pull-left" onclick = "location.replace('admin.php')"> Admin Page </button>
         <button id = "goToMarket" class = "inline btn btn-primary sideBtn pull-left" onclick = "location.replace('index.php')"> The Market </button>
         <form action = "adminFuncs.php" method = "post">

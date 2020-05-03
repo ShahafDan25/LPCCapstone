@@ -1,6 +1,7 @@
 /* ------------ ONSIES CSS ----------------------- */
 .w25{width: 25% !important;}
 .w55{width: 35% !important;}
+.w50{margin-right: 25% !important; margin-left: 25% !important;}
 .inv_label{width: 40% !important;}
 .body_report{padding: 5% !important;}
 .btn{border: 1px solid black !important;}
@@ -19,7 +20,7 @@ input:not(:placeholder-shown) {border-color: hsl(0, 76%, 50%) !important;}
 input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;}
 .inline{display: inline-block !important;}
 .submitPW{margin-top: 2%;}
-
+.invi{display: none !important}
 /* ------------ General Application -------------- */
 hr
 {
@@ -37,6 +38,12 @@ hr
 {
     text-align: center;
     background-color: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
+    background-attachment: fixed;
+}
+.bodyRed
+{
+    text-align: center;
+    background-image: linear-gradient(rgb(235, 154, 154), rgb(207, 73, 73));
     background-attachment: fixed;
 }
 .w20
@@ -57,7 +64,14 @@ hr
     height: 85% !important;
 }
 /* ------------ Registration Page ---------------- */
-.operational{margin-top: 2% !important;}
+.operational
+{
+    margin-top: 2% !important;
+    margin-right: 20% !important;
+    margin-left: 20% !important;
+    background-color: rgba(255, 228, 227, 0.35) !important;
+    border: 3px solid black !important;
+}
 #myInput:focus {outline: 3px solid #ddd;}
 #myInput /* search box */
 {
@@ -97,25 +111,36 @@ hr
 }
 .header
 {
-    padding-right: 5%;
-    padding-left: 5%;
     padding-top: 2%;
+    padding-right: 3% !important;
+    padding-left: 3% !important; 
     border-bottom: 1px solid black;
     background-color: rgba(193,66,66, 0.82);
     height: 15% !important;
 }
+.container
+{ 
+    height: 100% !important;
+    background: url('otherFiles/pics/lpc.jpg') !important; 
+    text-align: center !important; 
+    height: 100% !important; 
+    width: 100% !important;
+    background-position: center !important; 
+    background-repeat: no-repeat !important; 
+    background-size: cover !important; 
+}
 .infoDiv
 {
-    border-radius: 12px;
     padding-left: 5%;
     padding-right: 5%;
     padding-top: 1%;
     padding-bottom: 1%;
-    margin-left: 25%;
-    margin-right: 25%;
+    margin-left: 18%;
+    margin-right: 18%;
 }
+#myList li:nth-of-type(1n+7){display: none;}
 /* ------------ Admin Page ----------------------- */
-.instructions
+.instruction
 {
     margin-right:20% !important;
     margin-left: 20% !important;
@@ -154,11 +179,16 @@ hr
     padding: 1.5% !important;
 }
 /* ------------ Report Page ---------------------- */
-.body
+.report_box_class
 {
-    text-align: center;
-    background-image: linear-gradient(rgb(235, 154, 154), rgb(207, 73, 73));
-    background-attachment: fixed;
+    text-align: center !important;
+    border: 2px solid black !important;
+    border-radius: 5px !important;
+    padding: 1% !important;
+    margin-left: 2% !important;
+    margin-right: 2% !important;
+    background-color: white !important;
+
 }
 /* ------------ Inventory Page ------------------- */
 .inv_box_class
@@ -193,21 +223,11 @@ hr
 
 }
 .int_input_btn
- {
+{
     height: 4% !important; 
     padding: 1% !important; 
     margin-bottom: 50% !important;
 }
-/* ------------ CODE FOR REPORT PAGE -------------- */
-.report_box_class
-{
-    text-align: center !important;
-    border: 2px solid black !important;
-    border-radius: 5px !important;
-    padding: 1% !important;
-    margin-left: 2% !important;
-    margin-right: 2% !important;
-    background-color: white !important;
 
-}
+
 

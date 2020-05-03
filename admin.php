@@ -43,7 +43,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     </head>
 
-    <body class = "body">
+    <body class = "bodyRed">
         <div class = "upper_portion_admin">
             <h1> Admin and Management Page</h1> <br>
             <!-- Password Modification: -->

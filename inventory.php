@@ -22,7 +22,7 @@
  
     </head>
 
-    <body class = "body">
+    <body class = "bodyRed">
     <button id = "goToMarket" class = "btn btn-primary sideBtn pull-left" onclick = "location.replace('admin.php')"> Admin Page </button>
     <button id = "goToMarket" class = "btn btn-primary sideBtn pull-left" onclick = "location.replace('index.php')"> The Market </button>
     <br>    

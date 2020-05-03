@@ -6,7 +6,7 @@
         <title> Market - Admin </title>
         <link rel="stylesheet" type="text/css" href="capstone.css">
     </head>
-    <body class = "body"></body>
+    <body class = "bodyRed"></body>
 </html>
 <?php
 /*
@@ -235,15 +235,33 @@ t = time
         return $pwHidden;
     }
 
+    function populateArrayWithIds($c)
+    {
+        $idsArray = "";
+        $sql = "SELECT patID FROM Patrons";
+        $s = $c -> prepare($sql);
+        $s -> execute(); 
+        $r = $s->fetch(PDO::FETCH_ASSOC);
+        $idsArrays .= strval($r['patID']);
+        while ($r = $s->fetch(PDO::FETCH_ASSOC))
+        { 
+            $idsArrays .= ", ".strval($r['patID']);
+        }
+        return $idArrays;
+    }
+
     function populate_dropdown($c) //populate drop down of previously attended patrons with first and last name and their IDs
     {
         $all_options = "";
         $sql = "SELECT DISTINCT FirstName, LastName, patID FROM Patrons ORDER BY FirstName";
         $s = $c -> prepare($sql);
         $s -> execute(); 
+        $counter = 0;
         while ($r = $s->fetch(PDO::FETCH_ASSOC))
         { 
-            $all_options .= "<option class = 'pull-left ddOption' value = '".$r['FirstName']."".$r['LastName']."'>".$r['FirstName']." ".$r['LastName']."      -       ".$r['patID']."</option><br>";
+            $counter++;
+            if($counter <= 6) $all_options .= "<li class='list-group-item' value = '".$r['patID']."'>".$r['FirstName']." ".$r['LastName']."      -       ".$r['patID']."</li>";
+            else $all_options .= "<li class='list-group-item' value = '".$r['patID']."'>".$r['FirstName']." ".$r['LastName']."      -       ".$r['patID']."</li>";
         }
         return $all_options;
     }
@@ -479,11 +497,7 @@ t = time
 
     function pdf_report($c) //generate pdf report
     {
-        
-
         //--------------- report code ---------------------//
-
-
         $pdf = new myFPDFClass(); 
         $pdf -> AddPage();
         $pdf -> Heads(connDB());

@@ -157,8 +157,13 @@
                     });         
                 });
             });
-            var ids = [<?php echo populateArrayWithIds(connDB()); ?>];
-            console.log(ids);
+            var ids = new Array(<?php echo populateArrayWithIds(connDB()); ?>);
+            console.log(ids.length);
+            for(var i = 0; i < ids.length; i++)
+            {
+                console.log(ids[i]);
+                console.log(" ");
+            }
         </script>
 
     </body>

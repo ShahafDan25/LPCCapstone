@@ -242,12 +242,12 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute(); 
         $r = $s->fetch(PDO::FETCH_ASSOC);
-        $idsArrays .= strval($r['patID']);
+        $idsArrays .= '"'.$r['patID'].'"';
         while ($r = $s->fetch(PDO::FETCH_ASSOC))
         { 
-            $idsArrays .= ", ".strval($r['patID']);
+            $idsArrays .= ', "'.$r['patID'].'"';
         }
-        return $idArrays;
+        return $idsArrays;
     }
 
     function populate_dropdown($c) //populate drop down of previously attended patrons with first and last name and their IDs

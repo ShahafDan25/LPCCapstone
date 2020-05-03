@@ -1,6 +1,6 @@
 /* ------------ ONSIES CSS ----------------------- */
 .w25{width: 25% !important;}
-.w55{width: 35% !important;}
+.w55{width: 55% !important;}
 .w50{margin-right: 25% !important; margin-left: 25% !important;}
 .inv_label{width: 40% !important;}
 .body_report{padding: 5% !important;}
@@ -69,8 +69,9 @@ hr
     margin-top: 2% !important;
     margin-right: 20% !important;
     margin-left: 20% !important;
-    background-color: rgba(255, 228, 227, 0.35) !important;
+    background-color: rgba(255, 228, 227, 0.42) !important;
     border: 3px solid black !important;
+    margin-bottom: 4% !important;
 }
 #myInput:focus {outline: 3px solid #ddd;}
 #myInput /* search box */
@@ -127,7 +128,9 @@ hr
     width: 100% !important;
     background-position: center !important; 
     background-repeat: no-repeat !important; 
-    background-size: cover !important; 
+    background-size: 100% !important; 
+    background-attachment: fixed !important;
+
 }
 .infoDiv
 {

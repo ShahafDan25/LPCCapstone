@@ -21,8 +21,8 @@
     </head>
 
 
-    <body>
-        <div class = "container">
+    <body class = "container">
+        <!-- <div class = "container"> -->
             <div class = "header">
                 <span>
                     <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right"> &nbsp; &nbsp;
@@ -47,11 +47,11 @@
                         <form method = "post" action = "adminFuncs.php">
                             <h4> Insert Your Market ID </h4>
                             <span>
-                                <input type = "text" class = "mandatory form-control inline" placeholder = "Market ID" name = "patronID">
+                                <input type = "text" class = "mandatory form-control w55 inline" placeholder = "Market ID" name = "patronID">
                                 <button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
                             </span>
-                        <br>
-                            <p> please look for your name from the dropdown below <br>  After finding your ID, please insert it in the box above </p>
+                        <br><br>
+                            <p> <strong> FORGOT YOUR ID? </strong> Look for you name below!</p>
                         
                             <input class="form-control" id="myInput" type="text" placeholder="Search.." autocomplete = "off">
                             <br>
@@ -60,12 +60,12 @@
                                     echo populate_dropdown(connDB());
                                 ?>
                             </ul>  
-                            <br>
+                            
                         <input type="hidden" value = "patronLogin" name = "message">
                         </form>
                     </div>
                 </span>
-                <hr><hr>
+                <hr>
                 <span class = "right">
                 <!-- Never been to the market before: sign up form -->
                     <h3> Newcoming Patrons</h3>
@@ -74,23 +74,11 @@
                 
 
                 <div class = "collapse" id = "newPats_div">
-                    <form method = "post" action = "adminFuncs.php"> 
-                        <br>
-                        <input type = "text" class = "mandatory btn form-not-form" placeholder="Choose ID (6 Digits)" class = "idChosen" id = "input" name = "patron_id" required pattern = "\S+.*" min = "6" max = "6" autocomplete = "off"> &nbsp;
-                        <input type = "hidden" value = "checkID" name = "message" id = "input">
-                        <button class = "btn blackback"> Check ID </button> <br>
-                        
-                    </form>
-                    <hr>
-    
-                    <form method = "post" action = "adminFuncs.php"> 
-                    <h4> Please fill out the followings</h4>
-                    <p> Red Border = Mandatory <br> Black border = Optional <br> Green Border = Approved </p> 
                     <div id = "name" class = "infoDiv">
-                        <h4> Please enter you first and last name </h4>
+                        <h4> Please enter your ID, first name, and last name </h4>
                         <br>
-                        <p> First, check to see if the ID is available before you proceed [SEE ABOVE]</p>
-                        <input type = "text" class = "mandatory form-control" placeholder="Enter the ID you chose above" class = "idChosen" id = "input" name = "patron_id" required pattern = "\S+.*" min = "6" max = "6" autocomplete = "off"> &nbsp;
+                        <input type = "text" class = "mandatory form-control" placeholder="Enter the ID you chose above" class = "idChosen" id = "idSignUpInput" name = "patron_id" required pattern = "\S+.*" min = "6" max = "6" autocomplete = "off"> &nbsp;
+                        <p id = "alertedIDdiv"></p>
                         <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" id = "input" name = "first_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                         <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" id = "input" name = "last_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     </div>
@@ -145,10 +133,11 @@
                 </span>
                 <br><br><br>
             </div>
-        </div>
+        <!-- </div> -->
 
 
         <script>
+            var ids = new Array(<?php echo populateArrayWithIds(connDB()); ?>);
             $(document).ready(function(){
                 $("#myInput").on("keyup", function() {
                     var value = $(this).val().toLowerCase();
@@ -157,12 +146,17 @@
                     });         
                 });
             });
-            var ids = new Array(<?php echo populateArrayWithIds(connDB()); ?>);
-            console.log(ids.length);
-            for(var i = 0; i < ids.length; i++)
-            {
-                console.log(ids[i]);
-                console.log(" ");
+            var idInput = document.getElementById("idSignUpInput");
+            idInput.onkeyup = function(event){
+                if (event.target.value.length == 0) document.getElementById("alertedIDdiv").innerHTML = "";
+                else if(event.target.value.length != 6) document.getElementById("alertedIDdiv").innerHTML = "ID has to be 6 digits!";
+                else 
+                {
+                    var match = false;
+                    if(ids.includes(event.target.value)) match = true;
+                    if(match) document.getElementById("alertedIDdiv").innerHTML = "ALERT: This ID is already in use!";
+                    else document.getElementById("alertedIDdiv").innerHTML = "ID availability confirmed";
+                }
             }
         </script>
 

@@ -3,10 +3,8 @@
 
 <html !DOCTYPE>
     <head>
-        <title> Market - Admin </title>
         <link rel="stylesheet" type="text/css" href="capstone.css">
     </head>
-    <body class = "bodyRed"></body>
 </html>
 <?php
 /*

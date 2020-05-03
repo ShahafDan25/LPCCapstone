@@ -18,7 +18,7 @@
 .mandatory{border: 1.5px solid red !important;}
 input:not(:placeholder-shown) {border-color: hsl(0, 76%, 50%) !important;}
 input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;}
-.inline{display: inline-block !important;}
+.inline{display: inline-block !important; display:flex; flex-direction: row;}
 .invi{display: none !important}
 /* ------------ General Application -------------- */
 hr
@@ -36,8 +36,14 @@ hr
 .bodyNone
 {
     text-align: center;
-    background-color: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
+    background-image: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
     background-attachment: fixed;
+    text-align: center !important; 
+    height: 100% !important; 
+    width: 100% !important;
+    background-position: center !important; 
+    background-repeat: no-repeat !important; 
+    background-size: 100% !important; 
 }
 .bodyRed
 {
@@ -118,12 +124,16 @@ hr
     background-color: rgba(193,66,66, 0.82);
     height: 15% !important;
 }
+.headerTitle
+{
+    font-family: 'Lobster', cursive !important; 
+    margin-left: 5%;
+}
 .container
 { 
     height: 100% !important;
     background: url('otherFiles/pics/lpc.jpg') !important; 
     text-align: center !important; 
-    height: 100% !important; 
     width: 100% !important;
     background-position: center !important; 
     background-repeat: no-repeat !important; 

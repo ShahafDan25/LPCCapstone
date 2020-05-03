@@ -2,14 +2,20 @@
 <html>
     <head>
         <title> The Market </title>
-        <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"/>
-
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel="stylesheet" type="text/css" href="capstone.css">
+        <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
 
-                <!-- JAVASCRIPT PAGE CONNECTION-->
-                <script src="captsone.js"></script>
+        <!-- Bootstrap for CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+        <!-- Bootstrap for JQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <!-- Bootstrap for JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+        <!-- JAVASCRIPT PAGE CONNECTION-->
+        <script src = "captsone.js"></script>
 
                 
     </head>
@@ -17,25 +23,25 @@
         <br><br><br>
         <div>
             <br>
-            <div>
-                <h2> No Market is Currently Active. Please Go to the Admin Page, and Activate One!</h2>
+            <div class = "centrize">
+                <h2> No Market is Currently Active. <br>Please Go to the Admin Page, and Activate One!</h2>
                 <br>
                 <button id = "goToAdmin" class = "btn btn-primary sideBtn centrize" data-toggle = "collapse" data-target = "#adminPagePW"> Admin </button>
                 <form method="post" action="adminFuncs.php" class = "centrize w20">
                     <div class = "collapse" id = "adminPagePW">
                         <input type = "password" class = "optional form-control" placeholder="insert password here" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*"> 
-                        <input type="hidden" value = "verifyPassword" name = "message">
+                        <input type="hidden" value = "verifyPassword" name = "message"><br>
                         <button class = "btn btn-info pull-left submitPW"> Submit </button>
                     </div>  
                 </form>
                 <br><br><br>
                 <h4> SEE YOU LATER </h4>
                 <br>
-                <img src = "otherFiles/pics/lpcLogo.png" style = "height: 10% !important;"> &nbsp; &nbsp;
-                <img src = "otherFiles/pics/lpcsgLogo.jpg" style = "height: 10% !important;">
+                <img src = "otherFiles/pics/lpcLogo.png" class = "locLogo"> &nbsp; &nbsp;
+                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo" style = "width: 10% !important; height: 10% !important;">
             </div>
             <br>
         </div>
-        <br><br><br>
+
     </body>
 </html>

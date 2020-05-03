@@ -25,10 +25,13 @@
         <!-- <div class = "container"> -->
             <div class = "header">
                 <button class = "sideBtn btn inline btn-primary pull-left" id = "goToAdminBtn"> Admin </button>
-                    <form class = "inline pull-left" id = "goToAdminForm" method="post" action="index.php" style = "display: none;">
-                        <input type = "password" class = "optional form-control inline" placeholder="  Password" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*"> <button class = "btn btn-info inline" id = "inputAdminBtn"> Submit </button>
+                    <form class = "inline pull-left" id = "goToAdminForm" method="post" action="index.php" style = "visibility: hidden;">
+                    <br>
+                        <input type = "password" class = "optional form-control w55 inline" placeholder="  Password" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*" style = "visibility: hidden;">
+                        <button class = "btn btn-info inline" id = "inputAdminBtn" style = "visibility: hidden;"> Submit </button>
                         <input class = "inline" type="hidden" value = "verifyPassword" name = "message">
                     </form>
+                    <h1 class = "pull-left headerTitle"><strong> The Market  -  LPCSG </strong></h1>
                 <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right inline"> &nbsp; &nbsp;
                 <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right inline">
             </div>
@@ -144,11 +147,6 @@
             var toAdminForm = document.getElementById("goToAdminForm");
             var toAdminInput = document.getElementById("inputAdminBtn");
             var toAdminBtn = document.getElementById("inputAdminPW");
-            toAdminForm.style.visibility = "hidden";
-            toAdminInput.style.visibility = "hidden";
-            toAdminBtn.style.visibility = "hidden";
-
-
             var ids = new Array(<?php echo populateArrayWithIds(connDB()); ?>);
             $(document).ready(function(){
                 $("#myInput").on("keyup", function() {
@@ -170,10 +168,19 @@
             }
 
             adminBtn.onclick = function(){
-                adminBtn.style.display = "none";
-                toAdminForm.style.visibility = "visible";
-                toAdminInput.style.visibility = "visible";
-                toAdminBtn.style.visibility = "visible";
+                if(toAdminForm.style.visibility == "visible")
+                {
+                    toAdminForm.style.visibility = "hidden";
+                    toAdminInput.style.visibility = "hidden";
+                    toAdminBtn.style.visibility = "hidden";
+                }
+                else
+                {
+                    toAdminForm.style.visibility = "visible";
+                    toAdminInput.style.visibility = "visible";
+                    toAdminBtn.style.visibility = "visible";
+                }
+                
             }
         </script>
 

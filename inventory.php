@@ -6,7 +6,6 @@
         <!-- CSS HARDCODE FILE LINK -->
         <link href='capstone.css?version=1' rel='stylesheet'></link>
 
-
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
 
@@ -70,5 +69,10 @@
             </div>
         </div>
     </body>
+    <footer class = "footer">
+        <h5> Powered by Shahaf Dan - Capstone Project </h5>
+        <br>
+        <p>Las Positas College | May 2020</p>
+    </footer>
 
 </html>

@@ -21,8 +21,8 @@
 
                 
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel="stylesheet" type="text/css" href="capstone.css">
-        
+        <link href='capstone.css?version=1' rel='stylesheet'></link>
+
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
 
@@ -131,9 +131,7 @@
                         &nbsp;<span class = "inline"> Delete</span>
                     </label>
                     </p>
-                    
                     <br><br>
-                    
                     <input id = "hiddenMessage" type="hidden" value = "adminOption" name = "message">
                     <button class = "btn btn-success" id = "submit"> SUBMIT </button>
                 </form>                     
@@ -142,7 +140,11 @@
         </div>
         
     </body>
-
+    <footer class = "footer">
+        <h5> Powered by Shahaf Dan - Capstone Project </h5>
+        <br>
+        <p>Las Positas College | May 2020</p>
+    </footer>
 
 
 

@@ -5,10 +5,10 @@
         <title>The Market </title>
 
         <!-- CSS HARDCODE FILE LINK -->
-        <link rel = "stylesheet" type = "text/css" href = "capstone.css"/>
+        <link href='capstone.css?version=1' rel='stylesheet'></link>
 
         <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
 
         <!-- Bootstrap for JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -183,6 +183,5 @@
                 
             }
         </script>
-
     </body>
 </html>

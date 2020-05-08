@@ -421,10 +421,17 @@ t = time
         date_default_timezone_set("America/Los_Angeles"); 
         $starttime = date("H:i"); 
         $start_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
-
-        $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$d.";";
-        $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$d.";";
-        $c -> prepare($sql) -> execute();
+        $sql = "SELECT active FROM Markets WHERE idByDate = ".$d.";";
+        $s = $c -> preapre($sql);
+        $s -> exceute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        if($r['active'] == 2) {echo '<script>alert("This market has already been activated before" <br> "you cannot activate a market twice"):</script>';} 
+        else
+        {
+            $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$d.";";
+            $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$d.";";
+            $c -> prepare($sql) -> execute();
+        }
         return;
     }
 

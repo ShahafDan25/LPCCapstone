@@ -77,8 +77,7 @@
                     <thead>
                         <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
+                        <th scope="col"> Name</th>
                         <th scope="col">Student?</th>
                         <th scope="col"># Kids</th>
                         <th scope="col"># Adults</th>
@@ -91,7 +90,7 @@
                     <tbody>
                         <?php
                             $addline = ""; 
-                            $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE reported = 1)";
+                            $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE reported = 1) ORDER BY time_stamp;";
                             $stmt_a = $conn -> prepare($sql_a);
                             $stmt_a -> execute(); 
                             $totalPeople = 0;
@@ -111,9 +110,14 @@
                                     $totalAdults += $row_b['AdultsAmount'];
                                     $totalSeniors += $row_b['SeniorsAmount'];
                                     $addline .= $row_b['patID']."</td>";
-                                    $addline .= "<th>".$row_b['FirstName']."</th>";
-                                    $addline .= "<th>".$row_b['LastName']."</th>";
 
+                                    // if($row_b['firstMarket'] == $d) {$addline .= "<th><div style = 'border-radius: 150px; border: 1px solid orange; padding-left: 3% !important;'>".$row_b['FirstName']."  ".$row_b['LastName']."</div></th>";}
+                                    // else{$addline .= "<th>".$row_b['FirstName']."  ".$row_b['LastName']."</th>";}
+
+                                    if($row_b['firstMarket'] == $d) {$addline .= "<th>".$row_b['FirstName']."  ".$row_b['LastName']."</th>";}
+                                    else{$addline .= "<td>".$row_b['FirstName']."  ".$row_b['LastName']."</td>";}
+                                    //^^ if they are a returning member, then their name will be in bold text
+                                    
                                     if($row_b['StudentStatus'] == 1) $addline .= "<td><div style = 'background-color:  #99ffcc; padding-right: 5% !important; text-align: center; border-radius: 150px'>  ✓  </div></td>";
                                     else $addline .= "<td>    </td>";
 
@@ -154,7 +158,7 @@
                             <strong><u>  Average Sernios (65 +)</u></strong>: 
                             <?php echo round($totalSeniors/$totalPeople, 2); ?>
                             <br>
-                            * Avergae is per attendee
+                            * Average is per attendee
 
                 </p>
                 <br>

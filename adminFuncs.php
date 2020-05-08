@@ -422,10 +422,10 @@ t = time
         $starttime = date("H:i"); 
         $start_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
         $sql = "SELECT active FROM Markets WHERE idByDate = ".$d.";";
-        $s = $c -> preapre($sql);
-        $s -> exceute();
+        $s = $c -> prepare($sql);
+        $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-        if($r['active'] == 2) {echo '<script>alert("This market has already been activated before" <br> "you cannot activate a market twice"):</script>';} 
+        if($r['active'] == 2) {echo '<script>alert("This market has already been activated before you cannot activate a market twice");</script>';} 
         else
         {
             $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$d.";";

@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
         <title> Market - Report </title>
+        <link rel="icon" href="otherFiles/pics/lpcLogo2.png"/>
 
         <!-- CSS HARDCODE FILE LINK -->
         <link href='capstone.css?version=1' rel='stylesheet'></link>

@@ -1,8 +1,9 @@
 <?php include "adminFuncs.php"; ?> <!-- THIS WILL ALSO INCLUDE connDB() -->
 <!DOCTYPE html>
 <html>
-        <title> Market - Report </title>
-                
+        <title> Market - Inventory </title>
+        <link rel="icon" href="otherFiles/pics/lpcLogo2.png">
+   
         <!-- CSS HARDCODE FILE LINK -->
         <link href='capstone.css?version=1' rel='stylesheet'></link>
 

@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
         <title> Market - Admin </title>
-
+        <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
         <!-- CSS HARDCODE FILE LINK -->
         <link href='capstone.css?version=1' rel='stylesheet'></link>
@@ -52,6 +52,7 @@
                 <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right inline">
         </div>
         <div id = "changePWDiv" class = "collapse">
+        <hr>
             <form method = "post" action = "adminFuncs.php">
                 <h4> Change you Password </h4>
                 <input type = "password" placeholder = "Old Password" class = "btn" name = "oldPW"> &nbsp; &nbsp;
@@ -60,6 +61,7 @@
                 <input type = "hidden" value = "changePW" name = "message"> <!-- USE THIS TO SEND THE MESSAGE TO THE PHP PAGE -->
                 <button class = "btn btn-success" id = "submit">  Change Password </button>
             </form>
+            <hr>
         </div>
         <div class = "upper_portion_admin">
             <h1> Admin and Management Page</h1> <br>

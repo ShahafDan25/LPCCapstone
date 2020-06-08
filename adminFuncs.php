@@ -1,12 +1,4 @@
 <?php include "moreFPDF.php"; ?>
-
-
-<html !DOCTYPE>
-    <head>
-        <link rel="stylesheet" type="text/css" href="capstone.css">
-
-    </head>
-</html>
 <?php
 /*
 c = connection
@@ -18,9 +10,6 @@ s_ce = statement check existence
 r = row / result
 t = time
 */
-
-
-
     // ======================================================== //
     // -------------------- POSTS MESSAGES ---------------------//
     // ======================================================== //
@@ -306,8 +295,6 @@ t = time
         
         $time_digits = substr($t, 0, 2).substr($t, 3, 2);
         
-
-        
         $sql = "SELECT time_stamp FROM MarketLogins WHERE Patrons_patID = ".$id." AND Markets_idByDate = ".$d.";";
         $s = $c -> prepare($sql);
         $s -> execute();
@@ -323,9 +310,7 @@ t = time
         {
             echo '<script> alert("You are already logged in"); </script>';
             return; 
-        }
-     
-       
+        } 
         return; 
     }
 

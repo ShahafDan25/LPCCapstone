@@ -1,22 +1,23 @@
 <?php include "adminFuncs.php"; ?>
 <?php
     //password expiration check
-    date_default_timezone_set("America/Los_Angeles");
-    $today = intval(date("Y").date("m").date("d"));
-    $sql = "SELECT changeDate FROM AdminPW WHERE current = 1";
-    $c = connDB();
-    $s = $c -> prepare($sql);
-    $s -> execute();
-    $r = $s -> fetch(PDO::FETCH_ASSOC);
-    $d = intval(substr($r['changeDate'],0,4).substr($r['changeDate'],5,2).substr($r['changeDate'],8,2));
-    if($today < $date && $today > $date - 12) 
-    {
-        echo '<script>alert("Your password will expire on '.$date.'. Make sure to change it beforehand!");</script>';
-    }
-    elseif($today > $date) echo '<script> Your password is expired...</script>';
+    // date_default_timezone_set("America/Los_Angeles");
+    // $today = intval(date("Y").date("m").date("d"));
+    // $sql = "SELECT changeDate FROM AdminPW WHERE current = 1";
+    // $c = connDB();
+    // $s = $c -> prepare($sql);
+    // $s -> execute();
+    // $r = $s -> fetch(PDO::FETCH_ASSOC);
+    // $d = intval(substr($r['changeDate'],0,4).substr($r['changeDate'],5,2).substr($r['changeDate'],8,2));
+    // if($today < $date && $today > $date - 12) 
+    // {
+    //     echo '<script>alert("Your password will expire on '.$date.'. Make sure to change it beforehand!");</script>';
+    // }
+    // elseif($today > $date) echo '<script> Your password is expired...</script>';
 ?>
 <!DOCTYPE html>
 <html>
+    <head>
         <title> Market - Admin </title>
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
@@ -25,7 +26,6 @@
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
-
 
         <!-- Bootstrap for JQuery -->
         <script src="./otherFiles/jquery.min.js"></script>
@@ -42,8 +42,16 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     </head>
-
+    
     <body class = "bodyRed">
+    <!-- -------------- NAVIGATION BAR ------------>
+    <header class = "nav-bar">
+        <a href = "inventory.php" class = "nav-bar-option responsive">Market</a>
+        <a href = "inventory.php" class = "nav-bar-option responsive">Volunteers</a>
+        <a href = "inventory.php" class = "nav-bar-option responsive">Report</a>
+        <a href = "inventory.php" class = "nav-bar-option responsive">Inventory</a>
+
+    </header>
         <div class = "header">
             <button id = "goToMarket" class = "btn btn-primary sideBtn pull-left" onclick = "location.replace('index.php')"> Market </button>
             <button id = "changePW" class = "btn btn-primary sideBtn pull-left" data-toggle = "collapse" data-target = "#changePWDiv" aria-expanded="false"> Change Password </button>

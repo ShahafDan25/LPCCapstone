@@ -171,6 +171,16 @@ t = time
         echo '<script> location.replace("index.php");</script>';
     }
 
+    if($_POST['message'] == "add-volunteer") {
+        addVolunteer($_POST['firstname'], $_POST['lastname'], $_POST['email']);
+        echo '<script>location.replace("volunteers.php");</script>';
+    }
+
+    if($_POST['message'] == "deactivateVolunteer") {
+        deactivateVolunteer($_POST['id']);
+        echo '<script>location.replace("volunteers.php");</script>';
+    }
+
     // ======================================================== //
     // ------------- REGISTRATION PAGE FUNCTIONS ---------------//
     // ======================================================== //
@@ -785,8 +795,15 @@ t = time
 
     function addVolunteer($f, $l, $e) {
         $c = connDB();
-        $sql = "INSERT INTO Volunteers VALUES (MAX(ID) + 1, '".$f."', '".$l."', '".$e."', NOW(), 1);";
-        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION) -> exec($sql);
+
+        $sql = "SELECT MAX(ID)+1 FROM Prof;";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $max = $s -> fetchColumn();
+
+        $sql = "INSERT INTO Volunteers VALUES (".$max." + 1, '".$f."', '".$l."', '".$e."', NOW(), 1);";
+        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c -> exec($sql);
         $c = null;
         return;
     }
@@ -796,8 +813,14 @@ t = time
         $sql = "SELECT ID, Email, First_Name, Last_Name, Start_Date FROM Volunteers WHERE Active = 1";
         $s = $c -> prepare($sql);
         $s -> execute();
+        $data = "";
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            
+            $data .= '<tr><form action ="funcs.php", method = "POST">';
+            $data .= '<td><input type = "hidden" value = "'.$r['ID'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
+            $data .= '<td>'.$r['Email'].'</td>';
+            $data .= '<td>'.$r['Start_Date'].'</td>';
+            $data .= '<td><input type = "hidden" name = "message" value = "deactivateVolunteer"><button class = "btn btn-danger">Deactivate</button></td>';
+            $data .= '</form></tr>';
         }
         $c = null;
         return $data;
@@ -805,7 +828,8 @@ t = time
 
     function deactivateVolunteer($id) {
         $c = connDB();
-        //code
+        $sql = "UPDATE Volunteers SET Active = 0 WHERE ID = ".$id.";";
+        $c -> prepare($sql) -> execute();
         $c = null;
         return;
     }

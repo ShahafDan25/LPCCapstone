@@ -1,6 +1,9 @@
 /* ------------ ONSIES CSS ----------------------- */
 .w25{width: 25% !important;}
 .w55{width: 55% !important;}
+.w35{width: 35% !important;}
+.w80{width: 80% !important;}
+.mr10{margin-right: 8% !important;}
 .w50{margin-right: 25% !important; margin-left: 25% !important;}
 .inv_label{width: 40% !important;}
 .body_report{padding: 5% !important;}
@@ -50,6 +53,12 @@ hr
     text-align: center;
     background-image: linear-gradient(rgb(235, 154, 154), rgb(207, 73, 73));
     background-attachment: fixed;
+}
+.volunteer-page-body {
+    text-align: center;
+    background-image: white;
+    background-attachment: fixed;
+    font-family: 'Optima' !important;
 }
 .footer
 {
@@ -140,6 +149,9 @@ hr
     font-family: 'Lobster', cursive !important; 
     margin-left: 5%;
 }
+.page-container {
+    padding-top: 8% !important;
+}
 .container
 { 
     height: 100% !important;
@@ -150,7 +162,6 @@ hr
     background-repeat: no-repeat !important; 
     background-size: 100% !important; 
     background-attachment: fixed !important;
-
 }
 .infoDiv
 {
@@ -256,6 +267,97 @@ hr
     padding: 1% !important; 
     margin-bottom: 50% !important;
 }
-
+/* ---------- NAVIGATION BAR ---------------- */
+.nav-bar {
+    width: 100% !important;
+    margin-top: 0% !important;
+    padding-left: 3.5% !important;
+    padding-top: 1.75% !important;
+    background-color: black !important;
+    height: 8.5% !important;
+    overflow: hidden;
+    background-color: #121212;  
+    position: fixed;
+    top: 0;
+    z-index: 5 !important;}
+.nav-bar-option {
+    color: white;
+    float: left;
+    margin-right: 3% !important;
+    width: auto !important;
+    border:0px !important;
+    padding-right: 2.25% !important;
+    padding-left: 2.25% !important;
+    font-weight: bolder;
+    font-size: 120% !important;
+    transition: 0.42s !important;
+    background-image: black;
+    padding-bottom: 1% !important;}
+.nav-bar-option:hover {
+    border-bottom: 1.25px solid transparent;
+    background-image: linear-gradient(to right,rgb(134, 151, 246),rgb(102, 124, 246)) !important; /* rgb(79, 249, 255)*/
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: color 0.55s ease-in-out !important;
+    transform: 0.42s !important;
+    outline: none !important;}
+.nav-bar-title {
+    background-image: linear-gradient(to right,rgb(134, 151, 246),rgb(102, 124, 246)) !important; /* rgb(79, 249, 255)*/
+    -webkit-background-clip: text;
+    color: transparent;
+    float: right !important;
+    margin-right: 5% !important;
+    width: auto !important;
+    border:0px !important;
+    padding-right: 2.25% !important;
+    padding-left: 2.25% !important;
+    font-weight: bolder;
+    font-size: 150% !important;
+    background-color: black;
+    padding-bottom: 10% !important;}
+/* ---------- VOLUNTEERS PAGE ---------------- */
+.page-sub-container {
+    background-color: rgba(255, 255, 255, 0.801) !important;
+    border-radius: 1.5px !important;
+    border: 0.5px solid black !important;
+    width: 80% !important;
+    margin-left: 10% !important;
+    padding: 1.5% !important;
+    text-align: center;
+}
+.add-volunteer-input {
+    border: 0px !important;
+    border-bottom: 3px solid black !important;
+    background-color: transparent !important;
+}
+.add-volunteer-input:focus {
+    outline: none !important;
+}
+.add-volunteer-btn, .volunteer-email-list {
+    padding-right: 5% !important;
+    padding-left: 5% !important;
+    padding-bottom: 0.85% !important;
+    padding-top: 0.85% !important;
+    background-image: linear-gradient(to right, #43c54d 0%, #7fd88b 51%, #79be7f 100%);
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    text-shadow: 0px 0px 10px rgba(0,0,0,1.5);
+    border-radius: 3px !important;
+    border: 3% solid black !important;
+    width: 80% !important;
+    /* border-color: -internal-light-dark-color(#79be7f, #7fd88b) !important; */
+}
+.add-volunteer-btn:hover, .volunteer-email-list:hover {
+    background-position: right center !important;
+}
+.volunteer-email-list {
+    float: right !important;
+    margin-right: 5% !important;
+    width: auto !important;
+    font-size: 90% !important;
+    padding: 0.25% 0.75% 0.25% 0.75% !important;
+}
 
 

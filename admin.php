@@ -45,20 +45,13 @@
     
     <body class = "bodyRed">
     <!-- -------------- NAVIGATION BAR ------------>
-    <header class = "nav-bar">
-        <a href = "inventory.php" class = "nav-bar-option responsive">Market</a>
-        <a href = "inventory.php" class = "nav-bar-option responsive">Volunteers</a>
-        <a href = "inventory.php" class = "nav-bar-option responsive">Report</a>
-        <a href = "inventory.php" class = "nav-bar-option responsive">Inventory</a>
-
-    </header>
-        <div class = "header">
-            <button id = "goToMarket" class = "btn btn-primary sideBtn pull-left" onclick = "location.replace('index.php')"> Market </button>
-            <button id = "changePW" class = "btn btn-primary sideBtn pull-left" data-toggle = "collapse" data-target = "#changePWDiv" aria-expanded="false"> Change Password </button>
-                <h1 class = "pull-left headerTitle"><strong> The Market  -  LPCSG </strong></h1>
-                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right inline"> &nbsp; &nbsp;
-                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right inline">
-        </div>
+        <header class = "nav-bar">
+            <a href = "index.php" class = "nav-bar-option responsive">Market</a>
+            <a href = "volunteers.php" class = "nav-bar-option responsive">Volunteers</a>
+            <a href = "report.php" class = "nav-bar-option responsive">Report</a>
+            <a href = "inventory.php" class = "nav-bar-option responsive">Inventory</a>
+            <h5 class = "nav-bar-title responsive"> The Market - Admin </h5>
+        </header>
         <div id = "changePWDiv" class = "collapse">
         <hr>
             <form method = "post" action = "adminFuncs.php">

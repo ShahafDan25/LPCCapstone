@@ -333,7 +333,7 @@ hr
 .add-volunteer-input:focus {
     outline: none !important;
 }
-.add-volunteer-btn, .volunteer-email-list, .show-deactivated-volunteers {
+.add-volunteer-btn, .volunteer-email-list, .show-deactivated-volunteers, .email-volunteer-list-btn {
     padding-right: 5% !important;
     padding-left: 5% !important;
     padding-bottom: 0.85% !important;
@@ -352,19 +352,24 @@ hr
 .show-deactivated-volunteers {
     background-image: linear-gradient(to right, #b42323 0%, #d46464 51%, #b42323 100%);
 }
-.add-volunteer-btn:hover, .volunteer-email-list:hover, .show-deactivated-volunteers {
+.email-volunteer-list-btn {
+    background-image: linear-gradient(to right, #2f38af 0%, #6f7dcf 51%, #2f38af 100%) !important;
+    padding-right: 5% !important;
+    padding-left: 5% !important;
+}
+.add-volunteer-btn:hover, .volunteer-email-list:hover, .show-deactivated-volunteers:hover, .email-volunteer-list-btn:hover {
     background-position: right center !important;
     text-shadow: 0px 0px 10px rgba(255,255,255,3.5);
     transition: all 0.5s ease-in-out !important;
 }
-.volunteer-email-list, .show-deactivated-volunteers {
+.volunteer-email-list, .show-deactivated-volunteers, .email-volunteer-list-btn {
     float: right !important;
     margin-right: 1.5%;
     width: auto !important;
     font-size: 90% !important;
     padding: 0.25% 0.75% 0.25% 0.75% !important;
 }
-.volunteer-email-list {
+.volunteer-email-list, .email-volunteer-list-btn {
     margin-right: 3.5% !important;
 }
 .volunteer-section-title {

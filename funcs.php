@@ -182,7 +182,8 @@ t = time
     }
 
     if($_POST['message'] == "activateVolunteer") {
-        activateVolunteer($_POST['id']);
+        if(isset($_POST['activate'])) activateVolunteer($_POST['id']);
+        else if (isset($_POST['delete'])) deleteVolunteer($_POST['id']);
         echo '<script>location.replace("volunteers.php");</script>';
     }
 
@@ -801,12 +802,12 @@ t = time
     function addVolunteer($f, $l, $e) {
         $c = connDB();
 
-        $sql = "SELECT MAX(ID)+1 FROM Prof;";
+        $sql = "SELECT MAX(ID)+1 FROM Volunteers;";
         $s = $c -> prepare($sql);
         $s -> execute();
         $max = $s -> fetchColumn();
 
-        $sql = "INSERT INTO Volunteers VALUES (".$max." + 1, '".$f."', '".$l."', '".$e."', NOW(), 1);";
+        $sql = "INSERT INTO Volunteers VALUES (".$max.", '".$f."', '".$l."', '".$e."', NOW(), 1, null);";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null;
@@ -819,14 +820,14 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         $data = "";
-        $table_begin = '<table class = "table"><thead><tr><th> Name </th><th> Email </th><th> Add Date </th><th> Delete </th></tr></thead><tbody>';
+        $table_begin = '<table class = "table"><thead><tr><th> Name </th><th> Email </th><th> Add Date </th><th> Deactivate </th></tr></thead><tbody>';
         $table_end = '</tbody></table>';
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<tr><form action ="funcs.php", method = "POST">';
             $data .= '<td><input type = "hidden" value = "'.$r['ID'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
             $data .= '<td>'.$r['Email'].'</td>';
             $data .= '<td>'.$r['Start_Date'].'</td>';
-            $data .= '<td><input type = "hidden" name = "message" value = "deactivateVolunteer"><button class = "btn btn-danger">Deactivate</button></td>';
+            $data .= '<td><input type = "hidden" name = "message" value = "deactivateVolunteer"><button class = "btn btn-warning">Deactivate</button></td>';
             $data .= '</form></tr>';
         }
         $c = null;
@@ -844,18 +845,19 @@ t = time
 
     function displayDeactivatedVolunteers() {
         $c = connDB();
-        $sql = "SELECT ID, Email, First_Name, Last_Name, Deactivation_Date FROM Volunteers WHERE Active = 1";
+        $sql = "SELECT ID, Email, First_Name, Last_Name, Deactivation_Date FROM Volunteers WHERE Active = 0";
         $s = $c -> prepare($sql);
         $s -> execute();
         $data = "";
-        $table_begin = '<table class = "table"><thead><tr><th> Name </th><th> Email </th><th> Deactiation Date </th><th> Delete </th></tr></thead><tbody>';
+        $table_begin = '<table class = "table"><thead><tr><th> Name </th><th> Email </th><th> Deactivation Date </th><th> Activate </th><th> Delete </th></tr></thead><tbody>';
         $table_end = '</tbody></table>';
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<tr><form action ="funcs.php", method = "POST">';
             $data .= '<td><input type = "hidden" value = "'.$r['ID'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
             $data .= '<td>'.$r['Email'].'</td>';
             $data .= '<td>'.$r['Deactivation_Date'].'</td>';
-            $data .= '<td><input type = "hidden" name = "message" value = "activateVolunteer"><button class = "btn btn-success">Activate</button></td>';
+            $data .= '<td><input type = "hidden" name = "message" value = "activateVolunteer"><button class = "btn btn-success" name = "activate">Activate</button></td>';
+            $data .= '<td><button class = "btn btn-danger" name = "delete">Delete</button></td>';
             $data .= '</form></tr>';
         }
         $c = null;
@@ -863,10 +865,55 @@ t = time
         else return $table_begin.$data.$table_end;
     }
 
-    function deactivateVolunteer($id) {
+    function activateVolunteer($id) {
         $c = connDB();
         $sql = "UPDATE Volunteers SET Active = 1, Deactivation_Date = Null, Start_Date = NOW() WHERE ID = ".$id.";";
         $c -> prepare($sql) -> execute();
         $c = null;
         return;
-    }?>
+    }
+
+    function deleteVolunteer($id) {
+        $c = connDB();
+        $sql = "DELETE FROM Volunteers WHERE ID = ".$id.";";
+        $c -> prepare($sql) -> execute();
+        $c = null; 
+        return;
+    }
+
+    function displayVolunteerEmailList() {
+        $c = connDB();
+        $sql = "SELECT Email FROM Volunteers WHERE Active = 1";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $data = "";
+        $table_begin = '<table class = "table">';
+        $table_end = '</table> <br>';
+        $counter = 0;
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            if($counter % 3 == 0) $data .= '<tr>';
+            $data .= '<td>'.$r['Email'].'</td>';
+            if($counter % 3 == 0) $data .= '</tr>';
+            $counter++;
+        }
+        $c = null;
+        if(strlen($data) < 2) return '<p style = "float: left !important; margin-left: 20% !important;"> Sorry, No volunteers are detected in the database</p><br><br>';
+        else return $table_begin.$data.$table_end;
+    }
+
+    function volunteerEmailList() {
+        $c = connDB();
+        $sql = "SELECT Email FROM Volunteers WHERE Active = 1";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $data = "";
+        if($r = $s -> fetch(PDO::FETCH_ASSOC)) $data = $r['Email'];
+        else echo '<script>alert("Sorry, you do not have any volunteers to email");</script>';
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            $data .= ", ".$r['Email'];
+        }
+        $c = null;
+        return $data;
+    }
+        
+    ?>

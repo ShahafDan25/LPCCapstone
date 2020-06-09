@@ -151,7 +151,7 @@ hr
     margin-left: 5%;
 }
 .page-container {
-    padding-top: 5% !important;
+    padding-top: 6% !important;
 }
 .container
 { 
@@ -267,6 +267,20 @@ hr
     height: 4% !important; 
     padding: 1% !important; 
     margin-bottom: 50% !important;
+}
+.select-markets {
+    padding: 0.75% 2.5% 0.75% 2.5% !important;
+    border: 0px solid black !important;
+    border-bottom: 2px solid black !important;
+    width: 30% !important;
+    text-align: center;
+    transition: 0.5s !important;
+}
+.select-markets:focus {
+    outline: none !important;
+    width: 45% !important;
+    border-bottom: 3px solid rgb(49, 55, 144) !important;
+    transition: all 0.35s ease-in-out !important;
 }
 /* ---------- NAVIGATION BAR ---------------- */
 .nav-bar {

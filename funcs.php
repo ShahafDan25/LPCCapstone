@@ -188,6 +188,14 @@ t = time
     }
 
     // ======================================================== //
+    // ------------------- GENERAL FUNCTIONS -------------------//
+    // ======================================================== //
+
+    function reformatidByDate($idByDate) {
+        return substr($idByDate, 4,2)." | ".substr($idByDate,6,2)." | ".substr($idByDate,0,4);
+    }
+
+    // ======================================================== //
     // ------------- REGISTRATION PAGE FUNCTIONS ---------------//
     // ======================================================== //
 
@@ -635,6 +643,21 @@ t = time
         //all attendance in that market - patrons whose new market was that market = patrons who attended a previous market AND that market
         $data = "{value: ".$noobies.", label: 'New Patrons'},{value: ".($allies - $noobies).", label: 'Returning Patrons'}";
         return $data;
+    }
+
+    function populateMarketsDropDown() {
+        $c = connDB();
+        $sql = "SELECT idByDate FROM Markets";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $begin = "<select class = 'select-markets' name = 'marketid'><option value = 'none' selected disabled hidden>Choose a Market </option>";
+        $end = "</select>";
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            $data .= '<option value = "">'.reformatidByDate($r['idByDate']).'</option>';
+        }
+        $c = null; //close connection
+        if(strlen($data) < 2) return '<p> Sorry, No Markets detected in the database </p>';
+        else return $begin.$data.$end;
     }
 
     // ======================================================== //

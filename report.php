@@ -4,6 +4,7 @@
 ?>
 <!DOCTYPE html>
 <html>
+    <head>
         <title> Market - Report </title>
         <link rel="icon" href="otherFiles/pics/lpcLogo2.png"/>
 
@@ -47,27 +48,27 @@
             <h5 class = "nav-bar-title responsive"> The Market - Report </h5>
         </header>
         <div class = "page-container">
-            <form action = "funcs.php" method = "post">
+            <!-- <form action = "funcs.php" method = "post">
                 <input type = "hidden" value = "pdfreport" name = "message">
                 <button  class = "inline btn btn-success sideBtn pull-right"> Generate Report [ PDF ] </button>
-            </form>
+            </form> -->
             <h2> MARKET REPORT </h2>
-            <h4>
-            <?php
+            <h5>
 
-                $sql = "SELECT idByDate FROM Markets WHERE reported = 1"; 
-                $stmt = $conn -> prepare($sql); 
-                $stmt -> execute(); 
-                $row = $stmt -> fetch(PDO::FETCH_ASSOC);
-                echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
-                $d = $row['idByDate'];
-                $promGraphData = promGraphData(connDB(), $d);
-                $attGraphData = getAttData(connDB(), $d);
-                $retvsnew = getRetVSNew(connDB(), $d);
-            ?>
-            </h4>
-        
-
+            <?php echo populateMarketsDropDown() ?>
+            <!-- <?php
+                // $sql = "SELECT idByDate FROM Markets WHERE reported = 1"; 
+                // $stmt = $conn -> prepare($sql); 
+                // $stmt -> execute(); 
+                // $row = $stmt -> fetch(PDO::FETCH_ASSOC);
+                // echo substr($row['idByDate'], 4, 2)." - ".substr($row['idByDate'], 6, 2)." - ".substr($row['idByDate'], 0, 4);
+                // $d = $row['idByDate'];
+                // $promGraphData = promGraphData(connDB(), $d);
+                // $attGraphData = getAtt
+                // Data(connDB(), $d);
+                // $retvsnew = getRetVSNew(connDB(), $d);
+            ?> -->
+            </h5>
             <br>
             
                         <!-- Table: Patrons in that specific market -->

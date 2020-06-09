@@ -1,5 +1,5 @@
 <?php
-    include "adminFuncs.php";
+    include "funcs.php";
     $conn = connDB(); 
 ?>
 <!DOCTYPE html>
@@ -7,20 +7,18 @@
         <title> Market - Report </title>
         <link rel="icon" href="otherFiles/pics/lpcLogo2.png"/>
 
+        <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
+                
         <!-- CSS HARDCODE FILE LINK -->
         <link href='capstone.css?version=1' rel='stylesheet'></link>
 
         <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 
-        <!-- Bootstrap for JQuery -->
-        <script src="./otherFiles/jquery.min.js"></script>
-
-        <!-- Bootstrap for JavaScript -->
-        <script src="./otherFiles/bootstrap.min.js"></script>
-
-        <!-- Bootstrap for CSS Icon -->
-        <script src="./otherFiles/a076d05399.js"></script><link rel="stylesheet" href="./otherFiles/free.min.css" media="all">
+        <!-- Bootstrap for JQuery, AJAX, JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>
@@ -40,20 +38,20 @@
     </head>
 
     <!-- ---------------------------------------------------------------- -->
-    <body class = "bodyRed">
-        <div class = "header">
-            <button id = "goToAdmin" class = "inline btn btn-primary sideBtn pull-left" onclick = "location.replace('admin.php')"> Admin Page </button>
-            <button id = "goToMarket" class = "inline btn btn-primary sideBtn pull-left" onclick = "location.replace('index.php')"> The Market </button>
-            <h1 class = "pull-left headerTitle"><strong> The Market  -  LPCSG </strong></h1>
-            <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right inline"> &nbsp; &nbsp;
-            <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right inline">
-        </div>
-        <div>
-            <form action = "adminFuncs.php" method = "post">
+    <body class = "report-page-body">
+        <header class = "nav-bar">
+            <a href = "admin.php" class = "nav-bar-option responsive">Admin</a>
+            <a href = "index.php" class = "nav-bar-option responsive">Market</a>
+            <a href = "inventory.php" class = "nav-bar-option responsive">Inventory</a>
+            <a href = "volunteers.php" class = "nav-bar-option responsive">Volunteers</a>
+            <h5 class = "nav-bar-title responsive"> The Market - Report </h5>
+        </header>
+        <div class = "page-container">
+            <form action = "funcs.php" method = "post">
                 <input type = "hidden" value = "pdfreport" name = "message">
                 <button  class = "inline btn btn-success sideBtn pull-right"> Generate Report [ PDF ] </button>
             </form>
-            <h1> MARKET REPORT </h1>
+            <h2> MARKET REPORT </h2>
             <h4>
             <?php
 

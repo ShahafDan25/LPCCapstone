@@ -48,13 +48,14 @@ hr
     background-repeat: no-repeat !important; 
     background-size: 100% !important; 
 }
+/* ------- BODIES AND CONTAINERS ---- */
 .bodyRed
 {
     text-align: center;
     background-image: linear-gradient(rgb(235, 154, 154), rgb(207, 73, 73));
     background-attachment: fixed;
 }
-.volunteer-page-body {
+.volunteer-page-body, .report-page-body {
     text-align: center;
     background-image: white;
     background-attachment: fixed;
@@ -150,7 +151,7 @@ hr
     margin-left: 5%;
 }
 .page-container {
-    padding-top: 8% !important;
+    padding-top: 5% !important;
 }
 .container
 { 

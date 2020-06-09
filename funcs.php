@@ -181,6 +181,11 @@ t = time
         echo '<script>location.replace("volunteers.php");</script>';
     }
 
+    if($_POST['message'] == "activateVolunteer") {
+        activateVolunteer($_POST['id']);
+        echo '<script>location.replace("volunteers.php");</script>';
+    }
+
     // ======================================================== //
     // ------------- REGISTRATION PAGE FUNCTIONS ---------------//
     // ======================================================== //
@@ -814,6 +819,8 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         $data = "";
+        $table_begin = '<table class = "table"><thead><tr><th> Name </th><th> Email </th><th> Add Date </th><th> Delete </th></tr></thead><tbody>';
+        $table_end = '</tbody></table>';
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<tr><form action ="funcs.php", method = "POST">';
             $data .= '<td><input type = "hidden" value = "'.$r['ID'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
@@ -823,14 +830,43 @@ t = time
             $data .= '</form></tr>';
         }
         $c = null;
-        return $data;
+        if(strlen($data) < 2) return '<p style = "float: left !important; margin-left: 20% !important;"> Sorry, No volunteers are detected in the database</p><br><br>';
+        else return $table_begin.$data.$table_end;
     }
 
     function deactivateVolunteer($id) {
         $c = connDB();
-        $sql = "UPDATE Volunteers SET Active = 0 WHERE ID = ".$id.";";
+        $sql = "UPDATE Volunteers SET Active = 0, Deactivation_Date = NOW() WHERE ID = ".$id.";";
         $c -> prepare($sql) -> execute();
         $c = null;
         return;
     }
-?>
+
+    function displayDeactivatedVolunteers() {
+        $c = connDB();
+        $sql = "SELECT ID, Email, First_Name, Last_Name, Deactivation_Date FROM Volunteers WHERE Active = 1";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $data = "";
+        $table_begin = '<table class = "table"><thead><tr><th> Name </th><th> Email </th><th> Deactiation Date </th><th> Delete </th></tr></thead><tbody>';
+        $table_end = '</tbody></table>';
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            $data .= '<tr><form action ="funcs.php", method = "POST">';
+            $data .= '<td><input type = "hidden" value = "'.$r['ID'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
+            $data .= '<td>'.$r['Email'].'</td>';
+            $data .= '<td>'.$r['Deactivation_Date'].'</td>';
+            $data .= '<td><input type = "hidden" name = "message" value = "activateVolunteer"><button class = "btn btn-success">Activate</button></td>';
+            $data .= '</form></tr>';
+        }
+        $c = null;
+        if(strlen($data) < 2) return '<p style = "float: left !important; margin-left: 20% !important;"> Sorry, No deactivated volunteers are detected in the database</p><br><br>';
+        else return $table_begin.$data.$table_end;
+    }
+
+    function deactivateVolunteer($id) {
+        $c = connDB();
+        $sql = "UPDATE Volunteers SET Active = 1, Deactivation_Date = Null, Start_Date = NOW() WHERE ID = ".$id.";";
+        $c -> prepare($sql) -> execute();
+        $c = null;
+        return;
+    }?>

@@ -1,4 +1,4 @@
-<?php include "adminFuncs.php"; ?>
+<?php include "funcs.php"; ?>
 <?php
     //password expiration check
     // date_default_timezone_set("America/Los_Angeles");

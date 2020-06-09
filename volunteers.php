@@ -20,11 +20,6 @@
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>
 
-        <!-- MORRIS.JS (for graphing utilities from PHP data) LINKS -->
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     </head>
     
     <body class = "volunteer-page-body">
@@ -47,28 +42,23 @@
                     <input type = "text" class = "add-volunteer-input inlinew w80" name = "lastname" placeholder=" Last Name" autocomplete = "off"><br><br>
                     <input type = "text" class = "add-volunteer-input inline w80" name = "email" placeholder=" Email Address" autocomplete = "off"><br><br>
                     <input type = "hidden" name = "message" value = "add-volunteer">
-                    <button class = "add-volunteer-btn"> Submit </button>
+                    <button class = "btn add-volunteer-btn"> Submit </button>
                 </form>
             </div>
             <br>
             <div class = "page-sub-container">
-                <h4 class = "inline"><u>Volunteers</u></h4>
-                <button class = "volunteer-email-list inline">Generate Email List</button>
-                <br>
-                <table class = "table">
-                    <thead>
-                        <tr>
-                            <th> Name </th>
-                            <th> Email </th>
-                            <th> Add Date </th>
-                            <th> Delete </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php echo displayAllVolunteers(); ?>
-                    </tbody>
-                </table>
+                <h4 class = "inline volunteer-section-title"><u>Volunteers</u></h4>
+                <button class = "btn volunteer-email-list inline">Generate Email List</button>
+                <button class = "btn show-deactivated-volunteers inline" data-toggle="collapse" data-target="#deactivated-volunteers-div">See Deactivated Volunteers</button>
+                <br><br><?php echo displayAllVolunteers(); ?>
                 <!-- Add option to see volunteers for a specific market and their timeslot -->
+                <!-- Add option to order volunteers by various options -->
+
+            </div>
+            <br>
+            <div class = "page-sub-container collapse" id = "">
+                <h4 class = "inline volunteer-section-title"><u>Deactivated Volunteers</u></h4>
+                <?php echo displayDeactivatedVolunteers(); ?>
             </div>
         </div>
     </body>

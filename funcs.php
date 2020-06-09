@@ -650,10 +650,10 @@ t = time
         $sql = "SELECT idByDate FROM Markets";
         $s = $c -> prepare($sql);
         $s -> execute();
-        $begin = "<select class = 'select-markets' name = 'marketid'><option value = 'none' selected disabled hidden>Choose a Market </option>";
+        $begin = "<select class = 'select-markets' name = 'marketid' id = 'marketid'><option value = 'none' selected disabled hidden>Choose a Market </option>";
         $end = "</select>";
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $data .= '<option value = "">'.reformatidByDate($r['idByDate']).'</option>';
+            $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
         }
         $c = null; //close connection
         if(strlen($data) < 2) return '<p> Sorry, No Markets detected in the database </p>';

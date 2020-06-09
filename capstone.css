@@ -281,6 +281,12 @@ hr
     width: 45% !important;
     border-bottom: 3px solid rgb(49, 55, 144) !important;
     transition: all 0.35s ease-in-out !important;
+    margin-bottom: 20px !important;
+}
+.select-markets>option {
+    background-color: white;
+    border-radius: 2px solid rgb(49, 55, 144) !important;
+    color: rgb(49, 55, 144) !important;
 }
 /* ---------- NAVIGATION BAR ---------------- */
 .nav-bar {

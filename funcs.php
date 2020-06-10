@@ -207,6 +207,9 @@ t = time
         echo displayNoobsGraph($_POST['date']);
     }
 
+    if($_POST['message'] == "display-add-inventory-form") {
+        echo displayAddInventoryForm($_POST['date']);
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -797,6 +800,11 @@ t = time
     // ======================================================== //
     // -------------- INVENTORY PAGE FUNCTIONS -----------------//
     // ======================================================== //
+
+    function displayAddInventoryForm($date) {
+
+        return $data;
+    }
 
     function insertItem($c, $n, $a) //insert item to the database
     {

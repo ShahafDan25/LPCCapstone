@@ -55,11 +55,20 @@ hr
     background-image: linear-gradient(rgb(235, 154, 154), rgb(207, 73, 73));
     background-attachment: fixed;
 }
-.volunteer-page-body, .report-page-body {
+.volunteer-page-body, .report-page-body, .inventory-page-body {
     text-align: center;
     background-image: white;
     background-attachment: fixed;
     font-family: 'Optima' !important;
+}
+.page-sub-container {
+    background-color: rgba(255, 255, 255, 0.801) !important;
+    border-radius: 1.5px !important;
+    border: 0.5px solid black !important;
+    width: 80% !important;
+    margin-left: 10% !important;
+    padding: 1.5% !important;
+    text-align: center;
 }
 .footer
 {
@@ -228,13 +237,11 @@ hr
     margin-left: 2% !important;
     margin-right: 2% !important;
     background-color: white !important;
-
 }
 .student-status-check{
     color: rgb(34, 226, 0) !important;
     background-color: rgb(186, 212, 192) !important;
     width: auto !important;
-    border: 2px solid black !important;
     border-radius: 4px;
     text-shadow: 0.3px 0.3px black;
 }
@@ -242,7 +249,6 @@ hr
     color: rgb(219, 0, 0) !important;
     background-color: rgb(223, 161, 161) !important;
     width: auto !important;
-    border: 2px solid black !important;
     border-radius: 4px;
     text-shadow: 0.3px 0.3px black;
 }
@@ -265,44 +271,6 @@ hr
     background-position: right center !important;
     transition: all 0.3s ease-in-out !important;
 }
-/* ------------ Inventory Page ------------------- */
-.inv_box_class
-{
-    text-align: center !important;
-    border: 1.5px solid black !important;
-    border-radius: 4px !important;
-    margin-left: 2% !important;
-    margin-right: 2% !important;
-    background-color: rgba(255, 246, 246, 0.911) !important;
-    padding-left: 5% !important;
-    padding-right: 5% !important;
-    padding-top: 1% !important;
-    padding-bottom: 1% !important;
-    margin-top: 2% !important;
-
-}
-.inv_input
-{
-    height: 5% !important;
-    border: 1px solid rgba(50, 50, 85, 0.692) !important;
-    border-radius: 4px !important;
-    padding-right: 1% !important;
-    padding-left: 1% !important;
-    margin-right: 3% !important;
-    width: 20% !important;
-}
-.inv_table
-{
-    margin-left: 5% !important;
-    margin-right: 5% !important;
-
-}
-.int_input_btn
-{
-    height: 4% !important; 
-    padding: 1% !important; 
-    margin-bottom: 50% !important;
-}
 .select-markets {
     padding: 0.75% 2.5% 0.75% 2.5% !important;
     border: 0px solid black !important;
@@ -323,6 +291,60 @@ hr
     border-radius: 2px solid rgb(49, 55, 144) !important;
     color: rgb(49, 55, 144) !important;
 }
+/* ------------ Inventory Page ------------------- */
+.inv_box_class
+{
+    text-align: center !important;
+    border: 1.5px solid black !important;
+    border-radius: 4px !important;
+    margin-left: 2% !important;
+    margin-right: 2% !important;
+    background-color: rgba(255, 246, 246, 0.911) !important;
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+    padding-top: 1% !important;
+    padding-bottom: 1% !important;
+    margin-top: 2% !important;
+
+}
+.inv_edit_btn-label {
+    text-align: center !important;
+}
+.inv_edit_btn {
+    text-align: center !important;
+    width: 90% !important;
+    
+}
+.add-inventory-input {
+    border: 0px !important;
+    border-bottom: 3px solid black !important;
+    background-color: transparent !important;
+}
+.add-inventory-input:focus {
+    outline: none !important;
+}
+.inv_input
+{
+    height: 5% !important;
+    border: 1px solid rgba(50, 50, 85, 0.692) !important;
+    border-radius: 4px !important;
+    padding-right: 1% !important;
+    padding-left: 1% !important;
+    margin-right: 3% !important;
+    width: 20% !important;
+}
+.inv_table
+{
+    text-align: left !important;
+    padding-left: 2% !important;
+}
+.int_input_btn
+{
+    height: 4% !important; 
+    padding: 1% !important; 
+    margin-bottom: 50% !important;
+}
+
 /* ---------- NAVIGATION BAR ---------------- */
 .nav-bar {
     width: 100% !important;
@@ -372,15 +394,7 @@ hr
     background-color: black;
     padding-bottom: 10% !important;}
 /* ---------- VOLUNTEERS PAGE ---------------- */
-.page-sub-container {
-    background-color: rgba(255, 255, 255, 0.801) !important;
-    border-radius: 1.5px !important;
-    border: 0.5px solid black !important;
-    width: 80% !important;
-    margin-left: 10% !important;
-    padding: 1.5% !important;
-    text-align: center;
-}
+
 .add-volunteer-input {
     border: 0px !important;
     border-bottom: 3px solid black !important;
@@ -389,7 +403,7 @@ hr
 .add-volunteer-input:focus {
     outline: none !important;
 }
-.add-volunteer-btn, .volunteer-email-list, .show-deactivated-volunteers, .email-volunteer-list-btn {
+.add-volunteer-btn, .volunteer-email-list, .show-deactivated-volunteers, .email-volunteer-list-btn, .add-inventory-btn {
     padding-right: 5% !important;
     padding-left: 5% !important;
     padding-bottom: 0.85% !important;
@@ -413,7 +427,7 @@ hr
     padding-right: 5% !important;
     padding-left: 5% !important;
 }
-.add-volunteer-btn:hover, .volunteer-email-list:hover, .show-deactivated-volunteers:hover, .email-volunteer-list-btn:hover {
+.add-volunteer-btn:hover, .volunteer-email-list:hover, .show-deactivated-volunteers:hover, .email-volunteer-list-btn:hover, ., .add-inventory-btn:hover {
     background-position: right center !important;
     text-shadow: 0px 0px 10px rgba(255,255,255,3.5);
     transition: all 0.5s ease-in-out !important;

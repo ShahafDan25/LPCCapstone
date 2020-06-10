@@ -1,66 +1,68 @@
-<?php include "adminFuncs.php"; ?> <!-- THIS WILL ALSO INCLUDE connDB() -->
+<?php include "funcs.php"; ?> <!-- THIS WILL ALSO INCLUDE connDB() -->
 <!DOCTYPE html>
 <html>
+    <head>
         <title> Market - Inventory </title>
         <link rel="icon" href="otherFiles/pics/lpcLogo2.png">
-   
+                
         <!-- CSS HARDCODE FILE LINK -->
         <link href='capstone.css?version=1' rel='stylesheet'></link>
 
         <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 
-        <!-- Bootstrap for JQuery -->
-        <script src="./otherFiles/jquery.min.js"></script>
-
-        <!-- Bootstrap for JavaScript -->
-        <script src="./otherFiles/bootstrap.min.js"></script>
+        <!-- Bootstrap for JQuery, AJAX, JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>
 
- 
+        <!-- FONTAWESOME ICON --> 
+        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
+        <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
     </head>
 
-    <body class = "bodyRed">
-        <div class = "header">
-            <button id = "goToAdmin" class = "inline btn btn-primary sideBtn pull-left" onclick = "location.replace('admin.php')"> Admin Page </button>
-            <button id = "goToMarket" class = "inline btn btn-primary sideBtn pull-left" onclick = "location.replace('index.php')"> The Market </button>
-            <h1 class = "pull-left headerTitle"><strong> The Market  -  LPCSG </strong></h1>
-            <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right inline"> &nbsp; &nbsp;
-            <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right inline">
-        </div>
-        <div>  
-            <span style = "text-align:center!important;">
-                <h1 > MARKET'S INVENTORY </h1>
-            </span>
+    <body class = "inventory-page-body">
+        <header class = "nav-bar">
+            <a href = "admin.php" class = "nav-bar-option responsive">Admin</a>
+            <a href = "index.php" class = "nav-bar-option responsive">Market</a>
+            <a href = "report.php" class = "nav-bar-option responsive">Report</a>
+            <a href = "volunteers.php" class = "nav-bar-option responsive">Volunteers</a>
+            <h5 class = "nav-bar-title responsive"> The Market - Report </h5>
+        </header>
+        <div class = "page-container">
+            <h2> MARKET INVENTORY </h2>
+            <select class = 'select-markets' name = 'marketid' id = "marketid">
+                <option value = 'none' selected disabled hidden>Choose a Market </option>
+                <?php echo populateMarketsDropDown(); ?>
+            </select>
             <br>
-            <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#edit_inv" aria-expanded="false" id = "submit"> ADD TO INVENTORY </button><br>
             <!-- Add new item to the inventory -->
-
-            <div class = "inv_box_class collapse" id = "edit_inv">
+            <div class = "page-sub-container" id = "edit_inv" style = "margin-top: 2% !important;" hidden = "true">
                 <h4><u> ADD TO INVENTORY </u></h4>
                 <br>
                 <form action = "adminFuncs.php" method = "post">
-                    <input type = "text" name = "item_name" class = "inv_input" placeholder="Item Name">
-                    <input type = "number" name = "item_number" class = "inv_input" placeholder="Quantity">
+                    <input type = "text" name = "item_name" class = "add-inventory-input w80" placeholder = " Item Name" autocomplete = "off"><br><br>
+                    <input type = "number" name = "item_number" class = "add-inventory-input w80" placeholder = " Quantity" autocomplete = "off"><br><br>
                     <input type = "hidden" name = "message" value = "insertItem">
-                    <button class = "btn btn-success inv_input_btn"> ADD ITEM </button>
+                    <button class = "add-inventory-btn"> ADD ITEM </button>
                 </form>
             </div>
-            <br><br>
-            <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#view_inv" aria-expanded="false" id = "submit"> VIEW INVENTORY </button><br>
+            <br>
             <!-- Table with the current updated inventory -->
-            <div class = "inv_box_class collapse" id = "view_inv">
+            <div class = "page-sub-container" id = "view_inv" hidden = "true">
                 <p class = "pull-left">*  From Previous Markets' Inventories</p>
-                <br><h4><u> CURRENT INVENTORY </u></h4>
+                <br><br>
+                <h4><u> CURRENT INVENTORY </u></h4>
                 <br>
                 <table class = "table inv_table">
                     <thead>
                         <tr>
                             <th scope = "col" class = "inv_label"> ITEM NAME </th>
                             <th scope = "col" class = "inv_label"> QUANTITY </th>
-                            <th scope = "col" class = "inv_edit_btn pull-left"> ~ EDIT ~ </th>
+                            <th scope = "col" class = "inv_edit_btn-label"> ~ EDIT ~ </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,10 +72,31 @@
             </div>
         </div>
     </body>
-    <footer class = "footer">
-        <h5> Powered by Shahaf Dan - Capstone Project </h5>
-        <br>
-        <p>Las Positas College | May 2020</p>
-    </footer>
+    <script>
+        $(document).on('change', '#marketid', function() {
+            //populate add-inventory-item form 
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {date: document.getElementById("marketid").value, message: "display-add-inventory-form"},
+                success: function(data) {
+                    document.getElementById("edit_inv").innerHTML = "";
+                    $("#edit_inv").html(data);
+                }
+            });
 
+            // populate inventory view table
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {date: document.getElementById("marketid").value, message: "display-inventory-table"},
+                success: function(data) {
+                    document.getElementById("view_inv").hidden = false;
+                    document.getElementById("edit_inv").hidden = false;
+
+                    document.getElementById("view_inv").innerHTML = "";
+                    $("#view_inv").html(data);
+                }
+            });
+    </script>
 </html>

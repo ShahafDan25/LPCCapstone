@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Market - Admin </title>
+        <title> Volunteers - Market </title>
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
         <!-- CSS HARDCODE FILE LINK -->
@@ -38,7 +38,7 @@
                 <br>
                 <form action = "funcs.php" method = "POST">
                     <input type = "text" class = "add-volunteer-input inline w80" name = "firstname" placeholder=" First Name" autocomplete = "off"> <br><br>
-                    <input type = "text" class = "add-volunteer-input inlinew w80" name = "lastname" placeholder=" Last Name" autocomplete = "off"><br><br>
+                    <input type = "text" class = "add-volunteer-input inline w80" name = "lastname" placeholder=" Last Name" autocomplete = "off"><br><br>
                     <input type = "text" class = "add-volunteer-input inline w80" name = "email" placeholder=" Email Address" autocomplete = "off"><br><br>
                     <input type = "hidden" name = "message" value = "add-volunteer">
                     <button class = "btn add-volunteer-btn"> Submit </button>

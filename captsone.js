@@ -15,17 +15,3 @@ function filterFunction()
   }
 }
 
-function alert()
-{
-  alert("password incorrect, please try again!");
-}
-
-function checkAdminPW()
-{
-  alert ("HELLO WORLD");
-  if(document.getElementById('passwordHidden').value == document.getElementById('inputAdminPW').value)
-  {
-    alert ("SUCCESS!!");
-  }
-}
-

@@ -231,18 +231,20 @@ hr
 
 }
 .student-status-check{
-    color: rgb(33, 219, 0) !important;
-    background-color: rgb(140, 209, 155) !important;
+    color: rgb(34, 226, 0) !important;
+    background-color: rgb(186, 212, 192) !important;
     width: auto !important;
     border: 2px solid black !important;
     border-radius: 4px;
+    text-shadow: 0.3px 0.3px black;
 }
 .student-status-uncheck{
     color: rgb(219, 0, 0) !important;
-    background-color: rgb(219, 132, 132) !important;
+    background-color: rgb(223, 161, 161) !important;
     width: auto !important;
     border: 2px solid black !important;
     border-radius: 4px;
+    text-shadow: 0.3px 0.3px black;
 }
 /* ------------ Inventory Page ------------------- */
 .inv_box_class

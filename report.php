@@ -25,7 +25,7 @@
         <script src="captsone.js"></script>
 
         <!-- FONTAWESOME ICON --> 
-        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
         <!-- MORRIS.JS (for graphing utilities from PHP data) LINKS -->
@@ -57,32 +57,15 @@
                 <button  class = "inline btn btn-success sideBtn pull-right"> Generate Report [ PDF ] </button>
             </form> -->
             <h2> MARKET REPORT </h2>
-            <h5>
-                <select class = 'select-markets' name = 'marketid' id = 'marketid'>
-                    <option value = 'none' selected disabled hidden>Choose a Market </option>
-                    <?php echo populateMarketsDropDown(); ?>
-                </select>
             
-            </h5>
+            <select class = 'select-markets' name = 'marketid' id = "marketid">
+                <option value = 'none' selected disabled hidden>Choose a Market </option>
+                <?php echo populateMarketsDropDown(); ?>
+            </select>
             <br>
-            
             <!-- Table: Patrons in that specific market -->
             <div class = "report-container" id = "report-container" hidden = "true">
-                <?php 
-                    if($_SESSION['reportid']) {
-                        echo '<script>enableReportDivsDisplay();</script>';
-                    }
-                ?>
-                <div class = "report_box_class" id = "repot-table-box-id">
-                    <!-- Attendance Table -->
-                    <?php
-                        if($_SESSION['reportid']) {
-                            echo generateReportTable($_SESSION['reportid']);
-                            echo generateAverageStats($_SESSION['reportid']);
-                        }
-                    ?>
-                    <br>
-                </div>
+                <div class = "report_box_class" id = "report-table-box-id"><br></div>
                 <br><br>
                 <h3> Attendance Graph </h3>
                 <div class = "report_box_class">
@@ -110,28 +93,20 @@
         </div>
     </body>
     <script>
-        var market_selected = document.getElementById("marketid");
+
         var report_container = document.getElementById("report-container");
-
-
-        market_selected.onchange = function() {
+        $(document).on('change', '#marketid', function() {
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
-                data: {
-                    message: "start-market-report-session",
-                    date: market_selected.value
-                },
+                data: {date: document.getElementById("marketid").value, message: "start-market-report-session"},
                 success: function(data) {
                     $("#report-table-box-id").html(data);
-                    alert("Succeeded");
+                    report_container.hidden = false;
                 }
             });
-        }
+        });
 
-        function enableReportDivsDisplay() {
-            report_container.hidden = false;
-        }
     </script>
     <!-- ------------------------ SCRIPT GRAPHS -------------------------- -->
     <script>

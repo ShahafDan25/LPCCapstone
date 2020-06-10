@@ -189,7 +189,7 @@ t = time
 
     if($_POST['message'] == "start-market-report-session") {
         $_SESSION['reportid'] = $_POST['date'];
-        displayReportPage($_POST['date']);
+        echo displayReportPage($_POST['date']);
     }
 
     // ======================================================== //
@@ -669,7 +669,6 @@ t = time
         '<table class = "table">
             <thead>
                 <tr>
-                <th scope="col">ID</th>
                 <th scope="col"> Name</th>
                 <th scope="col">Student?</th>
                 <th scope="col">Kids</th>
@@ -703,12 +702,12 @@ t = time
             if($r['StudentStatus'] == 1) $data .= "<td style = 'text-align: center'><div class = 'student-status-check'><i class='fa fa-check' aria-hidden='true'></i></div></td>";
             else $data .= "<td style = 'text-align: center'><div class = 'student-status-uncheck'><i class='fa fa-times' aria-hidden='true'></i></div></td>";
 
-            $date .= "<td>".$r['ChildrenAmount']."</td>";
-            $date .= "<td>".$r['AdultsAmount']."</td>";
-            $date .= "<td>".$r['SeniorsAmount']."</td>";
-            $date .= "<td>".$r['EmailAdd']."</td>";
-            $date .= "<td>".$r['PhoneNumber']."</td>";
-            $date .= "<td>".$r['PromotionMethod']."</td></tr>";
+            $data .= "<td>".$r['ChildrenAmount']."</td>";
+            $data .= "<td>".$r['AdultsAmount']."</td>";
+            $data .= "<td>".$r['SeniorsAmount']."</td>";
+            $data .= "<td>".$r['EmailAdd']."</td>";
+            $data .= "<td>".$r['PhoneNumber']."</td>";
+            $data .= "<td>".$r['PromotionMethod']."</td></tr>";
         } 
         $c = null;
         $stats = '<p><strong><u>Total Attendees</u></strong>:';

@@ -230,6 +230,20 @@ hr
     background-color: white !important;
 
 }
+.student-status-check{
+    color: rgb(33, 219, 0) !important;
+    background-color: rgb(140, 209, 155) !important;
+    width: auto !important;
+    border: 2px solid black !important;
+    border-radius: 4px;
+}
+.student-status-uncheck{
+    color: rgb(219, 0, 0) !important;
+    background-color: rgb(219, 132, 132) !important;
+    width: auto !important;
+    border: 2px solid black !important;
+    border-radius: 4px;
+}
 /* ------------ Inventory Page ------------------- */
 .inv_box_class
 {

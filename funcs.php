@@ -187,6 +187,11 @@ t = time
         echo '<script>location.replace("volunteers.php");</script>';
     }
 
+    if($_POST['message'] == "start-market-report-session") {
+        $_SESSION['reportid'] = $_POST['date'];
+        displayReportPage($_POST['date']);
+    }
+
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -650,15 +655,84 @@ t = time
         $sql = "SELECT idByDate FROM Markets";
         $s = $c -> prepare($sql);
         $s -> execute();
-        $begin = "<select class = 'select-markets' name = 'marketid' id = 'marketid'><option value = 'none' selected disabled hidden>Choose a Market </option>";
-        $end = "</select>";
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
         }
         $c = null; //close connection
         if(strlen($data) < 2) return '<p> Sorry, No Markets detected in the database </p>';
-        else return $begin.$data.$end;
+        else return $data;
     }
+
+    function displayReportPage($rep) {
+        $c = connDB();
+        $table_begin = 
+        '<table class = "table">
+            <thead>
+                <tr>
+                <th scope="col">ID</th>
+                <th scope="col"> Name</th>
+                <th scope="col">Student?</th>
+                <th scope="col">Kids</th>
+                <th scope="col">Adults</th>
+                <th scope="col">Seniors</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Promotion</th>
+                </tr>
+            </thead>
+            <tbody>';
+        $table_end = '</tbody>
+        </table>';
+        $data = ""; 
+        $sql = "SELECT p.FirstName, p.LastName, p.StudentStatus, p.ChildrenAmount, p.AdultsAmount, p.SeniorsAmount, p.EmailAdd, p.PhoneNumber, p.PromotionMethod FROM Patrons p JOIN MarketLogins ml ON ml.Patrons_patID = p.patID WHERE ml.Markets_idByDate = '".$rep."' ORDER BY ml.time_stamp;";
+        $s = $c -> prepare($sql);
+        $s -> execute(); 
+        $totalPeople = 0;
+        $totalKids = 0;
+        $totalAdults = 0;
+        $totalSeniors = 0;
+        while($r = $s -> fetch(PDO::FETCH_ASSOC))
+        { 
+            $totalPeople++;
+            $totalKids += $r['ChildrenAmount'];
+            $totalAdults += $r['AdultsAmount'];
+            $totalSeniors += $r['SeniorsAmount'];
+
+            $data .= "<tr><td scope='row'>".$r['FirstName']." ".$r['LastName']."</td>";
+            
+            if($r['StudentStatus'] == 1) $data .= "<td style = 'text-align: center'><div class = 'student-status-check'><i class='fa fa-check' aria-hidden='true'></i></div></td>";
+            else $data .= "<td style = 'text-align: center'><div class = 'student-status-uncheck'><i class='fa fa-times' aria-hidden='true'></i></div></td>";
+
+            $date .= "<td>".$r['ChildrenAmount']."</td>";
+            $date .= "<td>".$r['AdultsAmount']."</td>";
+            $date .= "<td>".$r['SeniorsAmount']."</td>";
+            $date .= "<td>".$r['EmailAdd']."</td>";
+            $date .= "<td>".$r['PhoneNumber']."</td>";
+            $date .= "<td>".$r['PromotionMethod']."</td></tr>";
+        } 
+        $c = null;
+        $stats = '<p><strong><u>Total Attendees</u></strong>:';
+        $stats .= $totalPeople.'&nbsp;&nbsp;&nbsp;&nbsp;';
+        $stats = '<strong><u>Total Children (0 - 17)</u></strong>:';
+        $stats .= $totalKids.'&nbsp;&nbsp;&nbsp;&nbsp;';
+        $stats = '<strong><u>Total Adults (18 - 64)</u></strong>:';
+        $stats .= $totalAdults.'&nbsp;&nbsp;&nbsp;&nbsp;';
+        $stats = '<strong><u>Total Seniors (65 +)</u></strong>:';
+        $stats .= $totalSeniors.'&nbsp;&nbsp;&nbsp;&nbsp;<br>';
+
+        $stats .= '<strong><u>Average Children (0 - 17)</u></strong>:'; 
+        $stats .= round($totalKids/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        $stats .= '<strong><u>Average Adults (18 - 64)</u></strong>:'; 
+        $stats .= round($totalAdults/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        $stats .= '<strong><u>Average Seniors (65 +)</u></strong>:'; 
+        $stats .= round($totalSeniors/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+        $stats .= '<br>* Average is per a registered household';
+        $stats .= '</p>';
+
+        if(strlen($data) < 2) return '<p> No data to display at the moment </p>';
+        else return $table_begin.$data.$table_end.$stats;
+    }
+
 
     // ======================================================== //
     // -------------- INVENTORY PAGE FUNCTIONS -----------------//

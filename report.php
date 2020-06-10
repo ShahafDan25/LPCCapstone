@@ -8,7 +8,6 @@
     <head>
         <title> Market - Report </title>
         <link rel="icon" href="otherFiles/pics/lpcLogo2.png"/>
-
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
         <!-- CSS HARDCODE FILE LINK -->
@@ -24,6 +23,10 @@
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>
+
+        <!-- FONTAWESOME ICON --> 
+        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+        <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
         <!-- MORRIS.JS (for graphing utilities from PHP data) LINKS -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
@@ -54,103 +57,31 @@
                 <button  class = "inline btn btn-success sideBtn pull-right"> Generate Report [ PDF ] </button>
             </form> -->
             <h2> MARKET REPORT </h2>
-            <h5><?php echo populateMarketsDropDown(); ?></h5>
+            <h5>
+                <select class = 'select-markets' name = 'marketid' id = 'marketid'>
+                    <option value = 'none' selected disabled hidden>Choose a Market </option>
+                    <?php echo populateMarketsDropDown(); ?>
+                </select>
+            
+            </h5>
             <br>
             
             <!-- Table: Patrons in that specific market -->
-            <div class = "report-container" id = "report-container">
-                <div class = "report_box_class" id = "repot_box_id">
-                    <table class = "table">
-                        <thead>
-                            <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col"> Name</th>
-                            <th scope="col">Student?</th>
-                            <th scope="col">Kids</th>
-                            <th scope="col">Adults</th>
-                            <th scope="col">Seniors</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Promotion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $addline = ""; 
-                                $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE reported = 1) ORDER BY time_stamp;";
-                                $stmt_a = $conn -> prepare($sql_a);
-                                $stmt_a -> execute(); 
-                                $totalPeople = 0;
-                                $totalKids = 0;
-                                $totalAdults = 0;
-                                $totalSeniors = 0;
-                                while($row_a = $stmt_a -> fetch(PDO::FETCH_ASSOC))
-                                { 
-                                    $sql_b = "SELECT * FROM Patrons WHERE patID = ".$row_a['Patrons_patID'];
-                                    $stmt_b = $conn -> prepare($sql_b);
-                                    $stmt_b -> execute();
-                                    while($row_b = $stmt_b -> fetch(PDO::FETCH_ASSOC)) 
-                                    {
-                                        $addline = "<tr><td scope='row'>";
-                                        $totalPeople++;
-                                        $totalKids += $row_b['ChildrenAmount'];
-                                        $totalAdults += $row_b['AdultsAmount'];
-                                        $totalSeniors += $row_b['SeniorsAmount'];
-                                        $addline .= $row_b['patID']."</td>";
-
-                                        // if($row_b['firstMarket'] == $d) {$addline .= "<th><div style = 'border-radius: 150px; border: 1px solid orange; padding-left: 3% !important;'>".$row_b['FirstName']."  ".$row_b['LastName']."</div></th>";}
-                                        // else{$addline .= "<th>".$row_b['FirstName']."  ".$row_b['LastName']."</th>";}
-
-                                        if($row_b['firstMarket'] == $d) {$addline .= "<th>".$row_b['FirstName']."  ".$row_b['LastName']."</th>";}
-                                        else{$addline .= "<td>".$row_b['FirstName']."  ".$row_b['LastName']."</td>";}
-                                        //^^ if they are a returning member, then their name will be in bold text
-                                        
-                                        if($row_b['StudentStatus'] == 1) $addline .= "<td><div style = 'background-color:  #99ffcc; padding-right: 5% !important; text-align: center; border-radius: 150px'>  ✓  </div></td>";
-                                        else $addline .= "<td>    </td>";
-
-
-                                        $addline .= "<td>".$row_b['ChildrenAmount']."</td>";
-                                        $addline .= "<td>".$row_b['AdultsAmount']."</td>";
-                                        $addline .= "<td>".$row_b['SeniorsAmount']."</td>";
-                                        $addline .= "<td>".$row_b['EmailAdd']."</td>";
-                                        $addline .= "<td>".$row_b['PhoneNumber']."</td>";
-                                        $addline .= "<td>".$row_b['PromotionMethod']."</td></tr>";
-                                        echo $addline;
-                                    }
-                                }                        
-                            ?>
-                        </tbody>
-                    </table>
-                    
-                    <!-- Statistics: bottom of graph -->
-                    <p> 
-                                <strong><u> Total Attendees</u></strong>: 
-                                <?php echo $totalPeople; ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;  
-                                <strong><u> Total Children (0 - 17)</u></strong>: 
-                                <?php echo $totalKids; ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <strong><u> Total Adults (18 - 64)</u></strong>: 
-                                <?php echo $totalAdults; ?>
-                                &nbsp; &nbsp;&nbsp;&nbsp;
-                                <strong><u> Total Sernios (65 +)</u></strong>: 
-                                <?php echo $totalSeniors; ?>
-                                <br>
-                                <strong><u> Average Children (0 - 17)</u></strong>: 
-                                <?php echo round($totalKids/$totalPeople, 2); ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <strong><u>  Average Adults (18 - 64)</u></strong>: 
-                                <?php echo round($totalAdults/$totalPeople, 2); ?>
-                                &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <strong><u>  Average Sernios (65 +)</u></strong>: 
-                                <?php echo round($totalSeniors/$totalPeople, 2); ?>
-                                <br>
-                                * Average is per attendee
-
-                    </p>
+            <div class = "report-container" id = "report-container" hidden = "true">
+                <?php 
+                    if($_SESSION['reportid']) {
+                        echo '<script>enableReportDivsDisplay();</script>';
+                    }
+                ?>
+                <div class = "report_box_class" id = "repot-table-box-id">
+                    <!-- Attendance Table -->
+                    <?php
+                        if($_SESSION['reportid']) {
+                            echo generateReportTable($_SESSION['reportid']);
+                            echo generateAverageStats($_SESSION['reportid']);
+                        }
+                    ?>
                     <br>
-                
-                    
                 </div>
                 <br><br>
                 <h3> Attendance Graph </h3>
@@ -178,13 +109,11 @@
             <br><br>
         </div>
     </body>
-    <footer class = "footer">
-        <h5> Powered by Shahaf Dan - Capstone Project </h5>
-        <br>
-        <p>Las Positas College | May 2020</p>
-    </footer>
     <script>
         var market_selected = document.getElementById("marketid");
+        var report_container = document.getElementById("report-container");
+
+
         market_selected.onchange = function() {
             $.ajax ({
                 type: "POST",
@@ -194,12 +123,17 @@
                     date: market_selected.value
                 },
                 success: function(data) {
-                    $("#report-container").html(data);
+                    $("#report-table-box-id").html(data);
+                    alert("Succeeded");
                 }
             });
         }
+
+        function enableReportDivsDisplay() {
+            report_container.hidden = false;
+        }
     </script>
-    <!-- ------------------------ SCRIPT GRAPHS ------------------------------>
+    <!-- ------------------------ SCRIPT GRAPHS -------------------------- -->
     <script>
         //attendance graph (linear) 
         Morris.Line({
@@ -231,6 +165,6 @@
             element: 'retvsnew',
             data: [<?php echo $retvsnew; ?>],
             colors:['#994d00','#ffa64d']
-        })
+        });
     </script>
 </html>

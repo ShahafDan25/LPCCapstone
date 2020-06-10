@@ -192,12 +192,16 @@ t = time
         echo displayReportPage($_POST['date']);
     }
 
+    if($_POST['message'] == "populate-attendance-graph") {
+        echo getAttData($_POST['date']);
+    }
+
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
 
     function reformatidByDate($idByDate) {
-        return substr($idByDate, 4,2)." | ".substr($idByDate,6,2)." | ".substr($idByDate,0,4);
+        return substr($idByDate, 4,2)."\t|\t".substr($idByDate,6,2)."\t|\t".substr($idByDate,0,4);
     }
 
     // ======================================================== //
@@ -538,8 +542,9 @@ t = time
         return;
     }
 
-    function getAttData($c, $d) //data for attendance graph
+    function getAttData($d) //data for attendance graph
     {
+        $c = connDB();
         $dformat = substr($d,0,4)."-".substr($d,4,2)."-".substr($d,6,2)." ";
         $sql_times = "SELECT starttime, closetime FROM Markets WHERE idByDate = ".$d;
         $stmt_times = $c -> prepare($sql_times);
@@ -560,7 +565,7 @@ t = time
         $sti = intval($st); 
         //modify time to be based 60 and not 100 
         $interval = $sti + (10 - ($sti%10)); 
-        $sql_amount_a = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp < ".($interval)." AND Markets_idByDate = ".$d.";";
+        $sql_amount_a = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".($interval)." AND Markets_idByDate = ".$d.";";
         $stmt_amount_a = $c -> query($sql_amount_a);
 
         //get amount from start time to first interval mark (in 10 minutes)
@@ -569,7 +574,7 @@ t = time
         if(strlen(strval($sti)) == 3) $stite = substr(strval($sti), 0, 1).":".substr(strval($sti), 1, 2);
         elseif(strlen(Strval($sti)) == 4) $stite = substr(strval($sti),0,2).":".substr(strval($sti),2,2);
         
-        $chart_data = "{TIME:'".$dformat.$stite."',AMOUNT:'".$first_amount."'}";
+        $chart_data = "{'TIME':'".$dformat.$stite."','AMOUNT':".$first_amount."}";
         //is new hour in the time range of the market, add 40 to create illusion of time based 60 and not 100
         if($interval % 100 == 60) {$interval += 40;} 
         //for every 10 minute interval before the last ten minutes of the closing time
@@ -588,7 +593,7 @@ t = time
 
             $a = $stmt_i -> fetchColumn();
             //insert amount per time range
-            $chart_data .= ", {TIME:'".$dformat.$intervalte."',AMOUNT:'".$a."'}"; 
+            $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':".$a."}"; 
             $interval = $interval_b;
         }
         $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
@@ -601,15 +606,15 @@ t = time
 
         $a = $stmt_i_b -> fetchColumn();
         //last amount from last time interval stamp to closing time
-        $chart_data .= ", {TIME:'".$dformat.$intervalte."',AMOUNT:'".$a."'}"; 
-
+        $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':".$a."}"; 
+        $c = null; //close connection
         return $chart_data;
     }
     
-    function promGraphData($c, $d) //data for the comparison of promotion methods
+    function promGraphData($d) //data for the comparison of promotion methods
     {
         $data = "";
-
+        $c = connDB();
         //COMMUNITY
         $sql_a = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'Community' AND MarketLogins.Markets_idByDate = ".$d;
         $s_a = $c -> query($sql_a);
@@ -630,12 +635,13 @@ t = time
         $s_d = $c -> query($sql_d);
         $other = $s_d -> fetchColumn();
         $data .= ", {METHOD:'Other',AMOUNT:'".$other."'}";
-
+        $c = null;
         return $data;
     }
 
-    function getRetVSNew($c, $d) //data for the comparison of returning vs new patrons per market
+    function getRetVSNew($d) //data for the comparison of returning vs new patrons per market
     {
+        $c = connDB();
         $data = "";
         $sql_newPs = "SELECT COUNT(*) FROM Patrons WHERE firstMarket = ".$d.";";
         $s_newPs = $c -> query($sql_newPs);
@@ -647,6 +653,7 @@ t = time
 
         //all attendance in that market - patrons whose new market was that market = patrons who attended a previous market AND that market
         $data = "{value: ".$noobies.", label: 'New Patrons'},{value: ".($allies - $noobies).", label: 'Returning Patrons'}";
+        $c = null;
         return $data;
     }
 
@@ -712,11 +719,11 @@ t = time
         $c = null;
         $stats = '<p><strong><u>Total Attendees</u></strong>:';
         $stats .= $totalPeople.'&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats = '<strong><u>Total Children (0 - 17)</u></strong>:';
+        $stats .= '<strong><u>Total Children (0 - 17)</u></strong>:';
         $stats .= $totalKids.'&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats = '<strong><u>Total Adults (18 - 64)</u></strong>:';
+        $stats .= '<strong><u>Total Adults (18 - 64)</u></strong>:';
         $stats .= $totalAdults.'&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats = '<strong><u>Total Seniors (65 +)</u></strong>:';
+        $stats .= '<strong><u>Total Seniors (65 +)</u></strong>:';
         $stats .= $totalSeniors.'&nbsp;&nbsp;&nbsp;&nbsp;<br>';
 
         $stats .= '<strong><u>Average Children (0 - 17)</u></strong>:'; 

@@ -79,7 +79,6 @@
                             <div id = "promGraph"></div>
                         </div>
                     </div>
-                    
                     <div class = "inline w25">
                         <h3> New VS. Returning Patrons </h3>
                         <div class = "report_box_class">
@@ -93,53 +92,79 @@
         </div>
     </body>
     <script>
-
-        var report_container = document.getElementById("report-container");
         $(document).on('change', '#marketid', function() {
+            //populate table
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
                 data: {date: document.getElementById("marketid").value, message: "start-market-report-session"},
                 success: function(data) {
                     $("#report-table-box-id").html(data);
-                    report_container.hidden = false;
+                    document.getElementById("report-container").hidden = false;
                 }
             });
+
+            //populate attendance line graph
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {date: document.getElementById("marketid").value, message: "populate-attendance-graph"},
+                success: function(info) {
+                    console.log(info);
+                    console.log(typeof(info));
+                    document.getElementById('chart').innerHTML = "";
+                    Morris.Line({
+                        element : 'chart', 
+                        data: [JSON.parse([info])], 
+                        xkey:'TIME',
+                        ykeys:['AMOUNT'],
+                        labels:['Attendance'],
+                        hideHover:'auto',
+                        stacked:true
+                    });
+                }
+            });
+
+            //populate promotiom method bar graph
+
+
+            //populate first-marketers donut graph
+
         });
 
-    </script>
-    <!-- ------------------------ SCRIPT GRAPHS -------------------------- -->
-    <script>
-        //attendance graph (linear) 
-        Morris.Line({
-            element : 'chart', 
-            data:[<?php echo $attGraphData; ?>], 
-            xkey:'TIME',
-            ykeys:['AMOUNT'],
-            labels:['Attendance'],
-            hideHover:'auto',
-            stacked:true
-        });
+        // function populateGraphs() {
+        //     $a = getAttData($_SESSION['reportid']);
+        //     console.log(<?php echo $_SESSION['reportid']; ?>);
+        //     Morris.Line({
+        //         element : 'chart', 
+        //         data:[<?php echo "h" // getAttData($_SESSION['reportid']); ?>], 
+        //         xkey:'TIME',
+        //         ykeys:['AMOUNT'],
+        //         labels:['Attendance'],
+        //         hideHover:'auto',
+        //         stacked:true
+        //     });
 
-        //promotion method comparison graph (bars)
-        Morris.Bar({
-            element: 'promGraph', 
-            data:[<?php echo $promGraphData;?>], 
-            xkey:'METHOD',
-            ykeys:['AMOUNT'],
-            labels:['Impact'],
-            hideHover:'auto',
-            stacked:true,
-            barColors: ['#4DA74D'],
-            barSizeRatio:0.40,
-            resize:false
-        });
+        //     // promotion method comparison graph (bars)
+        //     Morris.Bar({
+        //         element: 'promGraph', 
+        //         data:[<?php echo "h" // promGraphData($_SESSION['reportid']);?>], 
+        //         xkey:'METHOD',
+        //         ykeys:['AMOUNT'],
+        //         labels:['Impact'],
+        //         hideHover:'auto',
+        //         stacked:true,
+        //         barColors: ['#4DA74D'],
+        //         barSizeRatio:0.40,
+        //         resize:false
+        //     });
 
-        //return vs new patrons graph (donuts (pi chart))
-        Morris.Donut({
-            element: 'retvsnew',
-            data: [<?php echo $retvsnew; ?>],
-            colors:['#994d00','#ffa64d']
-        });
+        //     //return vs new patrons graph (donuts (pi chart))
+        //     Morris.Donut({
+        //         element: 'retvsnew',
+        //         data: [<?php echo "h" //getRetVSNew($_SESSION['reportid']); ?>],
+        //         colors:['#994d00','#ffa64d']
+        //     });
+        // }
     </script>
 </html>

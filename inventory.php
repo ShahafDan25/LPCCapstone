@@ -1,4 +1,4 @@
-<?php include "funcs.php"; ?> <!-- THIS WILL ALSO INCLUDE connDB() -->
+<?php session_start(); include "funcs.php"; ?> 
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +15,8 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>
@@ -41,50 +43,17 @@
             <br>
             <!-- Add new item to the inventory -->
             <div class = "page-sub-container" id = "edit_inv" style = "margin-top: 2% !important;" hidden = "true">
-                <h4><u> ADD TO INVENTORY </u></h4>
-                <br>
-                <form action = "adminFuncs.php" method = "post">
-                    <input type = "text" name = "item_name" class = "add-inventory-input w80" placeholder = " Item Name" autocomplete = "off"><br><br>
-                    <input type = "number" name = "item_number" class = "add-inventory-input w80" placeholder = " Quantity" autocomplete = "off"><br><br>
-                    <input type = "hidden" name = "message" value = "insertItem">
-                    <button class = "add-inventory-btn"> ADD ITEM </button>
-                </form>
+                
             </div>
             <br>
             <!-- Table with the current updated inventory -->
             <div class = "page-sub-container" id = "view_inv" hidden = "true">
-                <p class = "pull-left">*  From Previous Markets' Inventories</p>
-                <br><br>
-                <h4><u> CURRENT INVENTORY </u></h4>
-                <br>
-                <table class = "table inv_table">
-                    <thead>
-                        <tr>
-                            <th scope = "col" class = "inv_label"> ITEM NAME </th>
-                            <th scope = "col" class = "inv_label"> QUANTITY </th>
-                            <th scope = "col" class = "inv_edit_btn-label"> ~ EDIT ~ </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php echo populateItemTable(connDB()); ?>
-                    </tbody>
-                </table>
+
             </div>
         </div>
     </body>
     <script>
         $(document).on('change', '#marketid', function() {
-            //populate add-inventory-item form 
-            $.ajax ({
-                type: "POST",
-                url: "funcs.php",
-                data: {date: document.getElementById("marketid").value, message: "display-add-inventory-form"},
-                success: function(data) {
-                    document.getElementById("edit_inv").innerHTML = "";
-                    $("#edit_inv").html(data);
-                }
-            });
-
             // populate inventory view table
             $.ajax ({
                 type: "POST",
@@ -98,5 +67,17 @@
                     $("#view_inv").html(data);
                 }
             });
+
+            // populate inventory add item form
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {date: document.getElementById("marketid").value, message: "display-inventory-add-item-form"},
+                success: function(data) {
+                    document.getElementById("edit_inv").innerHTML = "";
+                    $("#edit_inv").html(data);
+                }
+            });
+        });
     </script>
 </html>

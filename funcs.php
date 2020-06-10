@@ -18,7 +18,9 @@ t = time
     {
         $n = $_POST['item_name'];
         $a = $_POST['item_number'];
-        insertItem(connDB(), $n, $a);
+        $d = $_POST['date'];
+        insertItem(connDB(), $n, $a, $d);
+        echo '<script> location.replace("inventory.php"); </script>';
     }
     
     if($_POST['message'] == "changePW") //change admin password
@@ -207,7 +209,11 @@ t = time
         echo displayNoobsGraph($_POST['date']);
     }
 
-    if($_POST['message'] == "display-add-inventory-form") {
+    if($_POST['message'] == "display-inventory-table") {
+        echo displayInventory($_POST['date']);
+    }
+
+    if($_POST['message'] == "display-inventory-add-item-form") {
         echo displayAddInventoryForm($_POST['date']);
     }
     // ======================================================== //
@@ -800,15 +806,44 @@ t = time
     // ======================================================== //
     // -------------- INVENTORY PAGE FUNCTIONS -----------------//
     // ======================================================== //
-
     function displayAddInventoryForm($date) {
-
-        return $data;
+        return 
+        '<h4><u> ADD TO INVENTORY </u></h4>
+        <br>
+        <form action = "adminFuncs.php" method = "post">
+            <input type = "text" name = "item_name" class = "add-inventory-input w80" placeholder = " Item Name" autocomplete = "off"><br><br>
+            <input type = "number" name = "item_number" class = "add-inventory-input w80" placeholder = " Quantity" autocomplete = "off"><br><br>
+            <input type = "hidden" name = "message" value = "insertItem">
+            <input type = "hidden" name = "date" value = "'.$date.'">
+            <button class = "add-inventory-btn"> ADD ITEM </button>
+        </form>';
     }
 
-    function insertItem($c, $n, $a) //insert item to the database
+    function displayInventory($date) {
+        $pre_table = 
+        '<p class = "pull-left">*  Inventories of Previous Markets</p>
+        <br><br>
+        <h4><u> INVENTORY </u></h4>
+        <br>';
+        $table_begin = 
+        '<table class = "table inv_table">
+            <thead>
+                <tr>
+                    <th scope = "col" class = "inv_label"> ITEM NAME </th>
+                    <th scope = "col" class = "inv_label"> QUANTITY </th>
+                    <th scope = "col" class = "inv_edit_btn-label"> ~ EDIT ~ </th>
+                </tr>
+            </thead>
+            <tbody>';
+        $table_end = 
+            '</tbody>
+        </table>';
+        return $pre_table.$table_begin.populateItemTable($date).$table_end;
+    }
+
+    function insertItem($c, $n, $a, $d) //insert item to the database
     {
-        $sql = "SELECT Name FROM Items WHERE Name = '".$n."' AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1)";
+        $sql = "SELECT Name FROM Items WHERE Name = '".$n."' AND Markets_idByDate = '".$d."';";
         $s = $c -> prepare($sql); 
         $s -> execute(); 
         if($s -> fetch(PDO::FETCH_ASSOC))
@@ -816,17 +851,17 @@ t = time
             echo '<script>alert("This item is already found in the database for this market. Please edit its amount by click the View Inventory button");</script>';
             return;
         }
-        $sqlb = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."',".$a.", (SELECT idByDate FROM Markets WHERE inventory = 1));"; 
+        $sqlb = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."',".$a.", '".$d."');"; 
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c->exec($sqlb); 
-        echo '<script> location.replace("inventory.php"); </script>';
         return;
     }
 
-    function populateItemTable($c) //insert items to inventory html in table format
+    function populateItemTable($date) //insert items to inventory html in table format
     {
+        $c = connDB();
         $tableItemData = ""; 
-        $sql = "SELECT DISTINCT Name FROM Items WHERE Markets_idByDate <= (SELECT idByDate FROM Markets WHERE inventory = 1);";
+        $sql = "SELECT DISTINCT Name FROM Items WHERE Markets_idByDate <= '".$date."';";
         $s_ec = $c -> prepare($sql); 
         $s_ec -> execute();
         $r_ec = $s_ec -> fetch(PDO::FETCH_ASSOC);
@@ -839,7 +874,7 @@ t = time
         { 
             //select product's amount from previous markets
             $total = 0;
-            $sql_total = "SELECT Amount FROM Items WHERE Name = '".$r['Name']."' AND Markets_idByDate < (SELECT idByDate FROM Markets WHERE inventory = 1);";
+            $sql_total = "SELECT Amount FROM Items WHERE Name = '".$r['Name']."' AND Markets_idByDate < '".$date."';";
             $s_total = $c -> prepare($sql_total);
             $s_total -> execute();
             while($r_total = $s_total -> fetch(PDO::FETCH_ASSOC))
@@ -847,14 +882,14 @@ t = time
                 $total += $r_total['Amount'];
             }
 
-            $sql_two = "SELECT Amount FROM Items WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE inventory = 1) AND Name = '".$r['Name']."';";
+            $sql_two = "SELECT Amount FROM Items WHERE Markets_idByDate = '".$date."' AND Name = '".$r['Name']."';";
             $s_two = $c -> prepare($sql_two);
             $s_two -> execute();
             $r_two = $s_two -> fetch(PDO::FETCH_ASSOC);
 
 
             $counter++; //to modify and create unique ID's reflexibly
-            $buttonInsert = "<button class = 'btn btn-warning collapsed' id = 'editbtn' data-toggle='collapse' data-target='#formToEditItem".strval($counter)."' aria-expanded='false'> EDIT </button>";
+            $buttonInsert = "<button class = 'btn btn-warning inv_edit_btn collapsed' id = 'editbtn' data-toggle='collapse' data-target='#formToEditItem".strval($counter)."' aria-expanded='false'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
             //add option to edit an item
             $editForm = '<form action = "adminFuncs.php" method = "post">';
             $editForm .= '<td><input type = "text" class = "inv_input inline" name = "editItemName" placeholder = "'.$r['Name'].'" value = "'.$r['Name'].'" style = "width: 60% !important;"></td>';
@@ -872,7 +907,7 @@ t = time
             
             $tableItemData .= "<tr class = 'collapse whiteOut' id = 'formToEditItem".strval($counter)."'>".$editForm."</tr>";
         }
-       
+        $c = null; //close connection pretty much 
         return $tableItemData;
     }
 

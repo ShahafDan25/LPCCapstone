@@ -312,8 +312,8 @@ hr
 }
 .inv_edit_btn {
     text-align: center !important;
-    width: 90% !important;
-    
+    border: 0px solid black !important;
+    border-radius: 150px !important;    
 }
 .add-inventory-input {
     border: 0px !important;

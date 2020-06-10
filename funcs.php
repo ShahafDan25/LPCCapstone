@@ -1015,10 +1015,6 @@ t = time
     }
 
     function displayAllVolunteers() {
-        $c = connDB();
-        $sql = "SELECT ID, Email, First_Name, Last_Name, Start_Date FROM Volunteers WHERE Active = 1";
-        $s = $c -> prepare($sql);
-        $s -> execute();
         $data = "";
         $table_begin = 
             '<table class = "table">
@@ -1032,6 +1028,10 @@ t = time
                 </thead>
             <tbody>';
         $table_end = '</tbody></table>';
+        $c = connDB();
+        $sql = "SELECT ID, Email, First_Name, Last_Name, Start_Date FROM Volunteers WHERE Active = 1";
+        $s = $c -> prepare($sql);
+        $s -> execute();
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<tr><form action ="funcs.php", method = "POST">';
             $data .= '<td><input type = "hidden" value = "'.$r['ID'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';

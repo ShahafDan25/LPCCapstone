@@ -1,5 +1,4 @@
 <?php
-    session_start();
     include "funcs.php";
     $conn = connDB(); 
 ?>
@@ -52,20 +51,18 @@
             <h5 class = "nav-bar-title responsive"> The Market - Report </h5>
         </header>
         <div class = "page-container">
-            <!-- <form action = "funcs.php" method = "post">
-                <input type = "hidden" value = "pdfreport" name = "message">
-                <button  class = "inline btn btn-success sideBtn pull-right"> Generate Report [ PDF ] </button>
-            </form> -->
             <h2> MARKET REPORT </h2>
-            
             <select class = 'select-markets' name = 'marketid' id = "marketid">
                 <option value = 'none' selected disabled hidden>Choose a Market </option>
                 <?php echo populateMarketsDropDown(); ?>
             </select>
             <br>
             <!-- Table: Patrons in that specific market -->
-            <div class = "report-container" id = "report-container" hidden = "true">
-                <div class = "report_box_class" id = "report-table-box-id"><br></div>
+            <div class = "report-container" id = "report-container" hidden = "true" style = "margin-top: 2% !important;">
+                <div class = "report_box_class">
+                    <div id = "report-pdf-request-id"></div>
+                    <div id = "report-table-box-id"><br></div>
+                </div>
                 <br><br>
                 <h3> Attendance Graph </h3>
                 <div class = "report_box_class">
@@ -90,9 +87,23 @@
             <br><br>
             <br><br>
         </div>
+        <div id = "scripts1"></div>
+        <div id = "scripts2"></div>
+        <div id = "scripts3"></div>
     </body>
     <script>
         $(document).on('change', '#marketid', function() {
+            //populate pdf request form 
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {date: document.getElementById("marketid").value, message: "display-form-pdf-report"},
+                success: function(data) {
+                    $("#report-pdf-request-id").html(data);
+                    document.getElementById("report-container").hidden = false;
+                }
+            });
+
             //populate table
             $.ajax ({
                 type: "POST",
@@ -110,61 +121,35 @@
                 url: "funcs.php",
                 data: {date: document.getElementById("marketid").value, message: "populate-attendance-graph"},
                 success: function(info) {
-                    console.log(info);
-                    console.log(typeof(info));
-                    document.getElementById('chart').innerHTML = "";
-                    Morris.Line({
-                        element : 'chart', 
-                        data: [JSON.parse([info])], 
-                        xkey:'TIME',
-                        ykeys:['AMOUNT'],
-                        labels:['Attendance'],
-                        hideHover:'auto',
-                        stacked:true
-                    });
+                    document.getElementById("scripts1").innerHTML = "";
+                    document.getElementById("chart").innerHTML = "";
+                    $("#scripts1").html(info);
                 }
             });
 
             //populate promotiom method bar graph
-
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {date: document.getElementById("marketid").value, message: "populate-promotion-graph"},
+                success: function(info) {
+                    document.getElementById("scripts2").innerHTML = "";
+                    document.getElementById("promGraph").innerHTML = "";
+                    $("#scripts2").html(info);
+                }
+            });
 
             //populate first-marketers donut graph
-
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {date: document.getElementById("marketid").value, message: "populate-newones-graph"},
+                success: function(info) {
+                    document.getElementById("scripts3").innerHTML = "";
+                    document.getElementById("retvsnew").innerHTML = "";
+                    $("#scripts3").html(info);
+                }
+            });
         });
-
-        // function populateGraphs() {
-        //     $a = getAttData($_SESSION['reportid']);
-        //     console.log(<?php echo $_SESSION['reportid']; ?>);
-        //     Morris.Line({
-        //         element : 'chart', 
-        //         data:[<?php echo "h" // getAttData($_SESSION['reportid']); ?>], 
-        //         xkey:'TIME',
-        //         ykeys:['AMOUNT'],
-        //         labels:['Attendance'],
-        //         hideHover:'auto',
-        //         stacked:true
-        //     });
-
-        //     // promotion method comparison graph (bars)
-        //     Morris.Bar({
-        //         element: 'promGraph', 
-        //         data:[<?php echo "h" // promGraphData($_SESSION['reportid']);?>], 
-        //         xkey:'METHOD',
-        //         ykeys:['AMOUNT'],
-        //         labels:['Impact'],
-        //         hideHover:'auto',
-        //         stacked:true,
-        //         barColors: ['#4DA74D'],
-        //         barSizeRatio:0.40,
-        //         resize:false
-        //     });
-
-        //     //return vs new patrons graph (donuts (pi chart))
-        //     Morris.Donut({
-        //         element: 'retvsnew',
-        //         data: [<?php echo "h" //getRetVSNew($_SESSION['reportid']); ?>],
-        //         colors:['#994d00','#ffa64d']
-        //     });
-        // }
     </script>
 </html>

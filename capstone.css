@@ -246,6 +246,25 @@ hr
     border-radius: 4px;
     text-shadow: 0.3px 0.3px black;
 }
+.request-pdf-report-form {
+    width: 100% !important;
+}
+.request-pdf-report-btn {
+    background-image: linear-gradient(to right, #2f38af 0%, #6f7dcf 51%, #2f38af 100%) !important;
+    text-transform: uppercase;
+    padding: 1% 0% 1% 0% !important;
+    transition: 0.3s;
+    background-size: 200% auto;
+    color: white !important;
+    border-radius: 3px !important;
+    border: 1.25px solid black !important;
+    width: 100% !important;
+    font-weight: bolder !important;
+}
+.request-pdf-report-btn:hover{
+    background-position: right center !important;
+    transition: all 0.3s ease-in-out !important;
+}
 /* ------------ Inventory Page ------------------- */
 .inv_box_class
 {

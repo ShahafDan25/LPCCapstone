@@ -187,13 +187,24 @@ t = time
         echo '<script>location.replace("volunteers.php");</script>';
     }
 
+    if($_POST['message'] == "display-form-pdf-report") {
+       echo displayPdfReportGenerationForm();
+    }
+
     if($_POST['message'] == "start-market-report-session") {
-        $_SESSION['reportid'] = $_POST['date'];
         echo displayReportPage($_POST['date']);
     }
 
     if($_POST['message'] == "populate-attendance-graph") {
-        echo getAttData($_POST['date']);
+        echo displayAttGraph($_POST['date']);
+    }
+
+    if($_POST['message'] == "populate-promotion-graph") {
+        echo displayPromGraph($_POST['date']);
+    }
+
+    if($_POST['message'] == "populate-newones-graph") {
+        echo displayNoobsGraph($_POST['date']);
     }
 
     // ======================================================== //
@@ -502,6 +513,14 @@ t = time
     // -------------- REPORT PAGE FUNCTIONS --------------------//
     // ======================================================== //
 
+    function displayPdfReportGenerationForm() {
+        return 
+            '<form action = "funcs.php" method = "post" class = "request-pdf-report-form">
+                <input type = "hidden" value = "pdfreport" name = "message">
+                <button  class = "inline btn request-pdf-report-btn"> Generate PDF Report </button>
+            </form>';
+    }
+
     function generate_report($c, $d) //update report status per market in db, go to report page if there are markets in the database, and to message page if there aren't
     {
         $c = connDB();
@@ -542,6 +561,18 @@ t = time
         return;
     }
 
+    function displayAttGraph($rep){
+        return "<script>Morris.Line({
+            element : 'chart', 
+            data:[".getAttData($rep)."], 
+            xkey:'TIME',
+            ykeys:['AMOUNT'],
+            labels:['Attendance'],
+            hideHover:'auto',
+            stacked:true
+        });</script>";
+    }
+
     function getAttData($d) //data for attendance graph
     {
         $c = connDB();
@@ -574,7 +605,7 @@ t = time
         if(strlen(strval($sti)) == 3) $stite = substr(strval($sti), 0, 1).":".substr(strval($sti), 1, 2);
         elseif(strlen(Strval($sti)) == 4) $stite = substr(strval($sti),0,2).":".substr(strval($sti),2,2);
         
-        $chart_data = "{'TIME':'".$dformat.$stite."','AMOUNT':".$first_amount."}";
+        $chart_data = "{'TIME':'".$dformat.$stite."','AMOUNT':'".$first_amount."'}";
         //is new hour in the time range of the market, add 40 to create illusion of time based 60 and not 100
         if($interval % 100 == 60) {$interval += 40;} 
         //for every 10 minute interval before the last ten minutes of the closing time
@@ -593,7 +624,7 @@ t = time
 
             $a = $stmt_i -> fetchColumn();
             //insert amount per time range
-            $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':".$a."}"; 
+            $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
             $interval = $interval_b;
         }
         $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
@@ -606,11 +637,26 @@ t = time
 
         $a = $stmt_i_b -> fetchColumn();
         //last amount from last time interval stamp to closing time
-        $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':".$a."}"; 
+        $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
         $c = null; //close connection
         return $chart_data;
     }
     
+    function displayPromGraph($rep) {
+        return "<script>Morris.Bar({
+            element: 'promGraph', 
+            data:[".promGraphData($rep)."], 
+            xkey:'METHOD',
+            ykeys:['AMOUNT'],
+            labels:['Impact'],
+            hideHover:'auto',
+            stacked:true,
+            barColors: ['#4DA74D'],
+            barSizeRatio:0.40,
+            resize:false
+        });</script>";
+    }
+
     function promGraphData($d) //data for the comparison of promotion methods
     {
         $data = "";
@@ -619,24 +665,32 @@ t = time
         $sql_a = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'Community' AND MarketLogins.Markets_idByDate = ".$d;
         $s_a = $c -> query($sql_a);
         $comm = $s_a -> fetchColumn();
-        $data .= "{METHOD: 'Community',AMOUNT:'".$comm."'}";
+        $data .= "{'METHOD': 'Community','AMOUNT':'".$comm."'}";
         //FRIENDS AND FAMILY
         $sql_b = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'FriendsAndFamily' AND MarketLogins.Markets_idByDate = ".$d;
         $s_b = $c -> query($sql_b);
         $fnf = $s_b -> fetchColumn();
-         $data .= ", {METHOD: 'Friends / Family',AMOUNT:'".$fnf."'}";
+         $data .= ", {'METHOD': 'Friends / Family','AMOUNT':'".$fnf."'}";
         // CLASSROOM
         $sql_c = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'Classroom' AND MarketLogins.Markets_idByDate = ".$d;
         $s_c = $c -> query($sql_c);
         $class = $s_c -> fetchColumn();
-        $data .= ", {METHOD:'Classroom',AMOUNT:'".$class."'}";
+        $data .= ", {'METHOD':'Classroom','AMOUNT':'".$class."'}";
         //OTHER
         $sql_d = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'Other' AND MarketLogins.Markets_idByDate = ".$d;
         $s_d = $c -> query($sql_d);
         $other = $s_d -> fetchColumn();
-        $data .= ", {METHOD:'Other',AMOUNT:'".$other."'}";
+        $data .= ", {'METHOD':'Other','AMOUNT':'".$other."'}";
         $c = null;
         return $data;
+    }
+
+    function displayNoobsGraph($rep) {
+        return "<script>Morris.Donut({
+                element: 'retvsnew',
+                data: [".getRetVSNew($rep)."],
+                colors:['#994d00','#ffa64d']
+            });</script>";
     }
 
     function getRetVSNew($d) //data for the comparison of returning vs new patrons per market
@@ -923,7 +977,17 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         $data = "";
-        $table_begin = '<table class = "table"><thead><tr><th> Name </th><th> Email </th><th> Add Date </th><th> Deactivate </th></tr></thead><tbody>';
+        $table_begin = 
+            '<table class = "table">
+                <thead>
+                    <tr>
+                        <th> Name </th>
+                        <th> Email </th>
+                        <th> Add Date </th>
+                        <th> Deactivate </th>
+                    </tr>
+                </thead>
+            <tbody>';
         $table_end = '</tbody></table>';
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<tr><form action ="funcs.php", method = "POST">';

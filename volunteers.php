@@ -67,10 +67,16 @@
             </div>
         </div>
         <script>
-        var mail_sender_btn = document.getElementById("email-volunteer-list-btn");
-        mail_sender_btn.onclick = function() {
-            window.open("mailto:<?php echo volunteerEmailList();?>?subject=Volunteer at the Market!");
-        }
+        $.("email-volunteer-list-btn").click(function(event) {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {message: "get-email-list"},
+                success: function(data) {
+                    window.open("mailto:" + data + "?subject=Volunteer at the Market!");
+                }
+            });
+        });
     </script>
     </body>
     

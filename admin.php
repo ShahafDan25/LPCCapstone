@@ -51,19 +51,18 @@
             <a href = "inventory.php" class = "nav-bar-option responsive">Inventory</a>
             <h5 class = "nav-bar-title responsive"> The Market - Admin </h5>
         </header>
+        <div class = "sidebar" id = "sidebar">
+                <a href = "#new-market" value = "new-market" id = "new-market-sender" onclick = "responsive_sidebar_item(this.value)"> New Market </a>
+                <a href = "#market-actions" value = "market-actions" id = "market-actions-sender" onclick = "responsive_sidebar_item(this.value)"> Market Actions </a>
+                <a href = "#change-password" value = "change-password" id = "change-password-sender" onclick = "responsive_sidebar_item(this.value)"> Change Password</a>
+        </div>
         <div class = "page-container">
-            <div class = "sidebar">
-                <a class = "active" href = "#new-market"> New Market </a>
-                <a class = "active" href = "#market-actions"> Market Actions </a>
-                <a class = "active" href = "#change-password"> Change Password</a>
-            </div>
-
             <div class="content">
             <h2> MARKET ADMIN PAGE </h2> 
                 <div class = "sub-admin-page-container" id = "new-market">
                     <h4><u>Market Actions</u></h4>  
                     <form action = "funcs.php" method = "POST">
-                        <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" name = "new_market_date"><br>
+                        <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" name = "new_market_date"><br><br>
                         <input type = "hidden" value = "submitNewMarket" name = "message">
                         <button class = "btn submit-new-market-date"> Submit </button>
                     </form>
@@ -119,22 +118,35 @@
         <div id = "changePWDiv" class = "collapse">
     
         </div>
-        <br>
-        <div class = "lower_portion">
-            <!-- Create New Market: -->
-            <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>
-            <div id = "new_market" class = "collapse">
-                
-            </div>
-        </div>
-        
     </body>
     <footer class = "footer">
         <h5> Powered by Shahaf Dan - Capstone Project </h5>
         <br>
         <p>Las Positas College | May 2020</p>
     </footer>
+    
+    <script>
+        $('a[href^="#"]').on('click',function (e) {
+            e.preventDefault();
 
+            var target = this.hash;
+            var $target = $(target);
+
+            $('html, body').animate({
+                'scrollTop':$target.offset().top
+            }, 750, 'swing');
+            
+        });
+
+        function responsive_sidebar_item(value) {
+            var targets = ["new-market", "market-actions", "change-password"];
+            for(var i = 0; i < targets.length; i++) {
+                document.getElementById(targets[i] + "-sender").className = "";
+            }
+            document.getElementById(value + "-sender").className = "active";
+            console.log(document.getElementById(targets[i] + "-sender"));
+        }
+    </script>
 
 
 </html>

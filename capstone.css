@@ -237,7 +237,7 @@ div.content {
     }
 }
 
-.change-pw-input {
+.change-pw-input, .choose-new-market-date {
     border: 0px solid black !important;
     background-color: transparent !important;
     background: transparent !important;
@@ -248,7 +248,7 @@ div.content {
     transition: 0.3s !important;
 }   
 
-.change-pw-input:focus{
+.change-pw-input:focus, .choose-new-market-date:focus{
     outline: none !important;
     width: 32% !important;
     font-weight: bolder !important;
@@ -256,7 +256,7 @@ div.content {
     transition: all 0.35s ease-in-out !important;
 }
 
-.submit-pw-change-btn, .submit-admin-market-option {
+.submit-pw-change-btn, .submit-admin-market-option, .submit-new-market-date {
     background-color: #28a745 !important;
     width: 90% !important;
     padding: 0.9% 0% 0.9% 0% !important;
@@ -266,7 +266,7 @@ div.content {
     border: 0.5px solid white !important;
     margin-bottom: 0.45% !important;
 }
-.submit-pw-change-btn:hover, .submit-admin-market-option:hover {
+.submit-pw-change-btn:hover, .submit-admin-market-option:hover, .submit-new-market-date:hover {
     padding: 1.25% 0% 1.25% 0% !important;
     width: 95% !important;
     margin-bottom: 0% !important;

@@ -61,7 +61,12 @@
             <div class="content">
             <h2> MARKET ADMIN PAGE </h2> 
                 <div class = "sub-admin-page-container" id = "new-market">
-
+                    <h4><u>Market Actions</u></h4>  
+                    <form action = "funcs.php" method = "POST">
+                        <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" name = "new_market_date"><br>
+                        <input type = "hidden" value = "submitNewMarket" name = "message">
+                        <button class = "btn submit-new-market-date"> Submit </button>
+                    </form>
                 </div>
                 <br>
                 <div class = "sub-admin-page-container" id = "market-actions">
@@ -119,13 +124,7 @@
             <!-- Create New Market: -->
             <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#new_market" aria-expanded="false"> Create New Market </button>
             <div id = "new_market" class = "collapse">
-                <form method = "post" action = "adminFuncs.php">
-                    <h3> Choose A Date </h3>
-                    <input type = "date" placeholder = "Choose a Month" class  = "btn" name = "new_market_date">
-                    <input type="hidden" value = "submitNewMarket" name = "message">
-                    <button class = "btn btn-success"> Submit </button>
-
-                </form>
+                
             </div>
         </div>
         

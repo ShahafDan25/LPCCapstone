@@ -68,7 +68,7 @@ t = time
             // elseif($_POST['adminOption'] == "report") generate_report(connDB(), $d_f);
             elseif($_POST['adminOption'] == "terminate") terminateActiveMarket($_POST['date']);
             // elseif($_POST['adminOption'] == "inventory") changeInventoryStatus(connDB(), $d_f);
-            elseif($_POST['adminOption'] == "deleteMarket") deleteMarket($_POST['marketid'])
+            elseif($_POST['adminOption'] == "deleteMarket") deleteMarket($_POST['marketid']);
         }
         echo '<script> location.replace("admin.php") </script>'; 
         return;
@@ -446,7 +446,7 @@ t = time
         return;
     }
 
-    function activateMarket($ate) //from the existing market, activate a market.
+    function activateMarket($date) //from the existing market, activate a market.
     {
         $c = connDB(); //set connection
         date_default_timezone_set("America/Los_Angeles"); 
@@ -463,7 +463,7 @@ t = time
             $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date.";";
             $c -> prepare($sql) -> execute();
         }
-        $c = null //close connection
+        $c = null; //close connection
         return;
     }
 
@@ -477,7 +477,7 @@ t = time
         $close_time_digits = substr($closetime, 0, 2).substr($closetime, 3, 2);
         $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$date.";"; 
         $c -> prepare($sql) -> execute(); 
-        $c = null// close connection
+        $c = null; // close connection
         return;
     }
 
@@ -499,7 +499,7 @@ t = time
         $sql .= "DELETE FROM Items WHERE Markets_idByDate = ".$date.";";
         $sql .= "DELETE FROM Markets WHERE idByDate = ".$date.";";
         $c -> prepare($sql)-> execute();
-        $c = null //close connection
+        $c = null; //close connection
         return;
     }
 

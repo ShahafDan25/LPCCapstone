@@ -111,7 +111,7 @@
                     </form>
                 </div>
                 <footer class = "footer">
-                    <p> Property of Las Positas College Student Government <br> </p>
+                    <p> Las Positas College Student Government <br> </p>
                     <p class = "shahaf-signature"> Shahaf Dan Productions </p>
                 </footer>
             </div>

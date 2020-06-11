@@ -1,27 +1,95 @@
-<?php include "adminFuncs.php";?>
+<?php include "funcs.php";?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>The Market </title>
-
+        <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
+                
         <!-- CSS HARDCODE FILE LINK -->
         <link href='capstone.css?version=1' rel='stylesheet'></link>
 
         <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 
-        <!-- Bootstrap for JQuery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <!-- Bootstrap for JQuery, AJAX, JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 
-        <!-- Bootstrap for JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
-        <script src = "captsone.js"></script>
+        <script src="captsone.js"></script>
+
+        <!-- FONTAWESOME ICON --> 
+        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
+        <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
     </head>
 
 
-    <body class = "container">
+    <body class = "index-page-body">
+        <div class = "sidebar" id = "sidebar">
+                <a class = "a-item active" id = "new-members-sender" onclick = "responsive_sidebar_item(this.id);"> New Members </a>
+                <a class = "a-item" id = "returning-members-sender" onclick = "responsive_sidebar_item(this.id);"> Returning Members</a>
+                <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin Page</a>
+        </div> 
+        <div class = "page-container">
+            <h2 class = "mid"> The Las Positas College Market </h2>
+            <h4 class = "mid"><u> <?php echo current_market_date();?> </u></h4>
+            <!------------------- NEW MEMBERS DIVISION ----------------------->
+            <div class = "new-members" id = "new-members" style = "display: block">
+            
+            </div>
+            <!------------------- RETURNING MEMBERS DIVISION ----------------------->
+            <div class = "returning-members" id = "returning-members" style = "display: none">
+                <h4><u>Returning Patrons</u></h4> 
+                    <form method = "POST" action = "funcs.php">
+                        <h5> Insert Your Market ID </h5>
+                        <span>
+                            <input type = "number" class = "mandatory form-control w55 inline" placeholder = "Market ID" name = "patronID">
+                            <button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
+                        </span>
+                        <br><br>
+                        <p> <strong> FORGOT YOUR ID? </strong> Look for you name below!</p>
+                    
+                        <input class="form-control" id="myInput" type="text" placeholder="Search.." autocomplete = "off">
+                        <br>
+                        <ul class="list-group" id="myList">
+                            <?php echo populate_dropdown(connDB());?>
+                        </ul>  
+                        <input type="hidden" value = "patronLogin" name = "message">
+                    </form>
+            </div>
+            <!------------------- ADMIN LOGIN DIVISION ----------------------->
+            <div class = "admin-login" id = "admin-login" style = "display: none">
+                <form action = "funcs.php" method = "POST">
+                    <input type = "password" placeholder="  Password" class = "change-pw-input" name = "inputAdminPW" pattern = "\S+.*" required>
+                    <input type = "hidden" value = "verifyPassword" name = "message">
+                    <button class = "btn submit-admin-login" id = "inputAdminBtn"> Submit </button>
+                </form>
+            </div>
+            <!------------------- FOOTER SECTION ----------------------->
+            <footer class = "footer">
+                <p> Las Positas College Student Government <br> </p>
+                <p class = "shahaf-signature"> Shahaf Dan Productions </p>
+            </footer>
+        </div>
+
+    </body>
+    <script>
+        function responsive_sidebar_item(x) {
+            var targets = ["new-members", "returning-members", "admin-login"];
+            for(var i = 0; i < targets.length; i++) { //do for all
+                document.getElementById(targets[i] + "-sender").className = "a-item";
+                // document.getElementById(targets[i]).style.marginTop = "0px";
+                document.getElementById(targets[i]).style.display = "none";
+            }
+            //then do it for target along
+            document.getElementById(x).className += " active";
+            document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
+            // document.getElementById(x.substring(0, x.length - 7)).style.marginTop = "15%";
+        }
+    </script>
         <!-- <div class = "container"> -->
             <div class = "header">
                 <button class = "sideBtn btn inline btn-primary pull-left" id = "goToAdminBtn"> Admin </button>
@@ -39,11 +107,6 @@
             
             <div class = "operational"> 
                 <h1 class = "mid"> The Market </h1>
-                <h4 class = "mid"> 
-                    <?php
-                        echo current_market_date();
-                    ?>
-                </h4>
                 <!-- Returning patrons: Login using ID -->
                 <span>
                     <h3> Returning Patrons </h3> 

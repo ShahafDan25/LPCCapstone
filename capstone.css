@@ -58,7 +58,7 @@ hr
     background-image: linear-gradient(rgb(235, 154, 154), rgb(207, 73, 73));
     background-attachment: fixed;
 }
-.volunteer-page-body, .report-page-body, .inventory-page-body, .admin-page-body {
+.volunteer-page-body, .report-page-body, .inventory-page-body, .admin-page-body, .index-page-body {
     text-align: center;
     background-image: white;
     background-attachment: fixed;
@@ -107,6 +107,32 @@ hr
     height: 85% !important;
 }
 /* ------------ Registration Page ---------------- */
+.submit-admin-login {
+    background-color: #28a745 !important;
+    width: 90% !important;
+    padding: 0.9% 0% 0.9% 0% !important;
+    text-transform: uppercase;
+    transition: 0.3s !important;
+    color: white !important;
+    border: 0.5px solid white !important;
+    margin-bottom: 0.45% !important;
+}
+
+.submit-admin-login:hover {
+    padding: 1.25% 0% 1.25% 0% !important;
+    width: 95% !important;
+    margin-bottom: 0% !important;
+}
+
+
+
+
+
+
+
+
+
+
 .operational
 {
     margin-top: 2% !important;

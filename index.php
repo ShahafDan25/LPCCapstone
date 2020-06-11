@@ -29,11 +29,11 @@
 
     <body class = "index-page-body">
         <div class = "sidebar" id = "sidebar">
-                <a class = "a-item active" id = "new-members-sender" onclick = "responsive_sidebar_item(this.id);"> New Members </a>
-                <a class = "a-item" id = "returning-members-sender" onclick = "responsive_sidebar_item(this.id);"> Returning Members</a>
-                <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin Page</a>
+            <a class = "a-item active" id = "new-members-sender" onclick = "responsive_sidebar_item(this.id);"> New Members </a>
+            <a class = "a-item" id = "returning-members-sender" onclick = "responsive_sidebar_item(this.id);"> Returning Members</a>
+            <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin Page</a>
         </div> 
-        <div class = "page-container">
+        <div class = "content" style = "padding-top: 1.5% !important;">
             <h2 class = "mid"> The Las Positas College Market </h2>
             <h4 class = "mid"><u> <?php echo current_market_date();?> </u></h4>
             <!------------------- NEW MEMBERS DIVISION ----------------------->

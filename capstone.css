@@ -89,6 +89,23 @@ hr
     font-size: 70% !important;
     font-weight: bolder !important;
 }
+.page-container {
+    padding-top: 6% !important;
+}
+.unpadded-page-container {
+    padding-top: 1.5% !important;
+}
+.container
+{ 
+    height: 100% !important;
+    background: url('otherFiles/pics/lpc.jpg') !important; 
+    text-align: center !important; 
+    width: 100% !important;
+    background-position: center !important; 
+    background-repeat: no-repeat !important; 
+    background-size: 100% !important; 
+    background-attachment: fixed !important;
+}
 .w20
 {
     margin-right: 40%;
@@ -193,20 +210,7 @@ hr
     font-family: 'Lobster', cursive !important; 
     margin-left: 5%;
 }
-.page-container {
-    padding-top: 6% !important;
-}
-.container
-{ 
-    height: 100% !important;
-    background: url('otherFiles/pics/lpc.jpg') !important; 
-    text-align: center !important; 
-    width: 100% !important;
-    background-position: center !important; 
-    background-repeat: no-repeat !important; 
-    background-size: 100% !important; 
-    background-attachment: fixed !important;
-}
+
 .infoDiv
 {
     padding-left: 5%;

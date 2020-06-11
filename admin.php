@@ -74,20 +74,20 @@
                         <br>
                         <ul class = "admin-options-list">
                             <li class = "admin-options-list-item">
-                                <input type = "radio" id = "option-1" name = "adminOption" value = "invoke">
-                                <label for = "option-1"> Activate </label>
+                                <input type = "radio" id = "option-1" name = "adminOption" value = "invoke" class = "admin-option">
+                                <label for = "option-1"  class = "admin-option-label"> Activate </label>
                                 <div class = "check"></div>
                             </li>
 
                             <li class = "admin-options-list-item">
-                                <input type = "radio" id = "option-2" name = "adminOption" value = "terminate">
-                                <label for = "option-2"> Terminate </label>
+                                <input type = "radio" id = "option-2" name = "adminOption" value = "terminate" class = "admin-option">
+                                <label for = "option-2"  class = "admin-option-label"> Terminate </label>
                                 <div class = "check"></div>
                             </li>
 
                             <li class = "admin-options-list-item">
-                                <input type = "radio" id = "option-3" name = "adminOption" value = "deleteMarket">
-                                <label for = "option-3"> Delete </label>
+                                <input type = "radio" id = "option-3" name = "adminOption" value = "deleteMarket" class = "admin-option">
+                                <label for = "option-3" class = "admin-option-label"> Delete </label>
                                 <div class = "check"></div>
                             </li>
                         </ul>

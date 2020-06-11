@@ -61,27 +61,14 @@ t = time
 
     if($_POST['message'] == 'adminOption') //choose an action option per market
     {
-        
-        $d = $_POST['marketDate'];
-        $d_f = substr($d,10,4).substr($d,0,2).substr($d,5,2);
-
-        if($_POST['marketDate'] == "Choose a market (by date)" || $_POST['marketDate'] == "No Markets to Show")
-        {
-            echo '<script>alert("Please choose a date");</script>';
-            echo '<script> location.replace("admin.php") </script>';
-            return; 
-        }
+        if($_POST['marketDate'] == "none") echo '<script>alert("Please choose a date");location.replace("admin.php");</script>';
         else
         {
-            if($_POST['adminOption'] == "invoke") activateMarket(connDB(), $d_f);
-            elseif($_POST['adminOption'] == "report") generate_report(connDB(), $d_f);
-            elseif($_POST['adminOption'] == "terminate") terminateActiveMarket(connDB(), $d_f);
-            elseif($_POST['adminOption'] == "inventory") changeInventoryStatus(connDB(), $d_f);
-            elseif($_POST['adminOption'] == "deleteMarket")
-            {
-                changeToDeleteStatus(connDB(), $d_f);
-                deleteMarket(connDB());
-            }
+            if($_POST['adminOption'] == "invoke") activateMarket($_POST['date']);
+            // elseif($_POST['adminOption'] == "report") generate_report(connDB(), $d_f);
+            elseif($_POST['adminOption'] == "terminate") terminateActiveMarket($_POST['date']);
+            // elseif($_POST['adminOption'] == "inventory") changeInventoryStatus(connDB(), $d_f);
+            elseif($_POST['adminOption'] == "deleteMarket") deleteMarket($_POST['marketid'])
         }
         echo '<script> location.replace("admin.php") </script>'; 
         return;
@@ -459,38 +446,38 @@ t = time
         return;
     }
 
-    function activateMarket($c, $d) //from the existing market, activate a market.
+    function activateMarket($ate) //from the existing market, activate a market.
     {
+        $c = connDB(); //set connection
         date_default_timezone_set("America/Los_Angeles"); 
         $starttime = date("H:i"); 
         $start_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
-        $sql = "SELECT active FROM Markets WHERE idByDate = ".$d.";";
+        $sql = "SELECT active FROM Markets WHERE idByDate = ".$date.";";
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-        if($r['active'] == 2) {echo '<script>alert("This market has already been activated before you cannot activate a market twice");</script>';} 
-        else
-        {
-            $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$d.";";
-            $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$d.";";
+        if($r['active'] == 2) echo '<script>alert("This market is terminated.\r\n It cannot be activated it again");</script>';
+        else if ($r['active'] == 1) echo '<script>alert("This market is already active ! ");</script>';
+        else {
+            $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date.";";
+            $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date.";";
             $c -> prepare($sql) -> execute();
         }
+        $c = null //close connection
         return;
     }
 
-    function terminateActiveMarket($c, $d) //terminate a market with a status active = 2 (meaning it can no longer be activated again)
+    function terminateActiveMarket($date) //terminate a market with a status active = 2 (meaning it can no longer be activated again)
     {
-        $c = connDB();
-        $sql = "UPDATE Markets SET active = 2 WHERE idByDate = ".$d; //active = 2, means closed for good
-        
+        $c = connDB(); //set connection
+        $sql = "UPDATE Markets SET active = 2 WHERE idByDate = ".$date.";"; //active = 2, means closed for good
         $c -> prepare($sql) -> execute();
         date_default_timezone_set("America/Los_Angeles"); 
         $closetime = date("H:i");
         $close_time_digits = substr($closetime, 0, 2).substr($closetime, 3, 2);
-        $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$d; 
-        $s = $c -> prepare($sql);
-        $s -> execute();
-        echo '<script> location.replace("admin.php") </script>';
+        $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$date.";"; 
+        $c -> prepare($sql) -> execute(); 
+        $c = null// close connection
         return;
     }
 
@@ -503,22 +490,16 @@ t = time
         return;
     }
 
-    function deleteMarket($c) //delete a market from the database
+    function deleteMarket($date) //delete a market from the database
     {
-        $sql = "SELECT idByDate FROM Markets WHERE toDelete = 1";
-        $s = $c -> prepare($sql);
-        $s -> execute();
-        $r = $s -> fetch(PDO::FETCH_ASSOC);
-        $d = $r['idByDate']; //first retrieve the right market with the idbydate whete the deletion status is updated (see function above)
-
-        //deleting from the database in the right order, so all information regarding that market are deleted
-        //maybe I should use database cascades
-        $sql = "DELETE FROM MarketLogins WHERE Markets_idByDate = ".$d.";";
-        $sql .= "DELETE FROM Patrons WHERE firstMarket = ".$d.";";
-        $sql .= "DELETE FROM Items WHERE Markets_idByDate = ".$d.";";
-        $sql .= "DELETE FROM Markets WHERE idByDate = ".$d.";";
-        $s = $c -> prepare($sql);
-        $s -> execute();
+        // NOTE: consider using cacades instead!
+        $c = connDB(); //set connection
+        $sql = "DELETE FROM MarketLogins WHERE Markets_idByDate = ".$date.";";
+        $sql .= "DELETE FROM Patrons WHERE firstMarket = ".$date.";";
+        $sql .= "DELETE FROM Items WHERE Markets_idByDate = ".$date.";";
+        $sql .= "DELETE FROM Markets WHERE idByDate = ".$date.";";
+        $c -> prepare($sql)-> execute();
+        $c = null //close connection
         return;
     }
 

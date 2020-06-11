@@ -18,32 +18,31 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Market - Admin </title>
+        <title> Admin - LPC Market </title>
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
         <!-- CSS HARDCODE FILE LINK -->
         <link href='capstone.css?version=1' rel='stylesheet'></link>
 
         <!-- Bootstrap for CSS -->
-        <link rel="stylesheet" href="./otherFiles/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 
-        <!-- Bootstrap for JQuery -->
-        <script src="./otherFiles/jquery.min.js"></script>
+        <!-- Bootstrap for JQuery, AJAX, JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 
-        <!-- Bootstrap for JavaScript -->
-        <script src="./otherFiles/bootstrap.min.js"></script>
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>
 
-        <!-- MORRIS.JS (for graphing utilities from PHP data) LINKS -->
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+        <!-- FONTAWESOME ICON --> 
+        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
+        <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
     </head>
     
-    <body class = "bodyRed">
+    <body class = "admin-page-body">
     <!-- -------------- NAVIGATION BAR ------------>
         <header class = "nav-bar">
             <a href = "index.php" class = "nav-bar-option responsive">Market</a>
@@ -52,28 +51,68 @@
             <a href = "inventory.php" class = "nav-bar-option responsive">Inventory</a>
             <h5 class = "nav-bar-title responsive"> The Market - Admin </h5>
         </header>
-        <div id = "changePWDiv" class = "collapse">
-        <hr>
-            <form method = "post" action = "adminFuncs.php">
-                <h4> Change you Password </h4>
-                <input type = "password" placeholder = "Old Password" class = "btn" name = "oldPW"> &nbsp; &nbsp;
-                <input type = "password" placeholder = "New Password" class = "btn" name = "newPW1"> &nbsp; &nbsp;
-                <input type = "password" placeholder = "Verify New Password" class = "btn" name = "newPW2"> <br><br> 
-                <input type = "hidden" value = "changePW" name = "message"> <!-- USE THIS TO SEND THE MESSAGE TO THE PHP PAGE -->
-                <button class = "btn btn-success" id = "submit">  Change Password </button>
-            </form>
-            <hr>
+        <div class = "page-container">
+            <div class = "sidebar">
+                <a class = "active" href = "#new-market"> New Market </a>
+                <a class = "active" href = "#market-actions"> Market Actions </a>
+                <a class = "active" href = "#change-password"> Change Password</a>
+            </div>
+
+            <div class="content">
+            <h2> MARKET ADMIN PAGE </h2> 
+                <div class = "sub-admin-page-container" id = "new-market">
+
+                </div>
+                <br>
+                <div class = "sub-admin-page-container" id = "market-actions">
+                    <h4><u>Market Actions</u></h4>
+                    <form action = "funcs.php" method = "POST">
+                        <select class = 'select-markets' name = 'marketid' id = "marketid">
+                            <option value = 'none' selected disabled hidden>Choose a Market </option>
+                            <?php echo populateMarketsDropDown(); ?>
+                        </select>
+                        <br>
+                        <ul class = "admin-options-list">
+                            <li class = "admin-options-list-item">
+                                <input type = "radio" id = "option-1" name = "adminOption" value = "invoke">
+                                <label for = "option-1"> Activate </label>
+                                <div class = "check"></div>
+                            </li>
+
+                            <li class = "admin-options-list-item">
+                                <input type = "radio" id = "option-2" name = "adminOption" value = "terminate">
+                                <label for = "option-2"> Terminate </label>
+                                <div class = "check"></div>
+                            </li>
+
+                            <li class = "admin-options-list-item">
+                                <input type = "radio" id = "option-3" name = "adminOption" value = "deleteMarket">
+                                <label for = "option-3"> Delete </label>
+                                <div class = "check"></div>
+                            </li>
+                        </ul>
+                        <br>
+                        <input id = "hiddenMessage" type="hidden" value = "adminOption" name = "message">
+                        <button class = "btn submit-admin-market-option" id = "submit"> SUBMIT </button>
+                    </form>
+                    
+                </div>
+                <br>
+                <div class = "sub-admin-page-container" id = "change-password">
+                    <h4><u>Change Admin's Password</u></h4> <br>
+                    <form action = "funcs.php" action = "POST">
+                        <input type = "password" placeholder = " Old Password" class = "change-pw-input inline" name = "oldPW" autocomplete = "off">
+                        <input type = "password" placeholder = " New Password" class = "change-pw-input inline" name = "newPW1" autocomplete = "off">
+                        <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" name = "newPW2" autocomplete = "off"> <br><br> 
+                        <input type = "hidden" value = "changePW" name = "message"> 
+                        <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
-        <div class = "upper_portion_admin">
-            <h1> Admin and Management Page</h1> <br>
-            <!-- Page Instructions: -->
-            <h3 class = "pull-left instructions"> <u> Instructions </u> </h3> <br>
-            <ul class = "pull-left instructions">
-                <li class = "pull-left"> 1.  To Create a new Market: Click the First Button </li><br>
-                <li class = "pull-left"> 2.  To Choose a Market Action: Click the Second Button </li><br>
-                <li class = "pull-left"> 3.  Choose From the Shown Options </li><br>
-                <li class = "pull-left"> 4.  Click the submit button! </li>
-            </ul>
+        <div id = "changePWDiv" class = "collapse">
+    
         </div>
         <br>
         <div class = "lower_portion">
@@ -88,58 +127,6 @@
 
                 </form>
             </div>
-            <br> <br> 
-                <!-- Choose a market and action: -->
-            <button class = "btn btn-warning collapsed" data-toggle="collapse" data-target="#generate_report" aria-expanded="false" id = "submit"> Choose a Market </button>
-            <div id = "generate_report" class = "collapse">
-                <form method = "post" action = "adminFuncs.php">
-                    <h3> Choose a Market</h3>
-                    <div class="dropdown">
-                        <select class="btn midbigger browser-default custom-select"  name = "marketDate">
-                            <option> Choose a market (by date) </option>
-                            <?php
-                                echo populate_market_dropdown(connDB());
-                            ?>
-                        </select>
-                    </div> 
-                    <br><br>
-                    <!-- Market Actions: -->
-                    <p class = "inline"> 
-                    <label class = "pull-left radioBtn ">
-                        <input class = "inline" id = "invokeRadio" name="adminOption" value = "invoke" type="radio" checked />
-                        &nbsp;<span class = "inline"> Activate</span>
-                    </label>
-                    </p>
-                    <p class = "inline">
-                    <label class = "pull-left radioBtn">
-                        <input class = "inline" id = "reportRadio" name="adminOption" value = "terminate" type="radio" />
-                        &nbsp;<span class = "inline"> Terminate</span>
-                    </label>    
-                    </p>
-                    <p class = "inline">
-                    <label class = "pull-left radioBtn">
-                        <input class = "inline" id = "reportRadio" name="adminOption" value = "report" type="radio" />
-                        &nbsp;<span class = "inline"> Report</span>
-                    </label>
-                    </p>
-                    <p class = "inline">
-                    <label class = "pull-left radioBtn">
-                        <input class = "inline" id = "reportRadio" name="adminOption" value = "inventory" type="radio" />
-                        &nbsp;<span class = "inline"> Inventory</span>
-                    </label>
-                    </p>
-                    <p class = "inline">
-                    <label class = "pull-left radioBtn"> 
-                        <input class = "inline" id = "reportRadio" name="adminOption" value = "deleteMarket" type="radio" />
-                        &nbsp;<span class = "inline"> Delete</span>
-                    </label>
-                    </p>
-                    <br><br>
-                    <input id = "hiddenMessage" type="hidden" value = "adminOption" name = "message">
-                    <button class = "btn btn-success" id = "submit"> SUBMIT </button>
-                </form>                     
-            </div>
-           
         </div>
         
     </body>

@@ -35,7 +35,7 @@
             <h5 class = "nav-bar-title responsive"> The Market - Report </h5>
         </header>
         <div class = "page-container">
-            <h2> MARKET INVENTORY </h2>
+        <h2> MARKET INVENTORY </h2>
             <select class = 'select-markets' name = 'marketid' id = "marketid">
                 <option value = 'none' selected disabled hidden>Choose a Market </option>
                 <?php echo populateMarketsDropDown(); ?>

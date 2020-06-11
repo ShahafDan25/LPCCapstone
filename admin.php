@@ -58,7 +58,7 @@
         </div>
         <div class = "page-container">
             <div class="content">
-            <h2> MARKET ADMIN PAGE </h2> 
+                <h2> MARKET ADMIN PAGE </h2> 
                 <div class = "sub-admin-page-container" id = "new-market" style = "display: block">
                     <h4><u>Create New Market</u></h4>  
                     <form action = "funcs.php" method = "POST">
@@ -110,6 +110,10 @@
                         <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button>
                     </form>
                 </div>
+                <footer class = "footer">
+                    <p> Property of Las Positas College Student Government <br> </p>
+                    <p class = "shahaf-signature"> Shahaf Dan Productions </p>
+                </footer>
             </div>
         </div>
     </body>

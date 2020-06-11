@@ -211,17 +211,16 @@ hr
 
 .sidebar a.active {
     background-color: rgb(102, 124, 246) !important;
-    color: white;
+    color: white !important;
     outline: none;
-    padding-top: 10% !important;
 }
 
 .sidebar a:hover:not(.active) {
-    background-color: #444;
-    color: white;
+    background-color: rgb(177, 189, 253);
+    color: white !important;
     outline: none;
     font-weight: bolder !important;
-    font-size: 110% !important;
+    font-size: 105% !important;
 }
 
 div.content {
@@ -288,7 +287,7 @@ div.content {
     border-radius: 1.5px !important;
     border: 0.5px solid black !important;
     width: 90% !important;
-    padding-top: 2% !important;
+    padding-top: 2%;
     margin-left: 5% !important;
     padding: 2.5% 0.5% 0.5% 0.5% !important;
     text-align: center;
@@ -342,7 +341,7 @@ div.content {
     width: 25px;
     top: 30px;
     left: 20px;
-    z-index: 5;
+    z-index: 3;
     transition: border 0.25s linear;
     -webkit-transition: border 0.25s linear;
 }

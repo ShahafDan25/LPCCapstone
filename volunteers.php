@@ -67,17 +67,17 @@
             </div>
         </div>
         <script>
-        $.("email-volunteer-list-btn").click(function(event) {
-            $.ajax ({
-                type: "POST",
-                url: "funcs.php",
-                data: {message: "get-email-list"},
-                success: function(data) {
-                    window.open("mailto:" + data + "?subject=Volunteer at the Market!");
-                }
+            $.("email-volunteer-list-btn").click(function(event) {
+                $.ajax ({
+                    type: "POST",
+                    url: "funcs.php",
+                    data: {message: "get-email-list"},
+                    success: function(data) {
+                        window.open("mailto:" + data + "?subject=Volunteer at the Market!");
+                    }
+                });
             });
-        });
-    </script>
+        </script>
     </body>
     
 </html>

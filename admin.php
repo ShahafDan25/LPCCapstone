@@ -52,23 +52,22 @@
             <h5 class = "nav-bar-title responsive"> The Market - Admin </h5>
         </header>
         <div class = "sidebar" id = "sidebar">
-                <a href = "#new-market" value = "new-market" id = "new-market-sender" onclick = "responsive_sidebar_item(this.value)"> New Market </a>
-                <a href = "#market-actions" value = "market-actions" id = "market-actions-sender" onclick = "responsive_sidebar_item(this.value)"> Market Actions </a>
-                <a href = "#change-password" value = "change-password" id = "change-password-sender" onclick = "responsive_sidebar_item(this.value)"> Change Password</a>
+                <a class = "a-item active" id = "new-market-sender" onclick = "responsive_sidebar_item(this.id);"> New Market </a>
+                <a class = "a-item" id = "market-actions-sender" onclick = "responsive_sidebar_item(this.id);"> Market Actions </a>
+                <a class = "a-item" id = "change-password-sender" onclick = "responsive_sidebar_item(this.id);"> Change Password</a>
         </div>
         <div class = "page-container">
             <div class="content">
             <h2> MARKET ADMIN PAGE </h2> 
-                <div class = "sub-admin-page-container" id = "new-market">
-                    <h4><u>Market Actions</u></h4>  
+                <div class = "sub-admin-page-container" id = "new-market" style = "display: block">
+                    <h4><u>Create New Market</u></h4>  
                     <form action = "funcs.php" method = "POST">
                         <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" name = "new_market_date"><br><br>
                         <input type = "hidden" value = "submitNewMarket" name = "message">
                         <button class = "btn submit-new-market-date"> Submit </button>
                     </form>
                 </div>
-                <br>
-                <div class = "sub-admin-page-container" id = "market-actions">
+                <div class = "sub-admin-page-container" id = "market-actions" style = "display: none">
                     <h4><u>Market Actions</u></h4>
                     <form action = "funcs.php" method = "POST">
                         <select class = 'select-markets' name = 'marketid' id = "marketid">
@@ -101,8 +100,7 @@
                     </form>
                     
                 </div>
-                <br>
-                <div class = "sub-admin-page-container" id = "change-password">
+                <div class = "sub-admin-page-container" id = "change-password" style = "display: none">
                     <h4><u>Change Admin's Password</u></h4> <br>
                     <form action = "funcs.php" action = "POST">
                         <input type = "password" placeholder = " Old Password" class = "change-pw-input inline" name = "oldPW" autocomplete = "off">
@@ -113,40 +111,20 @@
                     </form>
                 </div>
             </div>
-
-        </div>
-        <div id = "changePWDiv" class = "collapse">
-    
         </div>
     </body>
-    <footer class = "footer">
-        <h5> Powered by Shahaf Dan - Capstone Project </h5>
-        <br>
-        <p>Las Positas College | May 2020</p>
-    </footer>
-    
     <script>
-        $('a[href^="#"]').on('click',function (e) {
-            e.preventDefault();
-
-            var target = this.hash;
-            var $target = $(target);
-
-            $('html, body').animate({
-                'scrollTop':$target.offset().top
-            }, 750, 'swing');
-            
-        });
-
-        function responsive_sidebar_item(value) {
+        function responsive_sidebar_item(x) {
             var targets = ["new-market", "market-actions", "change-password"];
-            for(var i = 0; i < targets.length; i++) {
-                document.getElementById(targets[i] + "-sender").className = "";
+            for(var i = 0; i < targets.length; i++) { //do for all
+                document.getElementById(targets[i] + "-sender").className = "a-item";
+                // document.getElementById(targets[i]).style.marginTop = "0px";
+                document.getElementById(targets[i]).style.display = "none";
             }
-            document.getElementById(value + "-sender").className = "active";
-            console.log(document.getElementById(targets[i] + "-sender"));
+            //then do it for target along
+            document.getElementById(x).className += " active";
+            document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
+            // document.getElementById(x.substring(0, x.length - 7)).style.marginTop = "15%";
         }
     </script>
-
-
 </html>

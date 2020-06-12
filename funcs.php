@@ -207,6 +207,11 @@ t = time
     if($_POST['message'] == "get-email-list") {
         echo volunteerEmailList();
     }
+
+    if($_POST['message'] == "volunteer-login") {
+        if(verifyVolunteer($_POST['volunteer-email']))echo '<script>location.replace("signups.php");</script>'; 
+        else echo '<script>alert("You are not registered as an active volunteer \r\n please contact the admin");</script>';
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -302,23 +307,15 @@ t = time
     {
         $c = connDB();
         $sql = "SELECT idByDate FROM Markets WHERE active = 1";
-        $s_ce = $c -> prepare($sql);
-        $s_ce -> execute();
         $s = $c -> prepare($sql);
         $s -> execute(); 
-        if(!$s_ce -> fetch(PDO::FETCH_ASSOC))
-        {
-            return "WARNING: No Market has been invoked, ask the admin to invoke a market<br><script>location.replace('noActiveMarket.html');</script>";
-        }
+        if(!$r = $s -> fetch(PDO::FETCH_ASSOC)) return "<script>location.replace('noActiveMarket.html');</script>";
         else
         {
-            while ($r = $s->fetch(PDO::FETCH_ASSOC))
-            { 
-                $final_date = substr($r['idByDate'], 4, 2)." / ".substr($r['idByDate'],0, 4);
-            }
-            return $final_date;
+            $months = ["January", "February", "March", "April", "May", " June", "July", "August", "September", "October", "November", "December"];
+            $final_date = $months[intval(substr($r['idByDate'], 4, 2)) - 1]." / ".substr($r['idByDate'],0, 4);
         }
-        
+        return $final_date;
     }
 
     function verifyExistence($c, $id) //check if the patrong ID is used by someone

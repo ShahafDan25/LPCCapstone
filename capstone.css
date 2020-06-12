@@ -9,52 +9,15 @@
 .mr10{margin-right: 8% !important;}
 .w50{margin-right: 25% !important; margin-left: 25% !important;}
 .inv_label{width: 40% !important;}
-.body_report{padding: 5% !important;}
-.btn{border: 1px solid black !important;}
 .dropdown a:hover {background-color: rgb(223, 76, 76) !important;} 
 .dropbtn:hover, .dropbtn:focus {background-color: #3e8e41;}
 .mid{text-align: center;}
-.tinyText {font-size:10px;}
-.blackback{background-color: #90aecc !important;}
-.btn-success{background-color: #28a745;}
-.checkID{display: inline-block !important;}
-.checkIDInput{width: 150% !important;}
 .centrize {text-align: center !important;}
-.optional{border: 1.5px solid black !important;}
-.mandatory{border: 1.5px solid red !important;}
 /* input:not(:placeholder-shown) {border-color: hsl(0, 76%, 50%) !important;}
 input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
 .inline{display: inline-block !important; display:flex; flex-direction: row;}
 .invi{display: none !important}
-.midfloat {float: middle !important;}
-/* ------------ General Application -------------- */
-
-.sideBtn
-{
-    border: 1.5px solid black !important;
-    margin: 1% !important;
-    margin-right: 3% !important;
-    margin-left: 3% !important;
-}
-.bodyNone
-{
-    text-align: center;
-    background-image: linear-gradient(rgb(255, 191, 128), rgb(255, 153, 51)) !important;
-    background-attachment: fixed;
-    text-align: center !important; 
-    height: 100% !important; 
-    width: 100% !important;
-    background-position: center !important; 
-    background-repeat: no-repeat !important; 
-    background-size: 100% !important; 
-}
 /* ------- BODIES AND CONTAINERS ---- */
-.bodyRed
-{
-    text-align: center;
-    background-image: linear-gradient(rgb(235, 154, 154), rgb(207, 73, 73));
-    background-attachment: fixed;
-}
 .volunteer-page-body, .report-page-body, .inventory-page-body, .admin-page-body, .index-page-body {
     text-align: center;
     background-image: white;
@@ -90,9 +53,6 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
 .page-container {
     padding-top: 6% !important;
 }
-.unpadded-page-container {
-    padding-top: 1.5% !important;
-}
 .container
 { 
     height: 100% !important;
@@ -105,19 +65,19 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     background-attachment: fixed !important;
 }
 
-
 /* ------------ Registration Page ---------------- */
 .index-registration-page-header {
     width: 100% !important;
     margin-top: 0% !important;
-    padding-left: 3.5% !important;
-    padding-top: 1.75% !important;
     height: 8.5% !important;
     overflow: hidden;
     background-color: #121212;  
     position: fixed;
     top: 0;
     z-index: 5 !important;
+    /* border-bottom-right-radius: 4% !important;
+    border-bottom-left-radius: 4% !important; */
+
 }
 .index-registration-page-header-title {
     background-image: linear-gradient(to right,rgb(134, 151, 246),rgb(102, 124, 246)) !important; /* rgb(79, 249, 255)*/
@@ -133,23 +93,31 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     font-size: 150% !important;
     background-color: black;
     padding-bottom: 10% !important;
+    padding-top: 1.75% !important;
 }
 .index-registration-page-header-sub-title {
     background-image: linear-gradient(to right,rgb(134, 151, 246),rgb(102, 124, 246)) !important; /* rgb(79, 249, 255)*/
     -webkit-background-clip: text;
     color: transparent;
-    float: center !important;
-    margin-left: 4% !important;
+    float: left !important;
+    margin-left: 7.5% !important;
+    text-align: center !important;
     width: auto !important;
-    border:0px !important;
-    padding-right: 2.25% !important;
-    padding-left: 2.25% !important;
+    border: none !important;
     font-weight: bolder;
-    font-size: 150% !important;
+    font-size: 130% !important;
     background-color: black;
     padding-bottom: 10% !important;
-}
+    padding-top: 1.75% !important;
 
+}
+.index-registration-page-header-image {
+    height: 100% !important;
+    width: auto !important;
+    background-color: white !important;
+    float: right !important;
+    margin-right: 5% !important;
+}
 .submit-admin-login, .submit-returning-patron-login {
     background-color: #28a745 !important;
     width: 90% !important;
@@ -741,5 +709,3 @@ div.content {
     float: left;
     margin-left: 5% !important;
 }
-
-

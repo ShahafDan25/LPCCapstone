@@ -29,11 +29,14 @@
         <header class = "index-registration-page-header">
             <h2 class = "index-registration-page-header-title"> Las Positas College: The Market </h2>
             <h5 class = "index-registration-page-header-sub-title"><u> <?php echo current_market_date();?> </u></h5>
+            <img src = "otherFiles/pics/lpcLogo.png" class = "index-registration-page-header-image">
         </header>
         <div class = "sidebar" id = "sidebar" style = "border-right: 2px solid black !important; background-color: #303030 !important;">
             <a class = "a-item active" id = "new-members-sender" onclick = "responsive_sidebar_item(this.id);"> New Members </a>
             <a class = "a-item" id = "returning-members-sender" onclick = "responsive_sidebar_item(this.id);"> Returning Members</a>
             <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin Page</a>
+            <a class = "a-item" id = "volunteer-signup-sender" onclick = "responsive_sidebar_item(this.id);"> Volunteer Sign Up</a>
+
         </div> 
         <div class = "content" style = "padding-top: 6.5% !important; text-align: center !important;">
             <!------------------- NEW MEMBERS DIVISION ----------------------->
@@ -125,9 +128,25 @@
             <div class = "admin-login" id = "admin-login" style = "display: none">
                 <form action = "funcs.php" method = "POST">
                     <h6><strong><u> Login as an Admin </strong></u></h6>
-                    <input type = "password" placeholder="  Password" class = "change-pw-input" name = "inputAdminPW" pattern = "\S+.*" required> <br><br>
+                    <input type = "password" placeholder="  Password" class = "change-pw-input full" name = "inputAdminPW" pattern = "\S+.*" required> <br><br>
                     <input type = "hidden" value = "verifyPassword" name = "message">
                     <button class = "btn submit-admin-login" id = "inputAdminBtn"> Submit </button>
+                </form>
+            </div>
+            <!------------------- VOLUNTEER SIGN UP DIVISION ----------------------->
+            <div class = "volunteer-signup" id = "volunteer-signup" style = "display: none">
+                <form action = "funcs.php" method = "POST">
+                    <h6><strong><u> Login With Your Email </strong></u></h6>
+                    <input type = "text" placeholder = "  Email" class = "index-registration-input full" name = "volunteer-email" pattern = "\S+.*" required> <br><br>
+                    <input type = "hidden" value = "volunteer-login" name = "message">
+                    <button class = "btn submit-admin-login"> Submit </button>
+                </form> 
+                <br><br> <hr class = "spacebar"> <br><br>
+                <form action = "funcs.php" method = "POST">
+                    <h6><strong><u> Request Volunteer Access </strong></u></h6>
+                    <input type = "text" placeholder = "  Email" class = "index-registration-input full" name = "volunteer-email" pattern = "\S+.*" required> <br><br>
+                    <input type = "hidden" value = "volunteer-request" name = "message">
+                    <button class = "btn submit-admin-login"> Submit </button>
                 </form>
             </div>
             <!-- ----------------- FOOTER SECTION --------------------- -->
@@ -136,7 +155,6 @@
                 <p class = "shahaf-signature"> Shahaf Dan Productions </p>
             </footer> 
         </div>
-
     </body>
     <script>
         var adminBtn = document.getElementById("goToAdminBtn");
@@ -171,7 +189,7 @@
             }
         }
         function responsive_sidebar_item(x) {
-            var targets = ["new-members", "returning-members", "admin-login"];
+            var targets = ["new-members", "returning-members", "admin-login", "volunteer-signup"];
             for(var i = 0; i < targets.length; i++) { //do for all
                 document.getElementById(targets[i] + "-sender").className = "a-item";
                 // document.getElementById(targets[i]).style.marginTop = "0px";
@@ -183,19 +201,4 @@
             // document.getElementById(x.substring(0, x.length - 7)).style.marginTop = "15%";
         }
     </script>
-        <!-- <div class = "container"> -->
-            <!-- <div class = "header">
-                <button class = "sideBtn btn inline btn-primary pull-left" id = "goToAdminBtn"> Admin </button>
-                    <form class = "inline pull-left" id = "goToAdminForm" method="post" action="index.php" style = "visibility: hidden;">
-                    <br>
-                        <input type = "password" class = "optional form-control w55 inline" placeholder="  Password" class = "password" id = "inputAdminPW" name = "inputAdminPW" required pattern = "\S+.*" style = "visibility: hidden;">
-                        <button class = "btn btn-info inline" id = "inputAdminBtn" style = "visibility: hidden;"> Submit </button>
-                        <input class = "inline" type="hidden" value = "verifyPassword" name = "message">
-                    </form>
-                    <h1 class = "pull-left headerTitle"><strong> The Market  -  LPCSG </strong></h1>
-                <img src = "otherFiles/pics/lpcLogo.png" class = "lpcLogo pull-right inline"> &nbsp; &nbsp;
-                <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "lpcsgLogo pull-right inline">
-            </div> -->
-        <!-- </div> -->
-    </body>
 </html>

@@ -28,27 +28,27 @@
 
 
     <body class = "index-page-body">
-        <div class = "sidebar" id = "sidebar">
+        <div class = "sidebar" id = "sidebar" style = "border-right: 2px solid black !important; background-color: #303030 !important;">
             <a class = "a-item active" id = "new-members-sender" onclick = "responsive_sidebar_item(this.id);"> New Members </a>
             <a class = "a-item" id = "returning-members-sender" onclick = "responsive_sidebar_item(this.id);"> Returning Members</a>
             <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin Page</a>
         </div> 
-        <div class = "content" style = "padding-top: 1.5% !important;">
-            <h2 class = "mid"> The Las Positas College Market </h2>
-            <h4 class = "mid"><u> <?php echo current_market_date();?> </u></h4>
+        <div class = "content" style = "padding-top: 1.5% !important; text-align: center !important;">
+            <h2> Las Positas College: The Market </h2>
+            <h5><u> <?php echo current_market_date();?> </u></h5>
             <!------------------- NEW MEMBERS DIVISION ----------------------->
+            <br>
             <div class = "new-members" id = "new-members" style = "display: block">
-                <div id = "name" class = "infoDiv">
-                    <h4> Please enter your ID, first name, and last name </h4>
-                    <br>
-                    <input type = "number" class = "mandatory form-control" placeholder="Enter the ID you chose above" class = "idChosen" id = "idSignUpInput" name = "patron_id" required pattern = "\S+.*" min = "6" max = "6" autocomplete = "off"> &nbsp;
-                    <p id = "alertedIDdiv"></p>
-                    <input type = "text" class = "mandatory form-control" placeholder="Please enter your first name" class = "firstName" name = "first_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                    <input type = "text" class = "mandatory form-control" placeholder="Please enter your last name" class = "lastName" name = "last_name" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                <div id = "name">
+                    <h6 class = "registration-instructions-text"><strong><u> Please choose an ID, and enter your first and last names </u></strong></h6>
+                    <input type = "number" class = "index-registration-input third inline" placeholder=" Market ID" id = "idSignUpInput" name = "patron_id" pattern = "\S+.*" min = "6" max = "6" autocomplete = "off" required> &nbsp;
+                    <input type = "text" class = "index-registration-input third inline" placeholder = " First Name" class = "firstName" name = "first_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                    <input type = "text" class = "index-registration-input third inline" placeholder = " Last Name" class = "lastName" name = "last_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                    <p id = "alertedIDdiv" style = "display: none !important;"></p>
                 </div>
-                <hr>
-                <div id = "student?" class = "infoDiv">
-                    <h4> Are you a student as Las Positas? </h4>
+                <br>
+                <div id = "student-status">
+                    <h6 class = "registration-instructions-text"><strong><u> Are you a student as Las Positas? </strong></u></h6>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" required>
                         <label class="btn btn-info active">
                             <input type = "radio" name = "student?" value = "yes"> Yes 
@@ -58,23 +58,22 @@
                         </label> 
                     </div>
                 </div>
-                <hr>
-                <div id = "household" class = "infoDiv">
-                    <h4> How many people are in your family? (per age) </h4>
-                    <input type = "number" class = "mandatory form-control" id = "input" name = "children_amount" placeholder="Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"><br>
-                    <input type = "number" class = "mandatory form-control" id = "input" name = "adults_amount" placeholder="Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"><br>
-                    <input type = "number" class = "mandatory form-control" id = "input" name = "seniors_amount" placeholder="Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"><br>
+                <br>
+                <div id = "household">
+                    <h6 class = "registration-instructions-text"><strong><u> How many people are in your household? </u></strong></h6>
+                    <input type = "number" class = "index-registration-input third inline" name = "children_amount" placeholder = "Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
+                    <input type = "number" class = "index-registration-input third inline" name = "adults_amount" placeholder = "Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                    <input type = "number" class = "index-registration-input third inline" name = "seniors_amount" placeholder = "Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                 </div>
-                <hr>
-
-                <div id = "PersonalInfo" class = "infoDiv">
-                    <h4> Contact Information </h4>
-                    <input type = "text" class = "optional form-control" id = "EmailInput" name = "email_address" placeholder="email address" autocomplete = "off"><br>
-                    <input type = "text" class = "optional form-control" id = "PhoneNumberInput" name = "phone_number" placeholder="phone number" autocomplete = "off"><br>
+                <br>
+                <div id = "PersonalInfo">
+                    <h6 class = "registration-instructions-text"><strong><u> Contact Information </strong></u></h6>
+                    <input type = "text" class = "index-registration-input half inline" name = "email_address" placeholder = " Email" autocomplete = "off"> &nbsp;
+                    <input type = "text" class = "index-registration-input half inline" name = "phone_number" placeholder = " Phone Number" autocomplete = "off"> &nbsp;
                 </div>
-                <hr>
-                <div id = "Promotion" class = "infoDiv">
-                    <h4> How did you hear about the market?</h4>
+                <br>
+                <div id = "promotiong-method">
+                    <h6><strong><u> How did you hear about the market? </strong></u></h6>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-info active">
                             <input type = "radio" name = "promotion" value = "Classroom"> Classroom
@@ -90,15 +89,14 @@
                         </label> 
                     </div>
                 </div>
-                <input type="hidden" value = "insertNewPats" name = "message">
-                <button class = "btn btn-success" id = "newPatSubmission"> SUBMIT </button>
+                <br>
+                <input type="hidden" value = "insertNewPats" name = "message"> 
+                <button class = "btn btn-submit-new-patron" id = "newPatSubmission"> SUBMIT </button>
                 </form> 
             </div>
             <!------------------- RETURNING MEMBERS DIVISION ----------------------->
             <div class = "returning-members" id = "returning-members" style = "display: none">
-                <h4><u>Returning Patrons</u></h4> 
                     <form method = "POST" action = "funcs.php">
-                        <h5> Insert Your Market ID </h5>
                         <span>
                             <input type = "number" class = "mandatory form-control w55 inline" placeholder = "Market ID" name = "patronID">
                             <button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
@@ -106,7 +104,7 @@
                         <br><br>
                         <p> <strong> FORGOT YOUR ID? </strong> Look for you name below!</p>
                     
-                        <input class="form-control" id="myInput" type="text" placeholder="Search.." autocomplete = "off">
+                        <input class="form-control" id="myInput" type="text" placeholder=" Search.." autocomplete = "off">
                         <br>
                         <ul class="list-group" id="myList">
                             <?php echo populate_dropdown(connDB());?>
@@ -123,11 +121,11 @@
                     <button class = "btn submit-admin-login" id = "inputAdminBtn"> Submit </button>
                 </form>
             </div>
-            <!------------------- FOOTER SECTION ----------------------->
+            <!-- ----------------- FOOTER SECTION ---------------------
             <footer class = "footer">
                 <p> Las Positas College Student Government <br> </p>
                 <p class = "shahaf-signature"> Shahaf Dan Productions </p>
-            </footer>
+            </footer> -->
         </div>
 
     </body>
@@ -146,32 +144,23 @@
             });
         });
         var idInput = document.getElementById("idSignUpInput");
+        var text = document.getElementById("alertedIDdiv");
         idInput.onkeyup = function(event){
-            if (event.target.value.length == 0) document.getElementById("alertedIDdiv").innerHTML = "";
-            else if(event.target.value.length != 6) document.getElementById("alertedIDdiv").innerHTML = "ID has to be 6 digits!";
-            else 
-            {
-                if(ids.includes(event.target.value)) document.getElementById("alertedIDdiv").innerHTML = "ALERT: This ID is already in use!";
-                else document.getElementById("alertedIDdiv").innerHTML = "ID availability confirmed";
+            if (event.target.value.length == 0)  {
+                text.innerHTML = "";
+                text.style.display = "none";
+
+            }
+            else {
+                text.style.display = "block";
+                if(event.target.value.length != 6) text.innerHTML = "ID has to be 6 digits!";
+                else 
+                {
+                    if(ids.includes(event.target.value)) text.innerHTML = "ALERT: This ID is already in use!";
+                    else text.innerHTML = "ID availability confirmed";
+                }
             }
         }
-
-        adminBtn.onclick = function(){
-            if(toAdminForm.style.visibility == "visible")
-            {
-                toAdminForm.style.visibility = "hidden";
-                toAdminInput.style.visibility = "hidden";
-                toAdminBtn.style.visibility = "hidden";
-            }
-            else
-            {
-                toAdminForm.style.visibility = "visible";
-                toAdminInput.style.visibility = "visible";
-                toAdminBtn.style.visibility = "visible";
-            }
-            
-        }
-
         function responsive_sidebar_item(x) {
             var targets = ["new-members", "returning-members", "admin-login"];
             for(var i = 0; i < targets.length; i++) { //do for all

@@ -144,6 +144,8 @@
                 <br><br> <hr class = "spacebar"> <br><br>
                 <form action = "funcs.php" method = "POST">
                     <h6><strong><u> Request Volunteer Access </strong></u></h6>
+                    <input type = "text" placeholder = "  First Name" class = "index-registration-input half inline" name = "first" pattern = "\S+.*" required> 
+                    <input type = "text" placeholder = "  Last Name" class = "index-registration-input half inline" name = "last" pattern = "\S+.*" required> <br>
                     <input type = "text" placeholder = "  Email" class = "index-registration-input full" name = "volunteer-email" pattern = "\S+.*" required> <br><br>
                     <input type = "hidden" value = "volunteer-request" name = "message">
                     <button class = "btn submit-admin-login"> Submit </button>

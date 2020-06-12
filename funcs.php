@@ -212,6 +212,11 @@ t = time
         if(verifyVolunteer($_POST['volunteer-email']))echo '<script>location.replace("signups.php");</script>'; 
         else echo '<script>alert("You are not registered as an active volunteer \r\n please contact the admin");</script>';
     }
+
+    if($_POST['message'] == "volunteer-request") {
+        if(requestVolunteer($_POST['email'], $_POST['first'], $_POST['last'])) echo '<script>alert("Request Submitted!"); location.replace("index.php");</script>';
+        echo '<script>alert("You are already in the system!"); location.replace("index.php");</script>';
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -1102,4 +1107,26 @@ t = time
         return $data;
     }
         
+    function verifyVolunteer($email) {
+        $return = true;
+        $c = connDB();
+        $sql = "SELECT * FROM Volunteers WHERE Email = '".$email."';";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $c = null; //close connection
+        if(!$r) return false;
+        else return true;
+    }
+
+    function requestVolunteer($email, $first, $last) {
+        if(!verifyVolunteer($email)) return false;
+        $c = connDB();
+        $sql = "INSERT INTO Volunteers VALUES('".$first."', '".$last."', '".$email."', NULL, 2, NULL);";
+        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c -> exec($sql);
+        $c = null; //close connection
+        return true;
+    }
+
     ?>

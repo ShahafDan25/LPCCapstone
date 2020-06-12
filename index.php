@@ -49,14 +49,18 @@
                 <br>
                 <div id = "student-status">
                     <h6 class = "registration-instructions-text"><strong><u> Are you a student as Las Positas? </strong></u></h6>
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons" required>
-                        <label class="btn btn-info active">
-                            <input type = "radio" name = "student?" value = "yes"> Yes 
-                        </label>
-                        <label class="btn btn-info active">
-                            <input type = "radio" name = "student?" value = "no"> No
-                        </label> 
-                    </div>
+                    <ul class = "new-member-options-list">
+                        <li class = "new-member-options-list-item inline">
+                            <input type = "radio" name = "student?" id = "yes-student-option" value = "yes" class = "new-member-option inline">
+                            <label for = "yes-student-option"  class = "admin-option-label inline"> Yes </label>
+                            <div class = "new-member-check inline"></div>
+                        </li>
+                        <li class = "new-member-options-list-item inline">
+                            <input type = "radio" name = "student?" id = "no-student-option" value = "no" class = "new-member-option inline">
+                            <label for = "no-student-option"  class = "admin-option-label inlin"> No </label>
+                            <div class = "new-member-check inline"></div>
+                        </li>
+                    </ul>
                 </div>
                 <br>
                 <div id = "household">
@@ -74,20 +78,28 @@
                 <br>
                 <div id = "promotiong-method">
                     <h6><strong><u> How did you hear about the market? </strong></u></h6>
-                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-info active">
-                            <input type = "radio" name = "promotion" value = "Classroom"> Classroom
-                        </label>
-                        <label class="btn btn-info active">
-                            <input type = "radio" name = "promotion" value = "FriendsAndFamily"> Friends / Family
-                        </label> 
-                        <label class="btn btn-info active">
-                            <input type = "radio" name = "promotion" value = "Community"> Community
-                        </label> 
-                        <label class="btn btn-info active">
-                            <input type = "radio" name = "promotion" value = "Other"> Other
-                        </label> 
-                    </div>
+                    <ul class = "new-member-options-list">
+                        <li class = "new-member-options-list-item inline">
+                            <input type = "radio" name = "promotion" id = "classroom-option" value = "Classroom" class = "new-member-option inline">
+                            <label for = "classroom-option"  class = "admin-option-label inline"> Classroom </label>
+                            <div class = "new-member-check inline"></div>
+                        </li>
+                        <li class = "new-member-options-list-item inline">
+                            <input type = "radio" name = "promotion" id = "fnf-option" value = "FriendsAndFamily" class = "new-member-option inline">
+                            <label for = "fnf-option"  class = "admin-option-label inline"> Friends and Family </label>
+                            <div class = "new-member-check inline"></div>
+                        </li>
+                        <li class = "new-member-options-list-item inline">
+                            <input type = "radio" name = "promotion" id = "community-option" value = "Community" class = "new-member-option inline">
+                            <label for = "community-option"  class = "admin-option-label inline"> Community </label>
+                            <div class = "new-member-check inline"></div>
+                        </li>
+                        <li class = "new-member-options-list-item inline">
+                            <input type = "radio" name = "promotion" id = "other-option" value = "Other" class = "new-member-option inline">
+                            <label for = "other-option"  class = "admin-option-label inline"> Other </label>
+                            <div class = "new-member-check inline"></div>
+                        </li>
+                    </ul>
                 </div>
                 <br>
                 <input type="hidden" value = "insertNewPats" name = "message"> 
@@ -116,7 +128,8 @@
             <!------------------- ADMIN LOGIN DIVISION ----------------------->
             <div class = "admin-login" id = "admin-login" style = "display: none">
                 <form action = "funcs.php" method = "POST">
-                    <input type = "password" placeholder="  Password" class = "change-pw-input" name = "inputAdminPW" pattern = "\S+.*" required>
+                    <h6><strong><u> Login as an Admin </strong></u></h6>
+                    <input type = "password" placeholder="  Password" class = "change-pw-input" name = "inputAdminPW" pattern = "\S+.*" required> <br><br>
                     <input type = "hidden" value = "verifyPassword" name = "message">
                     <button class = "btn submit-admin-login" id = "inputAdminBtn"> Submit </button>
                 </form>

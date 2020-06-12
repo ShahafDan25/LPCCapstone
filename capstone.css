@@ -201,21 +201,75 @@ hr
     /* text-align: left !important; */
 }
 
-
-
-
-
-
-
-.operational
-{
-    margin-top: 2% !important;
-    margin-right: 20% !important;
-    margin-left: 20% !important;
-    background-color: rgba(255, 228, 227, 0.42) !important;
-    border: 3px solid black !important;
-    margin-bottom: 4% !important;
+.new-member-options-list .new-member-options-list-item{
+    color: #AAAAAA;
+    display: block;
+    position: relative;
+    width: 20%;
+    height: 20% !important;
 }
+.new-member-options-list .new-member-options-list-item .new-member-option{
+    position: absolute;
+    visibility: hidden;
+}
+.new-member-options-list .new-member-options-list-item .new-member-option-label{
+    display: block;
+    position: relative;
+    font-weight: 300;
+    font-size: 1.35em;
+    padding: 25px 25px 25px 80px;
+    margin: 10px auto;
+    height: 30px;
+    z-index: 3;
+    cursor: pointer;
+    -webkit-transition: all 0.25s linear;
+}
+.new-member-options-list .new-member-options-list-item:hover .new-member-option-label{
+    color: #303030 !important;
+    font-weight: bolder !important;
+}
+.new-member-options-list .new-member-options-list-item .new-member-check{
+    display: block;
+    position: absolute;
+    border: 5px solid #AAAAAA;
+    border-radius: 100%;
+    height: 25px;
+    width: 25px;
+    left: 20px;
+    z-index: 3;
+    transition: border 0.25s linear;
+    -webkit-transition: border 0.25s linear;
+}
+.new-member-options-list .new-member-options-list-item:hover .new-member-check {
+    border: 5px solid #303030 !important;
+}
+.new-member-options-list .new-member-options-list-item .new-member-check::before {
+    display: block;
+    position: absolute;
+    content: '';
+    border-radius: 100%;
+    height: 15px;
+    width: 15px;
+    top: 0px;
+    left: 0px;
+    margin: auto;
+    transition: background 0.25s linear;
+    -webkit-transition: background 0.25s linear;
+}
+.new-member-option:checked ~ .new-member-check {
+    border: 5px solid #0DFF92;
+}
+.new-member-option:checked ~ .new-member-check::before{
+    background: #0DFF92;
+}
+.new-member-option:checked ~ .new-member-option-label{
+    color: #0DFF92;
+    font-size: 165% !important;
+    font-weight: bolder !important;
+}
+
+/* ---------- CHECK FOR NOW _ TEMP -------- */
+
 #myInput:focus {outline: 3px solid #ddd;}
 #myInput /* search box */
 {
@@ -253,30 +307,8 @@ hr
     text-decoration: none;
     display: block;
 }
-.header
-{
-    padding-top: 2%;
-    padding-right: 3% !important;
-    padding-left: 3% !important; 
-    border-bottom: 1px solid black;
-    background-color: rgba(193,66,66, 0.82);
-    height: 15% !important;
-}
-.headerTitle
-{
-    font-family: 'Lobster', cursive !important; 
-    margin-left: 5%;
-}
 
-.infoDiv
-{
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    margin-left: 18%;
-    margin-right: 18%;
-}
+
 #myList li:nth-of-type(1n+7){display: none;}
 /* ------------ Admin Page ----------------------- */
 .sidebar {

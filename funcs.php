@@ -1,4 +1,4 @@
-<?php include "moreFPDF.php"; ?>
+<?php session_start(); include "moreFPDF.php"; ?>
 <?php
 /*
 c = connection
@@ -209,7 +209,10 @@ t = time
     }
 
     if($_POST['message'] == "volunteer-login") {
-        if(verifyVolunteer($_POST['volunteer-email']))echo '<script>location.replace("signups.php");</script>'; 
+        if(verifyVolunteer($_POST['volunteer-email'])) {
+            $_SESSION['volunteer-id'] = $_POST['volunteer-email'];
+            echo '<script>location.replace("signups.php");</script>'; 
+        }
         else echo '<script>alert("You are not registered as an active volunteer \r\n please contact the admin");</script>';
     }
 
@@ -983,7 +986,7 @@ t = time
     }
 
     // ======================================================== //
-    // -------------- VOLUNTEER PAGE FUNCTIONS -----------------//
+    // -------------- VOLUNTEER PAGE [S] FUNCTIONS -----------------//
     // ======================================================== //
 
     function addVolunteer($f, $l, $e) {
@@ -1129,4 +1132,27 @@ t = time
         return true;
     }
 
-    ?>
+    function volunteer_name_from_email($email) {
+        $c = connDB();
+        $sql = "SELECT First_Name, Last_Name FROM Volunteers WHERE Email = '".$email."';";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $c = null; //close connection;
+        return $r['First_Name']." ".$r['Last_Name'];
+    }
+
+    function populateNonTerminatedMarketsDropDown() {
+        $c = connDB();
+        $sql = "SELECT idByDate, Active FROM Markets WHERE Active = 1 OR Active = 0;";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            if($r['Active'] == 1) $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).': Active! </option>';
+            else $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
+        }
+        $c = null; //close connection
+        if(strlen($data) < 2) return '<p> Sorry, No Markets detected in the database </p>';
+        else return $data;
+    }
+?>

@@ -18,7 +18,7 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
 .inline{display: inline-block !important; display:flex; flex-direction: row;}
 .invi{display: none !important}
 /* ------- BODIES AND CONTAINERS ---- */
-.volunteer-page-body, .report-page-body, .inventory-page-body, .admin-page-body, .index-page-body {
+.volunteer-page-body, .report-page-body, .inventory-page-body, .admin-page-body, .index-page-body, .signups-page-body {
     text-align: center;
     background-image: white;
     background-attachment: fixed;

@@ -36,7 +36,6 @@
             <a class = "a-item" id = "returning-members-sender" onclick = "responsive_sidebar_item(this.id);"> Returning Members</a>
             <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin Page</a>
             <a class = "a-item" id = "volunteer-signup-sender" onclick = "responsive_sidebar_item(this.id);"> Volunteer Sign Up</a>
-
         </div> 
         <div class = "content" style = "padding-top: 6.5% !important; text-align: center !important;">
             <!------------------- NEW MEMBERS DIVISION ----------------------->

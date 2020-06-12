@@ -25,17 +25,17 @@
         <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
     </head>
-
-
     <body class = "index-page-body">
+        <header class = "index-registration-page-header">
+            <h2 class = "index-registration-page-header-title"> Las Positas College: The Market </h2>
+            <h5 class = "index-registration-page-header-sub-title"><u> <?php echo current_market_date();?> </u></h5>
+        </header>
         <div class = "sidebar" id = "sidebar" style = "border-right: 2px solid black !important; background-color: #303030 !important;">
             <a class = "a-item active" id = "new-members-sender" onclick = "responsive_sidebar_item(this.id);"> New Members </a>
             <a class = "a-item" id = "returning-members-sender" onclick = "responsive_sidebar_item(this.id);"> Returning Members</a>
             <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin Page</a>
         </div> 
-        <div class = "content" style = "padding-top: 1.5% !important; text-align: center !important;">
-            <h2> Las Positas College: The Market </h2>
-            <h5><u> <?php echo current_market_date();?> </u></h5>
+        <div class = "content" style = "padding-top: 6.5% !important; text-align: center !important;">
             <!------------------- NEW MEMBERS DIVISION ----------------------->
             <br>
             <div class = "new-members" id = "new-members" style = "display: block">
@@ -101,7 +101,6 @@
                         </li>
                     </ul>
                 </div>
-                <br>
                 <input type="hidden" value = "insertNewPats" name = "message"> 
                 <button class = "btn btn-submit-new-patron" id = "newPatSubmission"> SUBMIT </button>
                 </form> 
@@ -109,20 +108,17 @@
             <!------------------- RETURNING MEMBERS DIVISION ----------------------->
             <div class = "returning-members" id = "returning-members" style = "display: none">
                     <form method = "POST" action = "funcs.php">
-                        <span>
-                            <input type = "number" class = "mandatory form-control w55 inline" placeholder = "Market ID" name = "patronID">
-                            <button class = "btn btn-success inline" id = "retPatSubmission"> SUBMIT </button>
-                        </span>
+                        <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "Market ID" name = "patronID"></label>
                         <br><br>
                         <p> <strong> FORGOT YOUR ID? </strong> Look for you name below!</p>
-                    
-                        <input class="form-control" id="myInput" type="text" placeholder=" Search.." autocomplete = "off">
+                        <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id="myInput" type="text" placeholder = " Search.." autocomplete = "off"> </span>
                         <br>
-                        <ul class="list-group" id="myList">
+                        <ul class = "list-group" id = "myList">
                             <?php echo populate_dropdown(connDB());?>
                         </ul>  
+                        <br><br>
                         <input type="hidden" value = "patronLogin" name = "message">
-                        <button class = "btn btn-success">SUBMIT </button>
+                        <button class = "btn submit-returning-patron-login" id = "retPatSubmission"> SUBMIT </button>
                     </form>
             </div>
             <!------------------- ADMIN LOGIN DIVISION ----------------------->
@@ -134,11 +130,11 @@
                     <button class = "btn submit-admin-login" id = "inputAdminBtn"> Submit </button>
                 </form>
             </div>
-            <!-- ----------------- FOOTER SECTION ---------------------
+            <!-- ----------------- FOOTER SECTION --------------------- -->
             <footer class = "footer">
                 <p> Las Positas College Student Government <br> </p>
                 <p class = "shahaf-signature"> Shahaf Dan Productions </p>
-            </footer> -->
+            </footer> 
         </div>
 
     </body>

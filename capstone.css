@@ -26,12 +26,9 @@
 input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
 .inline{display: inline-block !important; display:flex; flex-direction: row;}
 .invi{display: none !important}
+.midfloat {float: middle !important;}
 /* ------------ General Application -------------- */
-hr
-{
-    width: 65% !important;
-    border-top: 1.8px solid white !important;
-}
+
 .sideBtn
 {
     border: 1.5px solid black !important;
@@ -77,10 +74,11 @@ hr
 {
     position: absolute;
     bottom: 2.5% !important;
+    margin-top: 2.5% !important;
     width: 100%;
     height: auto; 
     background-color: rgb(251, 223, 223);
-    padding-top: 1% !important;
+    padding-top: 0.5% !important;
     text-align: center;
     border-top: 2px solid black !important;
     border-bottom: 2px solid black !important;
@@ -106,25 +104,53 @@ hr
     background-size: 100% !important; 
     background-attachment: fixed !important;
 }
-.w20
-{
-    margin-right: 40%;
-    margin-left: 40%;
-}
-.lpcsgLogo
-{
-    margin-right: 2%;
-    height: 85%; 
-    border-radius: 150px;
-    border: 2px solid black;
-}
-.lpcLogo
-{
-    border-radius: 5px;
-    height: 85% !important;
-}
+
+
 /* ------------ Registration Page ---------------- */
-.submit-admin-login {
+.index-registration-page-header {
+    width: 100% !important;
+    margin-top: 0% !important;
+    padding-left: 3.5% !important;
+    padding-top: 1.75% !important;
+    height: 8.5% !important;
+    overflow: hidden;
+    background-color: #121212;  
+    position: fixed;
+    top: 0;
+    z-index: 5 !important;
+}
+.index-registration-page-header-title {
+    background-image: linear-gradient(to right,rgb(134, 151, 246),rgb(102, 124, 246)) !important; /* rgb(79, 249, 255)*/
+    -webkit-background-clip: text;
+    color: transparent;
+    float: left !important;
+    margin-left: 4% !important;
+    width: auto !important;
+    border:0px !important;
+    padding-right: 2.25% !important;
+    padding-left: 2.25% !important;
+    font-weight: bolder;
+    font-size: 150% !important;
+    background-color: black;
+    padding-bottom: 10% !important;
+}
+.index-registration-page-header-sub-title {
+    background-image: linear-gradient(to right,rgb(134, 151, 246),rgb(102, 124, 246)) !important; /* rgb(79, 249, 255)*/
+    -webkit-background-clip: text;
+    color: transparent;
+    float: center !important;
+    margin-left: 4% !important;
+    width: auto !important;
+    border:0px !important;
+    padding-right: 2.25% !important;
+    padding-left: 2.25% !important;
+    font-weight: bolder;
+    font-size: 150% !important;
+    background-color: black;
+    padding-bottom: 10% !important;
+}
+
+.submit-admin-login, .submit-returning-patron-login {
     background-color: #28a745 !important;
     width: 90% !important;
     padding: 0.9% 0% 0.9% 0% !important;
@@ -135,7 +161,7 @@ hr
     margin-bottom: 0.45% !important;
 }
 
-.submit-admin-login:hover {
+.submit-admin-login:hover, .submit-returning-patron-login:hover {
     padding: 1.25% 0% 1.25% 0% !important;
     width: 95% !important;
     margin-bottom: 0% !important;
@@ -175,10 +201,19 @@ hr
     margin-right: 10% !important;
     margin-left: 10% !important;
 }
+.full-share-icon {
+    width: 80% !important;
+    margin-right: 10% !important;
+    margin-left: 2% !important;
+}
 .full:focus {
     width: 85% !important;
     margin-right: 7.5% !important;
     margin-left: 7.5% !important;
+}
+.full-share-icon:focus {
+    width: 85% !important;
+    margin-right: 7% !important;
 }
 .btn-submit-new-patron {
     background-color: #28a745 !important;
@@ -194,11 +229,6 @@ hr
     padding: 1.25% 0% 1.25% 0% !important;
     width: 85% !important;
     margin-bottom: 0% !important;
-}
-.registration-instructions-text {
-    /* float: left !important; */
-    /* margin-left: 15% !important; */
-    /* text-align: left !important; */
 }
 
 .new-member-options-list .new-member-options-list-item{
@@ -269,20 +299,11 @@ hr
 }
 
 /* ---------- CHECK FOR NOW _ TEMP -------- */
-
-#myInput:focus {outline: 3px solid #ddd;}
 #myInput /* search box */
 {
     box-sizing: border-box;
-    background-image: url('searchicon.png');
-    background-position: 14px 12px;
-    background-repeat: no-repeat;
     font-size: 16px;
     padding: 14px 20px 12px 45px;
-    border: none;
-    border-bottom: 2px solid rgb(68, 5, 5);
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
 }
 .dropdown
 {
@@ -631,7 +652,8 @@ div.content {
     background-color: #121212;  
     position: fixed;
     top: 0;
-    z-index: 5 !important;}
+    z-index: 5 !important;
+}
 .nav-bar-option {
     color: white;
     float: left;

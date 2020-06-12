@@ -1163,21 +1163,37 @@ t = time
 
     function displaySignupSheets($marketDate) {
         $colors = ["#343A40", "#DC3545", "#20C997", "#17A2B8", "#FFC107", "#6610F2", "#E83E8C", "#6C757D", "#007BFF"];
+        $schedule = array();
         $c = connDB();
-        $table_begin = "";
         $data = "";
-        $table_end = "";
-        $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = ".$marketDate.";";
+        $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = '".$marketDate."' ORDER BY su.Start_Time;";
         $s = $c -> prepare($sql);
         $s -> execute();
-        $counter = -1; //so in the actual loop it will start at 0
+        $counter = 0; //so in the actual loop it will start at 0
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            //code to generate some really cool table goes here
-            if($counter == count($colors)) $counter = 0;
-            else $Counter++;
+            $counter++;
             //choose from colors with $colors[$counter];
+            array_push($schedule, [$r['First_Name'], $r['Last_Name'], $r['Start_Time'], $r['End_Time']]);
+            //we just inserted a bunch of those subarrays in the double-array structure called schedule (variable)
         }
+        //now the double array is set
+        $starttime = $schedule[0][2];
+        $endtime = $schedule[count($schedule) - 1][3];
+        $diffHours = intval(substr($starttime, 11, 2)) - intval(substr($endtime, 11, 2)) - 1;
+        $begDiffMin = 6 - intval(substr($starttime, 14, 2));
+        $finDiffMin = intval(substr($starttime, 14, 2)) + 1;
+        $totalTensMins = $diffHours*6 + $begDiffMin + $finDiffMin;
+        for($i = 0; $i < $totalTensMins; $i++) {
+            for($j = 0; $j < count($schedule); $j++) {
+                //rest of code (vertical graph maybe?)
+            }
+
+        }
+        // for($i = 0; $i < count($schedule); $i++) {
+        //     $data .= "{'NAME': '".$schedule[i][0]." ".$schedule[i][1]."', 'VOL':'".$i."'},";
+
+        // }
         $c = null; //close connection
-        return $table_begin.$data.$table_end;
+        return $data;
     }
 ?>

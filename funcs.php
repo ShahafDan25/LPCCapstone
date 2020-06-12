@@ -220,6 +220,11 @@ t = time
         if(requestVolunteer($_POST['email'], $_POST['first'], $_POST['last'])) echo '<script>alert("Request Submitted!"); location.replace("index.php");</script>';
         echo '<script>alert("You are already in the system!"); location.replace("index.php");</script>';
     }
+
+    if($_POST['message'] == "display-signup-sheet") {
+        echo displaySignupSheets($_POST['date']);
+    }
+
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -1154,5 +1159,25 @@ t = time
         $c = null; //close connection
         if(strlen($data) < 2) return '<p> Sorry, No Markets detected in the database </p>';
         else return $data;
+    }
+
+    function displaySignupSheets($marketDate) {
+        $colors = ["#343A40", "#DC3545", "#20C997", "#17A2B8", "#FFC107", "#6610F2", "#E83E8C", "#6C757D", "#007BFF"];
+        $c = connDB();
+        $table_begin = "";
+        $data = "";
+        $table_end = "";
+        $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = ".$marketDate.";";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $counter = -1; //so in the actual loop it will start at 0
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            //code to generate some really cool table goes here
+            if($counter == count($colors)) $counter = 0;
+            else $Counter++;
+            //choose from colors with $colors[$counter];
+        }
+        $c = null; //close connection
+        return $table_begin.$data.$table_end;
     }
 ?>

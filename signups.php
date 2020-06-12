@@ -64,13 +64,12 @@
                 url: "funcs.php",
                 data: {
                     message: "display-signup-sheet",
-                    date: document.getElementById("marketid").value, 
+                    date: document.getElementById("marketid").value
                 },
                 success: function(data) {
                     $("#signup-sheet-container").html(data);
                     document.getElementById("signup-sheet-container").style.display = block;
                     document.getElementById("signup-sheet-container-registration").style.display = block;
-
                 }
             });
         });

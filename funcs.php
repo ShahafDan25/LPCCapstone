@@ -1023,6 +1023,7 @@ t = time
     }
 
     function displayAllVolunteers() {
+        $months = ["January", "February", "March", "April", "May", " June", "July", "August", "September", "October", "November", "December"];
         $data = "";
         $table_begin = 
             '<table class = "table">
@@ -1041,11 +1042,11 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $data .= '<tr><form action ="funcs.php", method = "POST">';
+            $data .= '<tr><form action = "funcs.php", method = "POST">';
             $data .= '<td><input type = "hidden" value = "'.$r['Email'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
             $data .= '<td>'.$r['Email'].'</td>';
-            $data .= '<td>'.$r['Start_Date'].'</td>';
-            $data .= '<td><input type = "hidden" name = "message" value = "deactivateVolunteer"><button class = "btn btn-warning">Deactivate</button></td>';
+            $data .= '<td>'.$months[intval(substr($r['Start_Date'],5,2))].' '.substr($r['Start_Date'],8,2).', '.substr($r['Start_Date'],0,4).'</td>';
+            $data .= '<td><input type = "hidden" name = "message" value = "deactivateVolunteer"><button class = "btn btn-warning" style = "border-radius: 150px !important;"><i class="fa fa-minus" aria-hidden="true"></i></button></td>';
             $data .= '</form></tr>';
         }
         $c = null;
@@ -1154,6 +1155,36 @@ t = time
         $c -> exec($sql);
         $c = null; //close connection
         return true;
+    }
+
+    function displayVolunteersAwaitingActivation() {
+        $c = connDB();
+        $table_begin = 
+        '<table>
+            <thead>
+                <tr>
+                    <th> Name </th>
+                    <th> Email </th>
+                    <th> Activate </th>
+                </tr>
+            </thead>
+            <tbody>';
+        $table_end = 
+            '</tbody>
+        </table>';
+        $data = "";
+        $sql = "SELECT First_Name, Last_Name, Active, Email FROM Volunteers WHERE Active = 2";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            $data .= "<tr>";
+                $data .= "<td>".$r['First_Name']." ".$r['Last_Name']."</td>";
+                $data .= "<td>".$r['Email']."</td>";
+                $data .= "<td><button class = 'btn volunteer-option op4 inline'><i class = 'fa fa-plus' aria-hidden = 'true'></i></button></td>";
+            $data .= "</tr>";
+        }
+        $c = null; //close connection
+        return $table_begin.$data.$table_end;
     }
 
     // ======================================================== //

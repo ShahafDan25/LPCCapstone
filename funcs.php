@@ -232,6 +232,14 @@ t = time
         echo '<script>location.replace("signups.php");</script>';
     }
 
+    if($_POST['message'] == "display-volunteer-signup-commits") {
+        echo displayVolunteerCommits($_SESSION['volunteer-id'], $_POST['date']);
+    }
+
+    if($_POST['message'] == "remove-signup-commit") {
+        removeSignUpCommit($_SESSION['volunteer-id'], $_SESSION['volunteer-signup-marketid'], $_POST['starttime'], $_POST['endtime']);
+        echo '<script>alert(" Your Sign Up Commit was succesfully removed!"); location.replace("signups.php");</script>';
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -1218,7 +1226,7 @@ t = time
             $marginright = number_format((number_format($tensFromBeg,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
             $data .= 
             '<div style = "width: 100% !important; !important;">
-                <div style = "width = '.($fraction*100).'% !important; margin-left: '.($marginleft*100).'%!important; background-color: '.$colors[$counter].' !important; margin-right: '.($marginright*100).'% !important; color: '.$textcolors[$counter].' !important; border-radius: 150px !important; height: auto !important; font-weight: bolder !important; font-size: 85% !important; font-family: Helvetica, Arial, sans-serif !important;">';
+                <div style = "width = '.($fraction*100).'% !important; margin-left: '.($marginleft*100).'%!important; background-color: '.$colors[$counter].' !important; margin-right: '.($marginright*100).'% !important; color: '.$textcolors[$counter].' !important; border-radius: 150px !important; height: auto !important; font-weight: bolder !important; font-size: 85% !important; font-family: Helvetica, Arial, sans-serif !important; padding: 0.5% 0 0.5% 0 !important;">';
             if($_SESSION['volunteer-id'] == $r['Email']) $data .= "Me";
             else $data .= $personName;
             $data .= '<br>';
@@ -1237,6 +1245,46 @@ t = time
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null; //close connection
+        return;
+    }
+
+    function displayVolunteerCommits($vol, $mar) {
+        $c = connDB();
+        $table_begin = 
+        '<br><h6><strong><u> Your Sign Up Commits For This Market</u>:</strong></h6>
+        <table class = "table">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>';
+        $table_end =
+            '</tbody>
+        <table>';
+        $data = "";
+        $sql = "SELECT Start_Time, End_Time FROM SignUps WHERE Email = '".$vol."' AND Market = ".$mar.";";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            $data .= '<tr><form action = "funcs.php" method = "POST">';
+                $data .= '<td><input type = "hidden" name = "starttime" value = "'.substr($r['Start_Time'],0,5).'">'.substr($r['Start_Time'],0,5).'</td>';
+                $data .= '<td><input type = "hidden" name = "endtime" value = "'.substr($r['End_Time'],0,5).'">'.substr($r['End_Time'],0,5).'</td>';
+                $data .= '<td><input type = "hidden" name = "message" value = "remove-signup-commit"><button id = "remove-signup-commit-btn" class = "btn remove-signup-commit"><i class = "fa fa-times" aria-hidden = "true"></i></butotn></td>';
+            $data .= '</form></tr>';
+        }
+        $c = null; //close connection
+        if(strlen($data) < 2) return "<br>";
+        else return $table_begin.$data.$table_end;
+    }
+
+    function removeSignUpCommit($vol, $mar, $start, $end) {
+        $c = connDB();
+        $sql = "DELETE FROM SignUps WHERE Email = '".$vol."' AND Start_Time = '".$start."' AND End_Time = '".$end."' AND Market = ".$mar.";";
+        $c = prepare($sql) -> execute();
+        $c = null; // close connection
         return;
     }
 ?>

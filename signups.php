@@ -47,6 +47,7 @@
                         <input type = "hidden" name = "message" value = "commit-signup">
                         <button class = "btn submit-admin-login"> Submit </button>
                 </form>
+                <div class = "signup-commits" id = "signup-commits"> </div>
             </div>
             <br>
             <div class = "page-sub-container" id = "signup-sheet-container" style = "display: none !important">
@@ -54,10 +55,10 @@
             </div>
         </div>
         <!-- ----------------- FOOTER SECTION --------------------- -->
-        <footer class = "footer">
+        <!-- <footer class = "footer">
             <p> Las Positas College Student Government <br> </p>
             <p class = "shahaf-signature"> Shahaf Dan Productions </p>
-        </footer> 
+        </footer>  -->
     </body>
     <script>
         $(document).on('change', '#marketid', function() {
@@ -75,6 +76,39 @@
                     document.getElementById("signup-sheet-container-registration").style.display = "block";
                 }
             });
+
+            //populate the commits already registared by the user
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "display-volunteer-signup-commits",
+                    date: document.getElementById("marketid").value
+                },
+                success: function (data) {
+                    console.log(data);
+                    $("#signup-commits").html(data);
+                }
+            });
         });
+
+        // convert this to AJAX code later - if necessary
+        // $("#remove-signup-commit-btn").click (function (event) {
+        //     //removing a sign up commit from table
+        //     $.ajax ({
+        //         type: "POST",
+        //         url: "funcs.php", 
+        //         data: {
+        //             message: "remove-then-display-volunteer-signup-commits",
+        //             date: document.getElementById("marketid").value,
+        //             starttime = document.getElementById("starttime").value,
+        //             endtime = document.getElementById("endtime").value
+        //         },
+        //         success: function (data) {
+        //             console.log(data);
+        //             $("#signup-commits").html(data);
+        //         }
+        //     });
+        // });
     </script>
 </html>

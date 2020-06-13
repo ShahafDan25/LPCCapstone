@@ -95,12 +95,12 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     background-color: black;
 
 }
-.name-signup-sheet-commit {
-    
-    
-    
-    
-    
+.remove-signup-commit {
+    color: rgb(219, 0, 0) !important;
+    background-color: rgb(223, 161, 161) !important;
+    width: auto !important;
+    border-radius: 100% !important;
+    text-shadow: 0.3px 0.3px black;
 }
 
 

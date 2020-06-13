@@ -1186,6 +1186,7 @@ t = time
     }
 
     function displaySignupSheets($marketDate) {
+        $dataFound = false;
         $colors = ["#343A40", "#DC3545", "#20C997", "#17A2B8", "#FFC107", "#6610F2", "#E83E8C", "#6C757D", "#007BFF"];
         $textcolors = ["White", "Black", "Black", "Black", "Black", "White", "Black", "White", "Black"];
         $c = connDB();
@@ -1205,6 +1206,7 @@ t = time
         $s -> execute();
         $counter = -1;
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            $dataFound = true;
             $personDiffHours = intval(substr($r['End_Time'], 0, 2)) - intval(substr($r['Start_Time'], 0, 2)) - 1;
             $personBegDiffMin = 6 - intval(substr($r['Start_Time'], 3, 2))/10;
             $personFinDiffMin = intval(substr($r['End_Time'], 3, 2))/10;
@@ -1236,6 +1238,7 @@ t = time
             ';
         }
         $c = null; //close connection
+        if(!$dataFound) return '<h6><strong><u>No Volunteers Are Registered for this Market</strong></u></h6>';
         return $data;
     }
 
@@ -1269,11 +1272,19 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $data .= '<tr><form action = "funcs.php" method = "POST">';
-                $data .= '<td><input type = "hidden" name = "starttime" value = "'.substr($r['Start_Time'],0,5).'">'.substr($r['Start_Time'],0,5).'</td>';
-                $data .= '<td><input type = "hidden" name = "endtime" value = "'.substr($r['End_Time'],0,5).'">'.substr($r['End_Time'],0,5).'</td>';
-                $data .= '<td><input type = "hidden" name = "message" value = "remove-signup-commit"><button id = "remove-signup-commit-btn" class = "btn remove-signup-commit"><i class = "fa fa-times" aria-hidden = "true"></i></butotn></td>';
-            $data .= '</form></tr>';
+            $data .= '<tr>
+                <td>'.substr($r['Start_Time'],0,5).'</td>
+                <td>'.substr($r['End_Time'],0,5).'</td>
+                <td>
+                    <form action = "funcs.php" method = "POST">
+                    <input type = "hidden" name = "starttime" value = "'.substr($r['Start_Time'],0,5).'">
+                    <input type = "hidden" name = "endtime" value = "'.substr($r['End_Time'],0,5).'">
+                    <input type = "hidden" name = "message" value = "remove-signup-commit">
+                    <button class = "btn remove-signup-commit">
+                        <i class = "fa fa-times" aria-hidden = "true"></i>
+                    </button>
+                </td>
+            </tr></form>';
         }
         $c = null; //close connection
         if(strlen($data) < 2) return "<br>";
@@ -1283,7 +1294,7 @@ t = time
     function removeSignUpCommit($vol, $mar, $start, $end) {
         $c = connDB();
         $sql = "DELETE FROM SignUps WHERE Email = '".$vol."' AND Start_Time = '".$start."' AND End_Time = '".$end."' AND Market = ".$mar.";";
-        $c = prepare($sql) -> execute();
+        $c -> prepare($sql) -> execute();
         $c = null; // close connection
         return;
     }

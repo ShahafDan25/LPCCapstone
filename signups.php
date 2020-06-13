@@ -43,6 +43,7 @@
                 <form action = "funcs.php" method = "POST">
                         <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
                         <input type = "time" class = "index-registration-input half inline" name = "starttime" id = "starttime-input" required>
+                        <i class = 'fa fa-arrow-right inline' aria-hidden = 'true' style = 'margin-right: 2% !important; margin-left: 2% !important;'></i>
                         <input type = "time" class = "index-registration-input half inline" name = "endtime" id = "endtime-input" required>
                         <input type = "hidden" name = "message" value = "commit-signup">
                         <button class = "btn submit-admin-login"> Submit </button>
@@ -59,6 +60,7 @@
             <p> Las Positas College Student Government <br> </p>
             <p class = "shahaf-signature"> Shahaf Dan Productions </p>
         </footer>  -->
+        <br><br><br>
     </body>
     <script>
         $(document).on('change', '#marketid', function() {

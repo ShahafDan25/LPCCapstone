@@ -23,6 +23,7 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     background-image: white;
     background-attachment: fixed;
     font-family: 'Optima' !important;
+    padding-bottom: 2.5% !important;
 }
 .page-sub-container {
     background-color: rgba(255, 255, 255, 0.801) !important;

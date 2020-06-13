@@ -41,8 +41,9 @@
             <br><br>
             <div class = "page-sub-container" id = "signup-sheet-container-registration" style = "display: none !important;">
                 <form action = "funcs.php" method = "POST">
-                        <input type = "text" class = "index-registration-input half inline" name = "starttime" id = "starttime-input" required>
-                        <input type = "text" class = "index-registration-input half inline" name = "endtime" id = "endtime-input" required>
+                        <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
+                        <input type = "time" class = "index-registration-input half inline" name = "starttime" id = "starttime-input" required>
+                        <input type = "time" class = "index-registration-input half inline" name = "endtime" id = "endtime-input" required>
                         <input type = "hidden" name = "message" value = "commit-signup">
                         <button class = "btn submit-admin-login"> Submit </button>
                 </form>
@@ -68,8 +69,8 @@
                 },
                 success: function(data) {
                     $("#signup-sheet-container").html(data);
-                    document.getElementById("signup-sheet-container").style.display = block;
-                    document.getElementById("signup-sheet-container-registration").style.display = block;
+                    document.getElementById("signup-sheet-container").style.display = "block";
+                    document.getElementById("signup-sheet-container-registration").style.display = "block";
                 }
             });
         });

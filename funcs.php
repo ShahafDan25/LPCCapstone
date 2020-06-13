@@ -223,8 +223,14 @@ t = time
     }
 
     if($_POST['message'] == "display-signup-sheet") {
-        echo 
+        $_SESSION['volunteer-signup-marketid'] = $_POST['date'];
+        echo "Hi";
         // echo displaySignupSheets($_POST['date']);
+    }
+
+    if($_POST['message'] == "commit-signup") {
+        commitSignUp($_SESSION['volunteer-id'], $_SESSION['volunteer-signup-marketid'], $_POST['starttime'], $_POST['endtime']);
+        echo '<script>location.replace("signups.php");</script>';
     }
 
     // ======================================================== //
@@ -1147,6 +1153,7 @@ t = time
     // --------------- SIGN UP PAGE [S] FUNCTIONS ------------- //
     // ======================================================== //
 
+    
     function volunteer_name_from_email($email) {
         $c = connDB();
         $sql = "SELECT First_Name, Last_Name FROM Volunteers WHERE Email = '".$email."';";
@@ -1190,9 +1197,9 @@ t = time
         $s -> execute();
         $counter = -1;
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $peronDiffHours = intval(substr($r['End_Time'], 11, 2)) - intval(substr($r['Start_Time'], 11, 2)) - 1;
-            $personBegDiffMin = 6 - intval(substr($r['Start_Time'], 14, 2));
-            $personFinDiffMin = intval(substr($r['End_Time'], 14, 2)) + 1;
+            $peronDiffHours = intval(substr($r['End_Time'], 0, 2)) - intval(substr($r['Start_Time'],0, 2)) - 1;
+            $personBegDiffMin = 6 - intval(substr($r['Start_Time'], 3, 2));
+            $personFinDiffMin = intval(substr($r['End_Time'], 3, 2)) + 1;
             $personName = $r['First_Name']." ".$r['Last_Name'];
             if($counter == count($colors)) $counter = 0;
             else $counter ++; //this puts $counter at $counter = 0 for this first person in the list
@@ -1209,5 +1216,14 @@ t = time
         }
         $c = null; //close connection
         return $data;
+    }
+
+    function commitSignUp($vol, $mar, $start, $end) {
+        $c = connDB();
+        $sql = "INSERT INTO SignUps VALUES ('".$vol."', ".$mar.", '".$start.":00', '".$end.":00');";
+        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c -> exec($sql);
+        $c = null; //close connection
+        return;
     }
 ?>

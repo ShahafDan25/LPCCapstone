@@ -56,7 +56,8 @@ t = time
 
     if($_POST['message'] == 'submitNewMarket') //create new market
     {
-        newMarket(connDB(), substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2));
+        newMarket(substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2), intval(substr($_POST['new_market_start_time'],0,2).substr($_POST['new_market_start_time'],3,2)), intval(substr($_POST['new_market_end_time'],0,2).substr($_POST['new_market_end_time'],3,2)));
+        // newMarket(substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2), $_POST['new_market_start_time'], $_POST['new_market_end_time']);
     }
 
     if($_POST['message'] == 'adminOption') //choose an action option per market
@@ -222,7 +223,8 @@ t = time
     }
 
     if($_POST['message'] == "display-signup-sheet") {
-        echo displaySignupSheets($_POST['date']);
+        echo 
+        // echo displaySignupSheets($_POST['date']);
     }
 
     // ======================================================== //
@@ -382,7 +384,6 @@ t = time
         $s_ec -> execute();
         $active = "Closed";
 
-
         if(!$s_ec -> fetch(PDO::FETCH_ASSOC)) //no markets in the datebase, insert special option to dropdown
         {
             return '<option class="dropdown-item midbigger" href="#">No Markets to Show</option>'; 
@@ -408,8 +409,9 @@ t = time
         return false;
     }
     
-    function newMarket($c, $d) //create new market with the $d date, add to DB
+    function newMarket($d, $st, $et) //create new market with the $d date, add to DB
     {
+        $c = connDB();
         $sql_existence = "SELECT * FROM Markets WHERE idByDate = ".$date;
         $s = $c -> prepare($sql_existence); 
         $s -> execute(); 
@@ -419,10 +421,13 @@ t = time
             echo '<script> location.replace("admin.php") </script>';
             return; 
         }
-        $sql = "INSERT INTO Markets (idByDate, active, reported, inventory) VALUES (".$d.", 0, 0, 0);"; //0 = not active, 1 = active (tiny int sserving as boolean)
+        //should be closetime not endtime
+        $sql = "INSERT INTO Markets (idByDate, active, reported, inventory, starttime, closetime) VALUES (".$d.", 0, 0, 0, '".$st."', '".$et."');"; //0 = not active, 1 = active (tiny int sserving as boolean)
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $c->exec($sql); 
+        $c->exec($sql);
+        $c = null; //close connection 
         echo '<script> location.replace("admin.php") </script>'; 
+        return;
     }
 
     function verifyOld($c, $oldPW) //make sure the old password is currect when trying to change a password
@@ -470,7 +475,7 @@ t = time
         else if ($r['active'] == 1) echo '<script>alert("This market is already active ! ");</script>';
         else {
             $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date.";";
-            $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date.";";
+            // $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date.";";
             $c -> prepare($sql) -> execute();
         }
         $c = null; //close connection
@@ -483,10 +488,10 @@ t = time
         $sql = "UPDATE Markets SET active = 2 WHERE idByDate = ".$date.";"; //active = 2, means closed for good
         $c -> prepare($sql) -> execute();
         date_default_timezone_set("America/Los_Angeles"); 
-        $closetime = date("H:i");
-        $close_time_digits = substr($closetime, 0, 2).substr($closetime, 3, 2);
-        $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$date.";"; 
-        $c -> prepare($sql) -> execute(); 
+        // $closetime = date("H:i");
+        // $close_time_digits = substr($closetime, 0, 2).substr($closetime, 3, 2);
+        // $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$date.";"; 
+        // $c -> prepare($sql) -> execute(); 
         $c = null; // close connection
         return;
     }
@@ -581,7 +586,7 @@ t = time
     {
         $c = connDB();
         $dformat = substr($d,0,4)."-".substr($d,4,2)."-".substr($d,6,2)." ";
-        $sql_times = "SELECT starttime, closetime FROM Markets WHERE idByDate = ".$d;
+        $sql_times = "SELECT starttime, closetime, active FROM Markets WHERE idByDate = ".$d;
         $stmt_times = $c -> prepare($sql_times);
         $stmt_times -> execute();
         $t = $stmt_times -> fetch(PDO::FETCH_ASSOC);
@@ -589,8 +594,8 @@ t = time
         $ct = $t['closetime']; 
         //market beginning and end of range based on open time and close time 
 
-        //if market is currently active, we want a live report, so we change the closing time:
-        if($t['closetime'] == NULL) 
+        //if market is currently active, we want a live report, so we make the closing time for the current graph the current time:
+        if($t['active'] == 1) 
         {
             date_default_timezone_set("America/Los_Angeles"); 
             $ct = substr(date("H:i"), 0, 2).substr(date("H:i"), 3, 2); 
@@ -801,6 +806,7 @@ t = time
     // ======================================================== //
     // -------------- INVENTORY PAGE FUNCTIONS -----------------//
     // ======================================================== //
+
     function displayAddInventoryForm($date) {
         return 
         '<h4><u> ADD TO INVENTORY </u></h4>
@@ -991,12 +997,12 @@ t = time
     }
 
     // ======================================================== //
-    // -------------- VOLUNTEER PAGE [S] FUNCTIONS -----------------//
+    // -------------- VOLUNTEER PAGE [S] FUNCTIONS -------------//
     // ======================================================== //
 
     function addVolunteer($f, $l, $e) {
         $c = connDB();
-        $sql = "INSERT INTO Volunteers VALUES ('".$f."', '".$l."', '".$e."', NOW(), 1, NULL);";
+        $sql = "INSERT INTO Volunteers VALUES ('".$f."', '".$l."', '".$e."', NOW(), 1, NULL, NULL);";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null;
@@ -1137,6 +1143,10 @@ t = time
         return true;
     }
 
+    // ======================================================== //
+    // --------------- SIGN UP PAGE [S] FUNCTIONS ------------- //
+    // ======================================================== //
+
     function volunteer_name_from_email($email) {
         $c = connDB();
         $sql = "SELECT First_Name, Last_Name FROM Volunteers WHERE Email = '".$email."';";
@@ -1163,36 +1173,40 @@ t = time
 
     function displaySignupSheets($marketDate) {
         $colors = ["#343A40", "#DC3545", "#20C997", "#17A2B8", "#FFC107", "#6610F2", "#E83E8C", "#6C757D", "#007BFF"];
-        $schedule = array();
         $c = connDB();
         $data = "";
+        $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = '".$marketdate."';";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $st = $r['starttime'];
+        $et = $r['closetime'];
+        $diffHours = intval(substr($et, 0, 2)) - intval(substr($st, 0, 2)) - 1;
+        $begDiffMin = 6 - intval(substr($st, 2, 2));
+        $finDiffMin = intval(substr($et, 2, 2)) + 1;
+        $totalTensMins = $diffHours*6 + $begDiffMin + $finDiffMin;
         $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = '".$marketDate."' ORDER BY su.Start_Time;";
         $s = $c -> prepare($sql);
         $s -> execute();
-        $counter = 0; //so in the actual loop it will start at 0
+        $counter = -1;
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $counter++;
-            //choose from colors with $colors[$counter];
-            array_push($schedule, [$r['First_Name'], $r['Last_Name'], $r['Start_Time'], $r['End_Time']]);
-            //we just inserted a bunch of those subarrays in the double-array structure called schedule (variable)
+            $peronDiffHours = intval(substr($r['End_Time'], 11, 2)) - intval(substr($r['Start_Time'], 11, 2)) - 1;
+            $personBegDiffMin = 6 - intval(substr($r['Start_Time'], 14, 2));
+            $personFinDiffMin = intval(substr($r['End_Time'], 14, 2)) + 1;
+            $personName = $r['First_Name']." ".$r['Last_Name'];
+            if($counter == count($colors)) $counter = 0;
+            else $counter ++; //this puts $counter at $counter = 0 for this first person in the list
+            $personTensMins = $personDiffHours*6 + $personBegDiffMin + $personFinDiffMin;
+            $fraction = number_format((number_format($personTensMins,2,'.','')/number_format($totalTensMins,2,'.','')), 2, '.', '');
+            $marginleft = number_format((number_format($personBegDiffMin,2,'.','')/number_format($begDiffMin,2,'.','')), 2, '.', '');
+            $data .= 
+            '<div style = "width: 100% !important; border-bottom: 0.3px solid black !important;">
+                <div style = "height: 10% !important; width = '.$fraction.' !important; margin-left: '.$marginleft.'!important; background-color: '.$colors[$counter].' !important;">'
+                    .$personName.
+                '</div>
+            </div>
+            <br>';
         }
-        //now the double array is set
-        $starttime = $schedule[0][2];
-        $endtime = $schedule[count($schedule) - 1][3];
-        $diffHours = intval(substr($starttime, 11, 2)) - intval(substr($endtime, 11, 2)) - 1;
-        $begDiffMin = 6 - intval(substr($starttime, 14, 2));
-        $finDiffMin = intval(substr($starttime, 14, 2)) + 1;
-        $totalTensMins = $diffHours*6 + $begDiffMin + $finDiffMin;
-        for($i = 0; $i < $totalTensMins; $i++) {
-            for($j = 0; $j < count($schedule); $j++) {
-                //rest of code (vertical graph maybe?)
-            }
-
-        }
-        // for($i = 0; $i < count($schedule); $i++) {
-        //     $data .= "{'NAME': '".$schedule[i][0]." ".$schedule[i][1]."', 'VOL':'".$i."'},";
-
-        // }
         $c = null; //close connection
         return $data;
     }

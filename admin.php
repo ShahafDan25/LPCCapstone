@@ -63,6 +63,9 @@
                     <h4><u>Create New Market</u></h4>  
                     <form action = "funcs.php" method = "POST">
                         <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" name = "new_market_date"><br><br>
+                        <input type = "time" placeholder = " Starting Time" class = "choose-new-market-date inline" name = "new_market_start_time">
+                        <i class="fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important;"></i>
+                        <input type = "time" placeholder = " Closing Time" class = "choose-new-market-date inline" name = "new_market_end_time"><br><br>
                         <input type = "hidden" value = "submitNewMarket" name = "message">
                         <button class = "btn submit-new-market-date"> Submit </button>
                     </form>

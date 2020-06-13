@@ -39,7 +39,7 @@
         $marginleft = number_format((number_format($tensFromBeg,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
         $data .= 
         '<div style = "width: 100% !important; border-bottom: 0.3px solid black !important;">
-            <div style = "height: 10% !important; width = '.($fraction*100).'% !important; margin-left: '.($marginleft.*100)'%!important; background-color: '.$colors[$counter].' !important;">'
+            <div style = "height: 10% !important; width = '.($fraction*100).'% !important; margin-left: '.($marginleft*100).'%!important; background-color: '.$colors[$counter].' !important;">'
                 .$personName.
             '</div>
         </div>

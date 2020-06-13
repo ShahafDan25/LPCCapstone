@@ -748,3 +748,32 @@ div.content {
     float: left;
     margin-left: 5% !important;
 }
+.volunteer-option {
+    /* padding: 1.5% 4% 1.5% 4% !important; */
+    /* padding: 1% !important; */
+    margin-right: 1.5% !important;
+    border-radius: 150px !important;
+    width: auto !important;
+    border: none !important;
+    text-shadow: 0.3px 0.3px black;
+    font-weight: bolder !important;
+    float: right !important;
+}
+.op1 {
+    background-color: black !important;
+}
+.op2 {
+    background-color: rgb(255, 141, 141) !important;
+}
+.op3 {
+    background-color: rgb(253, 255, 121) !important;
+}
+.op4 {
+    background-color: rgb(131, 255, 137) !important;
+}
+.op5 {
+    background-color: #6dd1ff !important;
+}
+.op6 {
+    background-color: rgb(92, 108, 255) !important;
+}

@@ -15,9 +15,15 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+
 
         <!-- JAVASCRIPT PAGE CONNECTION-->
         <script src="captsone.js"></script>
+
+        <!-- FONTAWESOME ICON --> 
+        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
+        <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
     </head>
     
@@ -47,8 +53,15 @@
             <br>
             <div class = "page-sub-container">
                 <h4 class = "inline volunteer-section-title"><u>Volunteers</u></h4>
-                <button type = "button" class = "btn volunteer-email-list inline" data-toggle="collapse" data-target="#send-emails-volunteers-div" aria-expanded="false" aria-controls="send-emails-volunteers-div">Generate Email List</button>
-                <button type = "button" class = "btn show-deactivated-volunteers inline" data-toggle="collapse" data-target="#deactivated-volunteers-div" aria-expanded="false" aria-controls="deactivated-volunteers-div">See Deactivated Volunteers</button>
+                <button type = "button" class = "btn volunteer-option op1 inline" id = "email-volunteer-list-btn"><i class="fa fa-share" aria-hidden="true"></i></button>
+                <button type = "button" class = "btn volunteer-option op2 inline" data-toggle="collapse" data-target="#send-emails-volunteers-div" aria-expanded="false" aria-controls="send-emails-volunteers-div"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                <button type = "button" class = "btn volunteer-option op3 inline" data-toggle="collapse" data-target="#deactivated-volunteers-div" aria-expanded="false" aria-controls="deactivated-volunteers-div"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                <button type = "button" class = "btn volunteer-option op4 inline" data-toggle="collapse" data-target="#deactivated-volunteers-div" aria-expanded="false" aria-controls="deactivated-volunteers-div"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                <button type = "button" class = "btn volunteer-option op5 inline" data-toggle="collapse" data-target="#deactivated-volunteers-div" aria-expanded="false" aria-controls="deactivated-volunteers-div"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+                <button type = "button" class = "btn volunteer-option op6 inline" data-toggle="collapse" data-target="#deactivated-volunteers-div" aria-expanded="false" aria-controls="deactivated-volunteers-div"><i class="fa fa-minus" aria-hidden="true"></i></button>
+
+                
+
                 <br><br><?php echo displayAllVolunteers(); ?>
                 <!-- Add option to see volunteers for a specific market and their timeslot -->
                 <!-- Add option to order volunteers by various options -->

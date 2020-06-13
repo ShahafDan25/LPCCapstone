@@ -1179,19 +1179,20 @@ t = time
 
     function displaySignupSheets($marketDate) {
         $colors = ["#343A40", "#DC3545", "#20C997", "#17A2B8", "#FFC107", "#6610F2", "#E83E8C", "#6C757D", "#007BFF"];
+        $textcolors = ["White", "Black", "Black", "Black", "Black", "White", "Black", "White", "Black"];
         $c = connDB();
-        $data = "";
         $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = '".$marketDate."';";
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
         $st = $r['starttime'];
         $et = $r['closetime'];
+        $data = "<h6><strong><u>Volunteer Schedule</strong></u>  ".substr($st,0,2).":".substr($st,2,2)."<i class = 'fa fa-arrow-right' aria-hidden = 'true' style = 'margin-right: 1% !important; margin-left: 1% !important;'></i>".substr($et,0,2).":".substr($et,2,2)."</h6><br>";
         $diffHours = intval(substr($et, 0, 2)) - intval(substr($st, 0, 2)) - 1;
         $begDiffMin = 6 - intval(substr($st, 2, 2))/10;
         $finDiffMin = intval(substr($et, 2, 2))/10 + 1;
         $totalTensMins = $diffHours*6 + $begDiffMin + $finDiffMin;
-        $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = '".$marketDate."' ORDER BY su.Start_Time;";
+        $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time, v.Email FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = '".$marketDate."' ORDER BY su.Start_Time;";
         $s = $c -> prepare($sql);
         $s -> execute();
         $counter = -1;
@@ -1217,9 +1218,12 @@ t = time
             $marginright = number_format((number_format($tensFromBeg,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
             $data .= 
             '<div style = "width: 100% !important; !important;">
-                <div style = "height: 10% !important; width = '.($fraction*100).'% !important; margin-left: '.($marginleft*100).'%!important; background-color: '.$colors[$counter].' !important; margin-right: '.($marginright*100).'% !important; border-radius: 150px !important;">'
-                    .$personName.
-                '</div>
+                <div style = "width = '.($fraction*100).'% !important; margin-left: '.($marginleft*100).'%!important; background-color: '.$colors[$counter].' !important; margin-right: '.($marginright*100).'% !important; color: '.$textcolors[$counter].' !important; border-radius: 150px !important; height: auto !important; font-weight: bolder !important; font-size: 85% !important; font-family: Helvetica, Arial, sans-serif !important;">';
+            if($_SESSION['volunteer-id'] == $r['Email']) $data .= "Me";
+            else $data .= $personName;
+            $data .= '<br>';
+            $data .= substr($r['Start_Time'],0,5)." <i class = 'fa fa-arrow-right' aria-hidden = 'true' style = 'margin-right: 1% !important; margin-left: 1% !important;'></i> ".substr($r['End_Time'],0,5);
+            $data .= '</div>
             </div>
             ';
         }

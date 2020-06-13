@@ -1182,7 +1182,7 @@ t = time
         $colors = ["#343A40", "#DC3545", "#20C997", "#17A2B8", "#FFC107", "#6610F2", "#E83E8C", "#6C757D", "#007BFF"];
         $c = connDB();
         $data = "";
-        $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = '".$marketdate."';";
+        $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = '".$marketDate."';";
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);

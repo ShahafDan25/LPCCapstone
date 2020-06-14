@@ -218,7 +218,7 @@ t = time
     }
 
     if($_POST['message'] == "volunteer-request") {
-        if(requestVolunteer($_POST['email'], $_POST['first'], $_POST['last'])) echo '<script>alert("Request Submitted!"); location.replace("index.php");</script>';
+        if(requestVolunteer($_POST['volunteer-email'], $_POST['first'], $_POST['last'])) echo '<script>alert("Request Submitted!"); location.replace("index.php");</script>';
         echo '<script>alert("You are already in the system!"); location.replace("index.php");</script>';
     }
 
@@ -243,6 +243,11 @@ t = time
 
     if($_POST['message'] == "no-active-market-message") {
         echo checkForActiveMarkets();
+    }
+
+    if($_POST['message'] == "check-for-active-markets") {
+        approvePendingVolunteer($_POST['vol_email']);
+        echo displayVolunteersAwaitingActivation();
     }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
@@ -1078,6 +1083,7 @@ t = time
     }
 
     function displayDeactivatedVolunteers() {
+        $months = ["January", "February", "March", "April", "May", " June", "July", "August", "September", "October", "November", "December"];
         $c = connDB();
         $sql = "SELECT Email, First_Name, Last_Name, Deactivation_Date FROM Volunteers WHERE Active = 0;";
         $s = $c -> prepare($sql);
@@ -1089,9 +1095,9 @@ t = time
             $data .= '<tr><form action ="funcs.php", method = "POST">';
             $data .= '<td><input type = "hidden" value = "'.$r['Email'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
             $data .= '<td>'.$r['Email'].'</td>';
-            $data .= '<td>'.$r['Deactivation_Date'].'</td>';
-            $data .= '<td><input type = "hidden" name = "message" value = "activateVolunteer"><button class = "btn btn-success" name = "activate">Activate</button></td>';
-            $data .= '<td><button class = "btn btn-danger" name = "delete">Delete</button></td>';
+            $data .= '<td style = "text-align: center !important;">'.$months[intval(substr($r['Deactivation_Date'],5,2)) - 1].' '.substr($r['Deactivation_Date'],8,2).', '.substr($r['Deactivation_Date'],0,4).'</td>';
+            $data .= '<td style = "text-align: center !important;"><input type = "hidden" name = "message" value = "activateVolunteer"><button class = "btn btn-activate-volunteer" name = "activate"><i class="fa fa-plus" aria-hidden="true"></i></button></td>';
+            $data .= '<td><button class = "btn btn-remove-deactivated-volunteer" name = "delete"><i class="fa fa-minus" aria-hidden="true"></i></button></td>';
             $data .= '</form></tr>';
         }
         $c = null;
@@ -1141,8 +1147,6 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         $data = "";
-        if($r = $s -> fetch(PDO::FETCH_ASSOC)) $data = $r['Email'];
-        else echo '<script>alert("Sorry, you do not have any volunteers to email");</script>';
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= ",".$r['Email'];
         }
@@ -1191,16 +1195,31 @@ t = time
         $sql = "SELECT First_Name, Last_Name, Active, Email FROM Volunteers WHERE Active = 2";
         $s = $c -> prepare($sql);
         $s -> execute();
+        $counter = 0;
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= "<tr>";
                 $data .= "<td>".$r['First_Name']." ".$r['Last_Name']."</td>";
                 $data .= "<td>".$r['Email']."</td>";
-                $data .= "<td style = 'text-align: center !important;'><button class = 'btn actiate-volunteer-option op4 inline'><i class = 'fa fa-plus' aria-hidden = 'true'></i></button></td>";
+                $data .= 
+                "<td style = 'text-align: center !important;'>
+                    <button class = 'btn actiate-volunteer-option op4 inline' id = 'vol-request-".$email."' onclick = 'approveRequest(this.id);'>
+                        <i class = 'fa fa-plus' aria-hidden = 'true'></i>
+                    </button>
+                </td>";
             $data .= "</tr>";
+            $counter++;
         }
         $c = null; //close connection
-        if(strlen($data) < 2) return "<p> Sorry, No Volunteers Are Pending Activation </p>";
+        if(strlen($data) < 2) return "<p> No Volunteers Are Pending Activation </p>";
         else return $table_begin.$data.$table_end;
+    }
+
+    function approvePendingVolunteer($email) {
+        $c = connDB();
+        $sql = "UPDATE Volunteers SET Active = 1, Start_Date = NOW() WHERE Email = '".$email."';";
+        $c -> prepare($sql) -> execute();
+        $c = null; //close connection;
+        return;
     }
 
     // ======================================================== //

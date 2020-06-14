@@ -752,15 +752,15 @@ div.content {
     float: left;
     margin-left: 5% !important;
 }
-.volunteer-option {
-    /* padding: 1.5% 4% 1.5% 4% !important; */
-    /* padding: 1% !important; */
+.volunteer-option, .btn-remove-deactivated-volunteer, .btn-activate-volunteer {
     margin-right: 1.5% !important;
     border-radius: 150px !important;
     width: auto !important;
     border: none !important;
     text-shadow: 0.3px 0.3px black;
     font-weight: bolder !important;
+}
+.volunteer-option {
     float: right !important;
 }
 .op1 {
@@ -801,4 +801,13 @@ div.content {
     border: none !important;
     text-shadow: 1px 1px black;
     font-weight: bolder !important;
+}
+.btn-remove-deactivated-volunteer {
+    background-color: #DC3545 !important;
+    color: white !important;
+}
+.btn-activate-volunteer {
+    background-color: #28a745 !important;
+    color: white !important;
+
 }

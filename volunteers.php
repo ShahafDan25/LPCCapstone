@@ -42,7 +42,7 @@
             <br>
             <div class = "page-sub-container" id = "general-div-with-active-volunteers-table-div">
                 <h4 class = "inline volunteer-section-title"><u>Volunteers</u></h4>
-                <button class = "btn volunteer-option op1 inline" id = "send-volunteers-email"><i class="fa fa-share" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op1 inline" id = "send-volunteers-email" onclick = "sendEmailToActiveVolunteers();"><i class="fa fa-share" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op2 inline" id = "email-volunteer-list" onclick = "showMe(this.id);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op3 inline" id = "volunteers-schedule-per-market" onclick = "showMe(this.id);"><i class="fa fa-calendar" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op4 inline" id = "add-volunteer-option" onclick = "showMe(this.id);"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -59,7 +59,7 @@
             <div class = "page-sub-container-volunteer" id = "volunteers-schedule-per-market-div" style = "display: none">
                 <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
                 <h4 class = "volunteer-section-title inline"><u>Volunteers Schedule</u></h4>
-                <select class = 'select-markets inline' name = 'marketid' id = "marketid" style = "float: right !important; margin-right: 4% !important;">
+                <select class = 'select-markets inline' name = 'marketid' id = "marketid" style = "float: right !important; margin-right: 4% !important;" onchange = "chosenMarketDateChanged();">
                     <option value = 'none' selected disabled hidden>Choose a Market </option>
                     <?php echo populateMarketsDropDown(); ?>
                 </select>
@@ -82,7 +82,8 @@
                 <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
                 <h4 class = "inline volunteer-section-title"><u>Pending Volunteers</u></h4>
                 <br><br><br><hr class = "spacebar-dark"><br>
-                <?php echo displayVolunteersAwaitingActivation(); ?>
+                <div id = "pending-volunteers-div"><?php echo displayVolunteersAwaitingActivation(); ?> </div>
+
             </div>
             <div class = "page-sub-container-volunteer" id = "deactivated-volunteers-div" style = "display: none">
                 <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
@@ -92,53 +93,71 @@
                 <?php echo displayDeactivatedVolunteers(); ?>
             </div>
         </div>
-        <script type="text/javascript">
-            function showMenuAgain() {
-                hideAll();
-                document.getElementById("general-div-with-active-volunteers-table-div").style.display = "block";
-                return;
-            }
-
-            function showMe(x) {
-                hideAll();
-                document.getElementById("general-div-with-active-volunteers-table-div").style.display = "none";
-                document.getElementById(x+"-div").style.display = "block";
-            }
-
-            function hideAll() {
-                var divs = ["email-volunteer-list-div", "volunteers-schedule-per-market-div", "add-volunteer-option-div", "activation-waiting-volunteers-div", "deactivated-volunteers-div"];
-                for(var i = 0; i < divs.length; i++) {
-                    document.getElementById(divs[i]).style.display = "none";
-                }
-            }
-
-            
-
-            $(document).on('change', '#marketid', function() {
-            // populate inventory view table
-                $.ajax({
-                    type: "POST",
-                    url: "funcs.php",
-                    data: {
-                        date: document.getElementById("marketid").value, 
-                        message: "display-signup-sheet"
-                    },
-                    success: function(data) {
-                        $("#sign-up-sheets-in-admin-volunteers").html(data);
-                    }
-                });
-            });
-            // $.("send-volunteers-email").click(function(event) {
-            //     $.ajax ({
-            //         type: "POST",
-            //         url: "funcs.php",
-            //         data: {message: "get-email-list"},
-            //         success: function(data) {
-            //             window.open("mailto:" + data + "?subject=Volunteer at the Market!");
-            //         }
-            //     });
-            // });
-        </script>
+       
     </body>
-    
+    <script>
+        function approveRequest(x)
+        {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "check-for-active-markets",
+                    vol_email: substring(12, x.length)
+                },
+                success: function(data) {
+                    $("#pending-volunteers-div").html(data);
+                }
+            });
+        }
+        
+        function showMenuAgain()
+        {
+            var divs = ["email-volunteer-list-div", "volunteers-schedule-per-market-div", "add-volunteer-option-div", "activation-waiting-volunteers-div", "deactivated-volunteers-div"];
+            for(var i = 0; i < divs.length; i++) 
+            {
+                document.getElementById(divs[i]).style.display = "none";
+            }
+            document.getElementById("general-div-with-active-volunteers-table-div").style.display = "block";
+            return;
+        }
+
+        function showMe(x) 
+        {
+            var divs = ["email-volunteer-list-div", "volunteers-schedule-per-market-div", "add-volunteer-option-div", "activation-waiting-volunteers-div", "deactivated-volunteers-div"];
+            for(var i = 0; i < divs.length; i++) 
+            {
+                document.getElementById(divs[i]).style.display = "none";
+            }
+            document.getElementById("general-div-with-active-volunteers-table-div").style.display = "none";
+            document.getElementById(x+"-div").style.display = "block";
+        }
+
+       function chosenMarketDateChanged() {
+        // populate inventory view table
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    date: document.getElementById("marketid").value, 
+                    message: "display-signup-sheet"
+                },
+                success: function(data) {
+                    $("#sign-up-sheets-in-admin-volunteers").html(data);
+                }
+            });
+        };
+
+        function sendEmailToActiveVolunteers()
+        {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {message: "get-email-list"},
+                success: function(data) {
+                    window.open("mailto:" + data + "?subject=Volunteer at the Market!");
+                }
+            });
+        }
+    </script>
 </html>

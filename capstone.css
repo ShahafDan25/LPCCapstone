@@ -794,3 +794,11 @@ div.content {
     font-weight: bolder !important;
     font-size: 150% !important;
 }
+.actiate-volunteer-option {
+    margin-right: 1.5% !important;
+    border-radius: 150px !important;
+    width: auto !important;
+    border: none !important;
+    text-shadow: 1px 1px black;
+    font-weight: bolder !important;
+}

@@ -1156,16 +1156,16 @@ t = time
         $sql = "SELECT * FROM Volunteers WHERE Email = '".$email."';";
         $s = $c -> prepare($sql);
         $s -> execute();
-        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        
         $c = null; //close connection
-        if(!$r) return false;
-        else return true;
+        if($s -> fetch(PDO::FETCH_ASSOC)) return true; // which means it is found
+        else return false; // not found
     }
 
     function requestVolunteer($email, $first, $last) {
-        if(!verifyVolunteer($email)) return false;
+        if(verifyVolunteer($email)) return false; //do not insert
         $c = connDB();
-        $sql = "INSERT INTO Volunteers VALUES('".$first."', '".$last."', '".$email."', NULL, 2, NULL);";
+        $sql = "INSERT INTO Volunteers VALUES('".$first."', '".$last."', '".$email."', NULL, 2, NULL, NULL);";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null; //close connection
@@ -1195,7 +1195,7 @@ t = time
             $data .= "<tr>";
                 $data .= "<td>".$r['First_Name']." ".$r['Last_Name']."</td>";
                 $data .= "<td>".$r['Email']."</td>";
-                $data .= "<td><button class = 'btn volunteer-option op4 inline'><i class = 'fa fa-plus' aria-hidden = 'true'></i></button></td>";
+                $data .= "<td style = 'text-align: center !important;'><button class = 'btn actiate-volunteer-option op4 inline'><i class = 'fa fa-plus' aria-hidden = 'true'></i></button></td>";
             $data .= "</tr>";
         }
         $c = null; //close connection

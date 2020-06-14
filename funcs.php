@@ -57,7 +57,17 @@ t = time
     if($_POST['message'] == 'submitNewMarket') //create new market
     {
         newMarket(substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2), intval(substr($_POST['new_market_start_time'],0,2).substr($_POST['new_market_start_time'],3,2)), intval(substr($_POST['new_market_end_time'],0,2).substr($_POST['new_market_end_time'],3,2)));
-        // newMarket(substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2), $_POST['new_market_start_time'], $_POST['new_market_end_time']);
+        $date = $_POST['new_market_date'];
+        $date_format = substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2);
+        $starttime = $_POST['new_market_start_time'];
+        $endtime = $_POST['new_market_end_time'];
+        $sql = "SET GLOBAL event_scheduler = ON;";
+        $sql .= "CREATE EVENT 'activateMarket' ON SCHEDULE AT '".$date." ".$endtime."' DO BEGIN UPDATE Markets SET Active = 2 WHERE idByDate = ".$date_format."; END;";
+        $sql .= "CREATE EVENT 'terminateMarket' ON SCHEDULE AT '".$date." ".$starttime."' DO BEGIN UPDATE Markets SET Active = 2 WHERE idByDate = ".$date_format."; END;";
+        $c = connDB(); //set connection
+        $c -> query($sql);
+        $c = null; //close connection
+        echo '<script> location.replace("admin.php") </script>'; 
     }
 
     if($_POST['message'] == 'adminOption') //choose an action option per market
@@ -263,6 +273,10 @@ t = time
 
     if($_POST['message'] == "populate-add-volunteer-form") {
         echo populateAddVolunteerForm();
+    }
+
+    if($_POST['message'] == "check-for-active-markets") {
+        echo checkForActiveMarkets();
     }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
@@ -481,11 +495,10 @@ t = time
             return; 
         }
         //should be closetime not endtime
-        $sql = "INSERT INTO Markets (idByDate, active, reported, inventory, starttime, closetime) VALUES (".$d.", 0, 0, 0, '".$st."', '".$et."');"; //0 = not active, 1 = active (tiny int sserving as boolean)
+        $sql = "INSERT INTO Markets (idByDate, active, starttime, closetime) VALUES (".$d.", 0, '".$st."', '".$et."');"; //0 = not active, 1 = active (tiny int sserving as boolean)
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c->exec($sql);
         $c = null; //close connection 
-        echo '<script> location.replace("admin.php") </script>'; 
         return;
     }
 
@@ -777,7 +790,6 @@ t = time
             $ct = substr(date("H:i"), 0, 2).substr(date("H:i"), 3, 2); 
         }
 
-
         $sti = intval($st); 
         //modify time to be based 60 and not 100 
         $interval = $sti + (10 - ($sti%10)); 
@@ -794,6 +806,7 @@ t = time
         //is new hour in the time range of the market, add 40 to create illusion of time based 60 and not 100
         if($interval % 100 == 60) {$interval += 40;} 
         //for every 10 minute interval before the last ten minutes of the closing time
+        $first_person = false;
         while(($interval + 10) < intval($ct)) 
         {
             
@@ -808,8 +821,14 @@ t = time
             elseif(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
 
             $a = $stmt_i -> fetchColumn();
+            // if(!$first_person) { //shring the graph
+            //     if($a > 0) {
+            //         $first_person = true;
+            //     }
+            // }
+            
             //insert amount per time range
-            $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
+            if($first_person) $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
             $interval = $interval_b;
         }
         $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";

@@ -58,72 +58,146 @@
                 <img src = "otherFiles/pics/lpcLogo.png" class = "index-registration-page-header-image inline">
                 <!-- <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "inline" style = "height: 1% !important;"> -->
             </div>
-            <!------------------- NEW MEMBERS DIVISION ----------------------->
+            <!------------------- NEW MEMBERS DIVISION ~ ENGLISH ----------------------->
             <div class = "new-members" id = "new-members" style = "display: none">
-                <div id = "name">
-                    <h6 class = "registration-instructions-text"><strong><u> Please choose an ID, and enter your first and last names </u></strong></h6>
-                    <input type = "number" class = "index-registration-input third inline" placeholder=" Market ID" id = "idSignUpInput" name = "patron_id" pattern = "\S+.*" min = "6" max = "6" autocomplete = "off" required> &nbsp;
-                    <input type = "text" class = "index-registration-input third inline" placeholder = " First Name" class = "firstName" name = "first_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
-                    <input type = "text" class = "index-registration-input third inline" placeholder = " Last Name" class = "lastName" name = "last_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
-                    <p id = "alertedIDdiv" style = "display: none !important;"></p>
-                </div>
-                <br>
-                <div id = "student-status">
-                    <h6 class = "registration-instructions-text"><strong><u> Are you a student as Las Positas? </strong></u></h6>
-                    <ul class = "new-member-options-list">
-                        <li class = "new-member-options-list-item inline">
-                            <input type = "radio" name = "student?" id = "yes-student-option" value = "yes" class = "new-member-option inline">
-                            <label for = "yes-student-option"  class = "admin-option-label inline"> Yes </label>
-                            <div class = "new-member-check inline"></div>
-                        </li>
-                        <li class = "new-member-options-list-item inline">
-                            <input type = "radio" name = "student?" id = "no-student-option" value = "no" class = "new-member-option inline">
-                            <label for = "no-student-option"  class = "admin-option-label inlin"> No </label>
-                            <div class = "new-member-check inline"></div>
-                        </li>
-                    </ul>
-                </div>
-                <br>
-                <div id = "household">
-                    <h6 class = "registration-instructions-text"><strong><u> How many people are in your household? </u></strong></h6>
-                    <input type = "number" class = "index-registration-input third inline" name = "children_amount" placeholder = "Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
-                    <input type = "number" class = "index-registration-input third inline" name = "adults_amount" placeholder = "Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                    <input type = "number" class = "index-registration-input third inline" name = "seniors_amount" placeholder = "Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                </div>
-                <br>
-                <div id = "PersonalInfo">
-                    <h6 class = "registration-instructions-text"><strong><u> Contact Information </strong></u></h6>
-                    <input type = "text" class = "index-registration-input half inline" name = "email_address" placeholder = " Email" autocomplete = "off"> &nbsp;
-                    <input type = "text" class = "index-registration-input half inline" name = "phone_number" placeholder = " Phone Number" autocomplete = "off"> &nbsp;
-                </div>
-                <br>
-                <div id = "promotiong-method">
-                    <h6><strong><u> How did you hear about the market? </strong></u></h6>
-                    <ul class = "new-member-options-list">
-                        <li class = "new-member-options-list-item inline">
-                            <input type = "radio" name = "promotion" id = "classroom-option" value = "Classroom" class = "new-member-option inline">
-                            <label for = "classroom-option"  class = "admin-option-label inline"> Classroom </label>
-                            <div class = "new-member-check inline"></div>
-                        </li>
-                        <li class = "new-member-options-list-item inline">
-                            <input type = "radio" name = "promotion" id = "fnf-option" value = "FriendsAndFamily" class = "new-member-option inline">
-                            <label for = "fnf-option"  class = "admin-option-label inline"> Friends and Family </label>
-                            <div class = "new-member-check inline"></div>
-                        </li>
-                        <li class = "new-member-options-list-item inline">
-                            <input type = "radio" name = "promotion" id = "community-option" value = "Community" class = "new-member-option inline">
-                            <label for = "community-option"  class = "admin-option-label inline"> Community </label>
-                            <div class = "new-member-check inline"></div>
-                        </li>
-                        <li class = "new-member-options-list-item inline">
-                            <input type = "radio" name = "promotion" id = "other-option" value = "Other" class = "new-member-option inline">
-                            <label for = "other-option"  class = "admin-option-label inline"> Other </label>
-                            <div class = "new-member-check inline"></div>
-                        </li>
-                    </ul>
-                </div>
-                <input type="hidden" value = "insertNewPats" name = "message"> 
-                <button class = "btn btn-submit-new-patron" id = "newPatSubmission"> SUBMIT </button>
+                <button class = "btn spanish-new-member-page" id = "spanish-new-member" onclick = "spanishPage();"> Español </button>
+                <form action = "funcs.php" method = "POST">
+                    <br>
+                    <div id = "name">
+                        <h6 class = "registration-instructions-text"><strong><u> Please choose an ID, and enter your first and last names </u></strong></h6>
+                        <input type = "number" class = "index-registration-input third inline" placeholder=" Market ID" id = "idSignUpInput" name = "patron_id" pattern = "\S+.*" min = "6" max = "6" autocomplete = "off" required> &nbsp;
+                        <input type = "text" class = "index-registration-input third inline" placeholder = " First Name" class = "firstName" name = "first_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                        <input type = "text" class = "index-registration-input third inline" placeholder = " Last Name" class = "lastName" name = "last_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                        <p id = "alertedIDdiv" style = "display: none !important;"></p>
+                    </div>
+                    <br>
+                    <div id = "student-status">
+                        <h6 class = "registration-instructions-text"><strong><u> Are you a student as Las Positas? </strong></u></h6>
+                        <ul class = "new-member-options-list">
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "student?" id = "yes-student-option" value = "yes" class = "new-member-option inline">
+                                <label for = "yes-student-option"  class = "admin-option-label inline"> Yes </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "student?" id = "no-student-option" value = "no" class = "new-member-option inline">
+                                <label for = "no-student-option"  class = "admin-option-label inlin"> No </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+                    <div id = "household">
+                        <h6 class = "registration-instructions-text"><strong><u> How many people are in your household? </u></strong></h6>
+                        <input type = "number" class = "index-registration-input third inline" name = "children_amount" placeholder = "Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
+                        <input type = "number" class = "index-registration-input third inline" name = "adults_amount" placeholder = "Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                        <input type = "number" class = "index-registration-input third inline" name = "seniors_amount" placeholder = "Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                    </div>
+                    <br>
+                    <div id = "PersonalInfo">
+                        <h6 class = "registration-instructions-text"><strong><u> Contact Information </strong></u></h6>
+                        <input type = "text" class = "index-registration-input half inline" name = "email_address" placeholder = " Email" autocomplete = "off"> &nbsp;
+                        <input type = "text" class = "index-registration-input half inline" name = "phone_number" placeholder = " Phone Number" autocomplete = "off"> &nbsp;
+                    </div>
+                    <br>
+                    <div id = "promotiong-method">
+                        <h6><strong><u> How did you hear about the market? </strong></u></h6>
+                        <ul class = "new-member-options-list">
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "promotion" id = "classroom-option" value = "Classroom" class = "new-member-option inline">
+                                <label for = "classroom-option"  class = "admin-option-label inline"> Classroom </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "promotion" id = "fnf-option" value = "FriendsAndFamily" class = "new-member-option inline">
+                                <label for = "fnf-option"  class = "admin-option-label inline"> Friends and Family </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "promotion" id = "community-option" value = "Community" class = "new-member-option inline">
+                                <label for = "community-option"  class = "admin-option-label inline"> Community </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "promotion" id = "other-option" value = "Other" class = "new-member-option inline">
+                                <label for = "other-option"  class = "admin-option-label inline"> Other </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <input type="hidden" value = "insertNewPats" name = "message"> 
+                    <button class = "btn btn-submit-new-patron" id = "newPatSubmission"> SUBMIT </button>
+                </form> 
+            </div>
+            <!------------------- NEW MEMBERS DIVISION ~ SPANISH ----------------------->
+            <div class = "new-members" id = "spanish-new-members" style = "display: none">
+                <button class = "btn spanish-new-member-page" id = "new-member" onclick = "englishPage();"> English </button>
+                <form action = "funcs.php" method = "POST">
+                    <br>
+                    <div id = "name-spanish">
+                        <h6 class = "registration-instructions-text"><strong><u> Por favor, elija un número de identificación e ingrese su nombre y apellido </u></strong></h6>
+                        <input type = "number" class = "index-registration-input third inline" placeholder=" Identificación" id = "idSignUpInput-spanish" name = "patron_id" pattern = "\S+.*" min = "6" max = "6" autocomplete = "off" required> &nbsp;
+                        <input type = "text" class = "index-registration-input third inline" placeholder = " Nombre" class = "firstName" name = "first_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                        <input type = "text" class = "index-registration-input third inline" placeholder = " Apellido" class = "lastName" name = "last_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                        <p id = "alertedIDdiv" style = "display: none !important;"></p>
+                    </div>
+                    <br>
+                    <div id = "student-status-spanish">
+                        <h6 class = "registration-instructions-text"><strong><u> ¿Eres estudiante en Las Positas College? </strong></u></h6>
+                        <ul class = "new-member-options-list">
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "student?" id = "yes-student-option" value = "yes" class = "new-member-option inline">
+                                <label for = "yes-student-option"  class = "admin-option-label inline"> Si </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "student?" id = "no-student-option" value = "no" class = "new-member-option inline">
+                                <label for = "no-student-option"  class = "admin-option-label inlin"> No </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+                    <div id = "household-spanish">
+                        <h6 class = "registration-instructions-text"><strong><u> ¿Cuantos personas hay en tu hogar? </u></strong></h6>
+                        <input type = "number" class = "index-registration-input third inline" name = "children_amount" placeholder = "Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
+                        <input type = "number" class = "index-registration-input third inline" name = "adults_amount" placeholder = "Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                        <input type = "number" class = "index-registration-input third inline" name = "seniors_amount" placeholder = "Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                    </div>
+                    <br>
+                    <div id = "PersonalInfo-spanish">
+                        <h6 class = "registration-instructions-text"><strong><u> Contact Information </strong></u></h6>
+                        <input type = "text" class = "index-registration-input half inline" name = "email_address" placeholder = " Email" autocomplete = "off"> &nbsp;
+                        <input type = "text" class = "index-registration-input half inline" name = "phone_number" placeholder = " Phone Number" autocomplete = "off"> &nbsp;
+                    </div>
+                    <br>
+                    <div id = "promotiong-method">
+                        <h6><strong><u> How did you hear about the market? </strong></u></h6>
+                        <ul class = "new-member-options-list">
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "promotion" id = "classroom-option-spanish" value = "Classroom" class = "new-member-option inline">
+                                <label for = "classroom-option-spanish"  class = "admin-option-label inline"> Classroom </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "promotion" id = "fnf-option-spanish" value = "FriendsAndFamily" class = "new-member-option inline">
+                                <label for = "fnf-option-spanish"  class = "admin-option-label inline"> Friends and Family </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "promotion" id = "community-option-spanish" value = "Community" class = "new-member-option inline">
+                                <label for = "community-option-spanish"  class = "admin-option-label inline"> Community </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                            <li class = "new-member-options-list-item inline">
+                                <input type = "radio" name = "promotion" id = "other-option-spanish" value = "Other" class = "new-member-option inline">
+                                <label for = "other-option-spanish"  class = "admin-option-label inline"> Other </label>
+                                <div class = "new-member-check inline"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <input type="hidden" value = "insertNewPats" name = "message"> 
+                    <button class = "btn btn-submit-new-patron" id = "newPatSubmission-spanish"> SUBMIT </button>
                 </form> 
             </div>
             <!------------------- RETURNING MEMBERS DIVISION ----------------------->
@@ -181,10 +255,10 @@
 
             </div>
             <!-- ----------------- FOOTER SECTION --------------------- -->
-            <footer class = "footer">
+            <!-- <footer class = "footer">
                 <p> Las Positas College Student Government <br> </p>
                 <p class = "shahaf-signature"> Shahaf Dan Productions </p>
-            </footer> 
+            </footer>  -->
         </div>
     </body>
     <script>
@@ -193,6 +267,7 @@
         var toAdminInput = document.getElementById("inputAdminBtn");
         var toAdminBtn = document.getElementById("inputAdminPW");
         var ids = new Array(<?php echo populateArrayWithIds(connDB()); ?>);
+
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
@@ -201,13 +276,14 @@
                 });         
             });
         });
+
         var idInput = document.getElementById("idSignUpInput");
         var text = document.getElementById("alertedIDdiv");
+
         idInput.onkeyup = function(event){
             if (event.target.value.length == 0)  {
                 text.innerHTML = "";
                 text.style.display = "none";
-
             }
             else {
                 text.style.display = "block";
@@ -219,12 +295,14 @@
                 }
             }
         }
+
         function responsive_sidebar_item(x) {
             var targets = ["new-members", "returning-members", "admin-login", "volunteer-signup", "index-index"];
             for(var i = 0; i < targets.length; i++) { //do for all
                 document.getElementById(targets[i] + "-sender").className = "a-item";
                 document.getElementById(targets[i]).style.display = "none";
             }
+            document.getElementById("spanish-new-members").style.display = "none";
             document.getElementById("no-active-market-message").style.display = "none";
             //then do it for target alone
             document.getElementById(x).className += " active";
@@ -266,6 +344,16 @@
                     a[i].style.display = "none";
                 }
             }
+        }
+
+        function spanishPage(){
+            document.getElementById("new-members").style.display = "none";
+            document.getElementById("spanish-new-members").style.display = "block";
+        }
+
+        function englishPage() {
+            document.getElementById("new-members").style.display = "block";
+            document.getElementById("spanish-new-members").style.display = "none";
         }
     </script>
 </html>

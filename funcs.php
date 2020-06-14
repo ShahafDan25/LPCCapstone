@@ -1160,7 +1160,7 @@ t = time
     function displayVolunteersAwaitingActivation() {
         $c = connDB();
         $table_begin = 
-        '<table>
+        '<table class = "table">
             <thead>
                 <tr>
                     <th> Name </th>
@@ -1184,7 +1184,8 @@ t = time
             $data .= "</tr>";
         }
         $c = null; //close connection
-        return $table_begin.$data.$table_end;
+        if(strlen($data) < 2) return "<p> Sorry, No Volunteers Are Pending Activation </p>";
+        else return $table_begin.$data.$table_end;
     }
 
     // ======================================================== //

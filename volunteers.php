@@ -42,29 +42,34 @@
             <br>
             <div class = "page-sub-container" id = "general-div-with-active-volunteers-table-div">
                 <h4 class = "inline volunteer-section-title"><u>Volunteers</u></h4>
-                <button class = "btn volunteer-option op1 inline" id = "send-volunteers-email" style = "color: white !important;"><i class="fa fa-share" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op1 inline" id = "send-volunteers-email"><i class="fa fa-share" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op2 inline" id = "email-volunteer-list"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op3 inline" id = "volunteers-schedule-per-market" onclick = "showMe(this.id);"><i class="fa fa-calendar" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op4 inline" id = "add-volunteer-option" onclick = "showMe(this.id);"><i class="fa fa-plus" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op5 inline" id = "activation-waiting-volunteers" onclick = "showMe(this.id);"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op6 inline" id = "deactivated-volunteers" onclick = "showMe(this.id);"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                <br><br><?php echo displayAllVolunteers(); ?>
+                <br><br><br><?php echo displayAllVolunteers(); ?>
             </div>
-            <br>
-            <div class = "page-sub-container" id = "email-volunteer-list-div" style = "display: none">
-                <h4 class = "inline volunteer-section-title"><u>Volunteers' Email List</u></h4>
-                <button type = "button" class = "btn inline email-volunteer-list-btn" id = "email-volunteer-list-btn">Send Email</button> <br>
+            <div class = "page-sub-container-volunteer" id = "email-volunteer-list-div" style = "display: none; border: 0px solid black !important;">
+                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
+                <h4 class = "inline volunteer-section-title inline"><u>Volunteers' Email List</u></h4> <br>
+                <br><br><br><hr class = "spacebar-dark"><br>
                 <?php echo displayVolunteerEmailList(); ?>
             </div>
-            <div class = "collapse page-sub-container" id = "volunteers-schedule-per-market-div" style = "display: none">
-                <!-- <h4 class = "inline volunteer-section-title"><u>Volunteers' Email List</u></h4>
-                <button type = "button" class = "btn inline email-volunteer-list-btn" id = "email-volunteer-list-btn">Send Email</button> <br>
-                <?php //echo displayVolunteerEmailList(); ?> -->
+            <div class = "page-sub-container-volunteer" id = "volunteers-schedule-per-market-div" style = "display: none">
+                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
+                <h4 class = "volunteer-section-title inline"><u>Volunteers Schedule</u></h4>
+                <select class = 'select-markets inline' name = 'marketid' id = "marketid" style = "float: right !important; margin-right: 4% !important;">
+                    <option value = 'none' selected disabled hidden>Choose a Market </option>
+                    <?php echo populateMarketsDropDown(); ?>
+                </select>
+                <br><br><br><hr class = "spacebar-dark"><br>
+                <?php //echo displayVolunteerEmailList(); ?> 
             </div>
-            <br>
-            <div class = "page-sub-container" id = "add-volunteer-option-div" style = "display: none;">
-                <h4><u>Add a Volunteer</u></h4>
-                <br>
+            <div class = "page-sub-container-volunteer" id = "add-volunteer-option-div" style = "display: none;">
+                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
+                <h4 class = "inline volunteer-section-title"><u>Add a Volunteer</u></h4>
+                <br><br><br><hr class = "spacebar-dark"><br>
                 <form action = "funcs.php" method = "POST" >
                     <input type = "text" class = "add-volunteer-input inline w80" name = "firstname" placeholder = " First Name" autocomplete = "off"> <br><br>
                     <input type = "text" class = "add-volunteer-input inline w80" name = "lastname" placeholder = " Last Name" autocomplete = "off"><br><br>
@@ -73,22 +78,30 @@
                     <button class = "btn add-volunteer-btn"> Submit </button>
                 </form>
             </div>
-            <br>
-            <div class = "page-sub-container" id = "activation-waiting-volunteers-div" style = "display: none;">
+            <div class = "page-sub-container-volunteer" id = "activation-waiting-volunteers-div" style = "display: none;">
+                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
                 <h4 class = "inline volunteer-section-title"><u>Pending Volunteers</u></h4>
+                <br><br><br><hr class = "spacebar-dark"><br>
                 <?php echo displayVolunteersAwaitingActivation(); ?>
             </div>
-            <br>
-            <div class = "page-sub-container" id = "deactivated-volunteers-div" style = "display: none">
+            <div class = "page-sub-container-volunteer" id = "deactivated-volunteers-div" style = "display: none">
+                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
+
                 <h4 class = "inline volunteer-section-title"><u>Deactivated Volunteers</u></h4>
+                <br><br><br><hr class = "spacebar-dark"><br>
                 <?php echo displayDeactivatedVolunteers(); ?>
             </div>
-            <br>
         </div>
         <script>
+            function showMenuAgain() {
+                hideAll();
+                document.getElementById("general-div-with-active-volunteers-table-div").style.display = "block";
+                return;
+            }
+
             function showMe(x) {
                 hideAll();
-                document.getElementById("general-div-with-active-volunteers-table-div").style.displat = "none";
+                document.getElementById("general-div-with-active-volunteers-table-div").style.display = "none";
                 document.getElementById(x+"-div").style.display = "block";
             }
 
@@ -99,20 +112,33 @@
                 }
             }
 
-            $.("send-volunteers-email").click(function(event) {
-                $.ajax ({
-                    type: "POST",
-                    url: "funcs.php",
-                    data: {message: "get-email-list"},
-                    success: function(data) {
-                        window.open("mailto:" + data + "?subject=Volunteer at the Market!");
-                    }
-                });
-            });
+            
 
-            function hideAll() {
+            // $(document).on('change', '#marketid', function() {
+            // // populate inventory view table
+            //     $.ajax ({
+            //         type: "POST",
+            //         url: "funcs.php",
+            //         data: {date: document.getElementById("marketid").value, message: "display-inventory-table"},
+            //         success: function(data) {
+            //             document.getElementById("view_inv").hidden = false;
+            //             document.getElementById("edit_inv").hidden = false;
 
-            }
+            //             document.getElementById("view_inv").innerHTML = "";
+            //             $("#view_inv").html(data);
+            //         }
+            //     });
+            // });
+            // $.("send-volunteers-email").click(function(event) {
+            //     $.ajax ({
+            //         type: "POST",
+            //         url: "funcs.php",
+            //         data: {message: "get-email-list"},
+            //         success: function(data) {
+            //             window.open("mailto:" + data + "?subject=Volunteer at the Market!");
+            //         }
+            //     });
+            // });
         </script>
     </body>
     

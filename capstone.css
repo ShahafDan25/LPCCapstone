@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
-
 /* ------------ ONSIES CSS ----------------------- */
 .w25{width: 25% !important;}
 .w55{width: 55% !important;}
@@ -29,6 +28,14 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     background-color: rgba(255, 255, 255, 0.801) !important;
     border-radius: 1.5px !important;
     border: 0.5px solid black !important;
+    width: 80% !important;
+    margin-left: 10% !important;
+    padding: 1.5% !important;
+    text-align: center;
+}
+.page-sub-container-volunteer {
+    background-color: rgba(255, 255, 255, 0.801) !important;
+    border-radius: 1.5px !important;
     width: 80% !important;
     margin-left: 10% !important;
     padding: 1.5% !important;
@@ -65,7 +72,12 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     background-size: 100% !important; 
     background-attachment: fixed !important;
 }
-
+.spacebar-dark {
+    font-size: 150% !important;
+    font-weight: bolder !important;
+    color: #303030 !important;
+    border: 2px solid #303030 !important;
+}
 
 /* ------------ Signups Page ---------------- */
 .index-signups-page-header-title {
@@ -761,19 +773,32 @@ div.content {
 }
 .op1 {
     background-color: black !important;
+    color: white !important;
 }
 .op2 {
-    background-color: rgb(255, 141, 141) !important;
+    background-color: rgb(92, 108, 255) !important;
+
 }
 .op3 {
-    background-color: rgb(253, 255, 121) !important;
+    background-color: #6dd1ff !important;
+
 }
 .op4 {
     background-color: rgb(131, 255, 137) !important;
 }
 .op5 {
-    background-color: #6dd1ff !important;
+    background-color: rgb(253, 255, 121) !important;
+
 }
 .op6 {
-    background-color: rgb(92, 108, 255) !important;
+    background-color: rgb(255, 141, 141) !important;
+
+}
+.back-to-menu-volunteer-option {
+    float: left !important;
+    margin-right: 35 !important;
+    color: black #303030 !important;
+    background-color: rgb(255, 141, 141) !important;
+    font-weight: bolder !important;
+    font-size: 150% !important;
 }

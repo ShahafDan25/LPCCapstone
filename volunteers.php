@@ -46,8 +46,8 @@
                 <button class = "btn volunteer-option op2 inline" id = "email-volunteer-list" onclick = "showMe(this.id);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op3 inline" id = "volunteers-schedule-per-market" onclick = "showMe(this.id);"><i class="fa fa-calendar" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op4 inline" id = "add-volunteer-option" onclick = "showMe(this.id);"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op5 inline" id = "activation-waiting-volunteers" onclick = "showMe(this.id);"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op6 inline" id = "deactivated-volunteers" onclick = "showMe(this.id);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op5 inline" id = "activation-waiting-volunteers" onclick = "showMe(this.id);populatePendingVolunteers();"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op6 inline" id = "deactivated-volunteers" onclick = "showMe(this.id);displayTheDeactivated();"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 <br><br><br><?php echo displayAllVolunteers(); ?>
             </div>
             <div class = "page-sub-container-volunteer" id = "email-volunteer-list-div" style = "display: none;">
@@ -78,20 +78,9 @@
                     <button class = "btn add-volunteer-btn"> Submit </button>
                 </form>
             </div>
-            <div class = "page-sub-container-volunteer" id = "activation-waiting-volunteers-div" style = "display: none;">
-                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
-                <h4 class = "inline volunteer-section-title"><u>Pending Volunteers</u></h4>
-                <br><br><br><hr class = "spacebar-dark"><br>
-                <div id = "pending-volunteers-div"><?php echo displayVolunteersAwaitingActivation(); ?> </div>
-
-            </div>
-            <div class = "page-sub-container-volunteer" id = "deactivated-volunteers-div" style = "display: none">
-                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
-
-                <h4 class = "inline volunteer-section-title"><u>Deactivated Volunteers</u></h4>
-                <br><br><br><hr class = "spacebar-dark"><br>
-                <?php echo displayDeactivatedVolunteers(); ?>
-            </div>
+            <!-- AJAX-ly operated divs -->
+            <div class = "page-sub-container-volunteer" id = "activation-waiting-volunteers-div" style = "display: none;"></div>
+            <div class = "page-sub-container-volunteer" id = "deactivated-volunteers-div" style = "display: none"></div>
         </div>
        
     </body>
@@ -102,15 +91,28 @@
                 type: "POST",
                 url: "funcs.php",
                 data: {
-                    message: "check-for-active-markets",
-                    vol_email: substring(12, x.length)
+                    message: "approve-pending-vol-request",
+                    vol_email: x.substring(12, x.length)
                 },
                 success: function(data) {
-                    $("#pending-volunteers-div").html(data);
+                    $("#activation-waiting-volunteers-div").html(data);
                 }
             });
         }
         
+        function populatePendingVolunteers() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "populate-pending-volunteers"
+                },
+                success: function(data) {
+                    $("#activation-waiting-volunteers-div").html(data);
+                }
+            });
+        }
+
         function showMenuAgain()
         {
             var divs = ["email-volunteer-list-div", "volunteers-schedule-per-market-div", "add-volunteer-option-div", "activation-waiting-volunteers-div", "deactivated-volunteers-div"];
@@ -133,7 +135,8 @@
             document.getElementById(x+"-div").style.display = "block";
         }
 
-       function chosenMarketDateChanged() {
+        function chosenMarketDateChanged() 
+        {
         // populate inventory view table
             $.ajax({
                 type: "POST",
@@ -146,7 +149,7 @@
                     $("#sign-up-sheets-in-admin-volunteers").html(data);
                 }
             });
-        };
+        }
 
         function sendEmailToActiveVolunteers()
         {
@@ -156,6 +159,50 @@
                 data: {message: "get-email-list"},
                 success: function(data) {
                     window.open("mailto:" + data + "?subject=Volunteer at the Market!");
+                }
+            });
+        }
+
+        function reactivateVolunteer(x) 
+        {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "reactivate-volunteer",
+                    vol_email: x
+                },
+                success: function(data) {
+                    $("#deactivated-volunteers-div").html(data);
+                }
+            });
+        }
+
+        function removeVolunteer(x)
+        {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "remove-volunteer",
+                    vol_email: x
+                },
+                success: function(data) {
+                    $("#deactivated-volunteers-div").html(data);
+                }
+            });
+        }
+
+        function displayTheDeactivated()
+        {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "display-deactivated-volunteers"
+                },
+                success: function(data) {
+                    $("#deactivated-volunteers-div").html(data);
                 }
             });
         }

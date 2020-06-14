@@ -171,7 +171,7 @@
                     <button class = "btn submit-admin-login"> Submit </button>
                 </form>
             </div>
-            <!-------------------- NO ACTIE MARKET MESSAGE --------------->
+            <!-------------------- NO ACTIVE MARKET MESSAGE --------------->
             <div class = "no-active-market-message" id = "no-active-market-message" style = "display: none;">
                 <br>    
                 <h1> There is Currently No Active Market </h1>

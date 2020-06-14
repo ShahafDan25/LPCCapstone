@@ -171,12 +171,6 @@ t = time
         echo '<script>location.replace("volunteers.php");</script>';
     }
 
-    if($_POST['message'] == "activateVolunteer") {
-        if(isset($_POST['activate'])) activateVolunteer($_POST['id']);
-        else if (isset($_POST['delete'])) deleteVolunteer($_POST['id']);
-        echo '<script>location.replace("volunteers.php");</script>';
-    }
-
     if($_POST['message'] == "display-form-pdf-report") {
        echo displayPdfReportGenerationForm();
     }
@@ -245,9 +239,28 @@ t = time
         echo checkForActiveMarkets();
     }
 
-    if($_POST['message'] == "check-for-active-markets") {
+    if($_POST['message'] == "approve-pending-vol-request") {
         approvePendingVolunteer($_POST['vol_email']);
         echo displayVolunteersAwaitingActivation();
+    }
+
+    if($_POST['message'] == "populate-pending-volunteers") {
+        echo displayVolunteersAwaitingActivation();
+    }
+
+    if($_POST['message'] == "reactivate-volunteer") {
+        reactivateVolunteer($_POST['vol_email']);
+        echo displayDeactivatedVolunteers();
+    }
+
+    if($_POST['message'] == "remove-volunteer") {
+        removeVolunteer($_POST['vol_email']);
+        echo displayDeactivatedVolunteers();
+    }
+
+    if($_POST['message'] == "display-deactivated-volunteers") {
+        echo displayDeactivatedVolunteers();
+
     }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
@@ -1082,27 +1095,31 @@ t = time
         return;
     }
 
-    function displayDeactivatedVolunteers() {
+    function displayDeactivatedVolunteers() {s
         $months = ["January", "February", "March", "April", "May", " June", "July", "August", "September", "October", "November", "December"];
         $c = connDB();
         $sql = "SELECT Email, First_Name, Last_Name, Deactivation_Date FROM Volunteers WHERE Active = 0;";
         $s = $c -> prepare($sql);
         $s -> execute();
         $data = "";
+        $div_begin = '<button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
+        <h4 class = "inline volunteer-section-title"><u>Deactivated Volunteers</u></h4>
+        <br><br><hr class = "spacebar-dark"><br>
+        <div id = "deactivate-volunteer-table">';
         $table_begin = '<table class = "table"><thead><tr><th> Name </th><th> Email </th><th> Deactivation Date </th><th> Activate </th><th> Delete </th></tr></thead><tbody>';
-        $table_end = '</tbody></table>';
+        $table_end = '</tbody></table></div>';
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $data .= '<tr><form action ="funcs.php", method = "POST">';
+            $data .= '<tr>';
             $data .= '<td><input type = "hidden" value = "'.$r['Email'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
             $data .= '<td>'.$r['Email'].'</td>';
             $data .= '<td style = "text-align: center !important;">'.$months[intval(substr($r['Deactivation_Date'],5,2)) - 1].' '.substr($r['Deactivation_Date'],8,2).', '.substr($r['Deactivation_Date'],0,4).'</td>';
-            $data .= '<td style = "text-align: center !important;"><input type = "hidden" name = "message" value = "activateVolunteer"><button class = "btn btn-activate-volunteer" name = "activate"><i class="fa fa-plus" aria-hidden="true"></i></button></td>';
-            $data .= '<td><button class = "btn btn-remove-deactivated-volunteer" name = "delete"><i class="fa fa-minus" aria-hidden="true"></i></button></td>';
-            $data .= '</form></tr>';
+            $data .= '<td><button class = "btn btn-activate-volunteer" id = "'.$r['Email'].'" onclick = "reactivateVolunteer(this.id)"><i class="fa fa-plus" aria-hidden="true"></i></button></td>';
+            $data .= '<td><button class = "btn btn-remove-deactivated-volunteer" id = "'.$r['Email'].'" onclick = "removeVolunteer(this.id)"><i class="fa fa-minus" aria-hidden="true"></i></button></td>';
+            $data .= '</tr>';
         }
         $c = null;
-        if(strlen($data) < 2) return '<p style = "float: left !important; margin-left: 20% !important;"> Sorry, No deactivated volunteers are detected in the database</p><br><br>';
-        else return $table_begin.$data.$table_end;
+        if(strlen($data) < 2) return '<p> No Deactivated Volunteers To Display At The Moment</p><br><br>';
+        else return $div_begin.$table_begin.$data.$table_end;
     }
 
     function activateVolunteer($id) {
@@ -1178,6 +1195,11 @@ t = time
 
     function displayVolunteersAwaitingActivation() {
         $c = connDB();
+        $div_begin =  '
+        <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
+                <h4 class = "inline volunteer-section-title"><u>Pending Volunteers</u></h4>
+                <br><br><br><hr class = "spacebar-dark"><br>
+                <div id = "pending-volunteers-div">';
         $table_begin = 
         '<table class = "table">
             <thead>
@@ -1188,30 +1210,28 @@ t = time
                 </tr>
             </thead>
             <tbody>';
-        $table_end = 
+        $table_end_div_end = 
             '</tbody>
-        </table>';
+        </table></div>';
         $data = "";
         $sql = "SELECT First_Name, Last_Name, Active, Email FROM Volunteers WHERE Active = 2";
         $s = $c -> prepare($sql);
         $s -> execute();
-        $counter = 0;
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= "<tr>";
                 $data .= "<td>".$r['First_Name']." ".$r['Last_Name']."</td>";
                 $data .= "<td>".$r['Email']."</td>";
                 $data .= 
                 "<td style = 'text-align: center !important;'>
-                    <button class = 'btn actiate-volunteer-option op4 inline' id = 'vol-request-".$email."' onclick = 'approveRequest(this.id);'>
+                    <button class = 'btn actiate-volunteer-option op4 inline' id = 'vol-request-".$r['Email']."' onclick = 'approveRequest(this.id);'>
                         <i class = 'fa fa-plus' aria-hidden = 'true'></i>
                     </button>
                 </td>";
             $data .= "</tr>";
-            $counter++;
         }
         $c = null; //close connection
         if(strlen($data) < 2) return "<p> No Volunteers Are Pending Activation </p>";
-        else return $table_begin.$data.$table_end;
+        else return $div_begin.$table_begin.$data.$table_end_div_end;
     }
 
     function approvePendingVolunteer($email) {
@@ -1219,6 +1239,21 @@ t = time
         $sql = "UPDATE Volunteers SET Active = 1, Start_Date = NOW() WHERE Email = '".$email."';";
         $c -> prepare($sql) -> execute();
         $c = null; //close connection;
+        return;
+    }
+
+    function reactivateVolunteer($email){
+        $c = connDB();
+        $sql = "UPDATE Volunteers SET Active = 1 WHERE Email = '".$email."';";
+        $c -> prepare($sql) -> execute();
+        return;
+    }
+
+    function removeVolunteer($email) {
+        $c = connDB();
+        $sql = "DELETE FROM Volunteers WHERE Email = '".$email."';";
+        $c -> prepare($sql) -> execute();
+        $c = null; //close connection
         return;
     }
 

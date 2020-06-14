@@ -25,6 +25,19 @@
         <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
+        <!-- ALERTIFY.JS: JavaScrip and CSS -->
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
+
+
+
     </head>
     
     <body class = "volunteer-page-body">
@@ -64,16 +77,15 @@
                 <br><br><br><hr class = "spacebar-dark"><br>
                 <div id = "sign-up-sheets-in-admin-volunteers"></div>
             </div>
-            <div class = "page-sub-container-volunteer" id = "add-volunteer-option-div" style = "display: none;">
-                
-            </div>
-            <!-- AJAX-ly operated divs -->
+                        <!-- AJAX-ly operated divs -->
+            <div class = "page-sub-container-volunteer" id = "add-volunteer-option-div" style = "display: none;"></div>
             <div class = "page-sub-container-volunteer" id = "activation-waiting-volunteers-div" style = "display: none;"></div>
             <div class = "page-sub-container-volunteer" id = "deactivated-volunteers-div" style = "display: none"></div>
         </div>
        
     </body>
     <script>
+        
         function populateAddVolunteerForm() 
         {
             $.ajax({
@@ -90,17 +102,31 @@
 
         function addVolunteer() 
         {
+            var name = document.getElementById("firstname").value + " " + document.getElementById("lastname").value;
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
                 data: {
                     message: "add-volunteer",
-                    email: document.getElementByName("email").value,
-                    firstname: document.getElementByName("firstname").value,
-                    lastname: document.getElementByName("lastname").value
+                    email: document.getElementById("email").value,
+                    firstname: document.getElementById("firstname").value,
+                    lastname: document.getElementById("lastname").value
                 },
                 success: function(data) {
                     $("#add-volunteer-option-div").html(data);
+                    alertify.set('notifier','position', 'bottom-right');
+                    var message = document.createElement('message');
+                    message.style.maxHeight = "auto";
+                    message.style.width = "250px";
+                    message.style.marginRight = "10%";
+                    message.style.marginTop = "10%";
+                    message.style.padding = "none";
+                    message.style.textAlign = "justify";
+                    message.style.fontWeight = "bolder";
+                    message.style.fontSize = "90%";
+                    message.appendChild(document.createTextNode( name + " was added ! "));
+                    alertify.set('resizable',true).resizeTo('25%','15%');
+                    alertify.success(message).delay(2.25);
                 }
             });
         }

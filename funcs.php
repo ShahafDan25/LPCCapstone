@@ -1050,7 +1050,7 @@ t = time
 
     function addVolunteer($f, $l, $e) {
         $c = connDB();
-        if(verifyVolunteer() == true) return '<script>alert("This email is already in use by someone");</script>'.populateAddVolunteerForm();
+        if(verifyVolunteer($e) == true) return '<script>alert("This email is already in use by someone");</script>'.populateAddVolunteerForm();
         $sql = "INSERT INTO Volunteers VALUES ('".$f."', '".$l."', '".$e."', NOW(), 1, NULL, NULL);";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
@@ -1063,13 +1063,10 @@ t = time
         '<button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
         <h4 class = "inline volunteer-section-title"><u>Add a Volunteer</u></h4>
         <br><br>
-        <form action = "funcs.php" method = "POST" >
-            <input type = "text" class = "add-volunteer-input full" name = "firstname" placeholder = " First Name" autocomplete = "off"> <br><br>
-            <input type = "text" class = "add-volunteer-input full" name = "lastname" placeholder = " Last Name" autocomplete = "off"><br><br>
-            <input type = "text" class = "add-volunteer-input full" name = "email" placeholder = " Email Address" autocomplete = "off"><br><br>
-            <input type = "hidden" name = "message" value = "add-volunteer">
-            <button class = "btn add-volunteer-btn" onclick = "addVolunteer();"> Submit </button>
-        </form>';
+        <input type = "text" class = "add-volunteer-input full" id = "firstname" placeholder = " First Name" autocomplete = "off"> <br><br>
+        <input type = "text" class = "add-volunteer-input full" id = "lastname" placeholder = " Last Name" autocomplete = "off"><br><br>
+        <input type = "text" class = "add-volunteer-input full" id = "email" placeholder = " Email Address" autocomplete = "off"><br><br>
+        <button class = "btn add-volunteer-btn" onclick = "addVolunteer();"> Submit </button>';
         return $data;
     }
 

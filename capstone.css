@@ -163,10 +163,15 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     padding-top: 1.75% !important;
 }
 .index-registration-page-header-image {
-    height: 100% !important;
+    height: 10% !important;
     width: auto !important;
     background-color: white !important;
-    float: right !important;
+    margin-right: 5% !important;
+}
+.index-registration-page-sg-image {
+    height: 3% !important;
+    width: auto !important;
+    background-color: white !important;
     margin-right: 5% !important;
 }
 .submit-admin-login, .submit-returning-patron-login {
@@ -186,6 +191,10 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     margin-bottom: 0% !important;
 }
 
+.no-active-market-message, .index-index {
+    width: 70% !important;
+    margin-left: 15% !important;
+}
 .index-registration-input{
     border: none !important;
     border-bottom: 2px solid black !important;
@@ -234,7 +243,7 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     width: 85% !important;
     margin-right: 7% !important;
 }
-.btn-submit-new-patron {
+.btn-submit-new-patron, .add-volunteer-btn, .add-inventory-btn {
     background-color: #28a745 !important;
     width: 80% !important;
     padding: 0.9% 0% 0.9% 0% !important;
@@ -244,7 +253,7 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     border: 0.5px solid white !important;
     margin-bottom: 0.45% !important;
 }
-.btn-submit-new-patron:hover {
+.btn-submit-new-patron:hover, .add-volunteer-btn:hover, .add-inventory-btn:hover {
     padding: 1.25% 0% 1.25% 0% !important;
     width: 85% !important;
     margin-bottom: 0% !important;
@@ -415,15 +424,14 @@ div.content {
     background-color: transparent !important;
     background: transparent !important;
     border-bottom: 3px solid rgb(102, 124, 246) !important;
-    width: 28% !important;
-    margin-right: 2% !important;
+    width: 28%;
     padding: 0.5% 1% 0.75% 0.5%;
     transition: 0.3s !important;
 }   
 
 .change-pw-input:focus, .choose-new-market-date:focus{
     outline: none !important;
-    width: 32% !important;
+    width: 32%;
     font-weight: bolder !important;
     font-size: 110% !important;
     transition: all 0.35s ease-in-out !important;
@@ -711,27 +719,16 @@ div.content {
 /* ---------- VOLUNTEERS PAGE ---------------- */
 .add-volunteer-input {
     border: 0px !important;
-    border-bottom: 3px solid black !important;
+    border-bottom: 2px solid rgb(102, 124, 246) !important;
     background-color: transparent !important;
+    transition: 0.3s !important;
 }
 .add-volunteer-input:focus {
+    border-bottom: 3px solid rgb(81, 106, 250) !important;
     outline: none !important;
-}
-.add-volunteer-btn, .volunteer-email-list, .show-deactivated-volunteers, .email-volunteer-list-btn, .add-inventory-btn {
-    padding-right: 5% !important;
-    padding-left: 5% !important;
-    padding-bottom: 0.85% !important;
-    padding-top: 0.85% !important;
-    background-image: linear-gradient(to right, #29dd38 0%, #71ec82 51%, #29dd38 100%);
-    text-transform: uppercase;
-    transition: 0.5s;
-    background-size: 200% auto;
-    color: white !important;
-    text-emphasis-color: black !important;
-    border-radius: 5px !important;
-    border: 1.25px solid black !important;
-    width: 80% !important;
-    font-weight: bold !important;
+    transition: all 0.3s linear !important;
+    font-weight: bolder !important;
+    font-size: 105% !important;
 }
 .show-deactivated-volunteers {
     background-image: linear-gradient(to right, #b42323 0%, #d46464 51%, #b42323 100%);
@@ -740,11 +737,6 @@ div.content {
     background-image: linear-gradient(to right, #2f38af 0%, #6f7dcf 51%, #2f38af 100%) !important;
     padding-right: 5% !important;
     padding-left: 5% !important;
-}
-.add-volunteer-btn:hover, .volunteer-email-list:hover, .show-deactivated-volunteers:hover, .email-volunteer-list-btn:hover, .add-inventory-btn:hover {
-    background-position: right center !important;
-    text-shadow: 0px 0px 10px rgba(255,255,255,3.5);
-    transition: all 0.5s ease-in-out !important;
 }
 .volunteer-email-list, .show-deactivated-volunteers, .email-volunteer-list-btn {
     float: right !important;

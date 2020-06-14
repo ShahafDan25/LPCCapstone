@@ -29,18 +29,37 @@
         <header class = "index-registration-page-header">
             <h2 class = "index-registration-page-header-title"> Las Positas College: The Market </h2>
             <h5 class = "index-registration-page-header-sub-title"><u> <?php echo current_market_date();?> </u></h5>
-            <img src = "otherFiles/pics/lpcLogo.png" class = "index-registration-page-header-image">
         </header>
         <div class = "sidebar" id = "sidebar" style = "border-right: 2px solid black !important; background-color: #303030 !important;">
-            <a class = "a-item active" id = "new-members-sender" onclick = "responsive_sidebar_item(this.id);"> New Members </a>
+            <a class = "a-item active" id = "index-index-sender" onclick = "responsive_sidebar_item(this.id);"><i class = "fa fa-home" aria-hidden="true"></i></a>
+            <a class = "a-item" id = "new-members-sender" onclick = "responsive_sidebar_item(this.id);"> New Members </a>
             <a class = "a-item" id = "returning-members-sender" onclick = "responsive_sidebar_item(this.id);"> Returning Members</a>
-            <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin Page</a>
-            <a class = "a-item" id = "volunteer-signup-sender" onclick = "responsive_sidebar_item(this.id);"> Volunteer Sign Up</a>
+            <a class = "a-item" id = "admin-login-sender" onclick = "responsive_sidebar_item(this.id);"> Admin </a>
+            <a class = "a-item" id = "volunteer-signup-sender" onclick = "responsive_sidebar_item(this.id);"> Volunteer </a>
         </div> 
         <div class = "content" style = "padding-top: 6.5% !important; text-align: center !important;">
-            <!------------------- NEW MEMBERS DIVISION ----------------------->
+            <!------------------- INDEX INDEX DIVISION ----------------------->
             <br>
-            <div class = "new-members" id = "new-members" style = "display: block">
+            <div class = "index-index" id = "index-index" style = "display: block">
+                <h4> Las Positas College Presents: </h4>
+                <br>
+                <h1> The Market </h1>
+                <br><br>
+                <p style = "text-align: justify !important;">
+                    The Market is a free food distribution program brought to you by our Las Positas College 
+                    Student Government (LPCSG). Free groceries are available on a first-come, first-serve 
+                    basis, and until food runs out. We'll have information about additional resources available 
+                    on campus and in our local community. Please bring a reusable bag!
+                </p>
+                <br><br>
+                <h6><i class="fa fa-map-marker" aria-hidden="true"></i>  &nbsp;  Student Service & Administration Building (1600 - South Patio) </h6> <br>
+                <h6><i class="fa fa-phone" aria-hidden="true"></i>  &nbsp;  For more information contact the Student Life Office <u> 925 424 1494 </u> </h6>
+                <br><br>
+                <img src = "otherFiles/pics/lpcLogo.png" class = "index-registration-page-header-image inline">
+                <!-- <img src = "otherFiles/pics/lpcsgLogo.jpg" class = "inline" style = "height: 1% !important;"> -->
+            </div>
+            <!------------------- NEW MEMBERS DIVISION ----------------------->
+            <div class = "new-members" id = "new-members" style = "display: none">
                 <div id = "name">
                     <h6 class = "registration-instructions-text"><strong><u> Please choose an ID, and enter your first and last names </u></strong></h6>
                     <input type = "number" class = "index-registration-input third inline" placeholder=" Market ID" id = "idSignUpInput" name = "patron_id" pattern = "\S+.*" min = "6" max = "6" autocomplete = "off" required> &nbsp;
@@ -126,7 +145,9 @@
             <!------------------- ADMIN LOGIN DIVISION ----------------------->
             <div class = "admin-login" id = "admin-login" style = "display: none">
                 <form action = "funcs.php" method = "POST">
-                    <h6><strong><u> Login as an Admin </strong></u></h6>
+                    <h3>Login as an Admin </h3>
+                    <br><br>
+                    <h6><strong><u>Enter Password Below</u></strong></h6> <br>
                     <input type = "password" placeholder="  Password" class = "change-pw-input full" name = "inputAdminPW" pattern = "\S+.*" required> <br><br>
                     <input type = "hidden" value = "verifyPassword" name = "message">
                     <button class = "btn submit-admin-login" id = "inputAdminBtn"> Submit </button>
@@ -149,6 +170,15 @@
                     <input type = "hidden" value = "volunteer-request" name = "message">
                     <button class = "btn submit-admin-login"> Submit </button>
                 </form>
+            </div>
+            <!-------------------- NO ACTIE MARKET MESSAGE --------------->
+            <div class = "no-active-market-message" id = "no-active-market-message" style = "display: none;">
+                <br>    
+                <h1> There is Currently No Active Market </h1>
+                <h3> The Admin needs to create and activate a market </h3>
+                <br><br>
+                <img src = "otherFiles/pics/lpcLogo.png" class = "index-registration-page-header-image inline">
+
             </div>
             <!-- ----------------- FOOTER SECTION --------------------- -->
             <footer class = "footer">
@@ -190,16 +220,38 @@
             }
         }
         function responsive_sidebar_item(x) {
-            var targets = ["new-members", "returning-members", "admin-login", "volunteer-signup"];
+            var targets = ["new-members", "returning-members", "admin-login", "volunteer-signup", "index-index"];
             for(var i = 0; i < targets.length; i++) { //do for all
                 document.getElementById(targets[i] + "-sender").className = "a-item";
-                // document.getElementById(targets[i]).style.marginTop = "0px";
                 document.getElementById(targets[i]).style.display = "none";
             }
-            //then do it for target along
+            document.getElementById("no-active-market-message").style.display = "none";
+            //then do it for target alone
             document.getElementById(x).className += " active";
-            document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
-            // document.getElementById(x.substring(0, x.length - 7)).style.marginTop = "15%";
+            if(x.substring(0, x.length - 7) == "new-members" || x.substring(0, x.length - 7) == "returning-members") {
+                $.ajax({
+                    type: "POST",
+                    url: "funcs.php",
+                    data: {
+                        message: "check-for-active-markets"
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if(data == "true") {
+                            document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
+                        }
+                        else {
+                            console.log("Hello");
+                            document.getElementById(x.substring(0, x.length - 7)).style.display = "none";
+                            document.getElementById("no-active-market-message").style.display = "block";
+                            console.log(document.getElementById("no-active-market-message"));
+                        }
+                    }
+                });
+            }
+            else {
+                document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
+            }
         }
     </script>
 </html>

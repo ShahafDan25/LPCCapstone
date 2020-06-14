@@ -240,12 +240,26 @@ t = time
         removeSignUpCommit($_SESSION['volunteer-id'], $_SESSION['volunteer-signup-marketid'], $_POST['starttime'], $_POST['endtime']);
         echo '<script>alert(" Your Sign Up Commit was succesfully removed!"); location.replace("signups.php");</script>';
     }
+
+    if($_POST['message'] == "no-active-market-message") {
+        echo checkForActiveMarkets();
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
 
     function reformatidByDate($idByDate) {
         return substr($idByDate, 4,2)."\t|\t".substr($idByDate,6,2)."\t|\t".substr($idByDate,0,4);
+    }
+
+    function checkForActiveMarkets() {
+        $c = connDB(); //create connection;
+        $sql = "SELECT idByDate FROM Markets";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        if($s -> fetch(PDO::FETCH_ASSOC)) $c = null; return "true";
+        $c = null; //close connection
+        return "false";
     }
 
     // ======================================================== //
@@ -337,12 +351,13 @@ t = time
         $sql = "SELECT idByDate FROM Markets WHERE active = 1";
         $s = $c -> prepare($sql);
         $s -> execute(); 
-        if(!$r = $s -> fetch(PDO::FETCH_ASSOC)) return "<script>location.replace('noActiveMarket.html');</script>";
+        if(!$r = $s -> fetch(PDO::FETCH_ASSOC)) $final_date = "";
         else
         {
             $months = ["January", "February", "March", "April", "May", " June", "July", "August", "September", "October", "November", "December"];
             $final_date = $months[intval(substr($r['idByDate'], 4, 2)) - 1]." / ".substr($r['idByDate'],0, 4);
         }
+        $c = null; //close connection;
         return $final_date;
     }
 
@@ -1045,8 +1060,8 @@ t = time
             $data .= '<tr><form action = "funcs.php", method = "POST">';
             $data .= '<td><input type = "hidden" value = "'.$r['Email'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
             $data .= '<td>'.$r['Email'].'</td>';
-            $data .= '<td>'.$months[intval(substr($r['Start_Date'],5,2))].' '.substr($r['Start_Date'],8,2).', '.substr($r['Start_Date'],0,4).'</td>';
-            $data .= '<td><input type = "hidden" name = "message" value = "deactivateVolunteer"><button class = "btn btn-warning" style = "border-radius: 150px !important;"><i class="fa fa-minus" aria-hidden="true"></i></button></td>';
+            $data .= '<td>'.$months[intval(substr($r['Start_Date'],5,2)) - 1].' '.substr($r['Start_Date'],8,2).', '.substr($r['Start_Date'],0,4).'</td>';
+            $data .= '<td><input type = "hidden" name = "message" value = "deactivateVolunteer"><button class = "btn btn-warning" style = "border-radius: 150px !important;"><i class="fa fa-power-off" aria-hidden="true"></i></button></td>';
             $data .= '</form></tr>';
         }
         $c = null;
@@ -1116,7 +1131,7 @@ t = time
             $counter++;
         }
         $c = null;
-        if(strlen($data) < 2) return '<p style = "float: left !important; margin-left: 20% !important;"> Sorry, No volunteers are detected in the database</p><br><br>';
+        if(strlen($data) < 2) return '<p style = "margin-left: 20% !important;"> Sorry, No volunteers are detected in the database</p><br><br>';
         else return $table_begin.$data.$table_end;
     }
 

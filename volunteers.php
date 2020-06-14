@@ -38,16 +38,14 @@
         </header>
         <div class = "page-container">
             <br>
-            <h2> The Market - Volunteers </h2>
-            <br>
             <div class = "page-sub-container" id = "general-div-with-active-volunteers-table-div">
                 <h4 class = "inline volunteer-section-title"><u>Volunteers</u></h4>
-                <button class = "btn volunteer-option op1 inline" id = "send-volunteers-email" onclick = "sendEmailToActiveVolunteers();"><i class="fa fa-share" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op2 inline" id = "email-volunteer-list" onclick = "showMe(this.id);"><i class="fa fa-envelope" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op3 inline" id = "volunteers-schedule-per-market" onclick = "showMe(this.id);"><i class="fa fa-calendar" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op4 inline" id = "add-volunteer-option" onclick = "showMe(this.id);"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op5 inline" id = "activation-waiting-volunteers" onclick = "showMe(this.id);populatePendingVolunteers();"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op6 inline" id = "deactivated-volunteers" onclick = "showMe(this.id);displayTheDeactivated();"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op1 inline" id = "send-volunteers-email" onclick = "sendEmailToActiveVolunteers();" title = "Send Email to Volunteers"><i class="fa fa-share" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op2 inline" id = "email-volunteer-list" onclick = "showMe(this.id);" title = "See Volunteers' Email List"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op3 inline" id = "volunteers-schedule-per-market" onclick = "showMe(this.id);" title = "See Volunteer Schedule"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op4 inline" id = "add-volunteer-option" onclick = "showMe(this.id);populateAddVolunteerForm();" title = "Add Volunteers"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op5 inline" id = "activation-waiting-volunteers" onclick = "showMe(this.id);populatePendingVolunteers();" title = "See Pending Volunteers"><i class="fa fa-power-off" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op6 inline" id = "deactivated-volunteers" onclick = "showMe(this.id);displayTheDeactivated();" title = "See Deactivated Volunteers"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 <br><br><br><?php echo displayAllVolunteers(); ?>
             </div>
             <div class = "page-sub-container-volunteer" id = "email-volunteer-list-div" style = "display: none;">
@@ -67,16 +65,7 @@
                 <div id = "sign-up-sheets-in-admin-volunteers"></div>
             </div>
             <div class = "page-sub-container-volunteer" id = "add-volunteer-option-div" style = "display: none;">
-                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
-                <h4 class = "inline volunteer-section-title"><u>Add a Volunteer</u></h4>
-                <br><br>
-                <form action = "funcs.php" method = "POST" >
-                    <input type = "text" class = "add-volunteer-input full" name = "firstname" placeholder = " First Name" autocomplete = "off"> <br><br>
-                    <input type = "text" class = "add-volunteer-input full" name = "lastname" placeholder = " Last Name" autocomplete = "off"><br><br>
-                    <input type = "text" class = "add-volunteer-input full" name = "email" placeholder = " Email Address" autocomplete = "off"><br><br>
-                    <input type = "hidden" name = "message" value = "add-volunteer">
-                    <button class = "btn add-volunteer-btn"> Submit </button>
-                </form>
+                
             </div>
             <!-- AJAX-ly operated divs -->
             <div class = "page-sub-container-volunteer" id = "activation-waiting-volunteers-div" style = "display: none;"></div>
@@ -85,6 +74,37 @@
        
     </body>
     <script>
+        function populateAddVolunteerForm() 
+        {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "populate-add-volunteer-form"
+                },
+                success: function(data) {
+                    $("#add-volunteer-option-div").html(data);
+                }
+            });
+        }
+
+        function addVolunteer() 
+        {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "add-volunteer",
+                    email: document.getElementByName("email").value,
+                    firstname: document.getElementByName("firstname").value,
+                    lastname: document.getElementByName("lastname").value
+                },
+                success: function(data) {
+                    $("#add-volunteer-option-div").html(data);
+                }
+            });
+        }
+
         function approveRequest(x)
         {
             $.ajax({

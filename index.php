@@ -236,15 +236,12 @@
                         message: "check-for-active-markets"
                     },
                     success: function(data) {
-                        console.log(data);
                         if(data == "true") {
                             document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
                         }
                         else {
-                            console.log("Hello");
                             document.getElementById(x.substring(0, x.length - 7)).style.display = "none";
                             document.getElementById("no-active-market-message").style.display = "block";
-                            console.log(document.getElementById("no-active-market-message"));
                         }
                     }
                 });

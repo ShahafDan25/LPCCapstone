@@ -22,7 +22,6 @@
         <script src="captsone.js"></script>
 
         <!-- FONTAWESOME ICON --> 
-        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
         <!-- ALERTIFY.JS: JavaScrip and CSS -->
@@ -35,8 +34,6 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
-
-
 
     </head>
     

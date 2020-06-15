@@ -607,7 +607,7 @@ div.content {
 }
 .select-markets {
     border-radius: 0px !important;
-    /* padding: 2.5% !important; */
+    padding: 1.5% !important;
     border: 0px solid black !important;
     border-bottom: 3px solid rgb(102, 124, 246) !important;
     width: 30% !important;

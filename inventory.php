@@ -77,14 +77,27 @@
         }
 
         function removeItem(x) {
-            var opac = 1;
-            var looper = 0;
-            setTimeout(() => {
-                looper++;
-                opac -= looper/3000;
-                document.getElementById("tr-"+x).opacity = opac;
-            }, 3000);
+            // timer = setInterval(() => {
+                // var op = document.getElementById("tr-"+x);
+                // var curOp = document.getElementById("tr-"+x).style.opacity;
+            //     curOp -= 0.0002;
+            //     op.style.opacity = curOp;
+            // }, 2500);
+            // $(document).ready(function(){
+            //     $(".btn").click(function(){
+                    // $("#tr-"+x).animate({'line-height':0},1000).hide(1);
+                    // console.log(document.getElementById("tr-"+x));
+                    // $("#tr-"+x).hide(2000);
+            //     });
+            // });
             // console.log(document.getElementById("tr-"+x));
+            // for(var i = 0; i < 90; i++){
+            //     setTimeout(function() {
+            //         var alpha = 1 - i/100;
+            //         document.getElementById("tr-"+x).style.opacity = alpha;
+            //         console.log(document.getElementById("tr-"+x).style.opacity);
+            //     } ,400);
+            // }
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",

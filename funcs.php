@@ -999,8 +999,8 @@ t = time
     function displayInventory($date) {
         $pre_table = 
         '<p class = "pull-left">*  Inventories of Previous Markets</p><br><br>
-        <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off">
-        <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off">
+        <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off" required>
+        <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off" required>
         <button class = "btn add-to-inventory op4 inline" onclick = "insertInventoryItem()";><i class="fa fa-plus" aria-hidden="true"></i></button>
         <br><br>';
         $table_begin = 
@@ -1074,7 +1074,7 @@ t = time
             $editForm .= '<button class = "btn btn add-to-inventory op4 inline"><i class="fa fa-check" aria-hidden="true"></i></button></td>';
             $editForm .= '</form>';
 
-            $tableItemData .= "<tr id = ".$counter.">";
+            $tableItemData .= "<tr id = 'tr-".$counter."'>";
                 $tableItemData .= "<td>".$r['Name']."</td>";
                 if($r_two != 0) {$tableItemData .= "<td><strong>".($r_two['Amount'] + $total)."</strong>\t[ ".$r_two['Amount']." + ".$total." * ]</td>";}
                 else {$tableItemData .= "<td><strong>".($total)."</strong>\t*</td>";}

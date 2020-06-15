@@ -17,12 +17,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 
-
-        <!-- JAVASCRIPT PAGE CONNECTION-->
-        <script src="captsone.js"></script>
-
         <!-- FONTAWESOME ICON --> 
-        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
     </head>
     
@@ -92,7 +87,8 @@
                     <h4><u>Change Admin's Password</u></h4> <br>
                     <input type = "password" placeholder = " Old Password" class = "change-pw-input third inline" id = "oldPW" autocomplete = "off" required>
                     <input type = "password" placeholder = " New Password" class = "change-pw-input third inline" id = "newPW1" autocomplete = "off" required>
-                    <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" id = "newPW2" autocomplete = "off" required> <br><br> 
+                    <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" id = "newPW2" autocomplete = "off" required> <br><br>
+                    <h6 id = "checker"><strong>   *     *     *   </strong></h6>
                     <button class = "btn submit-pw-change-btn" id = "submit-pw-change" onclick = "changePW();">  Submit </button>
                 </div>
                 <footer class = "footer">
@@ -103,6 +99,49 @@
         </div>
     </body>
     <script>
+        var pw1 = document.getElementById("newPW1");
+        var pw2 = document.getElementById("newPW2");
+        
+        pw1.onkeyup = function(event){
+            if (event.target.value.length == 0)
+            {
+                document.getElementById("checker").innerHTML = "";
+                pw1.style.backgroundColor = "white";
+                pw1.borderColor = "rgb(102, 124, 246);";
+            } 
+            else if(event.target.value.length < 8) 
+            {
+                document.getElementById("checker").innerHTML = "Password must be 8 characters long";
+                pw1.style.backgroundColor = "rgb(255, 141, 141);";
+                pw1.style.borderColor = "rgb(170, 8, 8);";
+            }
+            else if(event.target.value.length > 7) 
+            {
+                pw1.style.backgroundColor = "#28A745";
+                pw1.style.borderColor = "rgb(157, 255, 161);";
+            }
+        }
+
+        pw2.onkeyup = function(event){
+            if (event.target.value.length == 0)
+            {
+                document.getElementById("checker").innerHTML = "";
+                pw2.style.backgroundColor = "white";
+                pw2.borderColor = "rgb(102, 124, 246);";
+            } 
+            else if(event.target.value != pw1.value) 
+            {
+                document.getElementById("checker").innerHTML = "Passwords have to match";
+                pw2.style.backgroundColor = "rgb(255, 141, 141);";
+                pw2.style.borderColor = "rgb(170, 8, 8);";
+            }
+            else if(event.target.value == pw1.value) 
+            {
+                pw2.style.backgroundColor = "#28A745";
+                pw2.style.borderColor = "rgb(157, 255, 161);";
+            }
+        }
+
         function responsive_sidebar_item(x) {
             var targets = ["new-market", "market-actions", "change-password"];
             for(var i = 0; i < targets.length; i++) { //do for all
@@ -112,16 +151,16 @@
             document.getElementById(x).className += " active";
             document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
         }
-
-        function changePW() {
-            if(document.getElementById("newPW1") == document.getElementById("newPW2")){
+        
+        $("#submit-pw-change").click(function() {
+            if(pw1.value == pw2.value && pw1.value.length >= 8){
                 $.ajax ({
                     type: "POST",
                     url: "funcs.php",
                     data: {
                         oldPW: document.getElementById("oldPW").value,
-                        newPW1: document.getElementById("newPW1").value,
-                        newPW2: document.getElementById("newPW2").value,
+                        newPW1: pw1.value,
+                        newPW2: pw2.value,
                         message: "changePW"
                     },
                     success: function(data) {
@@ -132,12 +171,10 @@
                 });
             }
             else {
-                alert ("Your new password \r\nverification does not match");
+                if (pw1.value.length < 8) alert("Password's length must be at least 8 characters");
+                else if (pw1.value != pw2.value) alert ("Your new passwords do not match");
             }
-        }
-
-        function pwcredibility() {
-
-        }
+        });
+            
     </script>
 </html>

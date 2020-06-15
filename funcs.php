@@ -487,7 +487,7 @@ t = time
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null; //close connection
-        return "true"
+        return "true";
     }
 
     function activateMarket($date) //from the existing market, activate a market.

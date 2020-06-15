@@ -1,11 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
 /* ------------ ONSIES CSS ----------------------- */
-
-.w35{width: 35% !important;}
-.w80{width: 80% !important;}
 .mr10{margin-right: 8% !important;}
-.w50{margin-right: 25% !important; margin-left: 25% !important;}
 .inv_label{width: 40% !important;}
 .dropdown a:hover {background-color: rgb(223, 76, 76) !important;} 
 .dropbtn:hover, .dropbtn:focus {background-color: #3e8e41;}

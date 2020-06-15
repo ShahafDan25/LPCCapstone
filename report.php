@@ -20,9 +20,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-        <!-- JAVASCRIPT PAGE CONNECTION-->
-        <script src="captsone.js"></script>
-
         <!-- FONTAWESOME ICON --> 
         <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
@@ -44,67 +41,80 @@
             <h5 class = "nav-bar-title responsive"> The Market - Report </h5>
         </header>
         <div class = "page-container">
+            <br>
             <h2> MARKET REPORT </h2>
             <select class = 'select-markets' name = 'marketid' id = "marketid">
                 <option value = 'none' selected disabled hidden>Choose a Market </option>
                 <?php echo populateMarketsDropDown(); ?>
             </select>
             <br>
-            <!-- Table: Patrons in that specific market -->
-            <div class = "report-container" id = "report-container" hidden = "true" style = "margin-top: 2% !important;">
-                <div class = "report_box_class">
-                    <div id = "report-pdf-request-id"></div>
-                    <div id = "report-table-box-id"><br></div>
-                </div>
-                <br><br>
-                <h3> Attendance Graph </h3>
-                <div class = "report_box_class">
-                    <div id = "chart"></div>
-                </div>
-                <br><br>
-                <span>
-                    <div class = "inline w55">
-                        <h3> Advertisement and Promotions </h3>
-                        <div class = "report_box_class">
-                            <div id = "promGraph"></div>
-                        </div>
-                    </div>
-                    <div class = "inline w25">
-                        <h3> New VS. Returning Patrons </h3>
-                        <div class = "report_box_class">
-                            <div id = "retvsnew"></div>
-                        </div>
-                    </div>
-                </span>
+            <br>
+            <div class = "report-btn-options-container" id = "report-btn-options-container">
+                <button class = "btn report-option-btn inline op8" onclick = "pdfReport();"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op2" onclick = "showMe('report-table-graph');"><i class="fa fa-table" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op3" onclick = "showMe('report-attendance-graph');"><i class="fa fa-line-chart" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op1" onclick = "showMe('report-promotion-graph');"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op7" onclick = "showMe('report-noobies-graph');"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
             </div>
             <br><br>
-            <br><br>
+            <!-- Table: Patrons in that specific market -->
+            <div class = "page-sub-container" id = "report-table-graph" style = "display: none">
+                <h3> Attendees </h3>
+                <div id = "report-table-box-id"></div>
+            </div>
+            <div class = "page-sub-container" id = "report-attendance-graph" style = "display: none">
+                <h3> Attendance Graph </h3>
+                <div id = "chart"></div>
+            </div>    
+            <div class = "page-sub-container" id = "report-promotion-graph" style = "display: none">
+                <h3> Advertisement and Promotions </h3>
+                <div id = "promGraph"></div>
+            </div>    
+            <div class = "page-sub-container" id = "report-noobies-graph" style = "display: none">
+                <h3> New VS. Returning Patrons </h3>
+                <div id = "retvsnew"></div>
+            </div>
         </div>
         <div id = "scripts1"></div>
         <div id = "scripts2"></div>
         <div id = "scripts3"></div>
     </body>
     <script>
-        $(document).on('change', '#marketid', function() {
-            //populate pdf request form 
+        function pdfReport() 
+        {
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
-                data: {date: document.getElementById("marketid").value, message: "display-form-pdf-report"},
+                data: {
+                    date: document.getElementById("marketid").value, 
+                    message: "generate-pdf-report"
+                },
                 success: function(data) {
-                    $("#report-pdf-request-id").html(data);
-                    document.getElementById("report-container").hidden = false;
+                    if(data == "true") alert("Report generated succesfully : \r\n report_" + document.getElementById("marketid").value + ".pdf");
+                    else alert("A Market must be terminated \r\n to generate a report ...");
                 }
             });
+        }
 
-            //populate table
+        function showMe(x) {
+            divs = ["report-table-graph", "report-attendance-graph", "report-promotion-graph", "report-noobies-graph"];
+            for(var i = 0; i < divs.length; i++) {
+                document.getElementById(divs[i]).style.display = "none";
+            }
+            document.getElementById(x).style.display = "block";
+        }
+
+        $("#marketid").change(function() {
+            document.getElementById("report-btn-options-container").style.display = "block";
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
-                data: {date: document.getElementById("marketid").value, message: "start-market-report-session"},
+                data: {
+                    date: document.getElementById("marketid").value, 
+                    message: "start-market-report-session"
+                },
                 success: function(data) {
                     $("#report-table-box-id").html(data);
-                    document.getElementById("report-container").hidden = false;
                 }
             });
 
@@ -112,7 +122,10 @@
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
-                data: {date: document.getElementById("marketid").value, message: "populate-attendance-graph"},
+                data: {
+                    date: document.getElementById("marketid").value, 
+                    message: "populate-attendance-graph"
+                },
                 success: function(info) {
                     document.getElementById("scripts1").innerHTML = "";
                     document.getElementById("chart").innerHTML = "";
@@ -124,7 +137,10 @@
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
-                data: {date: document.getElementById("marketid").value, message: "populate-promotion-graph"},
+                data: {
+                    date: document.getElementById("marketid").value, 
+                    message: "populate-promotion-graph"
+                },
                 success: function(info) {
                     document.getElementById("scripts2").innerHTML = "";
                     document.getElementById("promGraph").innerHTML = "";
@@ -136,7 +152,10 @@
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
-                data: {date: document.getElementById("marketid").value, message: "populate-newones-graph"},
+                data: {
+                    date: document.getElementById("marketid").value, 
+                    message: "populate-newones-graph"
+                },
                 success: function(info) {
                     document.getElementById("scripts3").innerHTML = "";
                     document.getElementById("retvsnew").innerHTML = "";

@@ -78,22 +78,23 @@ t = time
         echo displayInventory($_POST['date']);
     }
 
-    if($_POST['message'] == 'pdfreport') //generate a pdf report
-    {
-        pdf_report(connDB());
-        echo '<script> location.replace("report.php");</script>';
+    if($_POST['message'] == 'generate-pdf-report') { //generate pdf report
+        $c = connDB(); //create connection;
+        $sql = "SELECT active FROM Markets WHERE idByDate = ".$_POST['date'].";";
+        $c -> prepare($sql);
+        $s = $c -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $c = null; //close connection
+        if($r['active'] == 2) {
+            pdf_report($_POST['date']);
+            echo "true";
+        }
+        else echo "false";
     }
 
-    if($_POST['message'] == 'verifyPassword') //verify password to admin page
-    {
-        if(md5($_POST['inputAdminPW']) == getPassword(connDB()))
-        { 
-            echo '<script>location.replace("admin.php");</script>';
-        }
-        else
-        {
-            echo '<script> alert("Password Incorrect, Please Try Again!"); location.replace("index.php"); </script>';
-        }
+    if($_POST['message'] == 'verifyPassword') { //verify password to admin page
+        if(md5($_POST['inputAdminPW']) == getPassword(connDB())) echo '<script>location.replace("admin.php");</script>';
+        else echo '<script> alert("Password Incorrect, Please Try Again!"); location.replace("index.php"); </script>';
     }
 
     if($_POST['message'] == 'insertNewPats') //new patron visited the market, add to DB
@@ -165,10 +166,6 @@ t = time
     if($_POST['message'] == "deactivateVolunteer") {
         deactivateVolunteer($_POST['id']);
         echo '<script>location.replace("volunteers.php");</script>';
-    }
-
-    if($_POST['message'] == "display-form-pdf-report") {
-       echo displayPdfReportGenerationForm();
     }
 
     if($_POST['message'] == "start-market-report-session") {
@@ -700,33 +697,8 @@ t = time
         }
     }
 
-    function displayPdfReportGenerationForm() {
-        return 
-            '<form action = "funcs.php" method = "post" class = "request-pdf-report-form">
-                <input type = "hidden" value = "pdfreport" name = "message">
-                <button  class = "inline btn request-pdf-report-btn"> Generate PDF Report </button>
-            </form>';
-    }
-
-    function generate_report($c, $d) //update report status per market in db, go to report page if there are markets in the database, and to message page if there aren't
-    {
-        $c = connDB();
-        $sql = "UPDATE Markets SET reported = 1 WHERE idByDate = ".$d; 
-        $s = $c -> prepare($sql);
-        $s -> execute();
-
-        $sql = "UPDATE Markets SET reported = 0 WHERE idByDate <> ".$d; 
-        $s = $c -> prepare($sql);
-        $s -> execute();
-
-        //check if there are markets in the database
-        $sql = "SELECT COUNT(*) FROM MarketLogins WHERE Markets_idByDate = ".$d;
-        if(($c -> query($sql) -> fetchColumn()) == 0) echo '<script> location.replace("noCurrentReport");</script>';
-        else echo '<script>location.replace("report.php");</script>';
-    }
-
-    function pdf_report($c) //generate pdf report
-    {
+    function pdf_report($date) {
+        $c = connDB(); //create connection
         //--------------- report code ---------------------//
         $pdf = new myFPDFClass(); 
         $pdf -> AddPage();
@@ -735,16 +707,9 @@ t = time
         $pdf -> tableBody(connDB());
         $pdf -> signature();
 
-        $sql = "SELECT idByDate FROM Markets WHERE reported = 1";
-        $s = $c -> prepare($sql);
-        $s -> execute();
-        $r = $s -> fetch(PDO::FETCH_ASSOC);
-
-        $reportFile = fopen('report_'.strval($r['idByDate']).'.pdf', 'w+');
-        // var_dump(error_get_last()); //display error
+        $reportFile = fopen('report_'.strval($date).'.pdf', 'w+');
         fclose($reportFile);
-        $pdf -> Output('report_'.strval($r['idByDate']).'.pdf', 'F');
-        echo '<script>alert("YOUR PDF IS GENERATED AS: report_'.strval($r['idByDate']).'.pdf  ");</script>';
+        $pdf -> Output('report_'.$date.'.pdf', 'F');
         return;
     }
 
@@ -760,8 +725,7 @@ t = time
         });</script>";
     }
 
-    function getAttData($d) //data for attendance graph
-    {
+    function getAttData($d){
         $c = connDB();
         $dformat = substr($d,0,4)."-".substr($d,4,2)."-".substr($d,6,2)." ";
         $sql_times = "SELECT activationtime, terminationtime, active FROM Markets WHERE idByDate = ".$d;
@@ -844,8 +808,7 @@ t = time
         });</script>";
     }
 
-    function promGraphData($d) //data for the comparison of promotion methods
-    {
+    function promGraphData($d) {
         $data = "";
         $c = connDB();
         //COMMUNITY
@@ -880,8 +843,7 @@ t = time
             });</script>";
     }
 
-    function getRetVSNew($d) //data for the comparison of returning vs new patrons per market
-    {
+    function getRetVSNew($d) {
         $c = connDB();
         $data = "";
         $sql_newPs = "SELECT COUNT(*) FROM Patrons WHERE firstMarket = ".$d.";";

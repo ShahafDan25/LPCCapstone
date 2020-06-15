@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
 /* ------------ ONSIES CSS ----------------------- */
-.w25{width: 25% !important;}
-.w55{width: 55% !important;}
+
 .w35{width: 35% !important;}
 .w80{width: 80% !important;}
 .mr10{margin-right: 8% !important;}
@@ -562,8 +561,7 @@ div.content {
     font-weight: bolder !important;
 }
 /* ------------ Report Page ---------------------- */
-.report_box_class
-{
+.report_box_class{
     text-align: center !important;
     border: 2px solid black !important;
     border-radius: 5px !important;
@@ -621,7 +619,22 @@ div.content {
     transition: all 0.35s ease-in-out !important;
     margin-bottom: 20px !important;
 }
-
+.report-btn-options-container {
+    text-align: center !important;
+    width: 80% !important;
+    margin-left: 10% !important;
+    display: none;
+}
+.report-option-btn {
+    border-radius: 7px !important;
+    margin-left: 1.5% !important;
+    font-size: 150% !important;
+    margin-right: 1.5% !important;
+    width: auto !important;
+    border: none !important;
+    text-shadow: 0.3px 0.3px black;
+    font-weight: bolder !important;
+}
 /* ------------ Inventory Page ------------------- */
 
 .add-to-inventory {
@@ -789,22 +802,24 @@ div.content {
 }
 .op2 {
     background-color: rgb(92, 108, 255) !important;
-
 }
 .op3 {
     background-color: #6dd1ff !important;
-
 }
 .op4 {
     background-color: rgb(131, 255, 137) !important;
 }
 .op5 {
     background-color: rgb(253, 255, 121) !important;
-
 }
 .op6 {
     background-color: rgb(255, 141, 141) !important;
-
+}
+.op7 {
+    background-color: rgb(248, 174, 125) !important;
+}
+.op8 {
+    background-color: rgb(182, 255, 182) !important;
 }
 .back-to-menu-volunteer-option {
     float: left !important;

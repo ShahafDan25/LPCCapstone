@@ -42,14 +42,10 @@
             </select>
             <br>
             <!-- Add new item to the inventory -->
-            <div class = "page-sub-container" id = "edit_inv" style = "margin-top: 2% !important;" hidden = "true">
-                
-            </div>
+            <div class = "page-sub-container" id = "edit_inv" style = "margin-top: 2% !important;" hidden = "true"></div>
             <br>
             <!-- Table with the current updated inventory -->
-            <div class = "page-sub-container" id = "view_inv" hidden = "true">
-
-            </div>
+            <div class = "page-sub-container" id = "view_inv" hidden = "true"></div>
         </div>
     </body>
     <script>
@@ -79,5 +75,24 @@
                 }
             });
         });
+
+        function insertInventoryItem()
+        {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    date: document.getElementById("marketid").value, 
+                    amount = document.getElementById("item_number").value,
+                    name = document.getElementById("item_name").value
+                    message: "insertItem"
+                },
+                success: function(data) {
+                    document.getElementById("view_inv").hidden = false;
+                    document.getElementById("view_inv").innerHTML = "";
+                    $("#view_inv").html(data);
+                }
+            });
+        }
     </script>
 </html>

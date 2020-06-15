@@ -340,7 +340,6 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     font-weight: bolder !important;
 }
 
-/* ---------- CHECK FOR NOW _ TEMP -------- */
 #myInput /* search box */
 {
     box-sizing: border-box;
@@ -623,12 +622,18 @@ div.content {
     transition: all 0.35s ease-in-out !important;
     margin-bottom: 20px !important;
 }
-.select-markets>option {
-    background-color: white;
-    border-radius: 2px solid rgb(49, 55, 144) !important;
-    color: rgb(49, 55, 144) !important;
-}
+
 /* ------------ Inventory Page ------------------- */
+
+.add-to-inventory {
+    background-color: rgb(131, 255, 137) !important;
+    margin-right: 1.5% !important;
+    border-radius: 150px !important;
+    width: auto !important;
+    border: none !important;
+    text-shadow: 0.3px 0.3px black;
+    font-weight: bolder !important;
+}
 .inv_box_class
 {
     text-align: center !important;
@@ -824,5 +829,4 @@ div.content {
 .btn-activate-volunteer {
     background-color: #28a745 !important;
     color: white !important;
-
 }

@@ -19,8 +19,8 @@ t = time
         $n = $_POST['item_name'];
         $a = $_POST['item_number'];
         $d = $_POST['date'];
-        insertItem(connDB(), $n, $a, $d);
-        echo '<script> location.replace("inventory.php"); </script>';
+        insertItem($n, $a, $d);
+        echo ;
     }
     
     if($_POST['message'] == "changePW") //change admin password
@@ -57,16 +57,6 @@ t = time
     if($_POST['message'] == 'submitNewMarket') //create new market
     {
         newMarket(substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2), intval(substr($_POST['new_market_start_time'],0,2).substr($_POST['new_market_start_time'],3,2)), intval(substr($_POST['new_market_end_time'],0,2).substr($_POST['new_market_end_time'],3,2)));
-        $date = $_POST['new_market_date'];
-        $date_format = substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2);
-        $starttime = $_POST['new_market_start_time'];
-        $endtime = $_POST['new_market_end_time'];
-        $sql = "SET GLOBAL event_scheduler = ON;";
-        $sql .= "CREATE EVENT 'activateMarket' ON SCHEDULE AT '".$date." ".$endtime."' DO BEGIN UPDATE Markets SET Active = 2 WHERE idByDate = ".$date_format."; END;";
-        $sql .= "CREATE EVENT 'terminateMarket' ON SCHEDULE AT '".$date." ".$starttime."' DO BEGIN UPDATE Markets SET Active = 2 WHERE idByDate = ".$date_format."; END;";
-        $c = connDB(); //set connection
-        $c -> query($sql);
-        $c = null; //close connection
         echo '<script> location.replace("admin.php") </script>'; 
     }
 
@@ -75,11 +65,9 @@ t = time
         if($_POST['marketDate'] == "none") echo '<script>alert("Please choose a date");location.replace("admin.php");</script>';
         else
         {
-            if($_POST['adminOption'] == "invoke") activateMarket($_POST['date']);
-            // elseif($_POST['adminOption'] == "report") generate_report(connDB(), $d_f);
-            elseif($_POST['adminOption'] == "terminate") terminateActiveMarket($_POST['date']);
-            // elseif($_POST['adminOption'] == "inventory") changeInventoryStatus(connDB(), $d_f);
-            elseif($_POST['adminOption'] == "deleteMarket") deleteMarket($_POST['marketid']);
+            if($_POST['adminOption'] == "invoke") activateMarket($_POST['marketid']);
+            elseif($_POST['adminOption'] == "terminate") terminateActiveMarket($_POST['marketid']);
+            elseif($_POST['adminOption'] == "delete") deleteMarket($_POST['marketid']);
         }
         echo '<script> location.replace("admin.php") </script>'; 
         return;
@@ -288,10 +276,13 @@ t = time
 
     function checkForActiveMarkets() {
         $c = connDB(); //create connection;
-        $sql = "SELECT idByDate FROM Markets";
+        $sql = "SELECT idByDate FROM Markets WHERE active = 1;";
         $s = $c -> prepare($sql);
         $s -> execute();
-        if($s -> fetch(PDO::FETCH_ASSOC)) $c = null; return "true";
+        if($s -> fetch(PDO::FETCH_ASSOC)) {
+            $c = null; 
+            return "true";
+        }
         $c = null; //close connection
         return "false";
     }
@@ -313,13 +304,6 @@ t = time
 
     function insertPat($c, $f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id) //new patrons to DB
     {
-        $sql = "SELECT idByDate FROM Markets WHERE active = 1";
-        $s = $c -> prepare($sql);
-        $s -> execute();
-        $r =  $s->fetch(PDO::FETCH_ASSOC);
-        $d = $r['idByDate'];
-
-
         $first_name = $f;
         $last_name = $l;
 
@@ -339,7 +323,7 @@ t = time
         ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod, patID, firstMarket)
         VALUES ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', 
         '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', 
-        '".$email_address."', '".$phone_number."', '".$promotion_method."', ".$id.", ".$d.");";
+        '".$email_address."', '".$phone_number."', '".$promotion_method."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
 
 
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -494,7 +478,6 @@ t = time
             echo '<script> location.replace("admin.php") </script>';
             return; 
         }
-        //should be closetime not endtime
         $sql = "INSERT INTO Markets (idByDate, active, starttime, closetime) VALUES (".$d.", 0, '".$st."', '".$et."');"; //0 = not active, 1 = active (tiny int sserving as boolean)
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c->exec($sql);
@@ -537,17 +520,16 @@ t = time
     {
         $c = connDB(); //set connection
         date_default_timezone_set("America/Los_Angeles"); 
-        $starttime = date("H:i"); 
-        $start_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
+        $activationtime = date("H:i"); 
+        $activation_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
         $sql = "SELECT active FROM Markets WHERE idByDate = ".$date.";";
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-        if($r['active'] == 2) echo '<script>alert("This market is terminated.\r\n It cannot be activated it again");</script>';
+        if($r['active'] == 2) echo '<script>alert("This market is terminated.\r\n It cannot be activated again");</script>';
         else if ($r['active'] == 1) echo '<script>alert("This market is already active ! ");</script>';
         else {
-            $sql = "UPDATE Markets SET active = 1 WHERE idByDate = ".$date.";";
-            // $sql .= "UPDATE Markets SET starttime = '".$start_time_format."' WHERE idByDate = ".$date.";";
+            $sql = "UPDATE Markets SET active = 1, activationtime = '".$activation_time_format."' WHERE idByDate = ".$date.";";
             $c -> prepare($sql) -> execute();
         }
         $c = null; //close connection
@@ -557,14 +539,20 @@ t = time
     function terminateActiveMarket($date) //terminate a market with a status active = 2 (meaning it can no longer be activated again)
     {
         $c = connDB(); //set connection
-        $sql = "UPDATE Markets SET active = 2 WHERE idByDate = ".$date.";"; //active = 2, means closed for good
-        $c -> prepare($sql) -> execute();
         date_default_timezone_set("America/Los_Angeles"); 
-        // $closetime = date("H:i");
-        // $close_time_digits = substr($closetime, 0, 2).substr($closetime, 3, 2);
-        // $sql = "UPDATE Markets SET closetime = '".$close_time_digits."' WHERE idByDate = ".$date.";"; 
-        // $c -> prepare($sql) -> execute(); 
-        $c = null; // close connection
+        $terminationtime = date("H:i"); 
+        $termination_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
+        $sql = "SELECT active FROM Markets WHERE idByDate = ".$date.";";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        if($r['active'] == 0) echo '<script>alert("This market is not active.\r\n It cannot be terminated before it was activated");</script>';
+        else if ($r['active'] == 2) echo '<script>alert("This market has already been terminated ! ");</script>';
+        else {
+            $sql = "UPDATE Markets SET active = 2, terminationtime = '".$termination_time_format."' WHERE idByDate = ".$date.";";
+            $c -> prepare($sql) -> execute();
+        }
+        $c = null; //close connection
         return;
     }
 
@@ -585,6 +573,7 @@ t = time
         $sql .= "DELETE FROM Patrons WHERE firstMarket = ".$date.";";
         $sql .= "DELETE FROM Items WHERE Markets_idByDate = ".$date.";";
         $sql .= "DELETE FROM Markets WHERE idByDate = ".$date.";";
+        $sql .= "DELETE FROM SignUps WHERE Market = ".$date.";";
         $c -> prepare($sql)-> execute();
         $c = null; //close connection
         return;
@@ -775,13 +764,12 @@ t = time
     {
         $c = connDB();
         $dformat = substr($d,0,4)."-".substr($d,4,2)."-".substr($d,6,2)." ";
-        $sql_times = "SELECT starttime, closetime, active FROM Markets WHERE idByDate = ".$d;
+        $sql_times = "SELECT activationtime, terminationtime, active FROM Markets WHERE idByDate = ".$d;
         $stmt_times = $c -> prepare($sql_times);
         $stmt_times -> execute();
         $t = $stmt_times -> fetch(PDO::FETCH_ASSOC);
-        $st = $t['starttime']; 
-        $ct = $t['closetime']; 
-        //market beginning and end of range based on open time and close time 
+        $st = $t['activationtime']; 
+        $ct = $t['terminationtime']; 
 
         //if market is currently active, we want a live report, so we make the closing time for the current graph the current time:
         if($t['active'] == 1) 
@@ -789,6 +777,7 @@ t = time
             date_default_timezone_set("America/Los_Angeles"); 
             $ct = substr(date("H:i"), 0, 2).substr(date("H:i"), 3, 2); 
         }
+        else if($t['active'] == 0) return "";
 
         $sti = intval($st); 
         //modify time to be based 60 and not 100 
@@ -821,11 +810,6 @@ t = time
             elseif(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
 
             $a = $stmt_i -> fetchColumn();
-            // if(!$first_person) { //shring the graph
-            //     if($a > 0) {
-            //         $first_person = true;
-            //     }
-            // }
             
             //insert amount per time range
             if($first_person) $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
@@ -837,7 +821,6 @@ t = time
 
         if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
         elseif(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
-
 
         $a = $stmt_i_b -> fetchColumn();
         //last amount from last time interval stamp to closing time
@@ -975,25 +958,27 @@ t = time
             $data .= "<td>".$r['PromotionMethod']."</td></tr>";
         } 
         $c = null;
-        $stats = '<p><strong><u>Total Attendees</u></strong>:';
-        $stats .= $totalPeople.'&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats .= '<strong><u>Total Children (0 - 17)</u></strong>:';
-        $stats .= $totalKids.'&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats .= '<strong><u>Total Adults (18 - 64)</u></strong>:';
-        $stats .= $totalAdults.'&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats .= '<strong><u>Total Seniors (65 +)</u></strong>:';
-        $stats .= $totalSeniors.'&nbsp;&nbsp;&nbsp;&nbsp;<br>';
+        if($totalPeople > 0) {
+            $stats = '<p><strong><u>Total Attendees</u></strong>:';
+            $stats .= $totalPeople.'&nbsp;&nbsp;&nbsp;&nbsp;';
+            $stats .= '<strong><u>Total Children (0 - 17)</u></strong>:';
+            $stats .= $totalKids.'&nbsp;&nbsp;&nbsp;&nbsp;';
+            $stats .= '<strong><u>Total Adults (18 - 64)</u></strong>:';
+            $stats .= $totalAdults.'&nbsp;&nbsp;&nbsp;&nbsp;';
+            $stats .= '<strong><u>Total Seniors (65 +)</u></strong>:';
+            $stats .= $totalSeniors.'&nbsp;&nbsp;&nbsp;&nbsp;<br>';
 
-        $stats .= '<strong><u>Average Children (0 - 17)</u></strong>:'; 
-        $stats .= round($totalKids/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats .= '<strong><u>Average Adults (18 - 64)</u></strong>:'; 
-        $stats .= round($totalAdults/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats .= '<strong><u>Average Seniors (65 +)</u></strong>:'; 
-        $stats .= round($totalSeniors/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        $stats .= '<br>* Average is per a registered household';
-        $stats .= '</p>';
+            $stats .= '<strong><u>Average Children (0 - 17)</u></strong>:'; 
+            $stats .= round($totalKids/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            $stats .= '<strong><u>Average Adults (18 - 64)</u></strong>:'; 
+            $stats .= round($totalAdults/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            $stats .= '<strong><u>Average Seniors (65 +)</u></strong>:'; 
+            $stats .= round($totalSeniors/$totalPeople, 2).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            $stats .= '<br>* Average is per a registered household';
+            $stats .= '</p>';
+        }
 
-        if(strlen($data) < 2) return '<p> No data to display at the moment </p>';
+        if(strlen($totalPeople) < 2) return '<br><p> No data to display at the moment </p>';
         else return $table_begin.$data.$table_end.$stats;
     }
 
@@ -1004,23 +989,24 @@ t = time
 
     function displayAddInventoryForm($date) {
         return 
-        '<h4><u> ADD TO INVENTORY </u></h4>
-        <br>
-        <form action = "adminFuncs.php" method = "post">
-            <input type = "text" name = "item_name" class = "add-inventory-input w80" placeholder = " Item Name" autocomplete = "off"><br><br>
-            <input type = "number" name = "item_number" class = "add-inventory-input w80" placeholder = " Quantity" autocomplete = "off"><br><br>
+        '<form action = "funcs.php" method = "post">
+            <input type = "text" name = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off">
+            <input type = "number" name = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off">
             <input type = "hidden" name = "message" value = "insertItem">
             <input type = "hidden" name = "date" value = "'.$date.'">
-            <button class = "add-inventory-btn"> ADD ITEM </button>
+            <button class = "btn add-to-inventory op4 inline"><i class="fa fa-plus" aria-hidden="true"></i></button>
         </form>';
     }
 
     function displayInventory($date) {
         $pre_table = 
         '<p class = "pull-left">*  Inventories of Previous Markets</p>
-        <br><br>
+        <br>
         <h4><u> INVENTORY </u></h4>
-        <br>';
+        <br>
+        <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off">
+        <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off">
+        <button class = "btn add-to-inventory op4 inline" onclick = "insertInventoryItem()";><i class="fa fa-plus" aria-hidden="true"></i></button>';
         $table_begin = 
         '<table class = "table inv_table">
             <thead>
@@ -1087,7 +1073,7 @@ t = time
             $counter++; //to modify and create unique ID's reflexibly
             $buttonInsert = "<button class = 'btn btn-warning inv_edit_btn collapsed' id = 'editbtn' data-toggle='collapse' data-target='#formToEditItem".strval($counter)."' aria-expanded='false'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
             //add option to edit an item
-            $editForm = '<form action = "adminFuncs.php" method = "post">';
+            $editForm = '<form action = "funcs.php" method = "post">';
             $editForm .= '<td><input type = "text" class = "inv_input inline" name = "editItemName" placeholder = "'.$r['Name'].'" value = "'.$r['Name'].'" style = "width: 60% !important;"></td>';
             $editForm .= '<td><input type = "number" class = "inv_input inline" name = "editItemAmount" min = "0" placeholder = "'.($r_two['Amount']+$total).'" value = "'.($r_two['Amount']+$total).'"></td>';
             $editForm .= '<td><input type = "hidden" class = "inline" name = "message" value = "editThatItem">';

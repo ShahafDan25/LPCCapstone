@@ -59,22 +59,25 @@
         <div class = "page-container">
             <div class="content">
                 <h2> MARKET ADMIN PAGE </h2> 
+                <!-- CREATE NEW MARKET OPTION -->
                 <div class = "sub-admin-page-container" id = "new-market" style = "display: block">
                     <h4><u>Create New Market</u></h4>  
                     <form action = "funcs.php" method = "POST">
                         <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" name = "new_market_date"><br><br>
+                        <br><h6><u><strong> For what times would you need volunteers? </strong></u></h6> <br>
                         <input type = "time" placeholder = " Starting Time" class = "choose-new-market-date inline" name = "new_market_start_time">
-                        <i class="fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important;"></i>
+                        <i class="fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important; margin-left: 2% !important;"></i>
                         <input type = "time" placeholder = " Closing Time" class = "choose-new-market-date inline" name = "new_market_end_time"><br><br>
                         <input type = "hidden" value = "submitNewMarket" name = "message">
                         <button class = "btn submit-new-market-date"> Submit </button>
                     </form>
                 </div>
-                <div class = "sub-admin-page-container" id = "market-actions" style = "display: none">
+                <!-- MARKET ACTIONS OPTION -->
+                <div class = "sub-admin-page-container" id = "market-actions" style = "display: none" >
                     <h4><u>Market Actions</u></h4>
                     <form action = "funcs.php" method = "POST">
-                        <select class = 'select-markets' name = 'marketid' id = "marketid">
-                            <option value = 'none' selected disabled hidden>Choose a Market </option>
+                        <select class = "select-markets" name = 'marketid' id = "marketid">
+                            <option value = 'none' selected disabled hidden> Choose a Market </option>
                             <?php echo populateMarketsDropDown(); ?>
                         </select>
                         <br>
@@ -84,15 +87,13 @@
                                 <label for = "option-1"  class = "admin-option-label"> Activate </label>
                                 <div class = "check"></div>
                             </li>
-
                             <li class = "admin-options-list-item">
                                 <input type = "radio" id = "option-2" name = "adminOption" value = "terminate" class = "admin-option">
                                 <label for = "option-2"  class = "admin-option-label"> Terminate </label>
                                 <div class = "check"></div>
                             </li>
-
                             <li class = "admin-options-list-item">
-                                <input type = "radio" id = "option-3" name = "adminOption" value = "deleteMarket" class = "admin-option">
+                                <input type = "radio" id = "option-3" name = "adminOption" value = "delete" class = "admin-option">
                                 <label for = "option-3" class = "admin-option-label"> Delete </label>
                                 <div class = "check"></div>
                             </li>
@@ -101,8 +102,8 @@
                         <input id = "hiddenMessage" type="hidden" value = "adminOption" name = "message">
                         <button class = "btn submit-admin-market-option" id = "submit"> SUBMIT </button>
                     </form>
-                    
                 </div>
+                <!---- CHANGE PASSWORD OPTION -->
                 <div class = "sub-admin-page-container" id = "change-password" style = "display: none">
                     <h4><u>Change Admin's Password</u></h4> <br>
                     <form action = "funcs.php" action = "POST">

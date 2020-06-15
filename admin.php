@@ -1,20 +1,4 @@
 <?php include "funcs.php"; ?>
-<?php
-    //password expiration check
-    // date_default_timezone_set("America/Los_Angeles");
-    // $today = intval(date("Y").date("m").date("d"));
-    // $sql = "SELECT changeDate FROM AdminPW WHERE current = 1";
-    // $c = connDB();
-    // $s = $c -> prepare($sql);
-    // $s -> execute();
-    // $r = $s -> fetch(PDO::FETCH_ASSOC);
-    // $d = intval(substr($r['changeDate'],0,4).substr($r['changeDate'],5,2).substr($r['changeDate'],8,2));
-    // if($today < $date && $today > $date - 12) 
-    // {
-    //     echo '<script>alert("Your password will expire on '.$date.'. Make sure to change it beforehand!");</script>';
-    // }
-    // elseif($today > $date) echo '<script> Your password is expired...</script>';
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -106,13 +90,10 @@
                 <!---- CHANGE PASSWORD OPTION -->
                 <div class = "sub-admin-page-container" id = "change-password" style = "display: none">
                     <h4><u>Change Admin's Password</u></h4> <br>
-                    <form action = "funcs.php" action = "POST">
-                        <input type = "password" placeholder = " Old Password" class = "change-pw-input inline" name = "oldPW" autocomplete = "off">
-                        <input type = "password" placeholder = " New Password" class = "change-pw-input inline" name = "newPW1" autocomplete = "off">
-                        <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" name = "newPW2" autocomplete = "off"> <br><br> 
-                        <input type = "hidden" value = "changePW" name = "message"> 
-                        <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button>
-                    </form>
+                    <input type = "password" placeholder = " Old Password" class = "change-pw-input third inline" id = "oldPW" autocomplete = "off" required>
+                    <input type = "password" placeholder = " New Password" class = "change-pw-input third inline" id = "newPW1" autocomplete = "off" required>
+                    <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" id = "newPW2" autocomplete = "off" required> <br><br> 
+                    <button class = "btn submit-pw-change-btn" id = "submit-pw-change" onclick = "changePW();">  Submit </button>
                 </div>
                 <footer class = "footer">
                     <p> Las Positas College Student Government <br> </p>
@@ -126,13 +107,37 @@
             var targets = ["new-market", "market-actions", "change-password"];
             for(var i = 0; i < targets.length; i++) { //do for all
                 document.getElementById(targets[i] + "-sender").className = "a-item";
-                // document.getElementById(targets[i]).style.marginTop = "0px";
                 document.getElementById(targets[i]).style.display = "none";
             }
-            //then do it for target along
             document.getElementById(x).className += " active";
             document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
-            // document.getElementById(x.substring(0, x.length - 7)).style.marginTop = "15%";
+        }
+
+        function changePW() {
+            if(document.getElementById("newPW1") == document.getElementById("newPW2")){
+                $.ajax ({
+                    type: "POST",
+                    url: "funcs.php",
+                    data: {
+                        oldPW: document.getElementById("oldPW").value,
+                        newPW1: document.getElementById("newPW1").value,
+                        newPW2: document.getElementById("newPW2").value,
+                        message: "changePW"
+                    },
+                    success: function(data) {
+                        if(data == "true") alert("Your password has \r\n been changed succesfully");
+                        else if(data == "passeduse") alert ("You have alreday used this password before \r\n choose a different one please.");
+                        else if(data == "false") alert("Your Old Password is Incorrect");
+                    }
+                });
+            }
+            else {
+                alert ("Your new password \r\nverification does not match");
+            }
+        }
+
+        function pwcredibility() {
+
         }
     </script>
 </html>

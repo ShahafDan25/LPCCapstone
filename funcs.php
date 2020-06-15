@@ -25,33 +25,9 @@ t = time
     
     if($_POST['message'] == "changePW") //change admin password
     {
-        $A = verifyOld(connDB(), $_POST['oldPW']);
-        if(!$A)
-        {
-            echo '<script>alert("Old Password Inserted is Incorrect");</script>';
-            echo '<script>location.replace("admin.php");</script>';
-        }
-        $B = $_POST['newPW1'] == $_POST['newPW2'];
-        if(!$B)
-        {
-            echo '<script>alert("Passwords Do not match");</script>';
-            echo '<script>location.replace("admin.php");</script>';
-        }
-        if($A && $B)
-        {
-            if(verifyPastPasswords(connDB(), $_POST['newPW1'])) 
-            {
-                echo '<script>alert("This password was already used in the past, try a different one!");</script>';
-            }
-            else
-            {
-                updatePWHistory(connDB(), $_POST['oldPW']);
-                changePWinDB(connDB(), $_POST['newPW1']);
-                echo '<script>alert("Password Changed Successfully!");</script>';
-            }
-            echo '<script>location.replace("admin.php");</script>'; 
-        } 
-        return;
+        if(!verifyOld($_POST['oldPW'])) echo "false";
+        else if(verifyPastPasswords($_POST['newPW1'])) echo "passeduse";
+        else echo updatePW($_POST['oldPW'], $_POST['newPW1']);
     }
 
     if($_POST['message'] == 'submitNewMarket') //create new market
@@ -451,15 +427,16 @@ t = time
         return; 
     }
 
-    function verifyPastPasswords($c, $new) //verify old password when chaing the password
+    function verifyPastPasswords($new) //verify old password when chaing the password
     {
+        $c = connDB();
         $sql = "SELECT passwords FROM AdminPW";
         $s = $c -> prepare($sql);
         $s -> execute();
-        while($r = $s -> fetch(PDO::FETCH_ASSOC))
-        {
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             if($new == $r['passwords']) return true; //meaning the password has already been in use
         }
+        $c = null; //close connection
         return false;
     }
     
@@ -482,35 +459,35 @@ t = time
         return;
     }
 
-    function verifyOld($c, $oldPW) //make sure the old password is currect when trying to change a password
+    function verifyOld($oldPW) //make sure the old password is currect when trying to change a password
     {
+        $c = connDB();
         $sql = "SELECT passwords FROM AdminPW WHERE current = 1";
         $s = $c -> prepare($sql); 
         $s -> execute(); 
         $r = $s -> fetch(PDO::FETCH_ASSOC);
         $oldPWfromDB = $r['passwords'];
+        $c = null; //close connection
         if (md5($oldPW) == $oldPWfromDB) return true;
         else return false;
     }
 
-    function changePWinDB($c, $newPW) //update the password status in the DB to the new password when changing passwords for admin page
+    function updatePWHistory($oldPW, $newPW) //update the old password to be no longer relevant when changing the password to the admin page
     {
+        $c = connDB(); // set connection
+        date_default_timezone_set("America/Los_Angeles");
+        $today = date("Y-m-d");
+        $sql = "UPDATE AdminPW SET current = 0, changeDate = '".$today."' WHERE passwords = '".md5($oldPW)."';";
+        $c -> prepare($sql) -> execute();
+        //update new password
         $monthtouse = date("m") + 3;
         if(date("m") > 10) $monthtouse = date("m") - 9; //recycle to the front
         $changeDate = date("Y")."-".$monthtouse."-".date("d");
         $sql = "INSERT INTO AdminPW VALUES ('".md5($newPW)."', '".$changeDate."', 1);";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
-        return;
-    }
-
-    function updatePWHistory($c, $oldPW) //update the old password to be no longer relevant when changing the password to the admin page
-    {
-        date_default_timezone_set("America/Los_Angeles");
-        $today = date("Y-m-d");
-        $sql = "UPDATE AdminPW SET current = 0, changeDate = '".$today."' WHERE passwords = '".md5($oldPW)."';";
-        $c -> prepare($sql) -> execute();
-        return;
+        $c = null; //close connection
+        return "true"
     }
 
     function activateMarket($date) //from the existing market, activate a market.
@@ -550,15 +527,6 @@ t = time
             $c -> prepare($sql) -> execute();
         }
         $c = null; //close connection
-        return;
-    }
-
-    function changeToDeleteStatus($c, $d) //mark which market we want to delete
-    {
-        $sql = "UPDATE Markets SET toDelete = 1 WHERE idByDate = ".$d.";";
-        $sql .= "UPDATE Markets SET toDelete = 0 WHERE idByDate <> ".$d.";";
-        $s = $c -> prepare($sql);
-        $s -> execute();
         return;
     }
 
@@ -943,7 +911,6 @@ t = time
         if(strlen($totalPeople) < 2) return '<br><p> No data to display at the moment </p>';
         else return $table_begin.$data.$table_end.$stats;
     }
-
 
     // ======================================================== //
     // -------------- INVENTORY PAGE FUNCTIONS -----------------//
@@ -1352,7 +1319,6 @@ t = time
     // ======================================================== //
     // --------------- SIGN UP PAGE [S] FUNCTIONS ------------- //
     // ======================================================== //
-
     
     function volunteer_name_from_email($email) {
         $c = connDB();

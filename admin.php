@@ -89,7 +89,7 @@
                     <input type = "password" placeholder = " New Password" class = "change-pw-input third inline" id = "newPW1" autocomplete = "off" required>
                     <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" id = "newPW2" autocomplete = "off" required> <br><br>
                     <h6 id = "checker"><strong>   *     *     *   </strong></h6>
-                    <button class = "btn submit-pw-change-btn" id = "submit-pw-change" onclick = "changePW();">  Submit </button>
+                    <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button>
                 </div>
                 <footer class = "footer">
                     <p> Las Positas College Student Government <br> </p>
@@ -105,40 +105,37 @@
         pw1.onkeyup = function(event){
             if (event.target.value.length == 0)
             {
-                document.getElementById("checker").innerHTML = "";
+                document.getElementById("checker").innerHTML = "   *     *     *   ";
                 pw1.style.backgroundColor = "white";
-                pw1.borderColor = "rgb(102, 124, 246);";
+                pw1.borderColor = "rgb(102, 124, 246) !important;";
             } 
             else if(event.target.value.length < 8) 
             {
                 document.getElementById("checker").innerHTML = "Password must be 8 characters long";
-                pw1.style.backgroundColor = "rgb(255, 141, 141);";
-                pw1.style.borderColor = "rgb(170, 8, 8);";
+                pw1.style = "border-color: rgb(255, 141, 141) !important;";
             }
             else if(event.target.value.length > 7) 
             {
-                pw1.style.backgroundColor = "#28A745";
-                pw1.style.borderColor = "rgb(157, 255, 161);";
+                pw1.style = "border-color: rgb(157, 255, 161) !important;";
+                document.getElementById("checker").innerHTML = "Your password is good!";
             }
         }
 
         pw2.onkeyup = function(event){
             if (event.target.value.length == 0)
             {
-                document.getElementById("checker").innerHTML = "";
-                pw2.style.backgroundColor = "white";
-                pw2.borderColor = "rgb(102, 124, 246);";
+                document.getElementById("checker").innerHTML = "   *     *     *   ";
+                pw2.style = "border-color: rgb(102, 124, 246) !important;";
             } 
             else if(event.target.value != pw1.value) 
             {
                 document.getElementById("checker").innerHTML = "Passwords have to match";
-                pw2.style.backgroundColor = "rgb(255, 141, 141);";
-                pw2.style.borderColor = "rgb(170, 8, 8);";
+                pw2.style = "border-color: rgb(255, 141, 141) !important;";
             }
             else if(event.target.value == pw1.value) 
             {
-                pw2.style.backgroundColor = "#28A745";
-                pw2.style.borderColor = "rgb(157, 255, 161);";
+                pw2.style = "border-color: rgb(157, 255, 161) !important;";
+                document.getElementById("checker").innerHTML = "Your password is good!";
             }
         }
 
@@ -153,7 +150,7 @@
         }
         
         $("#submit-pw-change").click(function() {
-            if(pw1.value == pw2.value && pw1.value.length >= 8){
+            if(pw1.value == pw2.value && pw1.value.length > 7){
                 $.ajax ({
                     type: "POST",
                     url: "funcs.php",
@@ -167,6 +164,7 @@
                         if(data == "true") alert("Your password has \r\n been changed succesfully");
                         else if(data == "passeduse") alert ("You have alreday used this password before \r\n choose a different one please.");
                         else if(data == "false") alert("Your Old Password is Incorrect");
+                        responsive_sidebar_item("new-market-sender");
                     }
                 });
             }

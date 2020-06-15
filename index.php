@@ -240,14 +240,11 @@
             </div>
             <!------------------- ADMIN LOGIN DIVISION ----------------------->
             <div class = "admin-login" id = "admin-login" style = "display: none">
-                <form action = "funcs.php" method = "POST">
-                    <h3>Login as an Admin </h3>
-                    <br><br>
-                    <h6><strong><u>Enter Password Below</u></strong></h6> <br>
-                    <input type = "password" placeholder="  Password" class = "change-pw-input full" name = "inputAdminPW" pattern = "\S+.*" required> <br><br>
-                    <input type = "hidden" value = "verifyPassword" name = "message">
-                    <button class = "btn submit-admin-login" id = "inputAdminBtn"> Submit </button>
-                </form>
+                <h3>Login as an Admin </h3>
+                <br><br>
+                <h6><strong><u>Enter Password Below</u></strong></h6> <br>
+                <input type = "password" placeholder="  Password" class = "change-pw-input full" id = "inputAdminPW" pattern = "\S+.*" required> <br><br>
+                <button class = "btn submit-admin-login" id = "inputAdminBtn" onclick = "adminLogin();"> Submit </button>
             </div>
             <!------------------- VOLUNTEER SIGN UP DIVISION ----------------------->
             <div class = "volunteer-signup" id = "volunteer-signup" style = "display: none">
@@ -387,6 +384,21 @@
         function spanishPageReturning() {
             document.getElementById("returning-members-spanish").style.display = "block";
             document.getElementById("returning-members").style.display = "none";
+        }
+
+        function adminLogin() {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    inputAdminPW:  document.getElementById("inputAdminPW").value,
+                    message: "verifyPassword"
+                },
+                success: function(data) {
+                    if(data == "false") alert("Incorrect Password");
+                    else if(data == "true") location.replace("admin.php");
+                }
+            });
         }
     </script>
 </html>

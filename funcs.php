@@ -69,8 +69,8 @@ t = time
     }
 
     if($_POST['message'] == 'verifyPassword') { //verify password to admin page
-        if(md5($_POST['inputAdminPW']) == getPassword(connDB())) echo '<script>location.replace("admin.php");</script>';
-        else echo '<script> alert("Password Incorrect, Please Try Again!"); location.replace("index.php"); </script>';
+        if(md5($_POST['inputAdminPW']) == getPassword()) echo "true";
+        else echo "false";
     }
 
     if($_POST['message'] == 'insertNewPats') //new patron visited the market, add to DB
@@ -304,16 +304,14 @@ t = time
         echo '<script>location.reaplec("index.php");</script>'; 
     }
 
-    function getPassword($c) //retrieve current password
-    {
-        $sql = "SELECT passwords FROM AdminPW";
+    function getPassword() {
+        $c = connDB(); //set connection
+        $sql = "SELECT passwords FROM AdminPW WHERE current = 1";
         $s = $c -> prepare($sql);
         $s -> execute();
-        while($r = $s -> fetch(PDO::FETCH_ASSOC))
-        {
-            $pwHidden = $r['passwords'];
-        }
-        return $pwHidden;
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $c = null; //close connection
+        return $r['passwords'];;
     }
 
     function populateArrayWithIds($c)
@@ -472,7 +470,7 @@ t = time
         else return false;
     }
 
-    function updatePWHistory($oldPW, $newPW) //update the old password to be no longer relevant when changing the password to the admin page
+    function updatePW($oldPW, $newPW) //update the old password to be no longer relevant when changing the password to the admin page
     {
         $c = connDB(); // set connection
         date_default_timezone_set("America/Los_Angeles");

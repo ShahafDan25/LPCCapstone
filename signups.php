@@ -54,7 +54,7 @@
                 <form action = "funcs.php" method = "POST">
                         <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
                         <input type = "time" class = "index-registration-input half inline" name = "starttime" id = "starttime-input" required min = "09:00:00" max = "16:30:00">
-                        <i class = 'fa fa-arrow-right inline' aria-hidden = 'true' style = 'margin-right: 2% !important; margin-left: 2% !important;'></i>
+                        <i class = 'fa fa-arrow-right inline' aria-hidden = 'true' style = 'margin-right: 2% !important;'></i>
                         <input type = "time" class = "index-registration-input half inline" name = "endtime" id = "endtime-input" required min = "09:30:00" max = "17:00:00" >
                         <input type = "hidden" name = "message" value = "commit-signup">
                         <button class = "btn submit-admin-login"> Submit </button>

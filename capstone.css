@@ -400,7 +400,6 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     color: white !important;
     outline: none;
 }
-
 .sidebar a:hover:not(.active) {
     background-color: rgb(177, 189, 253);
     color: white !important;
@@ -608,7 +607,7 @@ div.content {
 }
 .select-markets {
     border-radius: 0px !important;
-    padding: 2.5% !important;
+    /* padding: 2.5% !important; */
     border: 0px solid black !important;
     border-bottom: 3px solid rgb(102, 124, 246) !important;
     width: 30% !important;
@@ -653,7 +652,10 @@ div.content {
     text-align: center !important;
 }
 .inv_edit_btn {
-    text-align: center !important;
+    /* text-align: center !important; */
+    float: right !important;
+    margin-right: 2% !important;
+    margin-left: 2% !important;
     border: 0px solid black !important;
     border-radius: 150px !important;    
 }

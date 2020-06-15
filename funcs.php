@@ -16,11 +16,11 @@ t = time
 
     if($_POST['message'] == "insertItem") //new inventory item
     {
-        $n = $_POST['item_name'];
-        $a = $_POST['item_number'];
+        $n = $_POST['name'];
+        $a = $_POST['amount'];
         $d = $_POST['date'];
         insertItem($n, $a, $d);
-        echo ;
+        echo displayInventory($_POST['date']);
     }
     
     if($_POST['message'] == "changePW") //change admin password
@@ -192,10 +192,6 @@ t = time
         echo displayInventory($_POST['date']);
     }
 
-    if($_POST['message'] == "display-inventory-add-item-form") {
-        echo displayAddInventoryForm($_POST['date']);
-    }
-
     if($_POST['message'] == "get-email-list") {
         echo volunteerEmailList();
     }
@@ -265,6 +261,11 @@ t = time
 
     if($_POST['message'] == "check-for-active-markets") {
         echo checkForActiveMarkets();
+    }
+
+    if($_POST['message'] == "remove-item") {
+        removeInventoryItem($_POST['name']);
+        echo displayInventory($_POST['date']);
     }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
@@ -987,26 +988,21 @@ t = time
     // -------------- INVENTORY PAGE FUNCTIONS -----------------//
     // ======================================================== //
 
-    function displayAddInventoryForm($date) {
-        return 
-        '<form action = "funcs.php" method = "post">
-            <input type = "text" name = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off">
-            <input type = "number" name = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off">
-            <input type = "hidden" name = "message" value = "insertItem">
-            <input type = "hidden" name = "date" value = "'.$date.'">
-            <button class = "btn add-to-inventory op4 inline"><i class="fa fa-plus" aria-hidden="true"></i></button>
-        </form>';
+    function removeInventoryItem($name) {
+        $c = connDB(); //set connection
+        $sql = "DELETE FROM Items WHERE Name = '".$name."';";
+        $c -> prepare($sql) -> execute();
+        $c = null; //close connection;
+        return;
     }
 
     function displayInventory($date) {
         $pre_table = 
-        '<p class = "pull-left">*  Inventories of Previous Markets</p>
-        <br>
-        <h4><u> INVENTORY </u></h4>
-        <br>
+        '<p class = "pull-left">*  Inventories of Previous Markets</p><br><br>
         <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off">
         <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off">
-        <button class = "btn add-to-inventory op4 inline" onclick = "insertInventoryItem()";><i class="fa fa-plus" aria-hidden="true"></i></button>';
+        <button class = "btn add-to-inventory op4 inline" onclick = "insertInventoryItem()";><i class="fa fa-plus" aria-hidden="true"></i></button>
+        <br><br>';
         $table_begin = 
         '<table class = "table inv_table">
             <thead>
@@ -1020,23 +1016,23 @@ t = time
         $table_end = 
             '</tbody>
         </table>';
-        return $pre_table.$table_begin.populateItemTable($date).$table_end;
+        if(populateItemTable($date) == "") return $pre_table.'<br><br><p> No item in the inventory at the moment </p>';
+        else return $pre_table.$table_begin.populateItemTable($date).$table_end;
     }
 
-    function insertItem($c, $n, $a, $d) //insert item to the database
+    function insertItem($n, $a, $d) //insert item to the database
     {
+        $c = connDB(); //set connection
         $sql = "SELECT Name FROM Items WHERE Name = '".$n."' AND Markets_idByDate = '".$d."';";
         $s = $c -> prepare($sql); 
         $s -> execute(); 
-        if($s -> fetch(PDO::FETCH_ASSOC))
-        {
-            echo '<script>alert("This item is already found in the database for this market. Please edit its amount by click the View Inventory button");</script>';
-            return;
-        }
+        if($s -> fetch(PDO::FETCH_ASSOC)) return 1; // found
+ 
         $sqlb = "INSERT INTO Items (Name, Amount, Markets_idByDate) VALUES ('".$n."',".$a.", '".$d."');"; 
-        $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $c->exec($sqlb); 
-        return;
+        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c -> exec($sqlb);
+        $c = null; //close connection 
+        return 0; //no such item in the database
     }
 
     function populateItemTable($date) //insert items to inventory html in table format
@@ -1044,14 +1040,10 @@ t = time
         $c = connDB();
         $tableItemData = ""; 
         $sql = "SELECT DISTINCT Name FROM Items WHERE Markets_idByDate <= '".$date."';";
-        $s_ec = $c -> prepare($sql); 
-        $s_ec -> execute();
-        $r_ec = $s_ec -> fetch(PDO::FETCH_ASSOC);
-        if(count($r_ec) == 0)  return '<p> NO ITEMS TO DISPLAY AT THE MOMENT </p>';
 
         $s = $c -> prepare($sql); 
         $s -> execute(); 
-        $collapseCounter = 0;
+        $counter = 0;
         while($r = $s -> fetch(PDO::FETCH_ASSOC))
         { 
             //select product's amount from previous markets
@@ -1071,20 +1063,22 @@ t = time
 
 
             $counter++; //to modify and create unique ID's reflexibly
-            $buttonInsert = "<button class = 'btn btn-warning inv_edit_btn collapsed' id = 'editbtn' data-toggle='collapse' data-target='#formToEditItem".strval($counter)."' aria-expanded='false'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
+            $buttonInsert = "<button class = 'btn inv_edit_btn op6 inline' onclick = 'removeItem(".$counter.")' style = 'margin-right: 2% !important'><i class='fa fa-trash-o'></i></button>
+                &nbsp; &nbsp;
+            <button class = 'btn btn-warning inv_edit_btn inline collapsed' id = 'editbtn' data-toggle='collapse' data-target='#formToEditItem".strval($counter)."' aria-expanded='false'><i class='fa fa-pencil' aria-hidden='true'></i></button>";
             //add option to edit an item
             $editForm = '<form action = "funcs.php" method = "post">';
-            $editForm .= '<td><input type = "text" class = "inv_input inline" name = "editItemName" placeholder = "'.$r['Name'].'" value = "'.$r['Name'].'" style = "width: 60% !important;"></td>';
+            $editForm .= '<td><input type = "text" class = "inv_input inline" name = "editItemName" placeholder = "'.$r['Name'].'" value = "'.$r['Name'].'" style = "width: 60% !important;" id = "name-'.$counter.'"></td>';
             $editForm .= '<td><input type = "number" class = "inv_input inline" name = "editItemAmount" min = "0" placeholder = "'.($r_two['Amount']+$total).'" value = "'.($r_two['Amount']+$total).'"></td>';
             $editForm .= '<td><input type = "hidden" class = "inline" name = "message" value = "editThatItem">';
-            $editForm .= '<button class = "btn btn-success inv_input_btn inline"> SUBMIT </button></td>';
+            $editForm .= '<button class = "btn btn add-to-inventory op4 inline"><i class="fa fa-check" aria-hidden="true"></i></button></td>';
             $editForm .= '</form>';
-            // ============================================================== //
-            $tableItemData .= "<tr>";
+
+            $tableItemData .= "<tr id = ".$counter.">";
                 $tableItemData .= "<td>".$r['Name']."</td>";
                 if($r_two != 0) {$tableItemData .= "<td><strong>".($r_two['Amount'] + $total)."</strong>\t[ ".$r_two['Amount']." + ".$total." * ]</td>";}
                 else {$tableItemData .= "<td><strong>".($total)."</strong>\t*</td>";}
-                $tableItemData .= "<td>".$buttonInsert."</td>";
+                $tableItemData .= "<td style 'text-align: right !important;'>".$buttonInsert."</td>";
             $tableItemData .= "</tr>";
             
             $tableItemData .= "<tr class = 'collapse whiteOut' id = 'formToEditItem".strval($counter)."'>".$editForm."</tr>";

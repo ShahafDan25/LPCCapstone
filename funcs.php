@@ -14,6 +14,10 @@ t = time
     // -------------------- POSTS MESSAGES ---------------------//
     // ======================================================== //
 
+    if($_POST['message'] == "loadidsarray") {
+        echo populateArrayWithIds();
+    }
+
     if($_POST['message'] == "insertItem") //new inventory item
     {
         $n = $_POST['name'];
@@ -75,47 +79,12 @@ t = time
 
     if($_POST['message'] == 'insertNewPats') //new patron visited the market, add to DB
     {
-        $c = connDB();
-        insertPat($c, $_POST["first_name"], 
-                        $_POST["last_name"],
-                        $_POST["student?"],
-                        $_POST["children_amount"], 
-                        $_POST["adults_amount"],
-                        $_POST["seniors_amount"], 
-                        $_POST["email_address"], 
-                        $_POST["phone_number"], 
-                        $_POST["promotion"],
-                        $_POST["patron_id"]);
-
-
-        $sql = "SELECT idByDate FROM Markets WHERE active = 1";
-        $s = $c -> prepare($sql);
-        $s -> execute();
-        $r = $s->fetch(PDO::FETCH_ASSOC); 
-        loginPat($c, $r['idByDate'], $_POST['patron_id']);
-        echo '<script> location.replace("index.php") </script>';
+        insertPat($_POST["first_name"], $_POST["last_name"], $_POST["studentStatus"], $_POST["children_amount"], $_POST["adults_amount"], $_POST["seniors_amount"], $_POST["email_address"], $_POST["phone_number"], $_POST["promotion"],$_POST["patron_id"]);
+        loginPat($_POST['patron_id']);
     }
 
-    if($_POST['message'] == 'patronLogin') //Mark a patron's attendance to the market
-    {
-        $c = connDB();
-        
-        if(!verifyExistence($c, $_POST['patronID']))
-        {
-            echo '<script>alert ("Your ID was not found")</script>';
-            echo '<script>location.replace("index.php")</script>';
-        }
-        else
-        {
-
-            $sql = "SELECT idByDate FROM Markets WHERE active = 1";
-            $s = $c -> prepare($sql);
-            $s -> execute(); 
-            $r = $s->fetch(PDO::FETCH_ASSOC); 
-            loginPat($c, $r['idByDate'], $_POST['patronID']);
-            echo '<script>location.replace("index.php");</script>';
-
-        }
+    if($_POST['message'] == 'patronLogin') {
+        echo loginPat($_POST['patronID']);
     }
 
     if($_POST['message'] == 'checkID') //check if ID is available
@@ -239,6 +208,14 @@ t = time
         removeInventoryItem($_POST['name']);
         echo displayInventory($_POST['date']);
     }
+
+    if($_POST['message'] == "get-current-market-date") {
+        echo current_market_date();
+    }
+
+    if($_POST['message'] == "populate-like-returning-patrons") {
+        echo populate_dropdown($_POST['likename'], $_POST['likelastname']);
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -275,33 +252,23 @@ t = time
     // ------------- REGISTRATION PAGE FUNCTIONS ---------------//
     // ======================================================== //
 
-    function insertPat($c, $f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id) //new patrons to DB
+    function insertPat($f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id) //new patrons to DB
     {
-        $first_name = $f;
-        $last_name = $l;
+        $c = connDB(); //set connection
 
         if($ss == "yes") $student_status = TRUE;
         else $student_status = FALSE;
 
-        $children_amount = $ca;
-        $adults_amount = $aa;
-        $seniors_amount = $sa;
-
-        $email_address = $ea;
-        $phone_number = $pn;
-
-        $promotion_method = $pm;
-
         $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
         ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod, patID, firstMarket)
-        VALUES ('".$first_name."', '".$last_name."', '".($student_status?1:0)."', 
-        '".((int)$children_amount)."', '".((int)$adults_amount)."', '".((int)$seniors_amount)."', 
-        '".$email_address."', '".$phone_number."', '".$promotion_method."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
+        VALUES ('".$f."', '".$l."', '".($student_status?1:0)."', 
+        '".((int)$ca)."', '".((int)$aa)."', '".((int)$sa)."', 
+        '".$ea."', '".$pn."', '".$pm."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
 
 
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c->exec($sql); 
-        echo '<script>location.reaplec("index.php");</script>'; 
+        return;
     }
 
     function getPassword() {
@@ -314,23 +281,23 @@ t = time
         return $r['passwords'];;
     }
 
-    function populateArrayWithIds($c)
-    {
+    function populateArrayWithIds() {
+        $c = connDB(); //set connection
         $idsArray = "";
         $sql = "SELECT patID FROM Patrons";
         $s = $c -> prepare($sql);
         $s -> execute(); 
-        $r = $s->fetch(PDO::FETCH_ASSOC);
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
         $idsArrays .= '"'.$r['patID'].'"';
-        while ($r = $s->fetch(PDO::FETCH_ASSOC))
-        { 
+        while ($r = $s -> fetch(PDO::FETCH_ASSOC)){ 
             $idsArrays .= ', "'.$r['patID'].'"';
         }
+        $c = null; //close connection
         return $idsArrays;
     }
 
-    function populate_dropdown($c) //populate drop down of previously attended patrons with first and last name and their IDs
-    {
+    function populate_dropdown($like_first_name, $like_last_name) {
+        $c = connDB(); //set connection
         $all_options = "";
         $sql = "SELECT DISTINCT FirstName, LastName, patID FROM Patrons ORDER BY FirstName";
         $s = $c -> prepare($sql);
@@ -342,6 +309,7 @@ t = time
             if($counter <= 6) $all_options .= "<li class='list-group-item' value = '".$r['patID']."'>".$r['FirstName']." ".$r['LastName']."      -       ".$r['patID']."</li>";
             else $all_options .= "<li class='list-group-item' value = '".$r['patID']."'>".$r['FirstName']." ".$r['LastName']."      -       ".$r['patID']."</li>";
         }
+        $c = null; //close connection
         return $all_options;
     }
      
@@ -361,41 +329,26 @@ t = time
         return $final_date;
     }
 
-    function verifyExistence($c, $id) //check if the patrong ID is used by someone
-    {
-        $sql = "SELECT * FROM Patrons WHERE patID = ".$id;
-        $s = $c -> prepare($sql);
-        $s -> execute(); 
-        if(!$s->fetch(PDO::FETCH_ASSOC)) return false;
-        else return true;
-    }
-
-    function loginPat($c, $d, $id) //mark and stamp a patron's arrival
-    {
-        $c = connDB();
+    function loginPat($id) {
+        $c = connDB(); //set connection
         
         date_default_timezone_set("America/Los_Angeles");
         $t = date("H:i");
         
         $time_digits = substr($t, 0, 2).substr($t, 3, 2);
         
-        $sql = "SELECT time_stamp FROM MarketLogins WHERE Patrons_patID = ".$id." AND Markets_idByDate = ".$d.";";
+        $sql = "SELECT time_stamp FROM MarketLogins WHERE Patrons_patID = ".$id." AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = 1);";
         $s = $c -> prepare($sql);
         $s -> execute();
         if(!$s->fetch(PDO::FETCH_ASSOC)) 
         {
-            $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES (".$d.", ".$id."., '".$time_digits."');";
+            $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES ((SELECT idByDate FROM Markets WHERE active = 1), ".$id."., '".$time_digits."');";
             $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $c->exec($sql); 
-            echo '<script>alert("WELCOME TO THE MARKET");</script>';
-            return;
+            $c->exec($sql);
+            $c = null; //close connection
+            return "true";
         }
-        else
-        {
-            echo '<script> alert("You are already logged in"); </script>';
-            return; 
-        } 
-        return; 
+        else return "false";
     }
 
     // ======================================================== //

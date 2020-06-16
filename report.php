@@ -6,7 +6,7 @@
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
         <!-- CSS HARDCODE FILE LINK -->
-        <link href='capstone.css?version=1' rel='stylesheet'></link>
+        <link href='capstone.css' rel='stylesheet'></link>
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
@@ -15,9 +15,20 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- FONTAWESOME ICON --> 
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
+
+        <!-- ALERTIFY.JS: JavaScrip and CSS -->
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
 
         <!-- MORRIS.JS (for graphing utilities from PHP data) LINKS -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
@@ -38,18 +49,18 @@
         <div class = "page-container">
             <br>
             <div id = "marketid-container"></div>
+            
             <br>
-            <br>
-            <div class = "report-btn-options-container" id = "report-btn-options-container">
+            <div class = "report-btn-options-container" id = "report-btn-options-container" style = "display: none;">
                 <button class = "btn report-option-btn inline op8" onclick = "pdfReport();"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op2" onclick = "showMe('report-table-graph');"><i class="fa fa-table" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op3" onclick = "showMe('report-attendance-graph');"><i class="fa fa-line-chart" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op1" onclick = "showMe('report-promotion-graph');"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op7" onclick = "showMe('report-noobies-graph');"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
             </div>
-            <br><br>
+            <br>
             <!-- Table: Patrons in that specific market -->
-            <div class = "page-sub-container" id = "report-table-graph" style = "display: block">
+            <div class = "page-sub-container" id = "report-table-graph" style = "display: none">
                 <h3> Attendees </h3>
                 <div id = "report-table-box-id"></div>
             </div>
@@ -108,8 +119,11 @@
             document.getElementById(x).style.display = "block";
         }
 
-        $("#marketid").change(function() {
+        // $("#marketid").change(function() {
+        function showbtns() {
             document.getElementById("report-btn-options-container").style.display = "block";
+
+            //populate the table of attendees
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
@@ -131,6 +145,7 @@
                     message: "populate-attendance-graph"
                 },
                 success: function(info) {
+                    console.log(info);
                     document.getElementById("scripts1").innerHTML = "";
                     document.getElementById("chart").innerHTML = "";
                     $("#scripts1").html(info);
@@ -153,19 +168,19 @@
             });
 
             //populate first-marketers donut graph
-            $.ajax ({
-                type: "POST",
-                url: "funcs.php",
-                data: {
-                    date: document.getElementById("marketid").value, 
-                    message: "populate-newones-graph"
-                },
-                success: function(info) {
-                    document.getElementById("scripts3").innerHTML = "";
-                    document.getElementById("retvsnew").innerHTML = "";
-                    $("#scripts3").html(info);
-                }
-            });
-        });
+            // $.ajax ({
+            //     type: "POST",
+            //     url: "funcs.php",
+            //     data: {
+            //         date: document.getElementById("marketid").value, 
+            //         message: "populate-newones-graph"
+            //     },
+            //     success: function(info) {
+            //         document.getElementById("scripts3").innerHTML = "";
+            //         document.getElementById("retvsnew").innerHTML = "";
+            //         $("#scripts3").html(info);
+            //     }
+            // });
+        };
     </script>
 </html>

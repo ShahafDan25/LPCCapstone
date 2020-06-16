@@ -3,6 +3,7 @@
     $firstnames = ["Diego", "Joe", "Efron", "Adam", "Destiny", "Kaylee", "Brooke", "Minor", "Robert", "William", "Ori", "Danny", "Jesus", "Moses", "Russell", "Sai", "Brandon", "Alisha", "Alice", "Bella", "Christine", "Joseph", "Jose", "Mohammed", "Abdul", "Matthew", "Shaun", "Sean", "Shanw", "Taylor", "Justin", "Kim", "Chloe", "Klay", "Ron", "Ronni", "Chyanne", "Donna", "Chelsea", "Kevin", "Pam", "Jim", "Michael", "Michaela", "Michelle", "David", "Itay", "Joshua", "Josh", "Ahmad", "Moustafa", "Ramon", "Frank", "Sandra", "Junior", "Leah", "Rachel", "Dude", "Tom", "Domminic", "AJ", "CJ", "KJ", "RJ", "TJ", "OJ", "Marry", "Katy", "Katja"];
     $lastnames = ["Arnold", "Smith", "Watson", "Shpillberg", "Goldman", "Griffin", "Abdullah", "Rodrigez", "Smith", "Cole", "Seely", "Campbell", "Montez", "Silva", "Cortez", "Fibbonacci", "Fetuccini", "Jackson", "Kumar", "Kim", "Chen", "Zhou", "Xing", "Xavier", "Javier", "Junior", "Dahan", "Levi", "Cohen", "Hamdi", "Miller", "Milter", "Inberg", "Gottlieb", "Raizes", "Martin", "Garcia", "Thomas", "West", "Hill", "Fox", "Cortez", "Jane", "Bailey", "Ossman", "Perry", "Adams", "Cox", "Stone", "Cook", "Mitchell", "Reed", "Bennet", "Gray", "Sullivan", "Cooper", "Lopez", "Gonalez", "Perez", "Abadi", "Arian", "Brown", "David", "Taylor"];
     $promotions = ["Community", "FriendsAndFamily", "Classroom", "Other"];
+    $counter = 0;
     $active = false;
     $sql_active = "SELECT active FROM Markets WHERE idByDate = 20200617;";
     $s_active = $c -> prepare($sql_active);
@@ -10,9 +11,11 @@
     $r_active = $s_active -> fetch(PDO::FETCH_ASSOC);
     if($r_active['active'] == 1) $active = true;
     while($active) {
+        $counter++;
+
         $id = rand(100000,999999);
-        $first = $firstnames[rand(0, count($firstnames))];
-        $last = $lastnames[rand(0, count($lastnames))];
+        $first = $firstnames[rand(0, count($firstnames)-1)];
+        $last = $lastnames[rand(0, count($lastnames)-1)];
         $studentStatus = rand(0,1);
         $child = rand(0,5);
         $adult = rand(1,4);
@@ -32,8 +35,8 @@
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
 
-        echo $first." ".$last." - INSERTED";
-        sleep(rand(10,50));
+        echo $counter.")   ".$first." ".$last." - INSERTED\n";
+        sleep(rand(10,120));
         //check is still active
         $s_active = $c -> prepare($sql_active);
         $s_active -> execute();

@@ -194,7 +194,7 @@ t = time
     }
 
     if($_POST['message'] == "populate-markets-dropdown") {
-        echo '<select class = "select-markets" id = "marketid">'.populateMarketsDropDown().'</select>';
+        echo '<select class = "select-markets" id = "marketid" onchange = "showbtns()">'.populateMarketsDropDown().'</select>';
     }
 
     if($_POST['message'] == "populate-nonterminated-markekts-dropdown") {
@@ -362,8 +362,7 @@ t = time
     // ---------------- ADMIN PAGE FUNCTIONS -------------------//
     // ======================================================== //
 
-    function verifyPastPasswords($new) //verify old password when chaing the password
-    {
+    function verifyPastPasswords($new){
         $c = connDB();
         $sql = "SELECT passwords FROM AdminPW";
         $s = $c -> prepare($sql);
@@ -389,8 +388,7 @@ t = time
         return "true";
     }
 
-    function verifyOld($oldPW) //make sure the old password is currect when trying to change a password
-    {
+    function verifyOld($oldPW) {
         $c = connDB();
         $sql = "SELECT passwords FROM AdminPW WHERE current = 1";
         $s = $c -> prepare($sql); 
@@ -402,8 +400,7 @@ t = time
         else return false;
     }
 
-    function updatePW($oldPW, $newPW) //update the old password to be no longer relevant when changing the password to the admin page
-    {
+    function updatePW($oldPW, $newPW) {
         $c = connDB(); // set connection
         date_default_timezone_set("America/Los_Angeles");
         $today = date("Y-m-d");
@@ -420,12 +417,11 @@ t = time
         return "true";
     }
 
-    function activateMarket($date) //from the existing market, activate a market.
-    {
+    function activateMarket($date) {
         $c = connDB(); //set connection
         date_default_timezone_set("America/Los_Angeles"); 
         $activationtime = date("H:i"); 
-        $activation_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
+        $activation_time_format = substr($activationtime, 0, 2).substr($activationtime, 3, 2);
         $sql = "SELECT active FROM Markets WHERE idByDate = ".$date.";";
         $s = $c -> prepare($sql);
         $s -> execute();
@@ -440,12 +436,11 @@ t = time
         return "activated";
     }
 
-    function terminateActiveMarket($date) //terminate a market with a status active = 2 (meaning it can no longer be activated again)
-    {
+    function terminateActiveMarket($date) {
         $c = connDB(); //set connection
         date_default_timezone_set("America/Los_Angeles"); 
         $terminationtime = date("H:i"); 
-        $termination_time_format = substr($starttime, 0, 2).substr($starttime, 3, 2);
+        $termination_time_format = substr($terminationtime, 0, 2).substr($terminationtime, 3, 2);
         $sql = "SELECT active FROM Markets WHERE idByDate = ".$date.";";
         $s = $c -> prepare($sql);
         $s -> execute();
@@ -460,15 +455,14 @@ t = time
         return "terminated";
     }
 
-    function deleteMarket($date) //delete a market from the database
-    {
+    function deleteMarket($date) {
         // NOTE: consider using cacades instead!
         $c = connDB(); //set connection
         $sql = "DELETE FROM MarketLogins WHERE Markets_idByDate = ".$date.";";
         $sql .= "DELETE FROM Patrons WHERE firstMarket = ".$date.";";
         $sql .= "DELETE FROM Items WHERE Markets_idByDate = ".$date.";";
-        $sql .= "DELETE FROM Markets WHERE idByDate = ".$date.";";
         $sql .= "DELETE FROM SignUps WHERE Market = ".$date.";";
+        $sql .= "DELETE FROM Markets WHERE idByDate = ".$date.";";
         $c -> prepare($sql)-> execute();
         $c = null; //close connection
         return "deleted";
@@ -615,8 +609,8 @@ t = time
         return "<script>Morris.Line({
             element : 'chart', 
             data:[".getAttData($rep)."], 
-            xkey:'TIME',
-            ykeys:['AMOUNT'],
+            xkey:TIME,
+            ykeys:[AMOUNT],
             labels:['Attendance'],
             hideHover:'auto',
             stacked:true
@@ -646,47 +640,41 @@ t = time
         $interval = $sti + (10 - ($sti%10)); 
         $sql_amount_a = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".($interval)." AND Markets_idByDate = ".$d.";";
         $stmt_amount_a = $c -> query($sql_amount_a);
-
-        //get amount from start time to first interval mark (in 10 minutes)
         $first_amount = $stmt_amount_a -> fetchColumn(); 
 
         if(strlen(strval($sti)) == 3) $stite = substr(strval($sti), 0, 1).":".substr(strval($sti), 1, 2);
         elseif(strlen(Strval($sti)) == 4) $stite = substr(strval($sti),0,2).":".substr(strval($sti),2,2);
         
-        $chart_data = "{'TIME':'".$dformat.$stite."','AMOUNT':'".$first_amount."'}";
+        $chart_data = "{TIME:'".$dformat.$stite."',AMOUNT:'".$first_amount."'}";
         //is new hour in the time range of the market, add 40 to create illusion of time based 60 and not 100
         if($interval % 100 == 60) {$interval += 40;} 
         //for every 10 minute interval before the last ten minutes of the closing time
         $first_person = false;
         while(($interval + 10) < intval($ct)) 
         {
-            
             if($interval % 100 == 60) {$interval += 40;} 
             $interval_b = $interval + 10; 
 
-            $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
-            $stmt_amount_a = $c -> query($sql_amount_a);
+            $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < '".$interval_b."' AND time_stamp >= '".$interval."' AND Markets_idByDate = ".$d.";";
             $stmt_i = $c -> query($sql_i);
 
             if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
-            elseif(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
+            else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
 
             $a = $stmt_i -> fetchColumn();
             
             //insert amount per time range
-            if($first_person) $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
+            $chart_data .= ", {TIME:'".$dformat.$intervalte."',AMOUNT:'".$a."'}"; 
             $interval = $interval_b;
         }
-        $sql_i_b = "SELECT COUNT('Patron_patID') FROM MarketLogins WHERE time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
-        $stmt_amount_a = $c -> query($sql_amount_a);
+        $sql_i_b = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp >= ".strval($interval)." AND Markets_idByDate = ".$d.";";
         $stmt_i_b= $c -> query($sql_i_b);
 
         if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
-        elseif(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
+        else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
 
         $a = $stmt_i_b -> fetchColumn();
-        //last amount from last time interval stamp to closing time
-        $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
+        $chart_data .= ", {TIME:'".$dformat.$intervalte."',AMOUNT:'".$a."'}"; 
         $c = null; //close connection
         return $chart_data;
     }

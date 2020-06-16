@@ -51,46 +51,37 @@
                 <!-- CREATE NEW MARKET OPTION -->
                 <div class = "sub-admin-page-container" id = "new-market" style = "display: block">
                     <h4><u>Create New Market</u></h4>  
-                    <form action = "funcs.php" method = "POST">
-                        <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" name = "new_market_date"><br><br>
-                        <br><h6><u><strong> For what times would you need volunteers? </strong></u></h6> <br>
-                        <input type = "time" placeholder = " Starting Time" class = "choose-new-market-date inline" name = "new_market_start_time">
-                        <i class="fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important; margin-left: 2% !important;"></i>
-                        <input type = "time" placeholder = " Closing Time" class = "choose-new-market-date inline" name = "new_market_end_time"><br><br>
-                        <input type = "hidden" value = "submitNewMarket" name = "message">
-                        <button class = "btn submit-new-market-date"> Submit </button>
-                    </form>
+                    <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" id = "new_market_date"><br><br>
+                    <br><h6><u><strong> For what times would you need volunteers? </strong></u></h6> <br>
+                    <input type = "time" placeholder = " Starting Time" class = "choose-new-market-date inline" id = "new_market_start_time">
+                    <i class="fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important; margin-left: 2% !important;"></i>
+                    <input type = "time" placeholder = " Closing Time" class = "choose-new-market-date inline" id = "new_market_end_time"><br><br>
+                    <button class = "btn submit-new-market-date" id = "submit-new-market-date-btn"> Submit </button>
                 </div>
                 <!-- MARKET ACTIONS OPTION -->
                 <div class = "sub-admin-page-container" id = "market-actions" style = "display: none" >
                     <h4><u>Market Actions</u></h4>
-                    <form action = "funcs.php" method = "POST">
-                        <select class = "select-markets" name = 'marketid' id = "marketid">
-                            <option value = 'none' selected disabled hidden> Choose a Market </option>
-                            <?php echo populateMarketsDropDown(); ?>
-                        </select>
-                        <br>
-                        <ul class = "admin-options-list">
-                            <li class = "admin-options-list-item">
-                                <input type = "radio" id = "option-1" name = "adminOption" value = "invoke" class = "admin-option">
-                                <label for = "option-1"  class = "admin-option-label"> Activate </label>
-                                <div class = "check"></div>
-                            </li>
-                            <li class = "admin-options-list-item">
-                                <input type = "radio" id = "option-2" name = "adminOption" value = "terminate" class = "admin-option">
-                                <label for = "option-2"  class = "admin-option-label"> Terminate </label>
-                                <div class = "check"></div>
-                            </li>
-                            <li class = "admin-options-list-item">
-                                <input type = "radio" id = "option-3" name = "adminOption" value = "delete" class = "admin-option">
-                                <label for = "option-3" class = "admin-option-label"> Delete </label>
-                                <div class = "check"></div>
-                            </li>
-                        </ul>
-                        <br>
-                        <input id = "hiddenMessage" type="hidden" value = "adminOption" name = "message">
-                        <button class = "btn submit-admin-market-option" id = "submit"> SUBMIT </button>
-                    </form>
+                    <select class = "select-markets" name = 'marketid' id = "marketid"></select>
+                    <br>
+                    <ul class = "admin-options-list">
+                        <li class = "admin-options-list-item">
+                            <input type = "radio" id = "option-1" name = "adminOption" value = "invoke" class = "admin-option">
+                            <label for = "option-1"  class = "admin-option-label"> Activate </label>
+                            <div class = "check"></div>
+                        </li>
+                        <li class = "admin-options-list-item">
+                            <input type = "radio" id = "option-2" name = "adminOption" value = "terminate" class = "admin-option">
+                            <label for = "option-2"  class = "admin-option-label"> Terminate </label>
+                            <div class = "check"></div>
+                        </li>
+                        <li class = "admin-options-list-item">
+                            <input type = "radio" id = "option-3" name = "adminOption" value = "delete" class = "admin-option">
+                            <label for = "option-3" class = "admin-option-label"> Delete </label>
+                            <div class = "check"></div>
+                        </li>
+                    </ul>
+                    <br>
+                    <button class = "btn submit-admin-market-option" id = "submit-market-operation-option"> SUBMIT </button>
                 </div>
                 <!---- CHANGE PASSWORD OPTION -->
                 <div class = "sub-admin-page-container" id = "change-password" style = "display: none">
@@ -112,7 +103,58 @@
         var pw1 = document.getElementById("newPW1");
         var pw2 = document.getElementById("newPW2");
         
-        pw1.onkeyup = function(event){
+        $("#submit-new-market-date-btn").click(function() {
+            $.ajax( {
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "submitNewMarket",
+                    new_market_start_time: document.getElementById("new_market_start_time").value,
+                    new_market_date: document.getElementById("new_market_date").value,
+                    new_market_end_time: document.getElementById("new_market_end_time").value
+                },
+                success: function(data) {
+                    if(data == "true") alert ("Market Added !");
+                    else if(data == "false") alert("Market already exists !");
+                }
+            })
+        });
+
+        $("#submit-market-operation-option").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "adminOption",
+                    adminOption: document.getElementByName("adminOption").value
+                },
+                success: function(data) {
+                    if(data == "deleted") alert ("Market Deleted");
+                    else if(data == "activated") alert("Market Activated !");
+                    else if(data == "terminated") alert("Market Terminated");
+                    else if(data == "notactive") alert("You Can't terminate a non active market.");
+                    else if(data == "alreadyterminated") alert("This Market has already been terminated");
+                    else if(data == "cantactivateterminated") alert("You can't reactivate a terminated market");
+                    else if(data == "alreadyactive") alert("This market is already active.");
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-markekts-dropdown",
+                },
+                succes: function(data){
+                    $("marketid").html(data);
+                }
+            });
+        });
+
+        pw1.onkeyup = function(event)
+        {
             if (event.target.value.length == 0)
             {
                 document.getElementById("checker").innerHTML = "   *     *     *   ";
@@ -160,7 +202,8 @@
         }
         
         $("#submit-pw-change").click(function() {
-            if(pw1.value == pw2.value && pw1.value.length > 7){
+            if(pw1.value == pw2.value && pw1.value.length > 7)
+            {
                 $.ajax ({
                     type: "POST",
                     url: "funcs.php",

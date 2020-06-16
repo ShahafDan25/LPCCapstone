@@ -18,8 +18,7 @@ t = time
         echo populateArrayWithIds();
     }
 
-    if($_POST['message'] == "insertItem") //new inventory item
-    {
+    if($_POST['message'] == "insertItem") {
         $n = $_POST['name'];
         $a = $_POST['amount'];
         $d = $_POST['date'];
@@ -27,17 +26,14 @@ t = time
         else echo "Item already recorded".displayInventory($_POST['date']);
     }
     
-    if($_POST['message'] == "changePW") //change admin password
-    {
+    if($_POST['message'] == "changePW") {
         if(!verifyOld($_POST['oldPW'])) echo "false";
         else if(verifyPastPasswords($_POST['newPW1'])) echo "passeduse";
         else echo updatePW($_POST['oldPW'], $_POST['newPW1']);
     }
 
-    if($_POST['message'] == 'submitNewMarket') //create new market
-    {
-        newMarket(substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2), intval(substr($_POST['new_market_start_time'],0,2).substr($_POST['new_market_start_time'],3,2)), intval(substr($_POST['new_market_end_time'],0,2).substr($_POST['new_market_end_time'],3,2)));
-        echo '<script> location.replace("admin.php") </script>'; 
+    if($_POST['message'] == 'submitNewMarket') {
+        echo newMarket(substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2), intval(substr($_POST['new_market_start_time'],0,2).substr($_POST['new_market_start_time'],3,2)), intval(substr($_POST['new_market_end_time'],0,2).substr($_POST['new_market_end_time'],3,2)));
     }
 
     if($_POST['message'] == 'adminOption') //choose an action option per market
@@ -45,12 +41,10 @@ t = time
         if($_POST['marketDate'] == "none") echo '<script>alert("Please choose a date");location.replace("admin.php");</script>';
         else
         {
-            if($_POST['adminOption'] == "invoke") activateMarket($_POST['marketid']);
-            elseif($_POST['adminOption'] == "terminate") terminateActiveMarket($_POST['marketid']);
-            elseif($_POST['adminOption'] == "delete") deleteMarket($_POST['marketid']);
+            if($_POST['adminOption'] == "invoke") echo activateMarket($_POST['marketid']);
+            elseif($_POST['adminOption'] == "terminate") echo terminateActiveMarket($_POST['marketid']);
+            elseif($_POST['adminOption'] == "delete") echo deleteMarket($_POST['marketid']);
         }
-        echo '<script> location.replace("admin.php") </script>'; 
-        return;
     }
 
     if($_POST['message'] == "update-inventory-item"){
@@ -216,6 +210,10 @@ t = time
     if($_POST['message'] == "populate-like-returning-patrons") {
         echo populate_dropdown($_POST['likename']);
     }
+
+    if($_POST['message'] == "populate-markekts-dropdown") {
+        echo populateMarketsDropDown();
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -235,6 +233,19 @@ t = time
         }
         $c = null; //close connection
         return "false";
+    }
+
+    function populateMarketsDropDown() {
+        $c = connDB();
+        $sql = "SELECT idByDate FROM Markets";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+            $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
+        }
+        $c = null; //close connection
+        if(strlen($data) < 2) return '<p> No Markets Found </p>';
+        else return "<option value = 'none' selected disabled hidden> Choose a Market </option>".$data;
     }
 
     function connDB()
@@ -391,23 +402,18 @@ t = time
         return false;
     }
     
-    function newMarket($d, $st, $et) //create new market with the $d date, add to DB
-    {
+    function newMarket($d, $st, $et) {
         $c = connDB();
         $sql_existence = "SELECT * FROM Markets WHERE idByDate = ".$date;
         $s = $c -> prepare($sql_existence); 
         $s -> execute(); 
-        if($s -> fetch(PDO::FETCH_ASSOC))
-        {
-            echo '<script> alert("Sorry, This market already exists in the database. Only one market per day."); </script>';
-            echo '<script> location.replace("admin.php") </script>';
-            return; 
-        }
+        if($s -> fetch(PDO::FETCH_ASSOC)) return "false";
+
         $sql = "INSERT INTO Markets (idByDate, active, starttime, closetime) VALUES (".$d.", 0, '".$st."', '".$et."');"; //0 = not active, 1 = active (tiny int sserving as boolean)
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c->exec($sql);
         $c = null; //close connection 
-        return;
+        return "true";
     }
 
     function verifyOld($oldPW) //make sure the old password is currect when trying to change a password
@@ -451,14 +457,14 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-        if($r['active'] == 2) echo '<script>alert("This market is terminated.\r\n It cannot be activated again");</script>';
-        else if ($r['active'] == 1) echo '<script>alert("This market is already active ! ");</script>';
+        if($r['active'] == 2) return "cantactivateterminated";
+        else if ($r['active'] == 1) return "alreadyactive";
         else {
             $sql = "UPDATE Markets SET active = 1, activationtime = '".$activation_time_format."' WHERE idByDate = ".$date.";";
             $c -> prepare($sql) -> execute();
         }
         $c = null; //close connection
-        return;
+        return "activated";
     }
 
     function terminateActiveMarket($date) //terminate a market with a status active = 2 (meaning it can no longer be activated again)
@@ -471,14 +477,14 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-        if($r['active'] == 0) echo '<script>alert("This market is not active.\r\n It cannot be terminated before it was activated");</script>';
-        else if ($r['active'] == 2) echo '<script>alert("This market has already been terminated ! ");</script>';
+        if($r['active'] == 0) return "notactive";
+        else if ($r['active'] == 2) return "alreadyterminated";
         else {
             $sql = "UPDATE Markets SET active = 2, terminationtime = '".$termination_time_format."' WHERE idByDate = ".$date.";";
             $c -> prepare($sql) -> execute();
         }
         $c = null; //close connection
-        return;
+        return "terminated";
     }
 
     function deleteMarket($date) //delete a market from the database
@@ -492,7 +498,7 @@ t = time
         $sql .= "DELETE FROM SignUps WHERE Market = ".$date.";";
         $c -> prepare($sql)-> execute();
         $c = null; //close connection
-        return;
+        return "deleted";
     }
 
     // ======================================================== //
@@ -777,19 +783,6 @@ t = time
         $data = "{value: ".$noobies.", label: 'New Patrons'},{value: ".($allies - $noobies).", label: 'Returning Patrons'}";
         $c = null;
         return $data;
-    }
-
-    function populateMarketsDropDown() {
-        $c = connDB();
-        $sql = "SELECT idByDate FROM Markets";
-        $s = $c -> prepare($sql);
-        $s -> execute();
-        while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
-        }
-        $c = null; //close connection
-        if(strlen($data) < 2) return '<p> Sorry, No Markets detected in the database </p>';
-        else return $data;
     }
 
     function displayReportPage($rep) {

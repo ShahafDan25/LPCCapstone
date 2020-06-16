@@ -190,7 +190,7 @@
                 <br>
                 <ul class = "list-group" id = "myList"></ul>  
                 <br>
-                <button class = "btn submit-returning-patron-login" id = "retPatSubmission-spanish" onclick = "login_patron();"> SUBMIT </button>
+                <button class = "btn submit-returning-patron-login" onclick = "login_patron();"> SUBMIT </button>
             </div>
             <!------------------- RETURNING MEMBERS DIVISION ~ Spanish ----------------------->
             <div class = "returning-members" id = "returning-members-spanish" style = "display: none">
@@ -200,12 +200,12 @@
                 <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "  Identificación" name = "patronID"></label>
                 <br><br>
                 <p> <strong> ¿Olvidaste tu identificación? </strong> Busca tu nombre ! </p>
-                <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id = "myInput" type = "text" placeholder = " Busca.." autocomplete = "off"> </span>
+                <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id = "myInput-spanish" type = "text" placeholder = " Busca.." autocomplete = "off"> </span>
                 <br>
                 <ul class = "list-group" id = "myList-spanish"></ul>  
                 <br>
                 <input type="hidden" value = "patronLogin" name = "message">
-                <button class = "btn submit-returning-patron-login" id = "retPatSubmission" onclick = "login_patron():"> Enviar </button>
+                <button class = "btn submit-returning-patron-login" onclick = "login_patron():"> Enviar </button>
             </div>
             <!------------------- ADMIN LOGIN DIVISION ----------------------->
             <div class = "admin-login" id = "admin-login" style = "display: none">
@@ -217,21 +217,15 @@
             </div>
             <!------------------- VOLUNTEER SIGN UP DIVISION ----------------------->
             <div class = "volunteer-signup" id = "volunteer-signup" style = "display: none">
-                <form action = "funcs.php" method = "POST">
-                    <h6><strong><u> Login With Your Email </strong></u></h6>
-                    <input type = "text" placeholder = "  Email" class = "index-registration-input full" name = "volunteer-email" pattern = "\S+.*" required> <br><br>
-                    <input type = "hidden" value = "volunteer-login" name = "message">
-                    <button class = "btn submit-admin-login"> Submit </button>
-                </form> 
+                <h6><strong><u> Login With Your Email </strong></u></h6>
+                <input type = "text" placeholder = "  Email" class = "index-registration-input full" id = "volunteer-email" pattern = "\S+.*" required> <br><br>
+                <button class = "btn submit-admin-login" id = "volunteer-login-btn"> Submit </button>
                 <br><br> <hr style = "width: 80% !important; border: 0.7px solid #303030 !important;"> <br><br>
-                <form action = "funcs.php" method = "POST">
-                    <h6><strong><u> Request Volunteer Access </strong></u></h6>
-                    <input type = "text" placeholder = "  First Name" class = "index-registration-input half inline" name = "first" pattern = "\S+.*" required> 
-                    <input type = "text" placeholder = "  Last Name" class = "index-registration-input half inline" name = "last" pattern = "\S+.*" required> <br>
-                    <input type = "text" placeholder = "  Email" class = "index-registration-input full" name = "volunteer-email" pattern = "\S+.*" required> <br><br>
-                    <input type = "hidden" value = "volunteer-request" name = "message">
-                    <button class = "btn submit-admin-login"> Submit </button>
-                </form>
+                <h6><strong><u> Request Volunteer Access </strong></u></h6>
+                <input type = "text" placeholder = "  First Name" class = "index-registration-input half inline" name = "first-name-volunteer" pattern = "\S+.*" required> 
+                <input type = "text" placeholder = "  Last Name" class = "index-registration-input half inline" name = "last-name-volunteer" pattern = "\S+.*" required> <br>
+                <input type = "text" placeholder = "  Email" class = "index-registration-input full" name = "volunteer-email-request" pattern = "\S+.*" required> <br><br>
+                <button class = "btn submit-admin-login" id = "volunteer-request-btn"> Submit </button>
             </div>
             <!-------------------- NO ACTIVE MARKET MESSAGE --------------->
             <div class = "no-active-market-message" id = "no-active-market-message" style = "display: none;">
@@ -250,8 +244,38 @@
         </div>
     </body>
     <script>
-        
+        $("#volunteer-request-btn").click(function() {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "volunteer-request",
+                    volunteerEmail: document.getElementById("volunteer-email-request").value,
+                    first: document.getElementById("first-name-volunteer").value,
+                    last: document.getElementById("last-name-volunteer").value
+                },
+                success: function(data) {
+                    if(data == "true") location.replace("signups.php");
+                    else if (data == "false") alert("Your email is not a registered volunteer. \r\n You can request a volunteer access below.")
+                }  
+            });
+        });
 
+
+        $("#volunteer-login-btn").click(function() {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "volunteer-login",
+                    volunteerEmail: document.getElementById("volunteer-email").value
+                },
+                success: function(data) {
+                    if(data == "true") location.replace("signups.php");
+                    else if (data == "false") alert("Your email is not a registered volunteer. \r\n You can request a volunteer access below.")
+                }  
+            });
+        });
 
         $( document ).ready(function() {
             $.ajax ({
@@ -284,33 +308,41 @@
         var toAdminInput = document.getElementById("inputAdminBtn");
         var toAdminBtn = document.getElementById("inputAdminPW");
 
-        $("#myInput").keyup(function() 
-        {
-            var namesrch = document.getElementById("myInput").value;
-            while(namesrch.charAt(0) == " ") { //cut all white spaces in the front
-                namesrch.slice(1,namesrch.length);
-            }
-            //divide into first name, and the rest
-            var counter = 0;
-            while(namesrch.charAt(0) != " ") { //cut all white spaces in the front
-                counter++:
-            }
+        $("#myInput").keyup(function() {
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
                 data: {
-                    likelastname: document.getElementById("").value,
-                    likename: document.getElementById("myInput").value,
+                    likename: (document.getElementById("myInput").value).split(" ").join(" "), //get rid of all white spaces,
                     message: "populate-like-returning-patrons"
                 },
                 success: function(data) {
                     $("#myList").html(data);
-                    $("#myList-spanish").html(data);
                 }  
             });
             //filter:
             var value = $(this).val().toLowerCase();
             $("#myList li").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });         
+        });
+
+        //same but for spanish page to differentiate id uniqueness
+        $("#myInput-spanish").keyup(function() {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    likename: (document.getElementById("myInput-spanish").value).split(" ").join(" "), //get rid of all white spaces,
+                    message: "populate-like-returning-patrons"
+                },
+                success: function(data) {
+                    $("#myList-spanish").html(data);
+                }  
+            });
+            //filter:
+            var value = $(this).val().toLowerCase();
+            $("#myList-spanish li").filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });         
         });

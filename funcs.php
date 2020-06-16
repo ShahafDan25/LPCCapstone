@@ -139,10 +139,10 @@ t = time
 
     if($_POST['message'] == "volunteer-login") {
         if(verifyVolunteer($_POST['volunteer-email'])) {
-            $_SESSION['volunteer-id'] = $_POST['volunteer-email'];
-            echo '<script>location.replace("signups.php");</script>'; 
+            $_SESSION['volunteer-id'] = $_POST['volunteerEmail'];
+            echo "true"; 
         }
-        else echo '<script>alert("You are not registered as an active volunteer \r\n please contact the admin");</script>';
+        else echo "false";
     }
 
     if($_POST['message'] == "volunteer-request") {
@@ -214,7 +214,7 @@ t = time
     }
 
     if($_POST['message'] == "populate-like-returning-patrons") {
-        echo populate_dropdown($_POST['likename'], $_POST['likelastname']);
+        echo populate_dropdown($_POST['likename']);
     }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
@@ -296,10 +296,10 @@ t = time
         return $idsArrays;
     }
 
-    function populate_dropdown($like_first_name, $like_last_name) {
+    function populate_dropdown($likename) {
         $c = connDB(); //set connection
         $all_options = "";
-        $sql = "SELECT DISTINCT FirstName, LastName, patID FROM Patrons ORDER BY FirstName";
+        $sql = "SELECT DISTINCT FirstName, LastName, patID FROM Patrons WHERE REPLACE(CONCAT(FirstName, LastName), ' ', '') LIKE '".$likename."%' ORDER BY FirstName";
         $s = $c -> prepare($sql);
         $s -> execute(); 
         $counter = 0;

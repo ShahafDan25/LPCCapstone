@@ -1,4 +1,4 @@
-<?php session_start(); include "funcs.php"; ?> 
+<?php session_start(); ?> 
 <!DOCTYPE html>
 <html>
     <head>
@@ -29,7 +29,6 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
-
     </head>
 
     <body class = "inventory-page-body">
@@ -42,16 +41,26 @@
         </header>
         <div class = "page-container">
         <h2> MARKET INVENTORY </h2>
-            <select class = 'select-markets' name = 'marketid' id = "marketid">
-                <option value = 'none' selected disabled hidden>Choose a Market </option>
-                <?php echo populateMarketsDropDown(); ?>
-            </select>
+            <select class = 'select-markets' name = 'marketid' id = "marketid"></select>
             <br><br>
             <!-- Table with the current updated inventory -->
             <div class = "page-sub-container" id = "view_inv" style = "display: none"></div>
         </div>
     </body>
     <script>
+        $(document).ready(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-markekts-dropdown",
+                },
+                succes: function(data){
+                    $("marketid").html(data);
+                }
+            });
+        });
+
         $(document).on('change', '#marketid', function() {
             // populate inventory view table
             $.ajax ({

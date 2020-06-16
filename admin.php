@@ -136,6 +136,7 @@
                     else if(data == "alreadyterminated") alert("This Market has already been terminated");
                     else if(data == "cantactivateterminated") alert("You can't reactivate a terminated market");
                     else if(data == "alreadyactive") alert("This market is already active.");
+                    else if(data = "nodatechosen") alert("please choosee a date");
                 }
             });
         });

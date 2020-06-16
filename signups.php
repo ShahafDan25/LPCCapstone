@@ -1,4 +1,3 @@
-<?php include "funcs.php";?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,41 +38,86 @@
     <body class = "signups-page-body">
         <header class = "nav-bar" style = "margin-right: 5% !important;">
             <h2 class = "index-signups-page-header-title"> Las Positas College: The Market </h2>
-            <h5 class = "index-signups-page-header-sub-title"><u> <?php echo volunteer_name_from_email($_SESSION['volunteer-id']);?> </u></h5>
+            <h5 class = "index-signups-page-header-sub-title" id = "volunteer-name-displayed"><u></u></h5>
             <!-- <a href = "profile.php" class = "nav-bar-option responsive inline" style = "float: right !important;"><i class="fa fa-user" aria-hidden="true"></i> Profile </a> -->
             <a href = "index.php" class = "nav-bar-option responsive inline" style = "float: right !important;"><i class="fa fa-home" aria-hidden="true"></i> Main Page </a>
         </header>
         <div class = "page-container">
             <h2> Sign Up To Markets </h2>
-            <select class = 'select-markets' name = 'marketid' id = "marketid">
-                <option value = 'none' selected disabled hidden>Choose a Market </option>
-                 <?php echo populateNonTerminatedMarketsDropDown(); ?> 
-            </select>
+            <select class = 'select-markets' name = 'marketid' id = "marketid"></select>
             <br><br>
             <div class = "page-sub-container" id = "signup-sheet-container-registration" style = "display: none !important;">
-                <form action = "funcs.php" method = "POST">
-                        <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
-                        <input type = "time" class = "index-registration-input half inline" name = "starttime" id = "starttime-input" required min = "09:00:00" max = "16:30:00">
-                        <i class = 'fa fa-arrow-right inline' aria-hidden = 'true' style = 'margin-right: 2% !important;'></i>
-                        <input type = "time" class = "index-registration-input half inline" name = "endtime" id = "endtime-input" required min = "09:30:00" max = "17:00:00" >
-                        <input type = "hidden" name = "message" value = "commit-signup">
-                        <button class = "btn submit-admin-login"> Submit </button>
-                </form>
+                <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
+                <input type = "time" class = "index-registration-input half inline" id = "starttime-input" required min = "09:00:00" max = "16:30:00">
+                <i class = 'fa fa-arrow-right inline' aria-hidden = 'true' style = 'margin-right: 2% !important;'></i>
+                <input type = "time" class = "index-registration-input half inline" id = "endtime-input" required min = "09:30:00" max = "17:00:00" >
+                <button class = "btn submit-admin-login" id = "commit-volunteer-signup"> Submit </button>
                 <div class = "signup-commits" id = "signup-commits"> </div>
             </div>
             <br>
             <div class = "page-sub-container" id = "signup-sheet-container" style = "display: none !important">
                 <!-- Schedule Of Volunteers Will Be Populated Here  -->
             </div>
-        </div>
-        <!-- ----------------- FOOTER SECTION --------------------- -->
-        <!-- <footer class = "footer">
-            <p> Las Positas College Student Government <br> </p>
-            <p class = "shahaf-signature"> Shahaf Dan Productions </p>
-        </footer>  -->
-        <br><br><br>
+        </div>        
+        <br><br>
     </body>
     <script>
+        $("#remove-signup-commit-btn").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "remove-signup-commit",
+                    date: document.getElementById("marketid").value,
+                    starttime: document.getElementById("starttime-remove-commit").value,
+                    endtime: document.getElementById("endtime-remove-commit").value
+                },
+                succes: function(data){
+                    if(data == "commit-removed") alert("Sign pp commit was removed");
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-nonterminated-markekts-dropdown"
+                },
+                succes: function(data){
+                    $("marketid").html(data);
+                }
+            });
+            //populate volunteers name at the top pf the screen
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-volunteer-name"
+                },
+                succes: function(data){
+                    $("volunteer-name-displayed").html(data);
+                }
+            });
+        });
+
+        $("#commit-volunteer-signup").click(function() {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "commit-signup",
+                    starttime: document.getElementById("starttime-input").value,
+                    endtime: docuement.getElementById("endtime-input").value,
+                    date: document.getElementById("marketid").value
+                },
+                success: function(data) {
+                    if(data == "committedsignup") alert("You have succesfully signed up \r\n to volunteer at the market!");
+                }
+            });
+        });
+
         $(document).on('change', '#marketid', function() {
             //populate pdf request form 
             $.ajax ({
@@ -105,23 +149,22 @@
             });
         });
 
-        // convert this to AJAX code later - if necessary
-        // $("#remove-signup-commit-btn").click (function (event) {
-        //     //removing a sign up commit from table
-        //     $.ajax ({
-        //         type: "POST",
-        //         url: "funcs.php", 
-        //         data: {
-        //             message: "remove-then-display-volunteer-signup-commits",
-        //             date: document.getElementById("marketid").value,
-        //             starttime = document.getElementById("starttime").value,
-        //             endtime = document.getElementById("endtime").value
-        //         },
-        //         success: function (data) {
-        //             console.log(data);
-        //             $("#signup-commits").html(data);
-        //         }
-        //     });
-        // });
+        $("#remove-signup-commit-btn").click (function (event) {
+            //removing a sign up commit from table
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "remove-then-display-volunteer-signup-commits",
+                    date: document.getElementById("marketid").value,
+                    starttime = document.getElementById("starttime").value,
+                    endtime = document.getElementById("endtime").value
+                },
+                success: function (data) {
+                    console.log(data);
+                    $("#signup-commits").html(data);
+                }
+            });
+        });
     </script>
 </html>

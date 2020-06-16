@@ -38,7 +38,7 @@ t = time
 
     if($_POST['message'] == 'adminOption') //choose an action option per market
     {
-        if($_POST['marketDate'] == "none") echo '<script>alert("Please choose a date");location.replace("admin.php");</script>';
+        if($_POST['marketDate'] == "none") echo "nodatechosen";
         else
         {
             if($_POST['adminOption'] == "invoke") echo activateMarket($_POST['marketid']);
@@ -81,30 +81,12 @@ t = time
         echo loginPat($_POST['patronID']);
     }
 
-    if($_POST['message'] == 'checkID') //check if ID is available
-    {
-        $c = connDB(); 
-        $sql = "SELECT * FROM Patrons WHERE patID = ".$_POST['patron_id'];
-        $s = $c -> prepare($sql); 
-        $s -> execute(); 
-        if(!$s -> fetch(PDO::FETCH_ASSOC)) 
-        {
-            echo '<script> alert("ID confirmed! Please insert it now in the registration page"); </script>'; 
-        }
-        else
-        {  
-            echo '<script> alert("ID is already in use by someone else. Choose a different ID!");</script>';
-        }
-        echo '<script> location.replace("index.php");</script>';
-    }
-
     if($_POST['message'] == "add-volunteer") {
         echo addVolunteer($_POST['firstname'], $_POST['lastname'], $_POST['email']);
     }
 
     if($_POST['message'] == "deactivateVolunteer") {
         deactivateVolunteer($_POST['id']);
-        echo '<script>location.replace("volunteers.php");</script>';
     }
 
     if($_POST['message'] == "start-market-report-session") {
@@ -140,8 +122,8 @@ t = time
     }
 
     if($_POST['message'] == "volunteer-request") {
-        if(requestVolunteer($_POST['volunteer-email'], $_POST['first'], $_POST['last'])) echo '<script>alert("Request Submitted!"); location.replace("index.php");</script>';
-        echo '<script>alert("You are already in the system!"); location.replace("index.php");</script>';
+        if(requestVolunteer($_POST['volunteer-email'], $_POST['first'], $_POST['last'])) echo "true;";
+        echo "false";
     }
 
     if($_POST['message'] == "display-signup-sheet") {
@@ -150,8 +132,9 @@ t = time
     }
 
     if($_POST['message'] == "commit-signup") {
-        commitSignUp($_SESSION['volunteer-id'], $_SESSION['volunteer-signup-marketid'], $_POST['starttime'], $_POST['endtime']);
-        echo '<script>location.replace("signups.php");</script>';
+        // echo commitSignUp($_SESSION['volunteer-id'], $_SESSION['volunteer-signup-marketid'], $_POST['starttime'], $_POST['endtime']);
+        echo commitSignUp($_SESSION['volunteer-id'], $_POST['date'], $_POST['starttime'], $_POST['endtime']);
+
     }
 
     if($_POST['message'] == "display-volunteer-signup-commits") {
@@ -159,8 +142,7 @@ t = time
     }
 
     if($_POST['message'] == "remove-signup-commit") {
-        removeSignUpCommit($_SESSION['volunteer-id'], $_SESSION['volunteer-signup-marketid'], $_POST['starttime'], $_POST['endtime']);
-        echo '<script>alert(" Your Sign Up Commit was succesfully removed!"); location.replace("signups.php");</script>';
+        echo removeSignUpCommit($_SESSION['volunteer-id'], $_POST['date'], $_POST['starttime'], $_POST['endtime']);
     }
 
     if($_POST['message'] == "no-active-market-message") {
@@ -214,6 +196,22 @@ t = time
     if($_POST['message'] == "populate-markekts-dropdown") {
         echo populateMarketsDropDown();
     }
+
+    if($_POST['message'] == "populate-nonterminated-markekts-dropdown") {
+        echo populateNonTerminatedMarketsDropDown();
+    }
+
+    if($_POST['message'] == "populate-volunteer-name") {
+        echo volunteer_name_from_email($_SESSION['volunteer-id']);
+    } 
+
+    if($_POST['message'] == "load-email-list") {
+        echo displayVolunteerEmailList();
+    }
+
+    if($_POST['message'] == "load-volunteers-table") {
+        echo displayAllVolunteers();
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -244,12 +242,11 @@ t = time
             $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
         }
         $c = null; //close connection
-        if(strlen($data) < 2) return '<p> No Markets Found </p>';
+        if(strlen($data) < 2) return '<option selected disabled> No Markets Found </option>';
         else return "<option value = 'none' selected disabled hidden> Choose a Market </option>".$data;
     }
 
-    function connDB()
-    {
+    function connDB(){
         $username = "root";
         $password = "Sdan3189";
         // $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';  //connection link
@@ -324,15 +321,13 @@ t = time
         return $all_options;
     }
      
-    function current_market_date() //retrieve the date of the current market (in a human format)
-    {
+    function current_market_date() {
         $c = connDB();
         $sql = "SELECT idByDate FROM Markets WHERE active = 1";
         $s = $c -> prepare($sql);
         $s -> execute(); 
         if(!$r = $s -> fetch(PDO::FETCH_ASSOC)) $final_date = "";
-        else
-        {
+        else{
             $months = ["January", "February", "March", "April", "May", " June", "July", "August", "September", "October", "November", "December"];
             $final_date = $months[intval(substr($r['idByDate'], 4, 2)) - 1]." / ".substr($r['idByDate'],0, 4);
         }
@@ -365,29 +360,6 @@ t = time
     // ======================================================== //
     // ---------------- ADMIN PAGE FUNCTIONS -------------------//
     // ======================================================== //
-
-    function populate_market_dropdown($c) //insert all markets by date to the drop down of markets
-    {
-        $c = connDB();
-        $sql = "SELECT * FROM Markets";
-        $s = $c -> prepare($sql); 
-        $s -> execute();
-        $s_ec = $c ->prepare($sql);
-        $s_ec -> execute();
-        $active = "Closed";
-
-        if(!$s_ec -> fetch(PDO::FETCH_ASSOC)) //no markets in the datebase, insert special option to dropdown
-        {
-            return '<option class="dropdown-item midbigger" href="#">No Markets to Show</option>'; 
-        }
-        while($r = $s -> fetch(PDO::FETCH_ASSOC))
-        { 
-            if($r['active'] == 1) $active = "Active!";
-            else $active = "Closed";
-            echo '&nbsp;<option class = "dropdown-item midbigger" href="#">'.substr($r['idByDate'],4,2).' / '.substr($r['idByDate'],6,2).' / '.substr($r['idByDate'],0,4).' - '.$active.'</option><br>';
-        }
-        return; 
-    }
 
     function verifyPastPasswords($new) //verify old password when chaing the password
     {
@@ -1038,7 +1010,7 @@ t = time
 
     function addVolunteer($f, $l, $e) {
         $c = connDB();
-        if(verifyVolunteer($e) == true) return '<script>alert("This email is already in use by someone");</script>'.populateAddVolunteerForm();
+        if(verifyVolunteer($e) == true) return "alreadyinuse";
         $sql = "INSERT INTO Volunteers VALUES ('".$f."', '".$l."', '".$e."', NOW(), 1, NULL, NULL);";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
@@ -1078,15 +1050,15 @@ t = time
         $s = $c -> prepare($sql);
         $s -> execute();
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $data .= '<tr><form action = "funcs.php", method = "POST">';
-            $data .= '<td><input type = "hidden" value = "'.$r['Email'].'" name = "id">'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
-            $data .= '<td>'.$r['Email'].'</td>';
-            $data .= '<td>'.$months[intval(substr($r['Start_Date'],5,2)) - 1].' '.substr($r['Start_Date'],8,2).', '.substr($r['Start_Date'],0,4).'</td>';
-            $data .= '<td><input type = "hidden" name = "message" value = "deactivateVolunteer"><button class = "btn btn-warning" style = "border-radius: 150px !important;"><i class="fa fa-power-off" aria-hidden="true"></i></button></td>';
-            $data .= '</form></tr>';
+            $data .= '<tr>';
+                $data .= '<td>'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
+                $data .= '<td>'.$r['Email'].'</td>';
+                $data .= '<td>'.$months[intval(substr($r['Start_Date'],5,2)) - 1].' '.substr($r['Start_Date'],8,2).', '.substr($r['Start_Date'],0,4).'</td>';
+                $data .= '<td><button class = "btn btn-warning" style = "border-radius: 150px !important;" onclick = "deactivateVolunteer('.$r['Email'].')";><i class="fa fa-power-off" aria-hidden="true"></i></button></td>';
+            $data .= '</tr>';
         }
         $c = null;
-        if(strlen($data) < 2) return '<p style = "float: left !important; margin-left: 20% !important;"> Sorry, No volunteers are detected in the database</p><br><br>';
+        if(strlen($data) < 2) return '<p style = "float: left !important; margin-left: 20% !important;"> No Volunteers Found</p><br><br>';
         else return $table_begin.$data.$table_end;
     }
 
@@ -1284,8 +1256,8 @@ t = time
             else $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
         }
         $c = null; //close connection
-        if(strlen($data) < 2) return '<p> Sorry, No Markets detected in the database </p>';
-        else return $data;
+        if(strlen($data) < 2) return '<option selected disabled> Sorry, No Markets detected in the database </option>';
+        else return "<option value = 'none' selected disabled hidden>Choose a Market </option>".$data;
     }
 
     function displaySignupSheets($marketDate) {
@@ -1351,7 +1323,7 @@ t = time
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null; //close connection
-        return;
+        return "committedsignup";
     }
 
     function displayVolunteerCommits($vol, $mar) {
@@ -1379,15 +1351,13 @@ t = time
                 <td>'.substr($r['Start_Time'],0,5).'</td>
                 <td>'.substr($r['End_Time'],0,5).'</td>
                 <td>
-                    <form action = "funcs.php" method = "POST">
-                    <input type = "hidden" name = "starttime" value = "'.substr($r['Start_Time'],0,5).'">
-                    <input type = "hidden" name = "endtime" value = "'.substr($r['End_Time'],0,5).'">
-                    <input type = "hidden" name = "message" value = "remove-signup-commit">
-                    <button class = "btn remove-signup-commit">
+                    <input type = "hidden" id = "starttime-remove-commit" value = "'.substr($r['Start_Time'],0,5).'">
+                    <input type = "hidden" id = "endtime-remove-commit" value = "'.substr($r['End_Time'],0,5).'">
+                    <button class = "btn remove-signup-commit" id = "remove-signup-commit-btn">
                         <i class = "fa fa-times" aria-hidden = "true"></i>
                     </button>
                 </td>
-            </tr></form>';
+            </tr>';
         }
         $c = null; //close connection
         if(strlen($data) < 2) return "<br>";
@@ -1399,6 +1369,6 @@ t = time
         $sql = "DELETE FROM SignUps WHERE Email = '".$vol."' AND Start_Time = '".$start."' AND End_Time = '".$end."' AND Market = ".$mar.";";
         $c -> prepare($sql) -> execute();
         $c = null; // close connection
-        return;
+        return "commit-removed";
     }
 ?>

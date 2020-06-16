@@ -1,7 +1,3 @@
-<?php
-    include "funcs.php";
-    $conn = connDB(); 
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,7 +17,6 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
         <!-- FONTAWESOME ICON --> 
-        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
         <!-- MORRIS.JS (for graphing utilities from PHP data) LINKS -->
@@ -42,11 +37,7 @@
         </header>
         <div class = "page-container">
             <br>
-            <h2> MARKET REPORT </h2>
-            <select class = 'select-markets' name = 'marketid' id = "marketid">
-                <option value = 'none' selected disabled hidden>Choose a Market </option>
-                <?php echo populateMarketsDropDown(); ?>
-            </select>
+            <select class = 'select-markets' name = 'marketid' id = "marketid"></select>
             <br>
             <br>
             <div class = "report-btn-options-container" id = "report-btn-options-container">
@@ -58,7 +49,7 @@
             </div>
             <br><br>
             <!-- Table: Patrons in that specific market -->
-            <div class = "page-sub-container" id = "report-table-graph" style = "display: none">
+            <div class = "page-sub-container" id = "report-table-graph" style = "display: block">
                 <h3> Attendees </h3>
                 <div id = "report-table-box-id"></div>
             </div>
@@ -80,6 +71,19 @@
         <div id = "scripts3"></div>
     </body>
     <script>
+        $(document).ready(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-markekts-dropdown",
+                },
+                succes: function(data){
+                    $("marketid").html(data);
+                }
+            });
+        });
+
         function pdfReport() 
         {
             $.ajax ({

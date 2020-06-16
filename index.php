@@ -261,7 +261,6 @@
             });
         });
 
-
         $("#volunteer-login-btn").click(function() {
             $.ajax ({
                 type: "POST",

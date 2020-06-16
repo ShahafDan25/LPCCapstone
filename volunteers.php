@@ -62,6 +62,7 @@
             <div class = "page-sub-container-volunteer" id = "volunteers-schedule-per-market-div" style = "display: none">
                 <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
                 <h4 class = "volunteer-section-title inline"><u>Volunteers Schedule</u></h4>
+                <div id = "marketid-container"></div>
                 <select class = 'select-markets inline' name = 'marketid' id = "marketid" style = "float: right !important; margin-right: 4% !important;" onchange = "chosenMarketDateChanged();"></select>
                 <br><br><br><hr class = "spacebar-dark"><br>
                 <div id = "sign-up-sheets-in-admin-volunteers"></div>
@@ -92,10 +93,10 @@
                 type: "POST",
                 url: "funcs.php", 
                 data: {
-                    message: "populate-markekts-dropdown",
+                    message: "populate-markets-dropdown"
                 },
-                succes: function(data){
-                    $("marketid").html(data);
+                success: function(data){
+                    $("#marketid-container").html(data);
                 }
             });
 

@@ -5,7 +5,7 @@
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
         <!-- CSS HARDCODE FILE LINK -->
-        <link href='capstone.css?' rel='stylesheet'></link>
+        <link href='capstone.css' rel='stylesheet'></link>
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
@@ -17,17 +17,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- FONTAWESOME ICON --> 
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
-
-        <!-- ALERTIFY.JS: JavaScrip and CSS -->
-        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.rtl.min.css"/>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
         
     </head>
     
@@ -52,7 +41,9 @@
                 <div class = "sub-admin-page-container" id = "new-market" style = "display: block">
                     <h4><u>Create New Market</u></h4>  
                     <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" id = "new_market_date"><br><br>
-                    <br><h6><u><strong> For what times would you need volunteers? </strong></u></h6> <br>
+                    <br>
+                    <h6><u><strong> For what times would you need volunteers? </strong></u></h6> 
+                    <br>
                     <input type = "time" placeholder = " Starting Time" class = "choose-new-market-date inline" id = "new_market_start_time">
                     <i class="fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important; margin-left: 2% !important;"></i>
                     <input type = "time" placeholder = " Closing Time" class = "choose-new-market-date inline" id = "new_market_end_time"><br><br>
@@ -61,7 +52,7 @@
                 <!-- MARKET ACTIONS OPTION -->
                 <div class = "sub-admin-page-container" id = "market-actions" style = "display: none" >
                     <h4><u>Market Actions</u></h4>
-                    <select class = "select-markets" name = 'marketid' id = "marketid"></select>
+                    <div id = "marketid-container"></div>
                     <br>
                     <ul class = "admin-options-list">
                         <li class = "admin-options-list-item">
@@ -93,118 +84,17 @@
                     <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button>
                 </div>
                 <footer class = "footer">
-                    <p> Las Positas College Student Government <br> </p>
+                    <p> Las Positas College Student Government </p>
                     <p class = "shahaf-signature"> Shahaf Dan Productions </p>
                 </footer>
             </div>
         </div>
     </body>
     <script>
-        var pw1 = document.getElementById("newPW1");
-        var pw2 = document.getElementById("newPW2");
         
-        $("#submit-new-market-date-btn").click(function() {
-            $.ajax( {
-                type: "POST",
-                url: "funcs.php",
-                data: {
-                    message: "submitNewMarket",
-                    new_market_start_time: document.getElementById("new_market_start_time").value,
-                    new_market_date: document.getElementById("new_market_date").value,
-                    new_market_end_time: document.getElementById("new_market_end_time").value
-                },
-                success: function(data) {
-                    if(data == "true") alert ("Market Added !");
-                    else if(data == "false") alert("Market already exists !");
-                }
-            })
-        });
-
-        $("#submit-market-operation-option").click(function() {
-            $.ajax({
-                type: "POST",
-                url: "funcs.php",
-                data: {
-                    message: "adminOption",
-                    adminOption: document.getElementByName("adminOption").value
-                },
-                success: function(data) {
-                    if(data == "deleted") alert ("Market Deleted");
-                    else if(data == "activated") alert("Market Activated !");
-                    else if(data == "terminated") alert("Market Terminated");
-                    else if(data == "notactive") alert("You Can't terminate a non active market.");
-                    else if(data == "alreadyterminated") alert("This Market has already been terminated");
-                    else if(data == "cantactivateterminated") alert("You can't reactivate a terminated market");
-                    else if(data == "alreadyactive") alert("This market is already active.");
-                    else if(data = "nodatechosen") alert("please choosee a date");
-                }
-            });
-        });
-
-        $(document).ready(function() {
-            $.ajax({
-                type: "POST",
-                url: "funcs.php", 
-                data: {
-                    message: "populate-markekts-dropdown",
-                },
-                succes: function(data){
-                    $("marketid").html(data);
-                }
-            });
-        });
-
-        pw1.onkeyup = function(event)
-        {
-            if (event.target.value.length == 0)
-            {
-                document.getElementById("checker").innerHTML = "   *     *     *   ";
-                pw1.style.backgroundColor = "white";
-                pw1.borderColor = "rgb(102, 124, 246) !important;";
-            } 
-            else if(event.target.value.length < 8) 
-            {
-                document.getElementById("checker").innerHTML = "Password must be 8 characters long";
-                pw1.style = "border-color: rgb(255, 141, 141) !important;";
-            }
-            else if(event.target.value.length > 7) 
-            {
-                pw1.style = "border-color: rgb(157, 255, 161) !important;";
-                document.getElementById("checker").innerHTML = "Your password is good!";
-            }
-        }
-
-        pw2.onkeyup = function(event){
-            if (event.target.value.length == 0)
-            {
-                document.getElementById("checker").innerHTML = "   *     *     *   ";
-                pw2.style = "border-color: rgb(102, 124, 246) !important;";
-            } 
-            else if(event.target.value != pw1.value) 
-            {
-                document.getElementById("checker").innerHTML = "Passwords have to match";
-                pw2.style = "border-color: rgb(255, 141, 141) !important;";
-            }
-            else if(event.target.value == pw1.value) 
-            {
-                pw2.style = "border-color: rgb(157, 255, 161) !important;";
-                document.getElementById("checker").innerHTML = "Your password is good!";
-            }
-        }
-
-        function responsive_sidebar_item(x) {
-            var targets = ["new-market", "market-actions", "change-password"];
-            for(var i = 0; i < targets.length; i++) { //do for all
-                document.getElementById(targets[i] + "-sender").className = "a-item";
-                document.getElementById(targets[i]).style.display = "none";
-            }
-            document.getElementById(x).className += " active";
-            document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
-        }
         
         $("#submit-pw-change").click(function() {
-            if(pw1.value == pw2.value && pw1.value.length > 7)
-            {
+            if(pw1.value == pw2.value && pw1.value.length > 7){
                 $.ajax ({
                     type: "POST",
                     url: "funcs.php",
@@ -227,6 +117,117 @@
                 else if (pw1.value != pw2.value) alert ("Your new passwords do not match");
             }
         });
+           
+        var pw1 = document.getElementById("newPW1");
+        var pw2 = document.getElementById("newPW2");
             
+        function responsive_sidebar_item(x) {
+            var targets = ["new-market", "market-actions", "change-password"];
+            for(var i = 0; i < targets.length; i++) { //do for all
+                document.getElementById(targets[i] + "-sender").className = "a-item";
+                document.getElementById(targets[i]).style.display = "none";
+            }
+            document.getElementById(x).className += " active";
+            document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
+        }
+
+        pw2.onkeyup = function(event){
+            if (event.target.value.length == 0)
+            {
+                document.getElementById("checker").innerHTML = "   *     *     *   ";
+                pw2.style = "border-color: rgb(102, 124, 246) !important;";
+            } 
+            else if(event.target.value != pw1.value) 
+            {
+                document.getElementById("checker").innerHTML = "Passwords have to match";
+                pw2.style = "border-color: rgb(255, 141, 141) !important;";
+            }
+            else if(event.target.value == pw1.value) 
+            {
+                pw2.style = "border-color: rgb(157, 255, 161) !important;";
+                document.getElementById("checker").innerHTML = "Your password is good!";
+            }
+        }
+
+        pw1.onkeyup = function(event)
+        {
+            if (event.target.value.length == 0)
+            {
+                document.getElementById("checker").innerHTML = "   *     *     *   ";
+                pw1.style.backgroundColor = "white";
+                pw1.borderColor = "rgb(102, 124, 246) !important;";
+            } 
+            else if(event.target.value.length < 8) 
+            {
+                document.getElementById("checker").innerHTML = "Password must be 8 characters long";
+                pw1.style = "border-color: rgb(255, 141, 141) !important;";
+            }
+            else if(event.target.value.length > 7) 
+            {
+                pw1.style = "border-color: rgb(157, 255, 161) !important;";
+                document.getElementById("checker").innerHTML = "Your password is good!";
+            }
+        }
+
+
+        $("#submit-market-operation-option").click(function() {
+            var options = document.getElementsByName("adminOption");
+            for(var i = 0 ;i < options.length; i++) {
+                if(options[i].checked) {
+                    var checkedAdminOption = options[i].value;
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "adminOption",
+                    adminOption: checkedAdminOption,
+                    date: document.getElementById("marketid").value
+                },
+                success: function(data) {
+                    if(data == "deleted") alert ("Market Deleted");
+                    else if(data == "activated") alert("Market Activated !");
+                    else if(data == "terminated") alert("Market Terminated");
+                    else if(data == "notactive") alert("You Can't terminate a non active market.");
+                    else if(data == "alreadyterminated") alert("This Market has already been terminated");
+                    else if(data == "cantactivateterminated") alert("You can't reactivate a terminated market");
+                    else if(data == "alreadyactive") alert("This market is already active.");
+                    else if(data == "nodatechosen") alert("please choosee a date");
+                }
+            });
+        });
+        
+
+        $("#submit-new-market-date-btn").click(function() {
+            $.ajax( {
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "submitNewMarket",
+                    new_market_start_time: document.getElementById("new_market_start_time").value,
+                    new_market_date: document.getElementById("new_market_date").value,
+                    new_market_end_time: document.getElementById("new_market_end_time").value
+                },
+                success: function(data) {
+                    if(data == "true") alert("Market Added !");
+                    else if(data == "false") alert("Market already exists !");
+                }
+            })
+        });
+
+        $("#market-actions-sender").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-markets-dropdown"
+                },
+                success: function(data){
+                    $("#marketid-container").html(data);
+                }
+            });
+        });
+
     </script>
 </html>

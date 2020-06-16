@@ -1,51 +1,56 @@
-<?php include "connDB.php"; ?>
-<?php include "otherFiles/fpdf_lib/fpdf.php"; ?> 
 <?php
+    $c = connDB(); //set connection
+    $firstnames = ["Diego", "Joe", "Efron", "Adam", "Destiny", "Kaylee", "Brooke", "Minor", "Robert", "William", "Ori", "Danny", "Jesus", "Moses", "Russell", "Sai", "Brandon", "Alisha", "Alice", "Bella", "Christine", "Joseph", "Jose", "Mohammed", "Abdul", "Matthew", "Shaun", "Sean", "Shanw", "Taylor", "Justin", "Kim", "Chloe", "Klay", "Ron", "Ronni", "Chyanne", "Donna", "Chelsea", "Kevin", "Pam", "Jim", "Michael", "Michaela", "Michelle", "David", "Itay", "Joshua", "Josh", "Ahmad", "Moustafa", "Ramon", "Frank", "Sandra", "Junior", "Leah", "Rachel", "Dude", "Tom", "Domminic", "AJ", "CJ", "KJ", "RJ", "TJ", "OJ", "Marry", "Katy", "Katja"];
+    $lastnames = ["Arnold", "Smith", "Watson", "Shpillberg", "Goldman", "Griffin", "Abdullah", "Rodrigez", "Smith", "Cole", "Seely", "Campbell", "Montez", "Silva", "Cortez", "Fibbonacci", "Fetuccini", "Jackson", "Kumar", "Kim", "Chen", "Zhou", "Xing", "Xavier", "Javier", "Junior", "Dahan", "Levi", "Cohen", "Hamdi", "Miller", "Milter", "Inberg", "Gottlieb", "Raizes", "Martin", "Garcia", "Thomas", "West", "Hill", "Fox", "Cortez", "Jane", "Bailey", "Ossman", "Perry", "Adams", "Cox", "Stone", "Cook", "Mitchell", "Reed", "Bennet", "Gray", "Sullivan", "Cooper", "Lopez", "Gonalez", "Perez", "Abadi", "Arian", "Brown", "David", "Taylor"];
+    $promotions = ["Community", "FriendsAndFamily", "Classroom", "Other"];
+    $active = false;
+    $sql_active = "SELECT active FROM Markets WHERE idByDate = 20200617;";
+    $s_active = $c -> prepare($sql_active);
+    $s_active -> execute();
+    $r_active = $s_active -> fetch(PDO::FETCH_ASSOC);
+    if($r_active['active'] == 1) $active = true;
+    while($active) {
+        $id = rand(100000,999999);
+        $first = $firstnames[rand(0, count($firstnames))];
+        $last = $lastnames[rand(0, count($lastnames))];
+        $studentStatus = rand(0,1);
+        $child = rand(0,5);
+        $adult = rand(1,4);
+        $senior = rand(0,2);
+        $prom = $promotions[rand(0,count($promotions))];
 
-    $c = connDB();
-    $d = 20200714;
-    
-    $colors = ["#343A40", "#DC3545", "#20C997", "#17A2B8", "#FFC107", "#6610F2", "#E83E8C", "#6C757D", "#007BFF"];
-    $c = connDB();
-    $data = "";
-    $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = '".$d."';";
-    $s = $c -> prepare($sql);
-    $s -> execute();
-    $r = $s -> fetch(PDO::FETCH_ASSOC);
-    $st = $r['starttime'];
-    $et = $r['closetime'];
-    $diffHours = intval(substr($et, 0, 2)) - intval(substr($st, 0, 2)) - 1;
-    $begDiffMin = 6 - intval(substr($st, 2, 2))/10;
-    $finDiffMin = intval(substr($et, 2, 2))/10 + 1;
-    $totalTensMins = $diffHours*6 + $begDiffMin + $finDiffMin;
-    $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = '".$d."' ORDER BY su.Start_Time;";
-    $s = $c -> prepare($sql);
-    $s -> execute();
-    $counter = -1;
-    while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-        $personDiffHours = intval(substr($r['End_Time'], 0, 2)) - intval(substr($r['Start_Time'], 0, 2)) - 1;
-        $personBegDiffMin = 6 - intval(substr($r['Start_Time'], 3, 2))/10;
-        $personFinDiffMin = intval(substr($r['End_Time'], 3, 2))/10;
-        $personName = $r['First_Name']." ".$r['Last_Name'];
-        if($counter == count($colors)) $counter = 0;
-        else $counter ++; //this puts $counter at $counter = 0 for this first person in the list
-        $personTensMins = $personDiffHours*6 + $personBegDiffMin + $personFinDiffMin;
-        $fraction = number_format((number_format($personTensMins,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
-        // --------- CALCULATE MARGIN: -------------
-        $afbg = intval(substr($r['Start_Time'], 0, 2)) - intval(substr($st, 0, 2)) - 1;
-        $bfbg = 6 - intval(substr($st, 2, 2))/10;
-        $cfbg = intval(substr($r['Start_Time'], 3, 2))/10;
-        $tensFromBeg = $afbg*6 + $bfbg + $cfbg;
-        $marginleft = number_format((number_format($tensFromBeg,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
-        $data .= 
-        '<div style = "width: 100% !important; border-bottom: 0.3px solid black !important;">
-            <div style = "height: 10% !important; width = '.($fraction*100).'% !important; margin-left: '.($marginleft*100).'%!important; background-color: '.$colors[$counter].' !important;">'
-                .$personName.
-            '</div>
-        </div>
-        <br>
-        ';
+        $nuller = rand(0,3);
+        if($nuller == 0) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$prom."', ".$id.", 20200617);";
+        else if($nuller == 1) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last."@gmail.com"."','".$prom."', ".$id.", 20200617);";
+        else if($nuller == 2) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PhoneNumber, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."','".$prom."', ".$id.", 20200617);";
+        else if($nuller == 3) $sql = "INSERT INTO Patrons VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last."@gmail.com"."', '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."', '".$prom."', ".$id.", 20200617);";
+
+        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c -> exec($sql);
+
+        $sql = "INSERT INTO MarketLogins VALUES (20200617, ".$id.", NOW());";
+        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c -> exec($sql);
+
+        echo $first." ".$last." - INSERTED";
+        sleep(rand(10,50));
+        //check is still active
+        $s_active = $c -> prepare($sql_active);
+        $s_active -> execute();
+        $r_active = $s_active -> fetch(PDO::FETCH_ASSOC);
+        if($r_active['active'] == 1) $active = true;
     }
-    $c = null; //close connection
-    echo $data;
+
+
+    echo "Market Not Active Anymore!\n---------\n";
+    $c = null; //close connetcion
+    echo "Connection Closed \n terminating program!";
+    function connDB(){
+        $username = "root";
+        $password = "Sdan3189";
+        $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306socket=/tmp/mysql.sock';
+        try {$conn = new PDO($dsn, $username, $password);}
+        catch (PDOException $e) {echo 'Connection Failed: ' . $e -> getMessage();}
+        return $conn;
+    }   
 ?>

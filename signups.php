@@ -44,7 +44,7 @@
         </header>
         <div class = "page-container">
             <h2> Sign Up To Markets </h2>
-            <select class = 'select-markets' name = 'marketid' id = "marketid"></select>
+            <div id = "marketid-container"></div>
             <br><br>
             <div class = "page-sub-container" id = "signup-sheet-container-registration" style = "display: none !important;">
                 <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
@@ -85,7 +85,7 @@
                 data: {
                     message: "populate-nonterminated-markekts-dropdown"
                 },
-                succes: function(data){
+                success: function(data){
                     $("marketid").html(data);
                 }
             });

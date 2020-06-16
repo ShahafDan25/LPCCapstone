@@ -41,7 +41,7 @@
         </header>
         <div class = "page-container">
         <h2> MARKET INVENTORY </h2>
-            <select class = 'select-markets' name = 'marketid' id = "marketid"></select>
+            <div id = "marketid-container"></div>
             <br><br>
             <!-- Table with the current updated inventory -->
             <div class = "page-sub-container" id = "view_inv" style = "display: none"></div>
@@ -53,10 +53,10 @@
                 type: "POST",
                 url: "funcs.php", 
                 data: {
-                    message: "populate-markekts-dropdown",
+                    message: "populate-markets-dropdown"
                 },
-                succes: function(data){
-                    $("marketid").html(data);
+                success: function(data){
+                    $("#marketid-container").html(data);
                 }
             });
         });

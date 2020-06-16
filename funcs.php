@@ -38,12 +38,12 @@ t = time
 
     if($_POST['message'] == 'adminOption') //choose an action option per market
     {
-        if($_POST['marketDate'] == "none") echo "nodatechosen";
+        if($_POST['date'] == "none") echo "nodatechosen";
         else
         {
-            if($_POST['adminOption'] == "invoke") echo activateMarket($_POST['marketid']);
-            elseif($_POST['adminOption'] == "terminate") echo terminateActiveMarket($_POST['marketid']);
-            elseif($_POST['adminOption'] == "delete") echo deleteMarket($_POST['marketid']);
+            if($_POST['adminOption'] == "invoke") echo activateMarket($_POST['date']);
+            elseif($_POST['adminOption'] == "terminate") echo terminateActiveMarket($_POST['date']);
+            elseif($_POST['adminOption'] == "delete") echo deleteMarket($_POST['date']);
         }
     }
 
@@ -193,8 +193,8 @@ t = time
         echo populate_dropdown($_POST['likename']);
     }
 
-    if($_POST['message'] == "populate-markekts-dropdown") {
-        echo populateMarketsDropDown();
+    if($_POST['message'] == "populate-markets-dropdown") {
+        echo '<select class = "select-markets" id = "marketid">'.populateMarketsDropDown().'</select>';
     }
 
     if($_POST['message'] == "populate-nonterminated-markekts-dropdown") {
@@ -238,12 +238,13 @@ t = time
         $sql = "SELECT idByDate FROM Markets";
         $s = $c -> prepare($sql);
         $s -> execute();
+        $data = "";
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
         }
         $c = null; //close connection
-        if(strlen($data) < 2) return '<option selected disabled> No Markets Found </option>';
-        else return "<option value = 'none' selected disabled hidden> Choose a Market </option>".$data;
+        if(strlen($data) < 2) return '<option value = "none" selected disabled> No Markets Found </option>';
+        else return '<option value = "none" selected disabled hidden> Choose a Market </option>'.$data;
     }
 
     function connDB(){

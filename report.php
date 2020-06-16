@@ -37,7 +37,7 @@
         </header>
         <div class = "page-container">
             <br>
-            <select class = 'select-markets' name = 'marketid' id = "marketid"></select>
+            <div id = "marketid-container"></div>
             <br>
             <br>
             <div class = "report-btn-options-container" id = "report-btn-options-container">
@@ -76,10 +76,10 @@
                 type: "POST",
                 url: "funcs.php", 
                 data: {
-                    message: "populate-markekts-dropdown",
+                    message: "populate-markets-dropdown"
                 },
-                succes: function(data){
-                    $("marketid").html(data);
+                success: function(data){
+                    $("#marketid-container").html(data);
                 }
             });
         });

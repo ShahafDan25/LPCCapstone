@@ -24,14 +24,18 @@
 
         $nuller = rand(0,3);
         if($nuller == 0) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$prom."', ".$id.", 20200617);";
-        else if($nuller == 1) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last."@gmail.com"."','".$prom."', ".$id.", 20200617);";
+        else if($nuller == 1) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."','".$prom."', ".$id.", 20200617);";
         else if($nuller == 2) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PhoneNumber, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."','".$prom."', ".$id.", 20200617);";
-        else if($nuller == 3) $sql = "INSERT INTO Patrons VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last."@gmail.com"."', '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."', '".$prom."', ".$id.", 20200617);";
+        else if($nuller == 3) $sql = "INSERT INTO Patrons VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."', '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."', '".$prom."', ".$id.", 20200617);";
 
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
 
-        $sql = "INSERT INTO MarketLogins VALUES (20200617, ".$id.", NOW());";
+        date_default_timezone_set("America/Los_Angeles");
+        $t = date("H:i");
+        $time_digits = substr($t, 0, 2).substr($t, 3, 2);
+
+        $sql = "INSERT INTO MarketLogins VALUES (20200617, ".$id.", '".$time_digits."');";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
 

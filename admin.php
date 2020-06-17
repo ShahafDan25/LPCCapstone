@@ -30,6 +30,7 @@
             <h5 class = "nav-bar-title responsive"> The Market - Admin </h5>
         </header>
         <div class = "sidebar" id = "sidebar">
+                <a class = "a-item active" id = "index-index-sender" onclick = "responsive_sidebar_item(this.id);"><i class = "fa fa-home" aria-hidden="true"></i></a>
                 <a class = "a-item active" id = "new-market-sender" onclick = "responsive_sidebar_item(this.id);"> New Market </a>
                 <a class = "a-item" id = "market-actions-sender" onclick = "responsive_sidebar_item(this.id);"> Market Actions </a>
                 <a class = "a-item" id = "change-password-sender" onclick = "responsive_sidebar_item(this.id);"> Change Password</a>
@@ -210,7 +211,10 @@
                     new_market_end_time: document.getElementById("new_market_end_time").value
                 },
                 success: function(data) {
-                    if(data == "true") alert("Market Added !");
+                    if(data == "true")  {
+                        alert("Market Added !");
+                        location.replace("admin.php");
+                    }
                     else if(data == "false") alert("Market already exists !");
                 }
             })

@@ -122,8 +122,7 @@ t = time
     }
 
     if($_POST['message'] == "volunteer-request") {
-        if(requestVolunteer($_POST['volunteer-email'], $_POST['first'], $_POST['last'])) echo "true;";
-        echo "false";
+        echo requestVolunteer($_POST['volunteerEmail'], $_POST['first'], $_POST['last']); 
     }
 
     if($_POST['message'] == "display-signup-sheet") {
@@ -249,7 +248,7 @@ t = time
 
     function connDB(){
         $username = "root";
-        $password = "Sdan3189";
+        $password = "MMB3189@A";
         // $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';  //connection link
         $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306socket=/tmp/mysql.sock';
         try {$conn = new PDO($dsn, $username, $password);}
@@ -347,8 +346,7 @@ t = time
         $sql = "SELECT time_stamp FROM MarketLogins WHERE Patrons_patID = ".$id." AND Markets_idByDate = (SELECT idByDate FROM Markets WHERE active = 1);";
         $s = $c -> prepare($sql);
         $s -> execute();
-        if(!$s->fetch(PDO::FETCH_ASSOC)) 
-        {
+        if(!$s->fetch(PDO::FETCH_ASSOC)) {
             $sql = "INSERT INTO MarketLogins (Markets_idByDate, Patrons_patID, time_stamp) VALUES ((SELECT idByDate FROM Markets WHERE active = 1), ".$id."., '".$time_digits."');";
             $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $c->exec($sql);
@@ -1118,7 +1116,7 @@ t = time
             $counter++;
         }
         $c = null;
-        if(strlen($data) < 2) return '<p style = "margin-left: 20% !important;"> Sorry, No volunteers are detected in the database</p><br><br>';
+        if(strlen($data) < 2) return '<p style = "margin-left: 20% !important;"> No Active Volunteers Found </p><br><br>';
         else return $table_begin.$data.$table_end;
     }
 
@@ -1136,25 +1134,22 @@ t = time
     }
         
     function verifyVolunteer($email) {
-        $return = true;
         $c = connDB();
         $sql = "SELECT * FROM Volunteers WHERE Email = '".$email."';";
         $s = $c -> prepare($sql);
         $s -> execute();
-        
-        $c = null; //close connection
         if($s -> fetch(PDO::FETCH_ASSOC)) return true; // which means it is found
         else return false; // not found
     }
 
     function requestVolunteer($email, $first, $last) {
-        if(verifyVolunteer($email)) return false; //do not insert
+        if(verifyVolunteer($email)) return "false"; //do not insert
         $c = connDB();
         $sql = "INSERT INTO Volunteers VALUES('".$first."', '".$last."', '".$email."', NULL, 2, NULL, NULL);";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null; //close connection
-        return true;
+        return "true";
     }
 
     function displayVolunteersAwaitingActivation() {

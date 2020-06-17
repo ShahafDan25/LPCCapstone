@@ -222,9 +222,9 @@
                 <button class = "btn submit-admin-login" id = "volunteer-login-btn"> Submit </button>
                 <br><br> <hr style = "width: 80% !important; border: 0.7px solid #303030 !important;"> <br><br>
                 <h6><strong><u> Request Volunteer Access </strong></u></h6>
-                <input type = "text" placeholder = "  First Name" class = "index-registration-input half inline" name = "first-name-volunteer" pattern = "\S+.*" required> 
-                <input type = "text" placeholder = "  Last Name" class = "index-registration-input half inline" name = "last-name-volunteer" pattern = "\S+.*" required> <br>
-                <input type = "text" placeholder = "  Email" class = "index-registration-input full" name = "volunteer-email-request" pattern = "\S+.*" required> <br><br>
+                <input type = "text" placeholder = "  First Name" class = "index-registration-input half inline" id = "first-name-volunteer" pattern = "\S+.*" required> 
+                <input type = "text" placeholder = "  Last Name" class = "index-registration-input half inline" id = "last-name-volunteer" pattern = "\S+.*" required> <br>
+                <input type = "text" placeholder = "  Email" class = "index-registration-input full" id = "volunteer-email-request" pattern = "\S+.*" required> <br><br>
                 <button class = "btn submit-admin-login" id = "volunteer-request-btn"> Submit </button>
             </div>
             <!-------------------- NO ACTIVE MARKET MESSAGE --------------->
@@ -255,7 +255,10 @@
                     last: document.getElementById("last-name-volunteer").value
                 },
                 success: function(data) {
-                    if(data == "true") location.replace("signups.php");
+                    if(data == "true") {
+                        alert("Your request has been submitted!");
+                        location.replace("index.php");
+                    }
                     else if (data == "false") alert("Your email is not a registered volunteer. \r\n You can request a volunteer access below.")
                 }  
             });

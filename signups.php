@@ -40,16 +40,18 @@
         <div class = "page-container">
             <h2> Sign Up To Markets </h2>
             <div id = "marketid-container"></div>
-            <br><br>
+            <br>
             <div class = "page-sub-container" id = "signup-sheet-container-registration" style = "display: none !important;">
-                <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
-                <p id = "needed-time-paragraph"> </p> 
-                <div id = "needed-time-inputs"></div>
-                <button class = "btn submit-admin-login" id = "commit-volunteer-signup"> Submit </button>
+                <form>
+                    <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
+                    <p id = "needed-time-paragraph"> </p> 
+                    <div id = "needed-time-inputs"></div>
+                    <button class = "btn submit-admin-login" id = "commit-volunteer-signup"> Submit </button>
+                </form>
                 <div class = "signup-commits" id = "signup-commits"> </div>
             </div>
             <br>
-            <div class = "page-sub-container" id = "signup-sheet-container" style = "display: none !important">
+            <div class = "page-sub-container" id = "signup-sheet-container" style = "display: none;">
                 <!-- Schedule Of Volunteers Will Be Populated Here  -->
             </div>
         </div>        
@@ -72,7 +74,7 @@
             });
         });
 
-        function showbtns() { //just so now console errors
+        function showbtns() { //just so we have no console errors
             return;
         }
 
@@ -107,17 +109,17 @@
                 data: {
                     message: "commit-signup",
                     starttime: document.getElementById("starttime-input").value,
-                    endtime: docuement.getElementById("endtime-input").value,
+                    endtime: document.getElementById("endtime-input").value,
                     date: document.getElementById("marketid").value
                 },
                 success: function(data) {
-                    if(data == "committedsignup") alert("You have succesfully signed up \r\n to volunteer at the market!");
+                    if(data == "committedsignup") alert("Thank you for signing up to volunteer!");
                 }
             });
         });
 
         $(document).on('change', '#marketid', function() {
-            //populate pdf request form 
+            //populate sign up sheet in divs format 
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
@@ -126,13 +128,14 @@
                     date: document.getElementById("marketid").value
                 },
                 success: function(data) {
+                    console.log(data);
                     $("#signup-sheet-container").html(data);
                     document.getElementById("signup-sheet-container").style.display = "block";
                     document.getElementById("signup-sheet-container-registration").style.display = "block";
                 }
             });
 
-            //populate the commits already registared by the user
+            //populate the commits already made by the user
             $.ajax ({
                 type: "POST",
                 url: "funcs.php", 

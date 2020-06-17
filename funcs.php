@@ -1263,10 +1263,10 @@ t = time
         $r = $s -> fetch(PDO::FETCH_ASSOC);
         $st = $r['starttime'];
         $et = $r['closetime'];
-        $data = "<h6><strong><u>Volunteer Schedule</strong></u>  ".substr($st,0,2).":".substr($st,2,2)."<i class = 'fa fa-arrow-right' aria-hidden = 'true' style = 'margin-right: 1% !important; margin-left: 1% !important;'></i>".substr($et,0,2).":".substr($et,2,2)."</h6><br>";
-        $diffHours = intval(substr($et, 0, 2)) - intval(substr($st, 0, 2)) - 1;
-        $begDiffMin = 6 - intval(substr($st, 2, 2))/10;
-        $finDiffMin = intval(substr($et, 2, 2))/10 + 1;
+        $data = "<h6><strong><u>Volunteer Schedule</strong></u>  ".substr($st,0,strlen($st)-2).":".substr($st,strlen($st)-2,2)."<i class = 'fa fa-arrow-right' aria-hidden = 'true' style = 'margin-right: 1% !important; margin-left: 1% !important;'></i>".substr($et,0,strlen($et)-2).":".substr($et,strlen($et)-2,2)."</h6><br>";
+        $diffHours = intval(substr($et, 0, strlen($et)-2)) - intval(substr($st, 0, strlen($st)-2)) - 1;
+        $begDiffMin = 6 - intval(substr($st, strlen($st)-2, 2))/10;
+        $finDiffMin = intval(substr($et, strlen($et)-2, 2))/10 + 1;
         $totalTensMins = $diffHours*6 + $begDiffMin + $finDiffMin;
         $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time, v.Email FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = '".$marketDate."' ORDER BY su.Start_Time;";
         $s = $c -> prepare($sql);
@@ -1283,14 +1283,14 @@ t = time
             $personTensMins = $personDiffHours*6 + $personBegDiffMin + $personFinDiffMin;
             $fraction = number_format((number_format($personTensMins,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
             // --------- CALCULATE MARGIN: -------------
-            $afbg = intval(substr($r['Start_Time'], 0, 2)) - intval(substr($st, 0, 2)) - 1;
-            $bfbg = 6 - intval(substr($st, 2, 2))/10;
+            $afbg = intval(substr($r['Start_Time'], 0, 2)) - intval(substr($st, 0, strlen($st)-2)) - 1;
+            $bfbg = 6 - intval(substr($st, strlen($st)-2, 2))/10;
             $cfbg = intval(substr($r['Start_Time'], 3, 2))/10;
             $tensFromBeg = $afbg*6 + $bfbg + $cfbg;
             $marginleft = number_format((number_format($tensFromBeg,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
-            $afbg = intval(substr($et, 0, 2)) - intval(substr($r['End_Time'], 0, 2)) - 1;
+            $afbg = intval(substr($et, 0, strlen($et)-2)) - intval(substr($r['End_Time'], 0, 2)) - 1;
             $bfbg = 6 - intval(substr($r['Start_Time'], 2, 2))/10;
-            $cfbg = intval(substr($et, 3, 2))/10;
+            $cfbg = intval(substr($et, strlen($et)-2, 2))/10;
             $tensFromBeg = $afbg*6 + $bfbg + $cfbg;
             $marginright = number_format((number_format($tensFromBeg,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
             $data .= 
@@ -1391,14 +1391,14 @@ t = time
         $c = null; //close connection
 
 
-        $starttime = substr($r['starttime'],0,strlen($r['starttime'])-2).":".substr($r['starttime'],strlen($r['starttime'])-2,2).":00";
-        $closetime = substr($r['closetime'],0,strlen($r['closetime'])-2).":".substr($r['closetime'],strlen($r['closetime'])-2,2).":00";
+        $starttime = substr($r['starttime'],0,strlen($r['starttime'])-2).":".substr($r['starttime'],strlen($r['starttime'])-2,2);
+        $closetime = substr($r['closetime'],0,strlen($r['closetime'])-2).":".substr($r['closetime'],strlen($r['closetime'])-2,2);
 
-        if(intval(substr($r['starttime'],strlen($r['starttime'])-2,2)) < 30) $starttime_max = strval(intval(substr($r['closetime'],0,strlen($r['closetime'])-2))-1).":".strval(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) + 30).":00";
-        else $starttime_max = substr($r['closetime'],0,strlen($r['closetime'])-2).":".strval(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) - 30).":00";
+        if(intval(substr($r['starttime'],strlen($r['starttime'])-2,2)) < 30) $starttime_max = strval(intval(substr($r['closetime'],0,strlen($r['closetime'])-2))-1).":".strval(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) + 30);
+        else $starttime_max = substr($r['closetime'],0,strlen($r['closetime'])-2).":".strval(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) - 30);
 
-        if(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) < 30) $closetime_min = substr($r['starttime'],0,strlen($r['starttime'])-2).":".strval(intval(substr($r['starttime'],strlen($r['starttime'])-2,2)) + 30).":00";
-        else $closetime_min = strval(intval(substr($r['starttime'],0,strlen($r['starttime'])-2)) + 1).":".strval(intval(substr($r['starttime'],strlen($r['starttime'])-3,2)) - 30).":00";
+        if(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) < 30) $closetime_min = substr($r['starttime'],0,strlen($r['starttime'])-2).":".strval(intval(substr($r['starttime'],strlen($r['starttime'])-2,2)) + 30);
+        else $closetime_min = strval(intval(substr($r['starttime'],0,strlen($r['starttime'])-2)) + 1).":".strval(intval(substr($r['starttime'],strlen($r['starttime'])-3,2)) - 30);
 
         return 
         '<input type = "time" class = "index-registration-input half inline" id = "starttime-input" required min = "'.$starttime.'" max = "'.$starttime_max.'">

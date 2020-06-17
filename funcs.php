@@ -1240,12 +1240,11 @@ t = time
 
     function populateNonTerminatedMarketsDropDown() {
         $c = connDB();
-        $sql = "SELECT idByDate, Active FROM Markets WHERE Active = 1 OR Active = 0;";
+        $sql = "SELECT idByDate, Active FROM Markets WHERE Active = 0;";
         $s = $c -> prepare($sql);
         $s -> execute();
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            if($r['Active'] == 1) $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).': Active! </option>';
-            else $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
+            $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
         }
         $c = null; //close connection
         if(strlen($data) < 2) return '<option selected disabled> Sorry, No Markets detected in the database </option>';

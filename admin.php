@@ -31,16 +31,40 @@
         </header>
         <div class = "sidebar" id = "sidebar">
                 <a class = "a-item active" id = "index-index-sender" onclick = "responsive_sidebar_item(this.id);"><i class = "fa fa-home" aria-hidden="true"></i></a>
-                <a class = "a-item active" id = "new-market-sender" onclick = "responsive_sidebar_item(this.id);"> New Market </a>
+                <a class = "a-item" id = "new-market-sender" onclick = "responsive_sidebar_item(this.id);"> New Market </a>
                 <a class = "a-item" id = "market-actions-sender" onclick = "responsive_sidebar_item(this.id);"> Market Actions </a>
                 <a class = "a-item" id = "change-password-sender" onclick = "responsive_sidebar_item(this.id);"> Change Password</a>
         </div>
         <div class = "page-container">
             <div class="content">
-                <h2> MARKET ADMIN PAGE </h2> 
                 <!-- CREATE NEW MARKET OPTION -->
-                <div class = "sub-admin-page-container" id = "new-market" style = "display: block">
-                    <h4><u>Create New Market</u></h4>  
+                <div class = "index-index" id = "index-index" style = "display: block">
+                    <h3> The Las Positas College Market</h3> 
+                    <br>
+                    <h1> Admin Page </h1>
+                    <br><br>
+                    <p style = "text-align: justify !important;">
+                        The Administrator's Page is used to oversee and manage the entire market. 
+                        You can create responsive and dynamic reports, 
+                        manage the inventory of each market event individually and collectively, 
+                        oversee the volunteers of each market in either a formatted table or a user-friendly schedule,
+                        and even send emails directly to your active volunteers by clicking a single button!
+                    </p>
+                    <br>
+                    <h6 style = "text-align: justify !important;">
+                        <strong>
+                            <i class="fa fa-exclamation" aria-hidden="true" style = "color: red !important;"></i>  
+                            Hopefully, this site will assist you with the entire management of the market and
+                            will increase the efficiency and effectiveness of this monthly service provided 
+                            by the LPCSG.
+                        <strong>
+                    </h6> <br>
+                    <br><br>
+                    <img src = "otherFiles/pics/lpcLogo.png" class = "index-registration-page-header-image inline">
+                </div>
+                <!-- CREATE NEW MARKET OPTION -->
+                <div class = "sub-admin-page-container" id = "new-market" style = "display: none">
+                    <h4><u>Create New Market</u></h4> <br> 
                     <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" id = "new_market_date"><br><br>
                     <br>
                     <h6><u><strong> For what times would you need volunteers? </strong></u></h6> 
@@ -123,7 +147,7 @@
         var pw2 = document.getElementById("newPW2");
             
         function responsive_sidebar_item(x) {
-            var targets = ["new-market", "market-actions", "change-password"];
+            var targets = ["new-market", "market-actions", "change-password", "index-index"];
             for(var i = 0; i < targets.length; i++) { //do for all
                 document.getElementById(targets[i] + "-sender").className = "a-item";
                 document.getElementById(targets[i]).style.display = "none";

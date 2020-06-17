@@ -465,6 +465,7 @@
                     message: "verifyPassword"
                 },
                 success: function(data) {
+                    console.log(data);
                     if(data == "false") alert("Incorrect Password");
                     else if(data == "true") location.replace("admin.php");
                 }

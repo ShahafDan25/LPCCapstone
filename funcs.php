@@ -257,7 +257,7 @@ t = time
     function connDB(){
         $username = "root";
         $password = "MMB3189@A";
-        // $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306;socket=/tmp/mysql.sock';  //connection link
+        // $password = "Sdan3189";
         $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306socket=/tmp/mysql.sock';
         try {$conn = new PDO($dsn, $username, $password);}
         catch (PDOException $e) {echo 'Connection Failed: ' . $e -> getMessage();}
@@ -1284,18 +1284,24 @@ t = time
             $fraction = number_format((number_format($personTensMins,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
             // --------- CALCULATE MARGIN: -------------
             $afbg = intval(substr($r['Start_Time'], 0, 2)) - intval(substr($st, 0, strlen($st)-2)) - 1;
-            $bfbg = 6 - intval(substr($st, strlen($st)-2, 2))/10;
-            $cfbg = intval(substr($r['Start_Time'], 3, 2))/10;
+            $bfbg = 6.000 - number_format(number_format(intval(substr($st, strlen($st)-2, 2)),3,'.','')/10.000,3,'.','');
+            $cfbg = number_format(number_format(intval(substr($r['Start_Time'], 3, 2)),3,'.','')/10.000,3,'.','');
             $tensFromBeg = $afbg*6 + $bfbg + $cfbg;
             $marginleft = number_format((number_format($tensFromBeg,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
-            $afbg = intval(substr($et, 0, strlen($et)-2)) - intval(substr($r['End_Time'], 0, 2)) - 1;
-            $bfbg = 6 - intval(substr($r['Start_Time'], 2, 2))/10;
-            $cfbg = intval(substr($et, strlen($et)-2, 2))/10;
-            $tensFromBeg = $afbg*6 + $bfbg + $cfbg;
-            $marginright = number_format((number_format($tensFromBeg,3,'.','')/number_format($totalTensMins,3,'.','')), 3, '.', '');
+            //calculate margin right by difference
+            $marginright = number_format(1-$marginleft-$fraction, 3, '.', '');
+            //fontsize based on width:
+            if($fraction*100 < 17)  {
+                $fontsize = 75;
+                $padding = 0.85;
+            }
+            else {
+                $fontsize = 85;
+                $padding = 0.55;
+            }
             $data .= 
             '<div style = "width: 100% !important; !important;">
-                <div style = "width = '.($fraction*100).'% !important; margin-left: '.($marginleft*100).'%!important; background-color: '.$colors[$counter].' !important; margin-right: '.($marginright*100).'% !important; color: '.$textcolors[$counter].' !important; border-radius: 150px !important; height: auto !important; font-weight: bolder !important; font-size: 85% !important; font-family: Helvetica, Arial, sans-serif !important; padding: 0.5% 0 0.5% 0 !important;">';
+                <div style = "width = '.($fraction*100).'% !important; margin-left: '.($marginleft*100).'%!important; background-color: '.$colors[$counter].' !important; margin-right: '.($marginright*100).'% !important; color: '.$textcolors[$counter].' !important; border-radius: 150px !important; height: auto !important; font-weight: bolder !important; font-size: '.$fontsize.'% !important; font-family: Helvetica, Arial, sans-serif !important; padding: '.$padding.'% 0.25% '.$padding.'% 0.25% !important;">';
             if($_SESSION['volunteer-id'] == $r['Email']) $data .= "Me";
             else $data .= $personName;
             $data .= '<br>';

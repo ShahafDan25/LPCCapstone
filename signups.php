@@ -113,6 +113,7 @@
                     date: document.getElementById("marketid").value
                 },
                 success: function(data) {
+
                     if(data == "committedsignup") alert("Thank you for signing up to volunteer!");
                 }
             });
@@ -128,7 +129,6 @@
                     date: document.getElementById("marketid").value
                 },
                 success: function(data) {
-                    console.log(data);
                     $("#signup-sheet-container").html(data);
                     document.getElementById("signup-sheet-container").style.display = "block";
                     document.getElementById("signup-sheet-container-registration").style.display = "block";
@@ -187,7 +187,6 @@
                     endtime: document.getElementById("endtime-input").value
                 },
                 success: function (data) {
-                    console.log(data);
                     $("#signup-commits").html(data);
                 }
             });

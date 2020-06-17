@@ -16,12 +16,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
-        <!-- JAVASCRIPT PAGE CONNECTION-->
-        <script src="captsone.js"></script>
-
         <!-- FONTAWESOME ICON --> 
-        <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
         <!-- ALERTIFY.JS: JavaScrip and CSS -->
@@ -48,9 +43,8 @@
             <br><br>
             <div class = "page-sub-container" id = "signup-sheet-container-registration" style = "display: none !important;">
                 <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
-                <input type = "time" class = "index-registration-input half inline" id = "starttime-input" required min = "09:00:00" max = "16:30:00">
-                <i class = 'fa fa-arrow-right inline' aria-hidden = 'true' style = 'margin-right: 2% !important;'></i>
-                <input type = "time" class = "index-registration-input half inline" id = "endtime-input" required min = "09:30:00" max = "17:00:00" >
+                <p id = "needed-time-paragraph"> </p> 
+                <div id = "needed-time-inputs"></div>
                 <button class = "btn submit-admin-login" id = "commit-volunteer-signup"> Submit </button>
                 <div class = "signup-commits" id = "signup-commits"> </div>
             </div>
@@ -78,6 +72,10 @@
             });
         });
 
+        function showbtns() { //just so now console errors
+            return;
+        }
+
         $(document).ready(function() {
             $.ajax({
                 type: "POST",
@@ -86,18 +84,18 @@
                     message: "populate-nonterminated-markekts-dropdown"
                 },
                 success: function(data){
-                    $("marketid").html(data);
+                    $("#marketid-container").html(data);
                 }
             });
-            //populate volunteers name at the top pf the screen
+            //populate volunteers name at the top of the screen
             $.ajax({
                 type: "POST",
                 url: "funcs.php", 
                 data: {
                     message: "populate-volunteer-name"
                 },
-                succes: function(data){
-                    $("volunteer-name-displayed").html(data);
+                success: function(data){
+                    $("#volunteer-name-displayed").html(data);
                 }
             });
         });
@@ -143,8 +141,33 @@
                     date: document.getElementById("marketid").value
                 },
                 success: function (data) {
-                    console.log(data);
                     $("#signup-commits").html(data);
+                }
+            });
+
+            //populate starting time needed and end time needed
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "display-needed-times",
+                    date: document.getElementById("marketid").value
+                },
+                success: function(data) {
+                    $("#needed-time-paragraph").html(data);
+                }
+            });
+
+            //populate the inputs with max and min accordingly 
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "display-needed-times-input",
+                    date: document.getElementById("marketid").value
+                },
+                success: function(data) {
+                    $("#needed-time-inputs").html(data);
                 }
             });
         });
@@ -157,8 +180,8 @@
                 data: {
                     message: "remove-then-display-volunteer-signup-commits",
                     date: document.getElementById("marketid").value,
-                    starttime = document.getElementById("starttime").value,
-                    endtime = document.getElementById("endtime").value
+                    starttime: document.getElementById("starttime-input").value,
+                    endtime: document.getElementById("endtime-input").value
                 },
                 success: function (data) {
                     console.log(data);

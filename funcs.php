@@ -114,7 +114,7 @@ t = time
     }
 
     if($_POST['message'] == "volunteer-login") {
-        if(verifyVolunteer($_POST['volunteer-email'])) {
+        if(verifyVolunteer($_POST['volunteerEmail'])) {
             $_SESSION['volunteer-id'] = $_POST['volunteerEmail'];
             echo "true"; 
         }
@@ -197,7 +197,7 @@ t = time
     }
 
     if($_POST['message'] == "populate-nonterminated-markekts-dropdown") {
-        echo populateNonTerminatedMarketsDropDown();
+        echo '<select class = "select-markets" id = "marketid" onchange = "showbtns()">'.populateNonTerminatedMarketsDropDown().'</select>';
     }
 
     if($_POST['message'] == "populate-volunteer-name") {
@@ -210,6 +210,14 @@ t = time
 
     if($_POST['message'] == "load-volunteers-table") {
         echo displayAllVolunteers();
+    }
+
+    if($_POST['message'] == "display-needed-times") {
+        echo displayNeededTimes($_POST['date']);
+    }
+
+    if($_POST['message'] == "display-needed-times-input") {
+        echo displayNeededTimesInputs($_POST['date']);
     }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
@@ -1249,7 +1257,7 @@ t = time
         $colors = ["#343A40", "#DC3545", "#20C997", "#17A2B8", "#FFC107", "#6610F2", "#E83E8C", "#6C757D", "#007BFF"];
         $textcolors = ["White", "Black", "Black", "Black", "Black", "White", "Black", "White", "Black"];
         $c = connDB();
-        $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = '".$marketDate."';";
+        $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = ".$marketDate.";";
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
@@ -1354,5 +1362,48 @@ t = time
         $c -> prepare($sql) -> execute();
         $c = null; // close connection
         return "commit-removed";
+    }
+
+    function displayNeededTimes($date) {
+        $c = connDB(); //set connection
+        $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = ".$date.";";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $c = null; //close connection
+        if(intval($r['starttime']) < 1200) $starttime = substr($r['starttime'],0,strlen($r['starttime'])-2).":".substr($r['starttime'],strlen($r['closetime'])-3,2)." AM";
+        else if(intval($r['starttime']) < 1300 && $r['starttime'] > 1159) $starttime = substr($r['starttime'],0,2).":".substr($r['starttime'],2,2)." PM";
+        else if (intval($r['starttime']) > 1259 && $r['starttime'] < 2400) $starttime = strval(intval(substr($r['starttime'],0,2))-12).":".substr($r['starttime'],2,2)." PM";
+
+        if(intval($r['closetime']) < 1200) $closetime = substr($r['closetime'],0,strlen($r['closetime'])-2).":".substr($r['closetime'],strlen($r['closetime'])-3,2)." AM";
+        else if(intval($r['closetime']) < 1300 && $r['closetime'] > 1159) $closetime = substr($r['closetime'],0,2).":".substr($r['closetime'],2,2)." PM";
+        else if (intval($r['closetime']) > 1259 && $r['closetime'] < 2400) $closetime = strval(intval(substr($r['closetime'],0,2))-12).":".substr($r['closetime'],2,2)." PM";
+
+        return 'Volunteers are needed from <strong>'.$starttime.'</strong> until <strong>'.$closetime.'</strong>.';
+    }
+
+    function displayNeededTimesInputs($date) {
+        $c = connDB(); //set connection
+        $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = ".$date.";";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $c = null; //close connection
+
+
+        $starttime = substr($r['starttime'],0,strlen($r['starttime'])-2).":".substr($r['starttime'],strlen($r['starttime'])-2,2).":00";
+        $closetime = substr($r['closetime'],0,strlen($r['closetime'])-2).":".substr($r['closetime'],strlen($r['closetime'])-2,2).":00";
+
+        if(intval(substr($r['starttime'],strlen($r['starttime'])-2,2)) < 30) $starttime_max = strval(intval(substr($r['closetime'],0,strlen($r['closetime'])-2))-1).":".strval(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) + 30).":00";
+        else $starttime_max = substr($r['closetime'],0,strlen($r['closetime'])-2).":".strval(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) - 30).":00";
+
+        if(intval(substr($r['closetime'],strlen($r['closetime'])-2,2)) < 30) $closetime_min = substr($r['starttime'],0,strlen($r['starttime'])-2).":".strval(intval(substr($r['starttime'],strlen($r['starttime'])-2,2)) + 30).":00";
+        else $closetime_min = strval(intval(substr($r['starttime'],0,strlen($r['starttime'])-2)) + 1).":".strval(intval(substr($r['starttime'],strlen($r['starttime'])-3,2)) - 30).":00";
+
+        return 
+        '<input type = "time" class = "index-registration-input half inline" id = "starttime-input" required min = "'.$starttime.'" max = "'.$starttime_max.'">
+        <i class = "fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important;"></i>
+        <input type = "time" class = "index-registration-input half inline" id = "endtime-input" required min = "'.$closetime_min.'" max = "'.$closetime.'" >
+        ';
     }
 ?>

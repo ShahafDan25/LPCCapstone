@@ -90,7 +90,8 @@ t = time
     }
 
     if($_POST['message'] == "start-market-report-session") {
-        echo displayReportPage($_POST['date']);
+        $_SESSION['reportedmarket'] = $_POST['date'];
+        echo "generateHTMLreport";
     }
 
     if($_POST['message'] == "populate-attendance-graph") {
@@ -611,18 +612,6 @@ t = time
         return;
     }
 
-    function displayAttGraph($rep){
-        return "<script>Morris.Line({
-            element : 'chart', 
-            data:[".getAttData($rep)."], 
-            xkey:TIME,
-            ykeys:[AMOUNT],
-            labels:['Attendance'],
-            hideHover:'auto',
-            stacked:true
-        });</script>";
-    }
-
     function getAttData($d){
         $c = connDB();
         $dformat = substr($d,0,4)."-".substr($d,4,2)."-".substr($d,6,2)." ";
@@ -651,7 +640,7 @@ t = time
         if(strlen(strval($sti)) == 3) $stite = substr(strval($sti), 0, 1).":".substr(strval($sti), 1, 2);
         elseif(strlen(Strval($sti)) == 4) $stite = substr(strval($sti),0,2).":".substr(strval($sti),2,2);
         
-        $chart_data = "{TIME:'".$dformat.$stite."',AMOUNT:'".$first_amount."'}";
+        $chart_data = "{'TIME':'".$dformat.$stite."','AMOUNT':'".$first_amount."'}";
         //is new hour in the time range of the market, add 40 to create illusion of time based 60 and not 100
         if($interval % 100 == 60) {$interval += 40;} 
         //for every 10 minute interval before the last ten minutes of the closing time
@@ -670,7 +659,7 @@ t = time
             $a = $stmt_i -> fetchColumn();
             
             //insert amount per time range
-            $chart_data .= ", {TIME:'".$dformat.$intervalte."',AMOUNT:'".$a."'}"; 
+            $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
             $interval = $interval_b;
         }
         $sql_i_b = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp >= ".strval($interval)." AND Markets_idByDate = ".$d.";";
@@ -680,7 +669,7 @@ t = time
         else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
 
         $a = $stmt_i_b -> fetchColumn();
-        $chart_data .= ", {TIME:'".$dformat.$intervalte."',AMOUNT:'".$a."'}"; 
+        $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
         $c = null; //close connection
         return $chart_data;
     }

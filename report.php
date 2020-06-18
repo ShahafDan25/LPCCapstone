@@ -1,3 +1,4 @@
+<?php include "funcs.php"; ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,6 +17,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
         <!-- FONTAWESOME ICON --> 
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
@@ -64,9 +66,9 @@
                 <h3> Attendees </h3>
                 <div id = "report-table-box-id"></div>
             </div>
-            <div class = "page-sub-container" id = "report-attendance-graph" style = "display: none">
+            <div   id = "report-attendance-graph" style = "border: 1px solid black !important; margin-right: 10% !important; margin-left: 10% !important; display: none;">
                 <h3> Attendance Graph </h3>
-                <div id = "chart"></div>
+                <div id = "attendance-chart"></div>
             </div>    
             <div class = "page-sub-container" id = "report-promotion-graph" style = "display: none">
                 <h3> Advertisement and Promotions </h3>
@@ -77,11 +79,10 @@
                 <div id = "retvsnew"></div>
             </div>
         </div>
-        <div id = "scripts1"></div>
         <div id = "scripts2"></div>
         <div id = "scripts3"></div>
     </body>
-    <script>
+    <script type = "text/javascript">
         $(document).ready(function() {
             $.ajax({
                 type: "POST",
@@ -123,6 +124,7 @@
         function showbtns() {
             document.getElementById("report-btn-options-container").style.display = "block";
 
+
             //populate the table of attendees
             $.ajax ({
                 type: "POST",
@@ -132,25 +134,21 @@
                     message: "start-market-report-session"
                 },
                 success: function(data) {
-                    $("#report-table-box-id").html(data);
+                    if(data == "generateHTMLreport") {
+                        $("#report-table-box-id").html(data);
+                        //populate attendance line graph
+                        Morris.Line({
+                            element : 'attendance-chart', 
+                            data:[<?php echo getAttData($_SESSION['reportedmarket']); ?>], 
+                            xkey:'TIME',
+                            ykeys:['AMOUNT'],
+                            labels:['Attendance'],
+                            stacked:true
+                        });
+                    }
                 }
             });
 
-            //populate attendance line graph
-            $.ajax ({
-                type: "POST",
-                url: "funcs.php",
-                data: {
-                    date: document.getElementById("marketid").value, 
-                    message: "populate-attendance-graph"
-                },
-                success: function(info) {
-                    console.log(info);
-                    document.getElementById("scripts1").innerHTML = "";
-                    document.getElementById("chart").innerHTML = "";
-                    $("#scripts1").html(info);
-                }
-            });
 
             //populate promotiom method bar graph
             $.ajax ({

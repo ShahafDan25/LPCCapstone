@@ -28,6 +28,10 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     padding: 1.5% !important;
     text-align: center;
 }
+.report-page-sub-container {
+    width: 80% !important;
+    border: 0.5px solid black !important;
+}
 .page-sub-container-volunteer {
     background-color: rgba(255, 255, 255, 0.801) !important;
     border-radius: 1.5px !important;

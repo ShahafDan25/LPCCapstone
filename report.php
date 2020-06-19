@@ -1,4 +1,4 @@
-<?php include "funcs.php"; ?>
+<?php session_start(); include "funcs.php"; ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -51,38 +51,80 @@
         <div class = "page-container">
             <br>
             <div id = "marketid-container"></div>
-            
             <br>
             <div class = "report-btn-options-container" id = "report-btn-options-container" style = "display: none;">
                 <button class = "btn report-option-btn inline op8" onclick = "pdfReport();"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
-                <button class = "btn report-option-btn inline op2" onclick = "showMe('report-table-graph');"><i class="fa fa-table" aria-hidden="true"></i></button>
-                <button class = "btn report-option-btn inline op3" onclick = "showMe('report-attendance-graph');"><i class="fa fa-line-chart" aria-hidden="true"></i></button>
-                <button class = "btn report-option-btn inline op1" onclick = "showMe('report-promotion-graph');"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
-                <button class = "btn report-option-btn inline op7" onclick = "showMe('report-noobies-graph');"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op2" onclick = "showMe('report-table-box-id');" id = "report-table-sender"><i class="fa fa-table" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op3" onclick = "showMe('attendance-chart');" id = "att-graph-sender"><i class="fa fa-line-chart" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op1" onclick = "showMe('promGraph');" id = "prom-graph-sender"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op7" onclick = "showMe('retvsnew');" id = "noobies-graph-sender"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
             </div>
             <br>
             <!-- Table: Patrons in that specific market -->
-            <div class = "page-sub-container" id = "report-table-graph" style = "display: none">
-                <h3> Attendees </h3>
-                <div id = "report-table-box-id"></div>
-            </div>
-            <div   id = "report-attendance-graph" style = "border: 1px solid black !important; margin-right: 10% !important; margin-left: 10% !important; display: none;">
-                <h3> Attendance Graph </h3>
-                <div id = "attendance-chart"></div>
-            </div>    
-            <div class = "page-sub-container" id = "report-promotion-graph" style = "display: none">
-                <h3> Advertisement and Promotions </h3>
-                <div id = "promGraph"></div>
-            </div>    
-            <div class = "page-sub-container" id = "report-noobies-graph" style = "display: none">
-                <h3> New VS. Returning Patrons </h3>
-                <div id = "retvsnew"></div>
-            </div>
+            <h3 style = "display: none;" id = "report-table-box-id-title" > Attendees </h3>
+            <div id = "report-table-box-id" style = "display: none;" class = "report-page-sub-container"></div>
+
+            <h3 style = "display: none;" id = "attendance-chart-title"> Attendance Graph </h3>
+            <div id = "attendance-chart" style = "display: none;" class = "report-page-sub-container"></div>
+
+            <h3 style = "display: none;" id = "promGraph-title"> Advertisement and Promotions </h3>
+            <div id = "promGraph" style = "display: none;" class = "report-page-sub-container"></div>
+
+            <h3 style = "display: none;" id = "retvsnew-title"> New VS. Returning Patrons </h3>
+            <div id = "retvsnew" style = "display: none;" class = "report-page-sub-container"></div>
         </div>
-        <div id = "scripts2"></div>
-        <div id = "scripts3"></div>
     </body>
     <script type = "text/javascript">
+
+        $("#report-table-sender").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-att-table",
+                    date: document.getElementById("marketid").value
+                },
+                success: function(data){
+                    $("#report-table-box-id").html(data);
+                }
+            });
+        });
+
+        $("#noobies-graph-sender").click(function() {
+            <?php echo 'alert("'.$_SESSION['reportedmarket'].'");"'; ?>
+            Morris.Donut({
+                element: 'retvsnew',
+                data: [ <?php echo "k";/*getRetVSNew($_SESSION['reportedmarket']);*/ ?>],
+                colors:['#994d00','#ffa64d']
+            });
+        });
+
+        $("#prom-graph-sender").click(function() {
+            Morris.Bar({
+                element: 'promGraph', 
+                data:[<?php echo "l";/*promGraphData($_SESSION['reportedmarket']); */?>], 
+                xkey:'METHOD',
+                ykeys:['AMOUNT'],
+                labels:['Impact'],
+                hideHover:'auto',
+                stacked:true,
+                barColors: ['#4DA74D'],
+                barSizeRatio:0.40,
+                resize:false
+            });
+        });
+
+        $("#att-graph-sender").click(function() {
+            Morris.Line({
+                element : 'attendance-chart', 
+                data:[<?php echo "j";/*getAttData($_SESSION['reportedmarket']);*/ ?>], 
+                xkey:'TIME',
+                ykeys:['AMOUNT'],
+                labels:['Attendance'],
+                stacked:true
+            });
+        });
+
         $(document).ready(function() {
             $.ajax({
                 type: "POST",
@@ -113,72 +155,22 @@
         }
 
         function showMe(x) {
-            divs = ["report-table-graph", "report-attendance-graph", "report-promotion-graph", "report-noobies-graph"];
+            divs = ["report-table-box-id", "attendance-chart", "promGraph", "retvsnew"];
             for(var i = 0; i < divs.length; i++) {
                 document.getElementById(divs[i]).style.display = "none";
+                document.getElementById(divs[i]+"-title").style.display = "none";
             }
             document.getElementById(x).style.display = "block";
+            document.getElementById(x+"-title").style.display = "block";
         }
 
-        // $("#marketid").change(function() {
-        function showbtns() {
+        $("#marketid").change(function() {
+            console.log("hell");
             document.getElementById("report-btn-options-container").style.display = "block";
-
-
-            //populate the table of attendees
-            $.ajax ({
+            $.ajax({
                 type: "POST",
-                url: "funcs.php",
-                data: {
-                    date: document.getElementById("marketid").value, 
-                    message: "start-market-report-session"
-                },
-                success: function(data) {
-                    if(data == "generateHTMLreport") {
-                        $("#report-table-box-id").html(data);
-                        //populate attendance line graph
-                        Morris.Line({
-                            element : 'attendance-chart', 
-                            data:[<?php echo getAttData($_SESSION['reportedmarket']); ?>], 
-                            xkey:'TIME',
-                            ykeys:['AMOUNT'],
-                            labels:['Attendance'],
-                            stacked:true
-                        });
-                    }
-                }
+                url: "funcs.ph"
             });
-
-
-            //populate promotiom method bar graph
-            $.ajax ({
-                type: "POST",
-                url: "funcs.php",
-                data: {
-                    date: document.getElementById("marketid").value, 
-                    message: "populate-promotion-graph"
-                },
-                success: function(info) {
-                    document.getElementById("scripts2").innerHTML = "";
-                    document.getElementById("promGraph").innerHTML = "";
-                    $("#scripts2").html(info);
-                }
-            });
-
-            //populate first-marketers donut graph
-            // $.ajax ({
-            //     type: "POST",
-            //     url: "funcs.php",
-            //     data: {
-            //         date: document.getElementById("marketid").value, 
-            //         message: "populate-newones-graph"
-            //     },
-            //     success: function(info) {
-            //         document.getElementById("scripts3").innerHTML = "";
-            //         document.getElementById("retvsnew").innerHTML = "";
-            //         $("#scripts3").html(info);
-            //     }
-            // });
-        };
+        });
     </script>
 </html>

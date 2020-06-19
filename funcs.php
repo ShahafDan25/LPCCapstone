@@ -94,18 +94,6 @@ t = time
         echo "generateHTMLreport";
     }
 
-    if($_POST['message'] == "populate-attendance-graph") {
-        echo displayAttGraph($_POST['date']);
-    }
-
-    if($_POST['message'] == "populate-promotion-graph") {
-        echo displayPromGraph($_POST['date']);
-    }
-
-    if($_POST['message'] == "populate-newones-graph") {
-        echo displayNoobsGraph($_POST['date']);
-    }
-
     if($_POST['message'] == "display-inventory-table") {
         echo displayInventory($_POST['date']);
     }
@@ -132,9 +120,7 @@ t = time
     }
 
     if($_POST['message'] == "commit-signup") {
-        // echo commitSignUp($_SESSION['volunteer-id'], $_SESSION['volunteer-signup-marketid'], $_POST['starttime'], $_POST['endtime']);
         echo commitSignUp($_SESSION['volunteer-id'], $_POST['date'], $_POST['starttime'], $_POST['endtime']);
-
     }
 
     if($_POST['message'] == "display-volunteer-signup-commits") {
@@ -194,7 +180,7 @@ t = time
     }
 
     if($_POST['message'] == "populate-markets-dropdown") {
-        echo '<select class = "select-markets" id = "marketid" onchange = "showbtns()">'.populateMarketsDropDown().'</select>';
+        echo '<select class = "select-markets" id = "marketid">'.populateMarketsDropDown().'</select>';
     }
 
     if($_POST['message'] == "populate-nonterminated-markekts-dropdown") {
@@ -220,6 +206,12 @@ t = time
     if($_POST['message'] == "display-needed-times-input") {
         echo displayNeededTimesInputs($_POST['date']);
     }
+
+    if($_POST['message'] == "populate-att-table") {
+        echo displayReportPage($_POST['date']);
+    }
+
+
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -673,21 +665,6 @@ t = time
         $c = null; //close connection
         return $chart_data;
     }
-    
-    function displayPromGraph($rep) {
-        return "<script>Morris.Bar({
-            element: 'promGraph', 
-            data:[".promGraphData($rep)."], 
-            xkey:'METHOD',
-            ykeys:['AMOUNT'],
-            labels:['Impact'],
-            hideHover:'auto',
-            stacked:true,
-            barColors: ['#4DA74D'],
-            barSizeRatio:0.40,
-            resize:false
-        });</script>";
-    }
 
     function promGraphData($d) {
         $data = "";
@@ -714,14 +691,6 @@ t = time
         $data .= ", {'METHOD':'Other','AMOUNT':'".$other."'}";
         $c = null;
         return $data;
-    }
-
-    function displayNoobsGraph($rep) {
-        return "<script>Morris.Donut({
-                element: 'retvsnew',
-                data: [".getRetVSNew($rep)."],
-                colors:['#994d00','#ffa64d']
-            });</script>";
     }
 
     function getRetVSNew($d) {

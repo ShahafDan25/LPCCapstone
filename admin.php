@@ -194,6 +194,11 @@
             }
         }
 
+        function changedMarketId() {
+            //just to avoid any console error that may occur for now,
+            //may use this for later (read plans in diary)
+            return;
+        }
 
         $("#submit-market-operation-option").click(function() {
             var options = document.getElementsByName("adminOption");
@@ -219,6 +224,7 @@
                     else if(data == "cantactivateterminated") alert("You can't reactivate a terminated market");
                     else if(data == "alreadyactive") alert("This market is already active.");
                     else if(data == "nodatechosen") alert("please choosee a date");
+                    location.replace("admin.php");
                 }
             });
         });

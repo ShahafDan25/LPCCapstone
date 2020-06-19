@@ -7,7 +7,7 @@
     $prevnames = [];
     $counter = 0;
 
-    $sql = "SELECT DISTINCT patID, FirstName, LastName FROM Patrons";
+    $sql = "SELECT DISTINCT patID, FirstName, LastName FROM Patrons WHERE firstMarket < 20200623";
     $s = $c -> prepare($sql);
     $s -> execute();
     while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
@@ -25,30 +25,39 @@
     while($active) {
         $counter++;
 
-        if(rand(0,6) < 2) {
+        if(rand(0,99) < 35) {
             $id = rand(100000,999999);
-            $first = $firstnames[rand(0, count($firstnames)-1)];
-            $last = $lastnames[rand(0, count($lastnames)-1)];
-            $studentStatus = rand(0,1);
-            $child = rand(0,5);
-            $adult = rand(1,4);
-            $senior = rand(0,2);
-            $prom = $promotions[rand(0,count($promotions))];
-    
-            $nuller = rand(0,3);
-            if($nuller == 0) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$prom."', ".$id.", 20200623);";
-            else if($nuller == 1) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."','".$prom."', ".$id.", 20200623);";
-            else if($nuller == 2) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PhoneNumber, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."','".$prom."', ".$id.", 20200623);";
-            else if($nuller == 3) $sql = "INSERT INTO Patrons VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."', '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."', '".$prom."', ".$id.", 20200623);";
-    
-            $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $c -> exec($sql);
-    
-            login($id);
-            echo "INSERTED NEW:\t".$counter.")\t   ".$first." ".$last."\t\n";
+            $sql = "SELECT * FROM Patrons WHERE patID = ".$id.";";
+            $s = $c -> prepare($sql);
+            $s -> execute();
+            if($s -> fetch(PDO::FETCH_ASSOC)){
+                echo "PIGEON HOLE PRINCIPLE ERROR WITH ID: \t".$id."\t trying again:";
+            }
+            else {
+                $first = $firstnames[rand(0, count($firstnames)-1)];
+                $last = $lastnames[rand(0, count($lastnames)-1)];
+                $studentStatus = rand(0,1);
+                $child = rand(0,5);
+                $adult = rand(1,4);
+                $senior = rand(0,2);
+                $prom = $promotions[rand(0,count($promotions))];
+        
+                $nuller = rand(0,3);
+                if($nuller == 0) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$prom."', ".$id.", 20200623);";
+                else if($nuller == 1) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."','".$prom."', ".$id.", 20200623);";
+                else if($nuller == 2) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PhoneNumber, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."','".$prom."', ".$id.", 20200623);";
+                else if($nuller == 3) $sql = "INSERT INTO Patrons VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."', '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."', '".$prom."', ".$id.", 20200623);";
+        
+                $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $c -> exec($sql);
+        
+                login($id);
+                echo "INSERTED NEW:\t\t".$counter.")\t   ".$first." ".$last."\t\n";
+            }
         }
         else {
-            $randindex = rand(0,count($prevs));
+            $randindex = rand(0,count($prevs)-1);
+            // echo $randindex."\t".$prevs[$randindex];
             login($prevs[$randindex]);
             echo "LOGGED PREVIOUS:\t".$counter.")\t   ".$prevnames[$randindex]."\t\n";
             unset($prevs[$randindex]);
@@ -64,18 +73,12 @@
 
         date_default_timezone_set("America/Los_Angeles");
         $time = intval(substr(date("H:i"),0,2).substr(date("H:i"),0,2));
-        if($time > 600) {
+        if($time > 747) {
             $sql = "UPDATE Markets SET active = 2, terminationtime = '".$time."' WHERE idByDate = 20200623";
             $c -> prepare($sql) -> execute();
             $active = false;
         }        
     }
-
-
-    echo "\n\nMarket Not Active Anymore!\n----------------\n";
-    $c = null; //close connetcion
-    echo "Connection Closed \n terminating program!";
-
 
     function connDB(){
         $username = "root";
@@ -87,11 +90,17 @@
     }   
 
     function login($id) {
+        if($id == NULL) return;
+        $c = connDB();
         date_default_timezone_set("America/Los_Angeles");
         $time_digits = substr(date("H:i"), 0, 2).substr(date("H:i"), 3, 2);
 
-        $sql = "INSERT INTO MarketLogins VALUES (20200618, ".$id.", '".$time_digits."');";
+        $sql = "INSERT INTO MarketLogins VALUES (20200623, ".$id.", '".$time_digits."');";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
     }
+
+    echo "\n\nMarket Not Active Anymore!\n----------------\n";
+    $c = null; //close connetcion
+    echo "Connection Closed \n terminating program!";
 ?>

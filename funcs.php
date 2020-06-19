@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php session_start(); require "otherFiles/fpdf_lib/fpdf.php";?>
 <?php
 /*
 c = connection
@@ -10,6 +10,122 @@ s_ce = statement check existence
 r = row / result
 t = time
 */
+
+    class myFPDFClass extends FPDF //extend all the features from the FPDF class, but more functions
+    {
+        function Heads($c)
+        {
+            $sql = "SELECT idByDate FROM Markets WHERE reported = 1";
+            $s = $c -> prepare ($sql);
+            $s -> execute();
+            $r = $s -> fetch(PDO::FETCH_ASSOC);
+            $d = $r['idByDate'];
+
+            $this -> SetFont('Arial', 'B', 20); 
+            $this -> Cell(40,12,'The Market   |   LPCSG ', 'C');
+            
+            $this->Cell( 40, 10, $this->Image("otherFiles/pics/lpcsgLogo.jpg", 120, 5, 35), 0, 0, 'L', false );
+            $this->Cell( 40, 10, $this->Image("otherFiles/pics/lpcLogo2.png", 160, 5, 35), 0, 0, 'L', false );
+
+            $this -> Ln();
+            $this -> SetFont('Arial', 'B', 12); 
+            $this -> Cell (40, 10, 'Report '.substr($d,4,2)." / ".substr($d,6,2)." / ".substr($d,0,4),'C');
+            $this -> Ln();
+            $this -> Ln();
+            return;
+        }
+
+        public $totalAdults = 0;
+        public $totalKids = 0;
+        public $totalPeople = 0;
+        public $totalSeniors = 0;
+        function tableHead() 
+        {
+            $this -> SetFont('Arial', 'B', 14); 
+            $this -> Cell(60, 10, 'Name', 1, 0, 'C'); 
+            $this -> Cell(25, 10, 'Student ?', 1, 0, 'C');
+            $this -> Cell(90, 10, 'People in Household', 1, 0, 'C');
+            $this -> Ln(); 
+            $this -> SetFont('Arial', 'B', 12); 
+            $this -> Cell(60, 8, '   -   ', 1, 0, 'C');
+            $this -> Cell(25, 8, '   -   ', 1, 0, 'C');
+            $this -> Cell(30, 8, 'Kids', 1, 0, 'C');
+            $this -> Cell(30, 8, 'Adults', 1, 0, 'C');
+            $this -> Cell(30, 8, 'Seniors', 1, 0, 'C');
+            $this -> Ln(); 
+            return;
+        }
+
+        //table body: insert only necessary information from the report page
+        function tableBody($c, $date)
+        {
+            $this -> SetFont('Arial', 'B', 10); 
+            $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = ".$date.";";
+            $s_a = $c -> prepare($sql_a); 
+            $s_a -> execute(); 
+            $totalPeople = 0;
+            $totalKids = 0;
+            $totalAdults = 0;
+            $totalSeniors = 0;
+            while($r_a = $s_a -> fetch(PDO::FETCH_ASSOC))
+            { 
+                $sql_b = "SELECT FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount FROM Patrons WHERE patID = ".$r_a['Patrons_patID'];
+                $s_b = $c -> prepare($sql_b);
+                $s_b -> execute();
+                while($r_b = $s_b -> fetch(PDO::FETCH_ASSOC)) 
+                {
+                    $this -> Cell(60, 7, $r_b['FirstName']."  ".$r_b['LastName'], 1, 0, 'C');
+                    
+                    if($r_b['StudentStatus'] == 1) $this -> Cell(25, 7, "  YES   ", 1, 0, 'C');
+                    else $this -> Cell(25, 7, " ", 1, 0, 'C');                    
+                    
+                    $this -> Cell(30, 7, $r_b['ChildrenAmount'], 1, 0, 'C');
+                    $this -> Cell(30, 7, $r_b['AdultsAmount'], 1, 0, 'C');
+                    $this -> Cell(30, 7, $r_b['SeniorsAmount'], 1, 0, 'C');
+                    $this -> Ln(); 
+
+                    $totalPeople++;
+                    $totalKids += $r_b['ChildrenAmount'];
+                    $totalAdults += $r_b['AdultsAmount'];
+                    $totalSeniors += $r_b['SeniorsAmount']; 
+                }
+            }   
+            // ------------------ averages and statistics ---------------------//
+            $this -> Ln();
+            $this -> SetFont('Arial', 'B', 14); 
+            $this -> Cell(30, 10, 'Statistics: ');
+            $this -> Ln();
+            $this -> SetFont('Arial','B', 10); 
+            $this -> Cell(20, 6, 'Total Patrons: '.$totalPeople.'.  Total People Reported: '.strval($totalAdults+$totalKids+$totalSeniors));
+            $this -> Ln();
+            $this -> Cell(20, 6, 'Total Kids Reported: '.$totalKids.'.  Average Kids Per Household: '.strval(round($totalKids/$totalPeople, 2)));
+            $this -> Ln();
+            $this -> Cell(20, 6, 'Total Adults Reported: '.$totalAdults.'.  Average Adults Per Household: '.strval(round($totalAdults/$totalPeople, 2)));
+            $this -> Ln();
+            $this -> Cell(20, 6, 'Total Seniors Reported: '.$totalSeniors.'.  Average Seniors Per Household: '.strval(round($totalSeniors/$totalPeople, 2)));
+            $this -> Ln();
+            $this -> Ln();
+            return;      
+        }
+
+        function signature()
+        {
+            $this -> SetFont('Arial', 'B', 14); 
+            $this -> Cell(30, 10, 'Signatures: ');
+            $this -> Ln();
+            $this -> Ln();
+            $this -> SetFont('Arial'); 
+            $this -> Cell(40, 6, '_____________________');
+            $this -> Cell(40, 6, '                     ');
+            $this -> Cell(40, 6, '_____________________');
+            $this -> SetFont('Arial','B', 07); 
+            $this -> Ln();
+            $this -> Cell(40, 6, 'Student Life Advisor and Coordinator');
+            $this -> Cell(40, 6, '                     ');
+            $this -> Cell(40, 6, 'Director of Programs and Services');
+            return;
+        }
+    }
     // ======================================================== //
     // -------------------- POSTS MESSAGES ---------------------//
     // ======================================================== //
@@ -55,15 +171,13 @@ t = time
     if($_POST['message'] == 'generate-pdf-report') { //generate pdf report
         $c = connDB(); //create connection;
         $sql = "SELECT active FROM Markets WHERE idByDate = ".$_POST['date'].";";
-        $c -> prepare($sql);
-        $s = $c -> execute();
+        $s = $c -> prepare($sql);
+        $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-        $c = null; //close connection
-        if($r['active'] == 2) {
-            pdf_report($_POST['date']);
-            echo "true";
-        }
+        if($r['active'] == 2) echo pdf_report($_POST['date']);
         else echo "false";
+        $c = null; //close connection
+
     }
 
     if($_POST['message'] == 'verifyPassword') { //verify password to admin page
@@ -87,11 +201,6 @@ t = time
 
     if($_POST['message'] == "deactivateVolunteer") {
         deactivateVolunteer($_POST['id']);
-    }
-
-    if($_POST['message'] == "start-market-report-session") {
-        $_SESSION['reportedmarket'] = $_POST['date'];
-        echo "generateHTMLreport";
     }
 
     if($_POST['message'] == "display-inventory-table") {
@@ -180,7 +289,7 @@ t = time
     }
 
     if($_POST['message'] == "populate-markets-dropdown") {
-        echo '<select class = "select-markets" id = "marketid">'.populateMarketsDropDown().'</select>';
+        echo '<select class = "select-markets" id = "marketid" onchange = "changedMarketId()">'.populateMarketsDropDown().'</select>';
     }
 
     if($_POST['message'] == "populate-nonterminated-markekts-dropdown") {
@@ -211,6 +320,21 @@ t = time
         echo displayReportPage($_POST['date']);
     }
 
+    if($_POST['message'] == "start-market-report-session") {
+        $_SESSION['reportedmarket'] = $_POST['date'];
+    }
+
+    if($_POST['message'] == "display-att-graph") {
+        echo getAttData($_POST['date']);
+    }
+
+    if($_POST['message'] == "display-prom-graph") {
+        echo promGraphData($_POST['date']);
+    }
+
+    if($_POST['message'] == "display-noobies-graph") {
+        echo getRetVSNew($_POST['date']);
+    }
 
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
@@ -471,137 +595,22 @@ t = time
     // -------------- REPORT PAGE FUNCTIONS --------------------//
     // ======================================================== //
 
-    require "otherFiles/fpdf_lib/fpdf.php";
-    class myFPDFClass extends FPDF //extend all the features from the FPDF class, but more functions
-    {
-        function Heads($c)
-        {
-            $sql = "SELECT idByDate FROM Markets WHERE reported = 1";
-            $s = $c -> prepare ($sql);
-            $s -> execute();
-            $r = $s -> fetch(PDO::FETCH_ASSOC);
-            $d = $r['idByDate'];
-
-            $this -> SetFont('Arial', 'B', 20); 
-            $this -> Cell(40,12,'The Market   |   LPCSG ', 'C');
-            
-            $this->Cell( 40, 10, $this->Image("otherFiles/pics/lpcsgLogo.jpg", 120, 5, 35), 0, 0, 'L', false );
-            $this->Cell( 40, 10, $this->Image("otherFiles/pics/lpcLogo2.png", 160, 5, 35), 0, 0, 'L', false );
-
-            $this -> Ln();
-            $this -> SetFont('Arial', 'B', 12); 
-            $this -> Cell (40, 10, 'Report '.substr($d,4,2)." / ".substr($d,6,2)." / ".substr($d,0,4),'C');
-            $this -> Ln();
-            $this -> Ln();
-            return;
-        }
-
-        public $totalAdults = 0;
-        public $totalKids = 0;
-        public $totalPeople = 0;
-        public $totalSeniors = 0;
-        function tableHead() 
-        {
-            $this -> SetFont('Arial', 'B', 14); 
-            $this -> Cell(60, 10, 'Name', 1, 0, 'C'); 
-            $this -> Cell(25, 10, 'Student ?', 1, 0, 'C');
-            $this -> Cell(90, 10, 'People in Household', 1, 0, 'C');
-            $this -> Ln(); 
-            $this -> SetFont('Arial', 'B', 12); 
-            $this -> Cell(60, 8, '   -   ', 1, 0, 'C');
-            $this -> Cell(25, 8, '   -   ', 1, 0, 'C');
-            $this -> Cell(30, 8, 'Kids', 1, 0, 'C');
-            $this -> Cell(30, 8, 'Adults', 1, 0, 'C');
-            $this -> Cell(30, 8, 'Seniors', 1, 0, 'C');
-            $this -> Ln(); 
-            return;
-        }
-
-        //table body: insert only necessary information from the report page
-        function tableBody($c)
-        {
-            $this -> SetFont('Arial', 'B', 10); 
-            $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = (SELECT idByDate FROM Markets WHERE reported = 1)";
-            $s_a = $c -> prepare($sql_a); 
-            $s_a -> execute(); 
-            $totalPeople = 0;
-            $totalKids = 0;
-            $totalAdults = 0;
-            $totalSeniors = 0;
-            while($r_a = $s_a -> fetch(PDO::FETCH_ASSOC))
-            { 
-                $sql_b = "SELECT FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount FROM Patrons WHERE patID = ".$r_a['Patrons_patID'];
-                $s_b = $c -> prepare($sql_b);
-                $s_b -> execute();
-                while($r_b = $s_b -> fetch(PDO::FETCH_ASSOC)) 
-                {
-                    $this -> Cell(60, 7, $r_b['FirstName']."  ".$r_b['LastName'], 1, 0, 'C');
-                    
-                    if($r_b['StudentStatus'] == 1) $this -> Cell(25, 7, "  YES   ", 1, 0, 'C');
-                    else $this -> Cell(25, 7, " ", 1, 0, 'C');                    
-                    
-                    $this -> Cell(30, 7, $r_b['ChildrenAmount'], 1, 0, 'C');
-                    $this -> Cell(30, 7, $r_b['AdultsAmount'], 1, 0, 'C');
-                    $this -> Cell(30, 7, $r_b['SeniorsAmount'], 1, 0, 'C');
-                    $this -> Ln(); 
-
-                    $totalPeople++;
-                    $totalKids += $r_b['ChildrenAmount'];
-                    $totalAdults += $r_b['AdultsAmount'];
-                    $totalSeniors += $r_b['SeniorsAmount']; 
-                }
-            }   
-            // ------------------ averages and statistics ---------------------//
-            $this -> Ln();
-            $this -> SetFont('Arial', 'B', 14); 
-            $this -> Cell(30, 10, 'Statistics: ');
-            $this -> Ln();
-            $this -> SetFont('Arial','B', 10); 
-            $this -> Cell(20, 6, 'Total Patrons: '.$totalPeople.'.  Total People Reported: '.strval($totalAdults+$totalKids+$totalSeniors));
-            $this -> Ln();
-            $this -> Cell(20, 6, 'Total Kids Reported: '.$totalKids.'.  Average Kids Per Household: '.strval(round($totalKids/$totalPeople, 2)));
-            $this -> Ln();
-            $this -> Cell(20, 6, 'Total Adults Reported: '.$totalAdults.'.  Average Adults Per Household: '.strval(round($totalAdults/$totalPeople, 2)));
-            $this -> Ln();
-            $this -> Cell(20, 6, 'Total Seniors Reported: '.$totalSeniors.'.  Average Seniors Per Household: '.strval(round($totalSeniors/$totalPeople, 2)));
-            $this -> Ln();
-            $this -> Ln();
-            return;      
-        }
-
-        function signature()
-        {
-            $this -> SetFont('Arial', 'B', 14); 
-            $this -> Cell(30, 10, 'Signatures: ');
-            $this -> Ln();
-            $this -> Ln();
-            $this -> SetFont('Arial'); 
-            $this -> Cell(40, 6, '_____________________');
-            $this -> Cell(40, 6, '                     ');
-            $this -> Cell(40, 6, '_____________________');
-            $this -> SetFont('Arial','B', 07); 
-            $this -> Ln();
-            $this -> Cell(40, 6, 'Student Life Advisor and Coordinator');
-            $this -> Cell(40, 6, '                     ');
-            $this -> Cell(40, 6, 'Director of Programs and Services');
-            return;
-        }
-    }
+   
 
     function pdf_report($date) {
         $c = connDB(); //create connection
         //--------------- report code ---------------------//
         $pdf = new myFPDFClass(); 
         $pdf -> AddPage();
-        $pdf -> Heads(connDB());
+        $pdf -> Heads($c);
         $pdf -> tableHead();
-        $pdf -> tableBody(connDB());
+        $pdf -> tableBody($c, $date);
         $pdf -> signature();
 
         $reportFile = fopen('report_'.strval($date).'.pdf', 'w+');
         fclose($reportFile);
         $pdf -> Output('report_'.$date.'.pdf', 'F');
-        return;
+        return "true";
     }
 
     function getAttData($d){
@@ -622,92 +631,103 @@ t = time
         }
         else if($t['active'] == 0) return "";
 
-        $sti = intval($st); 
         //modify time to be based 60 and not 100 
-        $interval = $sti + (10 - ($sti%10)); 
-        $sql_amount_a = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".($interval)." AND Markets_idByDate = ".$d.";";
-        $stmt_amount_a = $c -> query($sql_amount_a);
-        $first_amount = $stmt_amount_a -> fetchColumn(); 
-
-        if(strlen(strval($sti)) == 3) $stite = substr(strval($sti), 0, 1).":".substr(strval($sti), 1, 2);
-        elseif(strlen(Strval($sti)) == 4) $stite = substr(strval($sti),0,2).":".substr(strval($sti),2,2);
-        
-        $chart_data = "{'TIME':'".$dformat.$stite."','AMOUNT':'".$first_amount."'}";
-        //is new hour in the time range of the market, add 40 to create illusion of time based 60 and not 100
-        if($interval % 100 == 60) {$interval += 40;} 
-        //for every 10 minute interval before the last ten minutes of the closing time
+        $interval = intval($st) + (10 - (intval($st)%10));         
+        if($interval % 100 == 60) $interval += 40;
         $first_person = false;
-        while(($interval + 10) < intval($ct)) 
+        while($interval < intval($ct)) 
         {
-            if($interval % 100 == 60) {$interval += 40;} 
-            $interval_b = $interval + 10; 
+            if(!$first_person) {
+                $sql_amount_a = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".($interval)." AND Markets_idByDate = ".$d.";";
+                $stmt_amount_a = $c -> query($sql_amount_a);
+                $a = $stmt_amount_a -> fetchColumn(); 
 
-            $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < '".$interval_b."' AND time_stamp >= '".$interval."' AND Markets_idByDate = ".$d.";";
-            $stmt_i = $c -> query($sql_i);
-
-            if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
-            else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
-
-            $a = $stmt_i -> fetchColumn();
-            
-            //insert amount per time range
-            $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
-            $interval = $interval_b;
+                if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
+                else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
+                $interval_b = $interval + 10; 
+                $interval = $interval_b;
+            } 
+            else {
+                if($interval % 100 == 60) {$interval += 40;} 
+                $interval_b = $interval + 10; 
+    
+                $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < '".$interval_b."' AND time_stamp >= '".$interval."' AND Markets_idByDate = ".$d.";";
+                $stmt_i = $c -> query($sql_i);
+    
+                if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
+                else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
+    
+                $a = $stmt_i -> fetchColumn();
+                         
+                $interval = $interval_b;
+            }
+            $chart_data [] = array (
+                "TIME" => $dformat.$intervalte,
+                "AMOUNT" => $a 
+            );  
+            $first_person = true;
         }
-        $sql_i_b = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp >= ".strval($interval)." AND Markets_idByDate = ".$d.";";
-        $stmt_i_b= $c -> query($sql_i_b);
-
-        if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
-        else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
-
-        $a = $stmt_i_b -> fetchColumn();
-        $chart_data .= ", {'TIME':'".$dformat.$intervalte."','AMOUNT':'".$a."'}"; 
+        
         $c = null; //close connection
-        return $chart_data;
+        return json_encode($chart_data);
     }
 
     function promGraphData($d) {
-        $data = "";
         $c = connDB();
         //COMMUNITY
         $sql_a = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'Community' AND MarketLogins.Markets_idByDate = ".$d;
         $s_a = $c -> query($sql_a);
         $comm = $s_a -> fetchColumn();
-        $data .= "{'METHOD': 'Community','AMOUNT':'".$comm."'}";
+        $data [] = array (
+            "METHOD" => "Community",
+            "AMOUNT" => $comm
+        ); 
         //FRIENDS AND FAMILY
         $sql_b = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'FriendsAndFamily' AND MarketLogins.Markets_idByDate = ".$d;
         $s_b = $c -> query($sql_b);
         $fnf = $s_b -> fetchColumn();
-         $data .= ", {'METHOD': 'Friends / Family','AMOUNT':'".$fnf."'}";
+        $data [] = array (
+            "METHOD" => "Friends / Family",
+            "AMOUNT" => $fnf
+        ); 
         // CLASSROOM
         $sql_c = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'Classroom' AND MarketLogins.Markets_idByDate = ".$d;
         $s_c = $c -> query($sql_c);
         $class = $s_c -> fetchColumn();
-        $data .= ", {'METHOD':'Classroom','AMOUNT':'".$class."'}";
+        $data [] = array (
+            "METHOD" => "Classroom",
+            "AMOUNT" => $class
+        ); 
         //OTHER
         $sql_d = "SELECT COUNT(*) FROM Patrons INNER JOIN MarketLogins ON Patrons.patID = MarketLogins.Patrons_patID WHERE Patrons.PromotionMethod = 'Other' AND MarketLogins.Markets_idByDate = ".$d;
         $s_d = $c -> query($sql_d);
         $other = $s_d -> fetchColumn();
-        $data .= ", {'METHOD':'Other','AMOUNT':'".$other."'}";
+        $data [] = array (
+            "METHOD" => "Other",
+            "AMOUNT" => $other
+        ); 
         $c = null;
-        return $data;
+        return json_encode($data);
     }
 
     function getRetVSNew($d) {
         $c = connDB();
-        $data = "";
         $sql_newPs = "SELECT COUNT(*) FROM Patrons WHERE firstMarket = ".$d.";";
         $s_newPs = $c -> query($sql_newPs);
         $noobies = $s_newPs -> fetchColumn();
-
+        $data [] = array(
+            "value" => $noobies,
+            "label" => 'New Patrons'
+        );
         $sql_allPs = "SELECT COUNT(*) FROM MarketLogins WHERE Markets_idByDate = ".$d.";";
         $s_allPs = $c -> query($sql_allPs);
         $allies = $s_allPs -> fetchColumn();
-
-        //all attendance in that market - patrons whose new market was that market = patrons who attended a previous market AND that market
-        $data = "{value: ".$noobies.", label: 'New Patrons'},{value: ".($allies - $noobies).", label: 'Returning Patrons'}";
+        $data [] = array(
+            "value" => $allies - $noobies,
+            "label" => 'Returning Patrons'
+        );
         $c = null;
-        return $data;
+        return json_encode($data);
     }
 
     function displayReportPage($rep) {

@@ -29,8 +29,10 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     text-align: center;
 }
 .report-page-sub-container {
-    width: 80% !important;
-    border: 0.5px solid black !important;
+    /* width: 80% !important; */
+    /* border: 0.5px solid black !important; */
+    margin-left: 10% !important;
+    margin-right: 10% !important;
 }
 .page-sub-container-volunteer {
     background-color: rgba(255, 255, 255, 0.801) !important;
@@ -120,8 +122,6 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     border-radius: 100% !important;
     text-shadow: 0.3px 0.3px black;
 }
-
-
 /* ------------ Registration Page ---------------- */
 .index-registration-page-header {
     width: 100% !important;
@@ -633,6 +633,22 @@ div.content {
     border: none !important;
     text-shadow: 0.3px 0.3px black;
     font-weight: bolder !important;
+}
+.download-pdf-report-btn {
+    width: 25% !important;
+    background-color: rgb(102, 124, 246) !important;
+    color: black !important;
+    border-radius: 5px;
+    padding: 0.5% !important;
+    transition: 0.3s !important;
+}
+.download-pdf-report-btn:hover {
+    width: 30% !important;
+    padding: 0.75% !important;
+    background-color: rgb(99, 108, 192) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease-in-out !important;
 }
 /* ------------ Inventory Page ------------------- */
 

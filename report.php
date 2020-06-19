@@ -49,7 +49,6 @@
             <h5 class = "nav-bar-title responsive"> The Market - Report </h5>
         </header>
         <div class = "page-container">
-            <br>
             <div id = "marketid-container"></div>
             <br>
             <div class = "report-btn-options-container" id = "report-btn-options-container" style = "display: none;">
@@ -58,11 +57,12 @@
                 <button class = "btn report-option-btn inline op3" onclick = "showMe('attendance-chart');" id = "att-graph-sender"><i class="fa fa-line-chart" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op1" onclick = "showMe('promGraph');" id = "prom-graph-sender"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op7" onclick = "showMe('retvsnew');" id = "noobies-graph-sender"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
+                <hr style = "color: #303030 !important; border: 0.5px solid #303030 !important;">
             </div>
             <br>
             <!-- Table: Patrons in that specific market -->
             <h3 style = "display: none;" id = "report-table-box-id-title" > Attendees </h3>
-            <div id = "report-table-box-id" style = "display: none;" class = "report-page-sub-container"></div>
+            <div id = "report-table-box-id" style = "display: none; margin-right: 3% !important; margin-left: 3% !important;"></div>
 
             <h3 style = "display: none;" id = "attendance-chart-title"> Attendance Graph </h3>
             <div id = "attendance-chart" style = "display: none;" class = "report-page-sub-container"></div>
@@ -71,59 +71,18 @@
             <div id = "promGraph" style = "display: none;" class = "report-page-sub-container"></div>
 
             <h3 style = "display: none;" id = "retvsnew-title"> New VS. Returning Patrons </h3>
-            <div id = "retvsnew" style = "display: none;" class = "report-page-sub-container"></div>
+            <div id = "retvsnew" style = "display: none;"></div>
+
+            <div id = "download-pdf-report-div" style = "text-align: center; display: none;">
+                <br><br><br>
+                <h3> Download the report ( PDF ) </h3>
+                <br>
+                <button class = "btn download-pdf-report-btn" onclick = "alert('Report generated succesfully : \r\n report_' + document.getElementById('marketid').value + '.pdf');"> Download </button>
+            </div>
+            
         </div>
     </body>
     <script type = "text/javascript">
-
-        $("#report-table-sender").click(function() {
-            $.ajax({
-                type: "POST",
-                url: "funcs.php", 
-                data: {
-                    message: "populate-att-table",
-                    date: document.getElementById("marketid").value
-                },
-                success: function(data){
-                    $("#report-table-box-id").html(data);
-                }
-            });
-        });
-
-        $("#noobies-graph-sender").click(function() {
-            <?php echo 'alert("'.$_SESSION['reportedmarket'].'");"'; ?>
-            Morris.Donut({
-                element: 'retvsnew',
-                data: [ <?php echo "k";/*getRetVSNew($_SESSION['reportedmarket']);*/ ?>],
-                colors:['#994d00','#ffa64d']
-            });
-        });
-
-        $("#prom-graph-sender").click(function() {
-            Morris.Bar({
-                element: 'promGraph', 
-                data:[<?php echo "l";/*promGraphData($_SESSION['reportedmarket']); */?>], 
-                xkey:'METHOD',
-                ykeys:['AMOUNT'],
-                labels:['Impact'],
-                hideHover:'auto',
-                stacked:true,
-                barColors: ['#4DA74D'],
-                barSizeRatio:0.40,
-                resize:false
-            });
-        });
-
-        $("#att-graph-sender").click(function() {
-            Morris.Line({
-                element : 'attendance-chart', 
-                data:[<?php echo "j";/*getAttData($_SESSION['reportedmarket']);*/ ?>], 
-                xkey:'TIME',
-                ykeys:['AMOUNT'],
-                labels:['Attendance'],
-                stacked:true
-            });
-        });
 
         $(document).ready(function() {
             $.ajax({
@@ -148,29 +107,125 @@
                     message: "generate-pdf-report"
                 },
                 success: function(data) {
-                    if(data == "true") alert("Report generated succesfully : \r\n report_" + document.getElementById("marketid").value + ".pdf");
+                    if(data == "true"){
+                        hideAll();
+                        document.getElementById("download-pdf-report-div").style.display = "block";
+                    } 
                     else alert("A Market must be terminated \r\n to generate a report ...");
                 }
             });
         }
 
-        function showMe(x) {
+        function hideAll() {
             divs = ["report-table-box-id", "attendance-chart", "promGraph", "retvsnew"];
             for(var i = 0; i < divs.length; i++) {
                 document.getElementById(divs[i]).style.display = "none";
+                document.getElementById(divs[i]).innerHTML = "";
                 document.getElementById(divs[i]+"-title").style.display = "none";
             }
+        }
+
+        function showMe(x) {
+            hideAll();
+            document.getElementById("download-pdf-report-div").style.display = "none";
             document.getElementById(x).style.display = "block";
             document.getElementById(x+"-title").style.display = "block";
         }
 
-        $("#marketid").change(function() {
-            console.log("hell");
+        function changedMarketId() {
             document.getElementById("report-btn-options-container").style.display = "block";
             $.ajax({
                 type: "POST",
-                url: "funcs.ph"
+                url: "funcs.php",
+                data: {
+                    message: "start-market-report-session",
+                    date: document.getElementById("marketid").value
+                }
             });
+        }
+
+
+        $("#report-table-sender").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-att-table",
+                    date: document.getElementById("marketid").value
+                },
+                success: function(data){
+                    $("#report-table-box-id").html(data);
+                }
+            });
+        });
+
+        $("#noobies-graph-sender").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "display-noobies-graph",
+                    date: document.getElementById("marketid").value
+                },
+                dataType: "json",
+                success: function(info) {
+                    Morris.Donut({
+                        element: 'retvsnew',
+                        data: info,
+                        colors:['#994d00','#ffa64d']
+                    });
+                }
+            });
+        });
+
+        $("#prom-graph-sender").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "display-prom-graph",
+                    date: document.getElementById("marketid").value
+                },
+                dataType: "json",
+                success: function(info) {
+                    Morris.Bar({
+                        element: 'promGraph', 
+                        data: info, 
+                        xkey: 'METHOD',
+                        ykeys: ['AMOUNT'],
+                        labels: ['Impact'],
+                        hideHover: 'auto',
+                        stacked: true,
+                        barColors: ['#4DA74D'],
+                        barSizeRatio: 0.40,
+                        resize: false
+                    });
+                }
+            });
+            
+        });
+
+        $("#att-graph-sender").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "display-att-graph",
+                    date: document.getElementById("marketid").value
+                },
+                dataType: "json",
+                success: function(info) {
+                    Morris.Line({
+                        element : 'attendance-chart', 
+                        data:info, 
+                        xkey:'TIME',
+                        ykeys:['AMOUNT'],
+                        labels:['Attendance'],
+                        stacked:true
+                    });
+                }
+            });
+            
         });
     </script>
 </html>

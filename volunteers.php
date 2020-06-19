@@ -74,18 +74,20 @@
     </body>
     <script>
         
-        function deactivateVolunteer(x) {
+        function deactivateVolunteer(x) 
+        {
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
                 data: {
                     message: "deactivateVolunteer"
                 },
-                success: function() {
+                success: function(data) {
                     alert("Volunteer has been deactivated");
                 }
             });
         }
+
 
         $(document).ready(function() {
 
@@ -120,7 +122,6 @@
                     message: "load-volunteers-table"
                 },
                 success: function(data){
-                    console.log(data);
                     $("#all-volunteers-container").html(data);
                 }
             });
@@ -153,7 +154,8 @@
                     lastname: document.getElementById("lastname").value
                 },
                 success: function(data) {
-                    if(data != "alreadyinuse") {
+                    if(data != "alreadyinuse") 
+                    {
                         $("#add-volunteer-option-div").html(data);
                         alertify.set('notifier','position', 'bottom-right');
                         var message = document.createElement('message');
@@ -236,9 +238,7 @@
             document.getElementById(x+"-div").style.display = "block";
         }
 
-        function chosenMarketDateChanged() 
-        {
-        // populate inventory view table
+        function changedMarketId() {
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
@@ -257,9 +257,11 @@
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
-                data: {message: "get-email-list"},
+                data: {
+                    message: "get-email-list"
+                },
                 success: function(data) {
-                    window.open("mailto:" + data + "?subject=Volunteer at the Market!");
+                    window.open("mailto:" + data.substring(1,data.length) + "?subject=Volunteer at the Market!");
                 }
             });
         }

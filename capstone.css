@@ -654,12 +654,14 @@ div.content {
 
 .add-to-inventory {
     background-color: rgb(131, 255, 137) !important;
-    margin-right: 1.5% !important;
+    margin-right: 6.5% !important;
     border-radius: 150px !important;
     width: auto !important;
     border: none !important;
     text-shadow: 0.3px 0.3px black;
     font-weight: bolder !important;
+    float: right !important;
+    
 }
 .inv_box_class
 {

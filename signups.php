@@ -119,7 +119,7 @@
             });
         });
 
-        $(document).on('change', '#marketid', function() {
+        function changeMarketId() {
             //populate sign up sheet in divs format 
             $.ajax ({
                 type: "POST",
@@ -173,7 +173,7 @@
                     $("#needed-time-inputs").html(data);
                 }
             });
-        });
+        }
 
         $("#remove-signup-commit-btn").click (function (event) {
             //removing a sign up commit from table

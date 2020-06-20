@@ -17,10 +17,8 @@
         if(!$sb -> fetch(PDO::FETCH_ASSOC)){
             array_push($prevs, $r['patID']);
             array_push($prevnames, $r['FirstName']." ".$r['LastName']);
-        }
-        
+        }        
     }
-
 
     $active = false;
     $sql_active = "SELECT active FROM Markets WHERE idByDate = 20200623;";

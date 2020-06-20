@@ -57,20 +57,20 @@
                 <button class = "btn report-option-btn inline op3" onclick = "showMe('attendance-chart');" id = "att-graph-sender"><i class="fa fa-line-chart" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op1" onclick = "showMe('promGraph');" id = "prom-graph-sender"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op7" onclick = "showMe('retvsnew');" id = "noobies-graph-sender"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
-                <hr style = "color: #303030 !important; border: 0.5px solid #303030 !important;">
+                <!-- <hr style = "color: #303030 !important; border: 0.5px solid #303030 !important;"> -->
             </div>
-            <br>
+            <!-- <br> -->
             <!-- Table: Patrons in that specific market -->
-            <h3 style = "display: none;" id = "report-table-box-id-title" > Attendees </h3>
+            <h3 style = "display: none;" id = "report-table-box-id-title" ><br> <!--Attendees--> </h3>
             <div id = "report-table-box-id" style = "display: none; margin-right: 3% !important; margin-left: 3% !important;"></div>
 
-            <h3 style = "display: none;" id = "attendance-chart-title"> Attendance Graph </h3>
+            <h3 style = "display: none;" id = "attendance-chart-title"><br> Attendance Graph </h3>
             <div id = "attendance-chart" style = "display: none;" class = "report-page-sub-container"></div>
 
-            <h3 style = "display: none;" id = "promGraph-title"> Advertisement and Promotions </h3>
+            <h3 style = "display: none;" id = "promGraph-title"><br> Advertisement and Promotions </h3>
             <div id = "promGraph" style = "display: none;" class = "report-page-sub-container"></div>
 
-            <h3 style = "display: none;" id = "retvsnew-title"> New VS. Returning Patrons </h3>
+            <h3 style = "display: none;" id = "retvsnew-title"><br> New VS. Returning Patrons </h3>
             <div id = "retvsnew" style = "display: none;"></div>
 
             <div id = "download-pdf-report-div" style = "text-align: center; display: none;">

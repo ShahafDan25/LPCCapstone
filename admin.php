@@ -4,9 +4,6 @@
         <title> Admin - LPC Market </title>
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
-        <!-- CSS HARDCODE FILE LINK -->
-        <link href='capstone.css' rel='stylesheet'></link>
-
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 
@@ -15,13 +12,27 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         <!-- FONTAWESOME ICON --> 
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
-        
+
+        <!-- ALERTIFY.JS: JavaScrip and CSS -->
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
+
+          <!-- CSS HARDCODE FILE LINK -->
+        <link href='capstone.css' rel='stylesheet'></link>
     </head>
     
     <body class = "admin-page-body">
-    <!-- -------------- NAVIGATION BAR ------------>
+        <!-- -------------- NAVIGATION BAR ------------>
         <header class = "nav-bar">
             <a href = "index.php" class = "nav-bar-option responsive">Market</a>
             <a href = "volunteers.php" class = "nav-bar-option responsive">Volunteers</a>
@@ -75,8 +86,7 @@
                     <button class = "btn submit-new-market-date" id = "submit-new-market-date-btn"> Submit </button>
                 </div>
                 <!-- MARKET ACTIONS OPTION -->
-                <div class = "sub-admin-page-container" id = "market-actions" style = "display: none" >
-                    <h4><u>Market Actions</u></h4>
+                <div class = "sub-admin-page-container" id = "market-actions" style = "display: none">
                     <div id = "marketid-container"></div>
                     <br>
                     <ul class = "admin-options-list">
@@ -105,19 +115,34 @@
                     <input type = "password" placeholder = " Old Password" class = "change-pw-input third inline" id = "oldPW" autocomplete = "off" required>
                     <input type = "password" placeholder = " New Password" class = "change-pw-input third inline" id = "newPW1" autocomplete = "off" required>
                     <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" id = "newPW2" autocomplete = "off" required> <br><br>
-                    <h6 id = "checker"><strong>   *     *     *   </strong></h6>
-                    <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button>
+                    <h6 id = "checker"><strong>   *     *     *   </strong></h6> <br>
+                    <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button> <br>
                 </div>
-                <footer class = "footer">
+                <!-- <footer class = "footer">
                     <p> Las Positas College Student Government </p>
                     <p class = "shahaf-signature"> Shahaf Dan Productions </p>
-                </footer>
+                </footer> -->
             </div>
         </div>
     </body>
     <script>
-        
-        
+        alertify.set('notifier','position', 'bottom-center');
+
+        // var success = document.createElement('success');
+        // success.style.padding =  "30px";
+        // // success.style.height = "100%
+        // success.style.border = "2px solid black";
+        // success.style.maxWidth = "200% !important;";
+        // success.style.margin = "0px";
+        // success.style.backgroundColor = "blue";
+        // success.style.whiteSpace = "pre-wrap";
+        // success.appendChild(document.createTextNode("Hello World of Testing"));
+        alertify.message("success");
+
+
+        var pw1 = document.getElementById("newPW1");
+        var pw2 = document.getElementById("newPW2");
+
         $("#submit-pw-change").click(function() {
             if(pw1.value == pw2.value && pw1.value.length > 7){
                 $.ajax ({
@@ -130,21 +155,31 @@
                         message: "changePW"
                     },
                     success: function(data) {
-                        if(data == "true") alert("Your password has \r\n been changed succesfully");
-                        else if(data == "passeduse") alert ("You have alreday used this password before \r\n choose a different one please.");
-                        else if(data == "false") alert("Your Old Password is Incorrect");
+                        if(data == "true")  {
+                            alertify.success('Your password has been changed !');
+                            document.getElementById("oldPW").value = "";
+                        }
+                        else if(data == "passeduse") {
+                            alertify.error('This password was already used before \r\n Please choose a different one.');
+                        }
+                        else if(data == "false") {
+                            alertify.error("Incorrect Password");
+                            document.getElementById("oldPW").value = "";
+                        }
+                        
                         responsive_sidebar_item("new-market-sender");
                     }
                 });
             }
             else {
-                if (pw1.value.length < 8) alert("Password's length must be at least 8 characters");
-                else if (pw1.value != pw2.value) alert ("Your new passwords do not match");
+                if (pw1.value.length < 8) alertify.error("Password must be at least 8 characters");
+                else if (pw1.value != pw2.value) alertify.error ("Passwords don't match...");
             }
+            pw1.value = "";
+            pw2.value = "";
         });
            
-        var pw1 = document.getElementById("newPW1");
-        var pw2 = document.getElementById("newPW2");
+        
             
         function responsive_sidebar_item(x) {
             var targets = ["new-market", "market-actions", "change-password", "index-index"];
@@ -207,6 +242,7 @@
                     var checkedAdminOption = options[i].value;
                 }
             }
+            var date = document.getElementById("marketid").value;
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
@@ -216,15 +252,23 @@
                     date: document.getElementById("marketid").value
                 },
                 success: function(data) {
-                    if(data == "deleted") alert ("Market Deleted");
-                    else if(data == "activated") alert("Market Activated !");
-                    else if(data == "terminated") alert("Market Terminated");
-                    else if(data == "notactive") alert("You Can't terminate a non active market.");
-                    else if(data == "alreadyterminated") alert("This Market has already been terminated");
-                    else if(data == "cantactivateterminated") alert("You can't reactivate a terminated market");
-                    else if(data == "alreadyactive") alert("This market is already active.");
-                    else if(data == "nodatechosen") alert("please choosee a date");
-                    location.replace("admin.php");
+                    if(data == "deleted")  {
+                        alertify.message("Market Deleted");
+                        location.replace("admin.php");
+                    }
+                    else if(data == "activated")  {
+                        alertify.message("Market Activated !");
+                        location.replace("admin.php");
+                    }
+                    else if(data == "terminated")  {
+                        alertify.message("Market Terminated");
+                        location.replace("admin.php");
+                    }
+                    else if(data == "notactive") alertify.error("Market hasn't been activated yet");
+                    else if(data == "alreadyterminated") alertify.error("Already Terminated");
+                    else if(data == "cantactivateterminated") alertify.error("Can't activate a terminated market");
+                    else if(data == "alreadyactive") alertify.error("Already Active");
+                    else if(data == "nodatechosen") alertify.message("Please choose a date");
                 }
             });
         });
@@ -242,10 +286,13 @@
                 },
                 success: function(data) {
                     if(data == "true")  {
-                        alert("Market Added !");
+                        alertify.success("Market Added !");
+                        document.getElementById("new_market_start_time").value = "";
+                        document.getElementById("new_market_date").value = "";
+                        document.getElementById("new_market_end_time").value = "";
                         location.replace("admin.php");
                     }
-                    else if(data == "false") alert("Market already exists !");
+                    else if(data == "false") alertify.error("Market already exists !");
                 }
             })
         });

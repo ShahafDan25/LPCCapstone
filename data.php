@@ -11,8 +11,14 @@
     $s = $c -> prepare($sql);
     $s -> execute();
     while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-        array_push($prevs, $r['patID']);
-        array_push($prevnames, $r['FirstName']." ".$r['LastName']);
+        $sql = "SELECT * FROM MarketLogins WHERE Patrons_patID = ".$r['patID']." AND Markets_idByDate = 20200623;";
+        $sb = $c -> prepare($sql);
+        $sb -> execute();
+        if(!$sb -> fetch(PDO::FETCH_ASSOC)){
+            array_push($prevs, $r['patID']);
+            array_push($prevnames, $r['FirstName']." ".$r['LastName']);
+        }
+        
     }
 
 
@@ -22,7 +28,9 @@
     $s_active -> execute();
     $r_active = $s_active -> fetch(PDO::FETCH_ASSOC);
     if($r_active['active'] == 1) $active = true;
+
     while($active) {
+        $c = connDB(); //set connection
         $counter++;
 
         if(rand(0,99) < 35) {
@@ -73,11 +81,12 @@
 
         date_default_timezone_set("America/Los_Angeles");
         $time = intval(substr(date("H:i"),0,2).substr(date("H:i"),0,2));
-        if($time > 747) {
+        if($time > 1547) {
             $sql = "UPDATE Markets SET active = 2, terminationtime = '".$time."' WHERE idByDate = 20200623";
             $c -> prepare($sql) -> execute();
             $active = false;
-        }        
+        }     
+        $c = null; //close connection   
     }
 
     function connDB(){
@@ -85,7 +94,10 @@
         $password = "MMB3189@A";
         $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306socket=/tmp/mysql.sock';
         try {$conn = new PDO($dsn, $username, $password);}
-        catch (PDOException $e) {echo 'Connection Failed: ' . $e -> getMessage();}
+        catch (PDOException $e) {
+            echo 'Connection Failed: ' . $e -> getMessage()."   ****   ***   ** *\n";
+            return connDB();
+        }
         return $conn;
     }   
 

@@ -263,7 +263,8 @@
                     message: "get-email-list"
                 },
                 success: function(data) {
-                    window.open("mailto:" + data.substring(1,data.length) + "?subject=Volunteer at the Market!");
+                    if(data == "noemails") alertify.error("There are no active volunteers.");
+                    else window.open("mailto:" + data.substring(1,data.length) + "?subject=Volunteer at the Market!");
                 }
             });
         }

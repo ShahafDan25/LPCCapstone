@@ -525,15 +525,10 @@ t = time
 
     function updatePW($oldPW, $newPW) {
         $c = connDB(); // set connection
-        date_default_timezone_set("America/Los_Angeles");
-        $today = date("Y-m-d");
-        $sql = "UPDATE AdminPW SET current = 0, changeDate = '".$today."' WHERE passwords = '".md5($oldPW)."';";
+        $sql = "UPDATE AdminPW SET current = 0, changeDate = CURDATE() WHERE passwords = '".md5($oldPW)."';";
         $c -> prepare($sql) -> execute();
         //update new password
-        $monthtouse = date("m") + 3;
-        if(date("m") > 10) $monthtouse = date("m") - 9; //recycle to the front
-        $changeDate = date("Y")."-".$monthtouse."-".date("d");
-        $sql = "INSERT INTO AdminPW VALUES ('".md5($newPW)."', '".$changeDate."', 1);";
+        $sql = "INSERT INTO AdminPW VALUES ('".md5($newPW)."', CURDATE(), 1);";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null; //close connection
@@ -1116,7 +1111,8 @@ t = time
             $data .= ",".$r['Email'];
         }
         $c = null;
-        return $data;
+        if(strlen($data) < 2) return "noemails";
+        else return $data;
     }
         
     function verifyVolunteer($email) {

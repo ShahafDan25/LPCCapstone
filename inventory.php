@@ -40,9 +40,8 @@
             <h5 class = "nav-bar-title responsive"> The Market - Inventory </h5>
         </header>
         <div class = "page-container">
-            <br>
             <div id = "marketid-container"></div>
-            <br><br>
+            <br>
             <!-- Table with the current updated inventory -->
             <div class = "page-sub-container" id = "view_inv" style = "display: none"></div>
         </div>

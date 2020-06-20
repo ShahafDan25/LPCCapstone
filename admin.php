@@ -126,12 +126,13 @@
         </div>
     </body>
     <script>
-        var loc = false;
-        alertify.set('notifier','position', 'bottom-center');
+        alertify.set('notifier','position', 'bottom-center'); //set position    
+        alertify.set('notifier','delay', 2.25); //set dellay
 
         var pw1 = document.getElementById("newPW1");
         var pw2 = document.getElementById("newPW2");
         var pwtext = document.getElementById("checker");
+        var opw = document.getElementById("oldPW");
 
         $("#submit-pw-change").click(function() {
             if(pw1.value == pw2.value && pw1.value.length > 7){
@@ -139,23 +140,27 @@
                     type: "POST",
                     url: "funcs.php",
                     data: {
-                        oldPW: document.getElementById("oldPW").value,
+                        oldPW: opw.value,
                         newPW1: pw1.value,
                         newPW2: pw2.value,
                         message: "changePW"
                     },
                     success: function(data) {
                         if(data == "true")  {
-                            alertify.success('Your password has been changed !');
-                            document.getElementById("oldPW").value = "";
-                            loc = true;
+                            alertify.success('Your password has been changed !').ondismiss = function() {
+                                pw1.value = "";
+                                opw.value = "";
+                                pw2.value = "";
+                                pwtext.innerHTML = "   *     *     *   ";
+                                responsive_sidebar_item("index-index-sender");
+                            }
                         }
                         else if(data == "passeduse") {
                             alertify.warning('This password was already used before \r\n Please choose a different one.');
                         }
                         else if(data == "false") {
                             alertify.error("Incorrect Password");
-                            document.getElementById("oldPW").value = "";
+                            opw.value = "";
                         }                        
                     }
                 });
@@ -167,7 +172,6 @@
             pw1.value = "";
             pw2.value = "";
             pwtext.innerHTML = "   *     *     *   ";
-            if(loc) location.replace("admin.php")
         });
            
         
@@ -244,16 +248,19 @@
                 },
                 success: function(data) {
                     if(data == "deleted")  {
-                        alertify.success("Market Deleted");
-                        location.replace("admin.php");
+                        alertify.success("Market Deleted").ondismiss = function() {
+                            responsive_sidebar_item("index-index-sender");
+                        }
                     }
                     else if(data == "activated")  {
-                        alertify.success("Market Activated !");
-                        location.replace("admin.php");
+                        alertify.success("Market Activated !").ondismiss = function() {
+                            responsive_sidebar_item("index-index-sender");
+                        }
                     }
                     else if(data == "terminated")  {
-                        alertify.success("Market Terminated");
-                        location.replace("admin.php");
+                        alertify.success("Market Terminated").ondismiss = function() {
+                            responsive_sidebar_item("index-index-sender");
+                        }
                     }
                     else if(data == "notactive") alertify.warning("Market hasn't been activated yet");
                     else if(data == "alreadyterminated") alertify.warning("Already Terminated");
@@ -277,11 +284,12 @@
                 },
                 success: function(data) {
                     if(data == "true")  {
-                        alertify.success("Market Added !");
                         document.getElementById("new_market_start_time").value = "";
                         document.getElementById("new_market_date").value = "";
                         document.getElementById("new_market_end_time").value = "";
-                        location.replace("admin.php");
+                        alertify.success("Market Added !").ondismiss = function() {
+                            responsive_sidebar_item("index-index-sender");
+                        }
                     }
                     else if(data == "false") alertify.error("Market already exists !");
                 }

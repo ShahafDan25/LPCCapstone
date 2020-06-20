@@ -1,9 +1,32 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 /* ------------------ ALERTIFY CSS -------------------*/
-.ajs-message { 
-    color: #31708f !important;  
-    background-color: #b331b3 !important; 
-    border-color: #31708f !important; 
+.ajs-message,.ajs-success, .ajs-error, .ajs-warning { 
+    font-size: 110% !important;
+    font-weight: bold !important;
+    margin-bottom: 100px !important;
+    padding: 17px !important;
+    width: 400px !important;
+    color: black !important;
+}
+.ajs-message {
+    /* color: rgb(102, 124, 246) !important;   */
+    background-color: #d3e2ff !important; 
+    border: 3px solid rgb(102, 124, 246) !important;
+}
+.ajs-success {
+    /* color: rgb(54, 151, 67) !important;   */
+    background-color: #b4f8b8 !important; 
+    border: 3px solid rgb(54, 151, 67) !important;
+}
+.ajs-error {
+    /* color: rgb(177, 31, 31) !important;   */
+    background-color: #ffc0c0 !important; 
+    border: 3px solid rgb(177, 31, 31) !important;
+}
+.ajs-warning {
+    /* color: rgb(212, 200, 23) !important;   */
+    background-color: #fafbb5 !important; 
+    border: 3px solid rgb(212, 200, 23) !important;
 }
 
 

@@ -126,22 +126,12 @@
         </div>
     </body>
     <script>
+        var loc = false;
         alertify.set('notifier','position', 'bottom-center');
-
-        // var success = document.createElement('success');
-        // success.style.padding =  "30px";
-        // // success.style.height = "100%
-        // success.style.border = "2px solid black";
-        // success.style.maxWidth = "200% !important;";
-        // success.style.margin = "0px";
-        // success.style.backgroundColor = "blue";
-        // success.style.whiteSpace = "pre-wrap";
-        // success.appendChild(document.createTextNode("Hello World of Testing"));
-        alertify.message("success");
-
 
         var pw1 = document.getElementById("newPW1");
         var pw2 = document.getElementById("newPW2");
+        var pwtext = document.getElementById("checker");
 
         $("#submit-pw-change").click(function() {
             if(pw1.value == pw2.value && pw1.value.length > 7){
@@ -158,25 +148,26 @@
                         if(data == "true")  {
                             alertify.success('Your password has been changed !');
                             document.getElementById("oldPW").value = "";
+                            loc = true;
                         }
                         else if(data == "passeduse") {
-                            alertify.error('This password was already used before \r\n Please choose a different one.');
+                            alertify.warning('This password was already used before \r\n Please choose a different one.');
                         }
                         else if(data == "false") {
                             alertify.error("Incorrect Password");
                             document.getElementById("oldPW").value = "";
-                        }
-                        
-                        responsive_sidebar_item("new-market-sender");
+                        }                        
                     }
                 });
             }
             else {
-                if (pw1.value.length < 8) alertify.error("Password must be at least 8 characters");
-                else if (pw1.value != pw2.value) alertify.error ("Passwords don't match...");
+                if (pw1.value.length < 8) alertify.warning("Password must be at least 8 characters");
+                else if (pw1.value != pw2.value) alertify.warning ("Passwords must match");
             }
             pw1.value = "";
             pw2.value = "";
+            pwtext.innerHTML = "   *     *     *   ";
+            if(loc) location.replace("admin.php")
         });
            
         
@@ -194,18 +185,18 @@
         pw2.onkeyup = function(event){
             if (event.target.value.length == 0)
             {
-                document.getElementById("checker").innerHTML = "   *     *     *   ";
+                pwtext.innerHTML = "   *     *     *   ";
                 pw2.style = "border-color: rgb(102, 124, 246) !important;";
             } 
             else if(event.target.value != pw1.value) 
             {
-                document.getElementById("checker").innerHTML = "Passwords have to match";
+                pwtext.innerHTML = "Passwords have to match";
                 pw2.style = "border-color: rgb(255, 141, 141) !important;";
             }
             else if(event.target.value == pw1.value) 
             {
                 pw2.style = "border-color: rgb(157, 255, 161) !important;";
-                document.getElementById("checker").innerHTML = "Your password is good!";
+                pwtext.innerHTML = "Your password is good!";
             }
         }
 
@@ -253,22 +244,22 @@
                 },
                 success: function(data) {
                     if(data == "deleted")  {
-                        alertify.message("Market Deleted");
+                        alertify.success("Market Deleted");
                         location.replace("admin.php");
                     }
                     else if(data == "activated")  {
-                        alertify.message("Market Activated !");
+                        alertify.success("Market Activated !");
                         location.replace("admin.php");
                     }
                     else if(data == "terminated")  {
-                        alertify.message("Market Terminated");
+                        alertify.success("Market Terminated");
                         location.replace("admin.php");
                     }
-                    else if(data == "notactive") alertify.error("Market hasn't been activated yet");
-                    else if(data == "alreadyterminated") alertify.error("Already Terminated");
+                    else if(data == "notactive") alertify.warning("Market hasn't been activated yet");
+                    else if(data == "alreadyterminated") alertify.warning("Already Terminated");
                     else if(data == "cantactivateterminated") alertify.error("Can't activate a terminated market");
-                    else if(data == "alreadyactive") alertify.error("Already Active");
-                    else if(data == "nodatechosen") alertify.message("Please choose a date");
+                    else if(data == "alreadyactive") alertify.warning("Already Active");
+                    else if(data == "nodatechosen") alertify.warning("Please choose a date");
                 }
             });
         });

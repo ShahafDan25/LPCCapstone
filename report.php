@@ -1,4 +1,3 @@
-<?php session_start(); include "funcs.php"; ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -52,11 +51,11 @@
             <div id = "marketid-container"></div>
             <br>
             <div class = "report-btn-options-container" id = "report-btn-options-container" style = "display: none;">
-                <button class = "btn report-option-btn inline op8" onclick = "pdfReport();"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op1" onclick = "pdfReport();"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op2" onclick = "showMe('report-table-box-id');" id = "report-table-sender"><i class="fa fa-table" aria-hidden="true"></i></button>
                 <button class = "btn report-option-btn inline op3" onclick = "showMe('attendance-chart');" id = "att-graph-sender"><i class="fa fa-line-chart" aria-hidden="true"></i></button>
-                <button class = "btn report-option-btn inline op1" onclick = "showMe('promGraph');" id = "prom-graph-sender"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
-                <button class = "btn report-option-btn inline op7" onclick = "showMe('retvsnew');" id = "noobies-graph-sender"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op4" onclick = "showMe('promGraph');" id = "prom-graph-sender"><i class="fa fa-bar-chart" aria-hidden="true"></i></button>
+                <button class = "btn report-option-btn inline op5" onclick = "showMe('retvsnew');" id = "noobies-graph-sender"><i class="fa fa-pie-chart" aria-hidden="true"></i></button>
                 <!-- <hr style = "color: #303030 !important; border: 0.5px solid #303030 !important;"> -->
             </div>
             <!-- <br> -->
@@ -77,13 +76,19 @@
                 <br><br><br>
                 <h3> Download the report ( PDF ) </h3>
                 <br>
-                <button class = "btn download-pdf-report-btn" onclick = "alert('Report generated succesfully : \r\n report_' + document.getElementById('marketid').value + '.pdf');"> Download </button>
+                <button class = "btn download-pdf-report-btn" onclick = "downloadpdf();"> Download </button>
             </div>
             
         </div>
     </body>
     <script type = "text/javascript">
 
+
+        function downloadpdf() {
+            alertify.success('Report generated succesfully : \r\n report_' + document.getElementById('marketid').value + '.pdf');
+            window.open('report_'+document.getElementById('marketid').value + '.pdf');
+        }
+        
         $(document).ready(function() {
             $.ajax({
                 type: "POST",
@@ -111,7 +116,8 @@
                         hideAll();
                         document.getElementById("download-pdf-report-div").style.display = "block";
                     } 
-                    else alert("A Market must be terminated \r\n to generate a report ...");
+                    else if(data == "false") alertify.warning("A Market must be terminated \r\n to generate a report ...");
+                    else alertify.error("Something Went Wrong, try again later!");
                 }
             });
         }
@@ -134,6 +140,7 @@
 
         function changedMarketId() {
             document.getElementById("report-btn-options-container").style.display = "block";
+            hideAll();
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
@@ -169,10 +176,11 @@
                 },
                 dataType: "json",
                 success: function(info) {
+                    $("div svg").attr("style", "border: 2px solid black");
                     Morris.Donut({
                         element: 'retvsnew',
                         data: info,
-                        colors:['#994d00','#ffa64d']
+                        colors:['#83FF89', '#FDFF79']
                     });
                 }
             });
@@ -196,13 +204,18 @@
                         labels: ['Impact'],
                         hideHover: 'auto',
                         stacked: true,
-                        barColors: ['#4DA74D'],
+                        barColors: ['#83FF89'],
                         barSizeRatio: 0.40,
-                        resize: false
+                        resize: true,
+                        gridStrokeWidth: 1.25,
+                        gridStrokeColor: "#303030",
+                        lineColors: ["#6DD1FF"],
+                        gridTextColor: "#303030",
+                        gridTextWeight: "bold",
+                        gridTextFamily: "Optima"
                     });
                 }
             });
-            
         });
 
         $("#att-graph-sender").click(function() {
@@ -221,7 +234,15 @@
                         xkey:'TIME',
                         ykeys:['AMOUNT'],
                         labels:['Attendance'],
-                        stacked:true
+                        stacked:true,
+                        lineWidth: 3.75,
+                        pointSize: 4.5,
+                        gridStrokeWidth: 1.25,
+                        gridStrokeColor: "#303030",
+                        lineColors: ["#6DD1FF"],
+                        gridTextColor: "#303030",
+                        gridTextWeight: "bold",
+                        gridTextFamily: "Optima"
                     });
                 }
             });

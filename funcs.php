@@ -1,26 +1,10 @@
 <?php session_start(); require "otherFiles/fpdf_lib/fpdf.php";?>
 <?php
-/*
-c = connection
-d = date
-a = amount
-n = name
-s = satetment
-s_ce = statement check existence
-r = row / result
-t = time
-*/
-
     class myFPDFClass extends FPDF //extend all the features from the FPDF class, but more functions
     {
-        function Heads($c)
+        function Heads($d)
         {
-            $sql = "SELECT idByDate FROM Markets WHERE reported = 1";
-            $s = $c -> prepare ($sql);
-            $s -> execute();
-            $r = $s -> fetch(PDO::FETCH_ASSOC);
-            $d = $r['idByDate'];
-
+            $months = ["January", "February", "March", "April", "May", " June", "July", "August", "September", "October", "November", "December"];
             $this -> SetFont('Arial', 'B', 20); 
             $this -> Cell(40,12,'The Market   |   LPCSG ', 'C');
             
@@ -29,7 +13,7 @@ t = time
 
             $this -> Ln();
             $this -> SetFont('Arial', 'B', 12); 
-            $this -> Cell (40, 10, 'Report '.substr($d,4,2)." / ".substr($d,6,2)." / ".substr($d,0,4),'C');
+            $this -> Cell (40, 10, 'Report '.$months[(intval(substr($d,4,2)))]." ".substr($d,6,2).", ".substr($d,0,4),'C');
             $this -> Ln();
             $this -> Ln();
             return;
@@ -43,7 +27,9 @@ t = time
         {
             $this -> SetFont('Arial', 'B', 14); 
             $this -> Cell(60, 10, 'Name', 1, 0, 'C'); 
-            $this -> Cell(25, 10, 'Student ?', 1, 0, 'C');
+            $this -> SetFont('Arial', 'B', 10); 
+            $this -> Cell(25, 10, 'LPC Student', 1, 0, 'C');
+            $this -> SetFont('Arial', 'B', 14); 
             $this -> Cell(90, 10, 'People in Household', 1, 0, 'C');
             $this -> Ln(); 
             $this -> SetFont('Arial', 'B', 12); 
@@ -57,38 +43,35 @@ t = time
         }
 
         //table body: insert only necessary information from the report page
-        function tableBody($c, $date)
+        function tableBody($date)
         {
+            $c = connDB(); //set connection
             $this -> SetFont('Arial', 'B', 10); 
-            $sql_a = "SELECT Patrons_patID FROM MarketLogins WHERE Markets_idByDate = ".$date.";";
-            $s_a = $c -> prepare($sql_a); 
-            $s_a -> execute(); 
+            $sql = "SELECT p.FirstName, p.LastName, p.StudentStatus, p.ChildrenAmount, p.AdultsAmount, p.SeniorsAmount FROM Patrons p JOIN MarketLogins ml ON ml.Patrons_patID = p.patID WHERE ml.Markets_idByDate = '".$date."' ORDER BY p.FirstName, p.LastName;";
+            $s = $c -> prepare($sql); 
+            $s -> execute(); 
             $totalPeople = 0;
             $totalKids = 0;
             $totalAdults = 0;
             $totalSeniors = 0;
-            while($r_a = $s_a -> fetch(PDO::FETCH_ASSOC))
+            while($r = $s -> fetch(PDO::FETCH_ASSOC))
             { 
-                $sql_b = "SELECT FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount FROM Patrons WHERE patID = ".$r_a['Patrons_patID'];
-                $s_b = $c -> prepare($sql_b);
-                $s_b -> execute();
-                while($r_b = $s_b -> fetch(PDO::FETCH_ASSOC)) 
-                {
-                    $this -> Cell(60, 7, $r_b['FirstName']."  ".$r_b['LastName'], 1, 0, 'C');
-                    
-                    if($r_b['StudentStatus'] == 1) $this -> Cell(25, 7, "  YES   ", 1, 0, 'C');
-                    else $this -> Cell(25, 7, " ", 1, 0, 'C');                    
-                    
-                    $this -> Cell(30, 7, $r_b['ChildrenAmount'], 1, 0, 'C');
-                    $this -> Cell(30, 7, $r_b['AdultsAmount'], 1, 0, 'C');
-                    $this -> Cell(30, 7, $r_b['SeniorsAmount'], 1, 0, 'C');
-                    $this -> Ln(); 
+                $this -> Cell(60, 7, $r['FirstName']."  ".$r['LastName'], 1, 0, 'C');
+                
+                $this -> SetFont('ZapfDingbats','', 10);
+                if($r['StudentStatus'] == 1) $this -> Cell(25, 7, "  4  ", 1, 0, 'C');
+                else $this -> Cell(25, 7, " ", 1, 0, 'C');                    
+                
+                $this -> SetFont('Arial', 'B', 10); 
+                $this -> Cell(30, 7, $r['ChildrenAmount'], 1, 0, 'C');
+                $this -> Cell(30, 7, $r['AdultsAmount'], 1, 0, 'C');
+                $this -> Cell(30, 7, $r['SeniorsAmount'], 1, 0, 'C');
+                $this -> Ln(); 
 
-                    $totalPeople++;
-                    $totalKids += $r_b['ChildrenAmount'];
-                    $totalAdults += $r_b['AdultsAmount'];
-                    $totalSeniors += $r_b['SeniorsAmount']; 
-                }
+                $totalPeople++;
+                $totalKids += $r['ChildrenAmount'];
+                $totalAdults += $r['AdultsAmount'];
+                $totalSeniors += $r['SeniorsAmount']; 
             }   
             // ------------------ averages and statistics ---------------------//
             $this -> Ln();
@@ -597,9 +580,9 @@ t = time
         //--------------- report code ---------------------//
         $pdf = new myFPDFClass(); 
         $pdf -> AddPage();
-        $pdf -> Heads($c);
+        $pdf -> Heads($date);
         $pdf -> tableHead();
-        $pdf -> tableBody($c, $date);
+        $pdf -> tableBody($date);
         $pdf -> signature();
 
         $reportFile = fopen('report_'.strval($date).'.pdf', 'w+');

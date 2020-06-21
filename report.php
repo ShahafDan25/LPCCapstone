@@ -82,7 +82,8 @@
         </div>
     </body>
     <script type = "text/javascript">
-
+        alertify.set('notifier','position', 'bottom-center'); //set position    
+        alertify.set('notifier','delay', 2.25); //set dellay
 
         function downloadpdf() {
             alertify.success('Report generated succesfully : \r\n report_' + document.getElementById('marketid').value + '.pdf');

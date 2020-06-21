@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Volunteers - Market </title>
+        <title> Volunteers - LPC Market </title>
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
-        <!-- CSS HARDCODE FILE LINK -->
-        <link href='capstone.css' rel='stylesheet'></link>
-
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 
@@ -30,6 +27,8 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
 
+          <!-- CSS HARDCODE FILE LINK -->
+        <link href='capstone.css' rel='stylesheet'></link>
    
     </head>
     
@@ -49,9 +48,9 @@
                 <button class = "btn volunteer-option op1 inline" id = "send-volunteers-email" onclick = "sendEmailToActiveVolunteers();" title = "Send Email"><i class="fa fa-share" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op2 inline" id = "email-volunteer-list" onclick = "showMe(this.id);" title = "Email List"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                 <button class = "btn volunteer-option op3 inline" id = "volunteers-schedule-per-market" onclick = "showMe(this.id);" title = "Schedules"><i class="fa fa-calendar" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op4 inline" id = "add-volunteer-option" onclick = "showMe(this.id);populateAddVolunteerForm();" title = "Add Volunteers"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op5 inline" id = "activation-waiting-volunteers" onclick = "showMe(this.id);populatePendingVolunteers();" title = "Pending Volunteers"><i class="fa fa-power-off" aria-hidden="true"></i></button>
-                <button class = "btn volunteer-option op6 inline" id = "deactivated-volunteers" onclick = "showMe(this.id);displayTheDeactivated();" title = "Deactivated Volunteers"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op4 inline" id = "add-volunteer-option" onclick = "showMe(this.id);" title = "Add Volunteers"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op5 inline" id = "activation-waiting-volunteers" onclick = "populatePendingVolunteers(this.id);" title = "Pending Volunteers"><i class="fa fa-power-off" aria-hidden="true"></i></button>
+                <button class = "btn volunteer-option op6 inline" id = "deactivated-volunteers" onclick = "displayTheDeactivated(this.id);" title = "Deactivated Volunteers"><i class="fa fa-minus" aria-hidden="true"></i></button>
                 <br><br><br>
                 <div id = "all-volunteers-container"></div>
             </div>
@@ -61,37 +60,49 @@
                 <br><br><br><hr class = "spacebar-dark"><br>
                 <div id = "email-list-container"></div>
             </div>
-            <div class = "page-sub-container-volunteer" id = "volunteers-schedule-per-market-div" style = "display: none">
-                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
+            <div class = "page-sub-container-volunteer" id = "volunteers-schedule-per-market-div" style = "display: none;">
+                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden = "true"></i></strong></button>
                 <h4 class = "volunteer-section-title inline"><u>Volunteers Schedule</u></h4>
                 <div id = "marketid-container"></div>
                 <br><hr class = "spacebar-dark"><br>
                 <div id = "sign-up-sheets-in-admin-volunteers"></div>
             </div>
-            <div class = "page-sub-container-volunteer" id = "add-volunteer-option-div" style = "display: none;"></div>
+            <div class = "page-sub-container-volunteer" id = "add-volunteer-option-div" style = "display: none;">
+                <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
+                <h4 class = "inline volunteer-section-title"><u>Add a Volunteer</u></h4>
+                <br><br>
+                <input type = "text" class = "add-volunteer-input full" id = "firstname" placeholder = " First Name" autocomplete = "off"> <br><br>
+                <input type = "text" class = "add-volunteer-input full" id = "lastname" placeholder = " Last Name" autocomplete = "off"><br><br>
+                <input type = "text" class = "add-volunteer-input full" id = "email" placeholder = " Email Address" autocomplete = "off"><br><br>
+                <button class = "btn add-volunteer-btn" onclick = "addVolunteer();"> Submit </button>
+            </div>
             <div class = "page-sub-container-volunteer" id = "activation-waiting-volunteers-div" style = "display: none;"></div>
-            <div class = "page-sub-container-volunteer" id = "deactivated-volunteers-div" style = "display: none"></div>
-        </div>
-       
+            <div class = "page-sub-container-volunteer" id = "deactivated-volunteers-div" style = "display: none;"></div>
+        </div> 
     </body>
-    <script>
+    <script type = "text/javascript">
         
-        function deactivateVolunteer(x) 
-        {
+        alertify.set('notifier','position', 'bottom-center'); //set position    
+        alertify.set('notifier','delay', 2.25); //set delay
+
+        function deactivateVolunteer(x) {
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
                 data: {
-                    message: "deactivateVolunteer"
+                    message: "deactivateVolunteer",
+                    id: document.getElementById("emailid-"+x).value
                 },
                 success: function(data) {
-                    alert("Volunteer has been deactivated");
+                    alertify.success("Volunteer has been deactivated");
+                    $("#all-volunteers-container").html(data);
                 }
             });
         }
 
 
-        $(document).ready(function() {
+        $(document).ready(function() 
+        {
 
             $.ajax({
                 type: "POST",
@@ -129,23 +140,7 @@
             });
         });
 
-        function populateAddVolunteerForm() 
-        {
-            $.ajax({
-                type: "POST",
-                url: "funcs.php",
-                data: {
-                    message: "populate-add-volunteer-form"
-                },
-                success: function(data) {
-                    $("#add-volunteer-option-div").html(data);
-                }
-            });
-        }
-
-        function addVolunteer() 
-        {
-            var name = document.getElementById("firstname").value + " " + document.getElementById("lastname").value;
+        function addVolunteer() {
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
@@ -156,42 +151,20 @@
                     lastname: document.getElementById("lastname").value
                 },
                 success: function(data) {
-                    if(data != "alreadyinuse") 
-                    {
-                        $("#add-volunteer-option-div").html(data);
-                        alertify.set('notifier','position', 'bottom-right');
-                        var message = document.createElement('message');
-                        message.style.maxHeight = "auto";
-                        message.style.width = "250px";
-                        message.style.marginRight = "10%";
-                        message.style.marginTop = "10%";
-                        message.style.padding = "none";
-                        message.style.textAlign = "justify";
-                        message.style.fontWeight = "bolder";
-                        message.style.fontSize = "90%";
-                        message.appendChild(document.createTextNode( name + " was added ! "));
-                        alertify.set('resizable',true).resizeTo('25%','15%');
-                        alertify.success(message).delay(2.25);
+                    if(data == "true") {
+                        alertify.success(document.getElementById("firstname").value + " " + document.getElementById("lastname").value + " was added !");
+                        document.getElementById("email").value = "";
+                        document.getElementById("firstname").value = "";
+                        document.getElementById("lastname").value = "";
                     }
-                    else  {
-                        alert("This email address is alreday in use by someone!");
-                        $.ajax({
-                            type: "POST",
-                            url: "funcs.php",
-                            data: {
-                                message: "populate-add-volunteer-form"
-                            },
-                            success: function(){
-                                $("#add-volunteer-option-div").html(data);
-                            }
-                        });
-                    }
+                    else if(data == "alreadyinuse") alertify.error("This email is already used");
                 }
             });
         }
 
         function approveRequest(x)
         {
+            var approvedname = document.getElementById("name-for-"+x.substring(12, x.length)).value;
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
@@ -200,12 +173,15 @@
                     vol_email: x.substring(12, x.length)
                 },
                 success: function(data) {
+                    console.log(x.substring(12, x.length));
                     $("#activation-waiting-volunteers-div").html(data);
+                    alertify.success(approvedname + " is now a volunteer !");
                 }
             });
         }
         
-        function populatePendingVolunteers() {
+        function populatePendingVolunteers(x) {
+            showMe(x);
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
@@ -238,6 +214,11 @@
             }
             document.getElementById("general-div-with-active-volunteers-table-div").style.display = "none";
             document.getElementById(x+"-div").style.display = "block";
+
+            // clean all inputs
+            document.getElementById("email").value = "";
+            document.getElementById("firstname").value = "";
+            document.getElementById("lastname").value = "";
         }
 
         function changedMarketId() {
@@ -282,6 +263,17 @@
                     $("#deactivated-volunteers-div").html(data);
                 }
             });
+
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "load-volunteers-table"
+                },
+                success: function(data){
+                    $("#all-volunteers-container").html(data);
+                }
+            });
         }
 
         function removeVolunteer(x)
@@ -299,8 +291,9 @@
             });
         }
 
-        function displayTheDeactivated()
+        function displayTheDeactivated(x)
         {
+            showMe(x);
             $.ajax({
                 type: "POST",
                 url: "funcs.php",

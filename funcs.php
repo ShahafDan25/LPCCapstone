@@ -184,6 +184,7 @@
 
     if($_POST['message'] == "deactivateVolunteer") {
         deactivateVolunteer($_POST['id']);
+        echo displayAllVolunteers();
     }
 
     if($_POST['message'] == "display-inventory-table") {
@@ -248,10 +249,6 @@
 
     if($_POST['message'] == "display-deactivated-volunteers") {
         echo displayDeactivatedVolunteers();
-    }
-
-    if($_POST['message'] == "populate-add-volunteer-form") {
-        echo populateAddVolunteerForm();
     }
 
     if($_POST['message'] == "check-for-active-markets") {
@@ -360,7 +357,10 @@
         // $password = "Sdan3189";
         $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306socket=/tmp/mysql.sock';
         try {$conn = new PDO($dsn, $username, $password);}
-        catch (PDOException $e) {echo 'Connection Failed: ' . $e -> getMessage();}
+        catch (PDOException $e) {
+            echo 'Connection Failed: ' . $e -> getMessage();
+            return connDB();
+        }
         return $conn;
     }
 
@@ -966,19 +966,7 @@
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
         $c = null;
-        return populateAddVolunteerForm();
-    }
-
-    function populateAddVolunteerForm() {
-        $data =
-        '<button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
-        <h4 class = "inline volunteer-section-title"><u>Add a Volunteer</u></h4>
-        <br><br>
-        <input type = "text" class = "add-volunteer-input full" id = "firstname" placeholder = " First Name" autocomplete = "off"> <br><br>
-        <input type = "text" class = "add-volunteer-input full" id = "lastname" placeholder = " Last Name" autocomplete = "off"><br><br>
-        <input type = "text" class = "add-volunteer-input full" id = "email" placeholder = " Email Address" autocomplete = "off"><br><br>
-        <button class = "btn add-volunteer-btn" onclick = "addVolunteer();"> Submit </button>';
-        return $data;
+        return "true";
     }
 
     function displayAllVolunteers() {
@@ -1000,12 +988,13 @@
         $sql = "SELECT Email, First_Name, Last_Name, Start_Date FROM Volunteers WHERE Active = 1";
         $s = $c -> prepare($sql);
         $s -> execute();
+        $counter = 0;
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<tr>';
                 $data .= '<td>'.$r['First_Name'].' '.$r['Last_Name'].'</td>';
-                $data .= '<td>'.$r['Email'].'</td>';
+                $data .= '<td><input type = "hidden" value = "'.$r['Email'].'" id = "emailid-'.$counter.'">'.$r['Email'].'</td>';
                 $data .= '<td>'.$months[intval(substr($r['Start_Date'],5,2)) - 1].' '.substr($r['Start_Date'],8,2).', '.substr($r['Start_Date'],0,4).'</td>';
-                $data .= '<td><button class = "btn btn-warning" style = "border-radius: 150px !important;" onclick = "deactivateVolunteer('.$r['Email'].')";><i class="fa fa-power-off" aria-hidden="true"></i></button></td>';
+                $data .= '<td><button class = "btn btn-warning" style = "border-radius: 150px !important;" onclick = "deactivateVolunteer('.$counter.');"><i class="fa fa-power-off" aria-hidden="true"></i></button></td>';
             $data .= '</tr>';
         }
         $c = null;
@@ -1143,7 +1132,7 @@
         $s -> execute();
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= "<tr>";
-                $data .= "<td>".$r['First_Name']." ".$r['Last_Name']."</td>";
+                $data .= "<td><input type = 'hidden' id = 'name-for-".$r['Email']."' value = '".$r['First_Name']." ".$r['Last_Name']."'>".$r['First_Name']." ".$r['Last_Name']."</td>";
                 $data .= "<td>".$r['Email']."</td>";
                 $data .= 
                 "<td style = 'text-align: center !important;'>

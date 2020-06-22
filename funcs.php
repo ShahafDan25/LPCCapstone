@@ -183,8 +183,7 @@
     }
 
     if($_POST['message'] == "deactivateVolunteer") {
-        deactivateVolunteer($_POST['id']);
-        echo displayAllVolunteers();
+        echo deactivateVolunteer($_POST['id']);
     }
 
     if($_POST['message'] == "display-inventory-table") {
@@ -238,8 +237,7 @@
     }
 
     if($_POST['message'] == "reactivate-volunteer") {
-        reactivateVolunteer($_POST['vol_email']);
-        echo displayDeactivatedVolunteers();
+        echo reactivateVolunteer($_POST['vol_email']);
     }
 
     if($_POST['message'] == "remove-volunteer") {
@@ -996,6 +994,7 @@
                 $data .= '<td>'.$months[intval(substr($r['Start_Date'],5,2)) - 1].' '.substr($r['Start_Date'],8,2).', '.substr($r['Start_Date'],0,4).'</td>';
                 $data .= '<td><button class = "btn btn-warning" style = "border-radius: 150px !important;" onclick = "deactivateVolunteer('.$counter.');"><i class="fa fa-power-off" aria-hidden="true"></i></button></td>';
             $data .= '</tr>';
+            $counter++;
         }
         $c = null;
         if(strlen($data) < 2) return '<p style = "float: left !important; margin-left: 20% !important;"> No Volunteers Found</p><br><br>';
@@ -1006,8 +1005,13 @@
         $c = connDB();
         $sql = "UPDATE Volunteers SET Active = 0, Deactivation_Date = NOW() WHERE Email = '".$id."';";
         $c -> prepare($sql) -> execute();
+        $sql = "SELECT First_Name, Last_Name FROM Volunteers WHERE Email = '".$id."';";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $name = $r['First_Name']." ".$r['Last_Name'];
         $c = null;
-        return;
+        return $name;
     }
 
     function displayDeactivatedVolunteers() {
@@ -1080,11 +1084,11 @@
         $s -> execute();
         $data = "";
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-            $data .= ",".$r['Email'];
+            $data .= ";".$r['Email'];
         }
         $c = null;
         if(strlen($data) < 2) return "noemails";
-        else return $data;
+        else return substr($data,1,strlen($data));
     }
         
     function verifyVolunteer($email) {
@@ -1159,12 +1163,19 @@
         $c = connDB();
         $sql = "UPDATE Volunteers SET Active = 1 WHERE Email = '".$email."';";
         $c -> prepare($sql) -> execute();
-        return;
+        $sql = "SELECT First_Name, Last_Name FROM Volunteers WHERE Email = '".$email."';";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $name = $r['First_Name']." ".$r['Last_Name'];
+        $c = null;
+        return $name;
     }
 
     function removeVolunteer($email) {
         $c = connDB();
-        $sql = "DELETE FROM Volunteers WHERE Email = '".$email."';";
+        $sql = "DELETE FROM SignUps WHERE Email = '".$email."';";
+        $sql .= "DELETE FROM Volunteers WHERE Email = '".$email."';";
         $c -> prepare($sql) -> execute();
         $c = null; //close connection
         return;

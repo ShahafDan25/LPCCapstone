@@ -82,8 +82,8 @@
     </body>
     <script type = "text/javascript">
         
-        alertify.set('notifier','position', 'bottom-center'); //set position    
-        alertify.set('notifier','delay', 2.25); //set delay
+        alertify.set("notifier","position", "bottom-center"); //set position    
+        alertify.set("notifier","delay", 2.25); //set delay
 
         function deactivateVolunteer(x) {
             $.ajax({
@@ -94,12 +94,38 @@
                     id: document.getElementById("emailid-"+x).value
                 },
                 success: function(data) {
-                    alertify.success("Volunteer has been deactivated");
+                    alertify.success(data + " has been deactivated");
+                    loadVolunteers();
+                }
+            });
+        }
+
+        function loadVolunteers(){
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "load-volunteers-table"
+                },
+                success: function(data){
                     $("#all-volunteers-container").html(data);
                 }
             });
         }
 
+        function loadEmailList() {
+            //load volunteer email list 
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "load-email-list"
+                },
+                success: function(data){
+                    $("#email-list-container").html(data);
+                }
+            });
+        }
 
         $(document).ready(function() 
         {
@@ -115,29 +141,9 @@
                 }
             });
 
-            //load volunteer email list 
-            $.ajax({
-                type: "POST",
-                url: "funcs.php", 
-                data: {
-                    message: "load-email-list"
-                },
-                success: function(data){
-                    $("#email-list-container").html(data);
-                }
-            });
+            loadEmailList();
 
-            //load all volunteers in the table format
-            $.ajax({
-                type: "POST",
-                url: "funcs.php", 
-                data: {
-                    message: "load-volunteers-table"
-                },
-                success: function(data){
-                    $("#all-volunteers-container").html(data);
-                }
-            });
+            loadVolunteers();
         });
 
         function addVolunteer() {
@@ -173,7 +179,6 @@
                     vol_email: x.substring(12, x.length)
                 },
                 success: function(data) {
-                    console.log(x.substring(12, x.length));
                     $("#activation-waiting-volunteers-div").html(data);
                     alertify.success(approvedname + " is now a volunteer !");
                 }
@@ -202,6 +207,7 @@
                 document.getElementById(divs[i]).style.display = "none";
             }
             document.getElementById("general-div-with-active-volunteers-table-div").style.display = "block";
+            loadVolunteers();
             return;
         }
 
@@ -245,7 +251,7 @@
                 },
                 success: function(data) {
                     if(data == "noemails") alertify.error("There are no active volunteers.");
-                    else window.open("mailto:" + data.substring(1,data.length) + "?subject=Volunteer at the Market!");
+                    else window.open("mailto:" + data + "?subject=Volunteer at the market");
                 }
             });
         }
@@ -260,7 +266,8 @@
                     vol_email: x
                 },
                 success: function(data) {
-                    $("#deactivated-volunteers-div").html(data);
+                    alertify.success(data + "has been reactivated !");
+                    displayTheDeactivated("deactivated-volunteers");
                 }
             });
 

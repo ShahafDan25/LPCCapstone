@@ -189,52 +189,63 @@
             <div class = "returning-members" id = "returning-members" style = "display: none">
                 <button class = "btn spanish-new-member-page" id = "returning-member" onclick = "spanishPageReturning();"> Spanish </button>
                 <br><br>
-                <p> <strong> Login with your Market ID </strong></p>
-                <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "Market ID" id = "patron-loginid-english" required></label>
-                <br><br>
-                <p> <strong> FORGOT YOUR ID? </strong> Look for you name below!</p>
-                <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id = "myInput" type="text" placeholder = " Search.." autocomplete = "off"> </span>
-                <br>
-                <ul class = "list-group" id = "myList"></ul>  
-                <br>
-                <button class = "btn submit-returning-patron-login" onclick = "login_patron_english();"> SUBMIT </button>
+                <form action = "" method = "POST" id = "login-member-english">
+                    <p> <strong> Login with your Market ID </strong></p>
+                    <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "Market ID" id = "patron-loginid-english" required></label>
+                    <br><br>
+                    <p> <strong> FORGOT YOUR ID? </strong> Look for you name below!</p>
+                    <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id = "myInput" type="text" placeholder = " Search.." autocomplete = "off"> </span>
+                    <br>
+                    <ul class = "list-group" id = "myList"></ul>  
+                    <br>
+                    <button class = "btn submit-returning-patron-login"> SUBMIT </button>
+                </form>    
             </div>
             <!------------------- RETURNING MEMBERS DIVISION ~ Spanish ----------------------->
             <div class = "returning-members" id = "returning-members-spanish" style = "display: none">
                 <button class = "btn spanish-new-member-page" id = "returning-member-spanish" onclick = "englishPageReturning();"> English </button>
                 <br><br>
-                <p> <strong> Inicie sesión con su identificación </strong></p>
-                <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "  Identificación" id = "patron-loginid-spanish"></label>
-                <br><br>
-                <p> <strong> ¿Olvidaste tu identificación? </strong> Busca tu nombre ! </p>
-                <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id = "myInput-spanish" type = "text" placeholder = " Busca.." autocomplete = "off"> </span>
-                <br>
-                <ul class = "list-group" id = "myList-spanish"></ul>  
-                <br>
-                <button class = "btn submit-returning-patron-login" onclick = "login_patron_spanish();"> Enviar </button>
+                <form action = "" method = "POST" id = "login-member-spanish">
+                    <p> <strong> Inicie sesión con su identificación </strong></p>
+                    <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "  Identificación" id = "patron-loginid-spanish" required></label>
+                    <br><br>
+                    <p> <strong> ¿Olvidaste tu identificación? </strong> Busca tu nombre ! </p>
+                    <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id = "myInput-spanish" type = "text" placeholder = " Busca.." autocomplete = "off"> </span>
+                    <br>
+                    <ul class = "list-group" id = "myList-spanish"></ul>  
+                    <br>
+                    <button class = "btn submit-returning-patron-login" onclick = "login_patron_spanish();"> Enviar </button>
+                </form>
             </div>
             <!------------------- ADMIN LOGIN DIVISION ----------------------->
             <div class = "admin-login" id = "admin-login" style = "display: none">
                 <h3>Login as an Admin </h3>
                 <br><br>
-                <h6><strong><u>Enter Password Below</u></strong></h6> <br>
-                <input type = "password" placeholder="  Password" class = "change-pw-input full" id = "inputAdminPW" pattern = "\S+.*" required> <br><br>
-                <button class = "btn submit-admin-login" id = "inputAdminBtn" onclick = "adminLogin();"> Submit </button>
+                <form action = "" method = "POST" id = "admin-login-form">
+                    <h6><strong><u>Enter Password Below</u></strong></h6> <br>
+                    <input type = "password" placeholder="  Password" class = "change-pw-input full" id = "inputAdminPW" pattern = "\S+.*" required> <br><br>
+                    <button class = "btn submit-admin-login" id = "inputAdminBtn"> Submit </button>
+                </form>   
             </div>
             <!------------------- VOLUNTEER SIGN UP DIVISION ----------------------->
             <div class = "volunteer-signup" id = "volunteer-signup" style = "display: none">
                 <h6><strong><u> Login With Your Email </strong></u></h6>
-                <input type = "text" placeholder = "  Email" class = "index-registration-input full" id = "volunteer-email" pattern = "\S+.*" required> <br><br>
-                <button class = "btn submit-admin-login" id = "volunteer-login-btn"> Submit </button>
+                <form action = "" method = "POST" id = "vol-login-form">
+                    <input type = "text" placeholder = "  Email" class = "index-registration-input full" id = "volunteer-email" pattern = "\S+.*" required> <br><br>
+                    <button class = "btn submit-admin-login" id = "volunteer-login-btn"> Submit </button>
+                </form>
+
                 <br><br> <hr style = "width: 80% !important; border: 0.7px solid #303030 !important;"> <br><br>
                 <h6><strong><u> Request Volunteer Access </strong></u></h6>
-                <input type = "text" placeholder = "  First Name" class = "index-registration-input half inline" id = "first-name-volunteer" pattern = "\S+.*" required> 
-                <input type = "text" placeholder = "  Last Name" class = "index-registration-input half inline" id = "last-name-volunteer" pattern = "\S+.*" required> <br>
-                <input type = "text" placeholder = "  Email" class = "index-registration-input full" id = "volunteer-email-request" pattern = "\S+.*" required> <br><br>
-                <button class = "btn submit-admin-login" id = "volunteer-request-btn"> Submit </button>
+                <form action = "" method = "POST" id = "vol-request-form">
+                    <input type = "text" placeholder = "  First Name" class = "index-registration-input half inline" id = "first-name-volunteer" pattern = "\S+.*" required> 
+                    <input type = "text" placeholder = "  Last Name" class = "index-registration-input half inline" id = "last-name-volunteer" pattern = "\S+.*" required> <br>
+                    <input type = "text" placeholder = "  Email" class = "index-registration-input full" id = "volunteer-email-request" pattern = "\S+.*" required> <br><br>
+                    <button class = "btn submit-admin-login" id = "volunteer-request-btn"> Submit </button>
+                </form>
             </div>
             <!-------------------- NO ACTIVE MARKET MESSAGE --------------->
-            <div class = "no-active-market-message" id = "no-active-market-message" style = "display: none;">
+            <div class = "no-active-market-message" id = "no-active-market-message" style = "display: none">
                 <br>    
                 <h1> There is Currently No Active Market </h1>
                 <h3> The Admin needs to create and activate a market </h3>
@@ -249,9 +260,9 @@
             </footer>  -->
         </div>
     </body>
-    <script type = "text/javascript">
-        alertify.set("notifier","position", "bottom-center"); //set position    
-        alertify.set("notifier","delay", 2.00); //set dellay    
+    <script>
+        alertify.set("notifier", "position", "bottom-center"); //set position    
+        alertify.set("notifier", "delay", 2.00); //set dellay    
 
         var adminBtn = document.getElementById("goToAdminBtn");
         var toAdminForm = document.getElementById("goToAdminForm");
@@ -275,7 +286,8 @@
         });
         cleanupRadioBtns();
 
-        $("#volunteer-request-btn").click(function() {
+        $("#vol-request-form").submit(function(e) {
+            e.preventDefault();
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
@@ -295,7 +307,8 @@
             });
         });
 
-        $("#volunteer-login-btn").click(function() {
+        $("#vol-login-form").submit(function(e) {
+            e.preventDefault();
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
@@ -362,7 +375,8 @@
             });         
         });
         
-        function login_patron_english() {
+        $("#login-member-english").submit(function(e) {
+            e.preventDefault();
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
@@ -385,9 +399,11 @@
                     }
                 }  
             });
-        }
+        });
 
-        function login_patron_spanish() {
+
+        $("#login-member-spanish").submit(function(e) {
+            e.preventDefault();
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
@@ -409,7 +425,7 @@
                     }
                 }  
             });
-        }
+        });
         
         idInput.onkeyup = function(event) {
             if (event.target.value.length == 0)  {
@@ -531,7 +547,8 @@
             document.getElementById("returning-members").style.display = "none";
         }
 
-        function adminLogin() {
+        $("#admin-login-form").submit(function(e){
+            e.preventDeault();
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
@@ -544,7 +561,7 @@
                     else if(data == "true") location.replace("admin.php");
                 }
             });
-        }
+        }); 
 
         $("#submit-new-member-english").submit(function(e) {
             e.preventDefault();

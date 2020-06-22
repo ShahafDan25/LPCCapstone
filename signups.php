@@ -42,7 +42,7 @@
             <div id = "marketid-container"></div>
             <br>
             <div class = "page-sub-container" id = "signup-sheet-container-registration" style = "display: none !important;">
-                <form>
+                <form action = "" method = "POST" id = "submit-signup-commit-form">
                     <h6><strong><u> Sign Up To Volunteer At The Market </strong></u></h6>
                     <p id = "needed-time-paragraph"> </p> 
                     <div id = "needed-time-inputs"></div>
@@ -85,7 +85,8 @@
             });
         });
 
-        $("#commit-volunteer-signup").click(function() {
+        $("#submit-signup-commit-form").submit(function(e) {
+            e.preventDefault();
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",

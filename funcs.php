@@ -135,8 +135,7 @@
         echo newMarket(substr($_POST['new_market_date'],0,4).substr($_POST['new_market_date'],5,2).substr($_POST['new_market_date'],8,2), intval(substr($_POST['new_market_start_time'],0,2).substr($_POST['new_market_start_time'],3,2)), intval(substr($_POST['new_market_end_time'],0,2).substr($_POST['new_market_end_time'],3,2)));
     }
 
-    if($_POST['message'] == 'adminOption') //choose an action option per market
-    {
+    if($_POST['message'] == 'adminOption') {
         if($_POST['date'] == "none") echo "nodatechosen";
         else
         {
@@ -268,7 +267,7 @@
     }
 
     if($_POST['message'] == "populate-nonterminated-markekts-dropdown") {
-        echo '<select class = "select-markets" id = "marketid" onchange = "showbtns()">'.populateNonTerminatedMarketsDropDown().'</select>';
+        echo '<select class = "select-markets" id = "marketid" onchange = "changeMarketId()">'.populateNonTerminatedMarketsDropDown().'</select>';
     }
 
     if($_POST['message'] == "populate-volunteer-name") {
@@ -351,9 +350,11 @@
         $password = "MMB3189@A";
         // $password = "Sdan3189";
         $dsn = 'mysql:dbname=TheMarket;host=127.0.0.1;port=3306socket=/tmp/mysql.sock';
-        try {$conn = new PDO($dsn, $username, $password);}
+        try {
+            $conn = new PDO($dsn, $username, $password);
+        }
         catch (PDOException $e) {
-            echo 'Connection Failed: ' . $e -> getMessage();
+            // echo 'Connection Failed: ' . $e -> getMessage();
             return connDB();
         }
         return $conn;
@@ -819,9 +820,11 @@
     function displayInventory($date) {
         $pre_table = 
         '<p class = "pull-left">*  Inventories of Previous Markets</p><br><br>
-        <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off" required>
-        <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off" required>
-        <button class = "btn add-to-inventory op4 inline" onclick = "insertInventoryItem()";><i class="fa fa-plus" aria-hidden="true"></i></button>
+        <form action = "" method = "POST" id = "add-inv-form">
+            <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off" required>
+            <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off" required>
+            <button class = "btn add-to-inventory op4 inline"><i class="fa fa-plus" aria-hidden="true"></i></button>
+        </form>
         <br><br>';
         $table_begin = 
         '<table class = "table inv_table">
@@ -1230,7 +1233,7 @@
             $data .= '<option class = "market-date-option" value = '.$r['idByDate'].'>'.reformatidByDate($r['idByDate']).'</option>';
         }
         $c = null; //close connection
-        if(strlen($data) < 2) return '<option selected disabled> Sorry, No Markets detected in the database </option>';
+        if(strlen($data) < 2) return '<option selected disabled> Sorry, no future markets detected </option>';
         else return "<option value = 'none' selected disabled hidden>Choose a Market </option>".$data;
     }
 

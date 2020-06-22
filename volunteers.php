@@ -71,10 +71,12 @@
                 <button class = "btn back-to-menu-volunteer-option inline" onclick = "showMenuAgain();"><strong><i class="fa fa-angle-double-left" aria-hidden="true"></i></strong></button>
                 <h4 class = "inline volunteer-section-title"><u>Add a Volunteer</u></h4>
                 <br><br>
-                <input type = "text" class = "add-volunteer-input full" id = "firstname" placeholder = " First Name" autocomplete = "off"> <br><br>
-                <input type = "text" class = "add-volunteer-input full" id = "lastname" placeholder = " Last Name" autocomplete = "off"><br><br>
-                <input type = "text" class = "add-volunteer-input full" id = "email" placeholder = " Email Address" autocomplete = "off"><br><br>
-                <button class = "btn add-volunteer-btn" onclick = "addVolunteer();"> Submit </button>
+                <form action = "" method = "POST" id = "add-vol-form">
+                    <input type = "text" class = "add-volunteer-input full" id = "firstname" placeholder = " First Name" autocomplete = "off" required> <br><br>
+                    <input type = "text" class = "add-volunteer-input full" id = "lastname" placeholder = " Last Name" autocomplete = "off" required><br><br>
+                    <input type = "text" class = "add-volunteer-input full" id = "email" placeholder = " Email Address" autocomplete = "off" required><br><br>
+                    <button class = "btn add-volunteer-btn"> Submit </button>
+                </form>
             </div>
             <div class = "page-sub-container-volunteer" id = "activation-waiting-volunteers-div" style = "display: none;"></div>
             <div class = "page-sub-container-volunteer" id = "deactivated-volunteers-div" style = "display: none;"></div>
@@ -146,7 +148,8 @@
             loadVolunteers();
         });
 
-        function addVolunteer() {
+        $("#add-vol-form").submit(function(e){
+            e.preventDefault();
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
@@ -166,7 +169,7 @@
                     else if(data == "alreadyinuse") alertify.error("This email is already used");
                 }
             });
-        }
+        }); 
 
         function approveRequest(x)
         {

@@ -77,8 +77,8 @@
             });
         });
 
-        function insertInventoryItem()
-        {
+        $("#add-inv-form").submit(function(e) {
+            e.preventDefault();
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
@@ -93,7 +93,7 @@
                     $("#view_inv").html(data);
                 }
             });
-        }
+        });
 
         function removeItem(x) {
             $.ajax ({
@@ -132,6 +132,11 @@
 
         function editInventoryItem(x) {
             document.getElementById("tr-"+x).style.display = "none";
+        }
+
+        function changeMarketId() {
+            //only to avoid console.log errors
+            return;
         }
     </script>
 </html>

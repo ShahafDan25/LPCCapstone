@@ -76,14 +76,16 @@
                 <!-- CREATE NEW MARKET OPTION -->
                 <div class = "sub-admin-page-container" id = "new-market" style = "display: none">
                     <h4><u>Create New Market</u></h4> <br> 
-                    <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" id = "new_market_date"><br><br>
-                    <br>
-                    <h6><u><strong> For what times would you need volunteers? </strong></u></h6> 
-                    <br>
-                    <input type = "time" placeholder = " Starting Time" class = "choose-new-market-date inline" id = "new_market_start_time">
-                    <i class="fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important; margin-left: 2% !important;"></i>
-                    <input type = "time" placeholder = " Closing Time" class = "choose-new-market-date inline" id = "new_market_end_time"><br><br>
-                    <button class = "btn submit-new-market-date" id = "submit-new-market-date-btn"> Submit </button>
+                    <form action = "" method = "POST" id = "new-market-form">
+                        <input type = "date" placeholder = " Choose a Date" class = "choose-new-market-date" id = "new_market_date" required><br><br>
+                        <br>
+                        <h6><u><strong> For what times would you need volunteers? </strong></u></h6> 
+                        <br>
+                        <input type = "time" placeholder = " Starting Time" class = "choose-new-market-date inline" id = "new_market_start_time" required>
+                        <i class="fa fa-arrow-right inline" aria-hidden = "true" style = "margin-right: 2% !important; margin-left: 2% !important;"></i>
+                        <input type = "time" placeholder = " Closing Time" class = "choose-new-market-date inline" id = "new_market_end_time" required><br><br>
+                        <button class = "btn submit-new-market-date" id = "submit-new-market-date-btn"> Submit </button>
+                    </form>
                 </div>
                 <!-- MARKET ACTIONS OPTION -->
                 <div class = "sub-admin-page-container" id = "market-actions" style = "display: none">
@@ -112,11 +114,13 @@
                 <!---- CHANGE PASSWORD OPTION -->
                 <div class = "sub-admin-page-container" id = "change-password" style = "display: none">
                     <h4><u>Change Admin's Password</u></h4> <br>
-                    <input type = "password" placeholder = " Old Password" class = "change-pw-input third inline" id = "oldPW" autocomplete = "off" required>
-                    <input type = "password" placeholder = " New Password" class = "change-pw-input third inline" id = "newPW1" autocomplete = "off" required>
-                    <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" id = "newPW2" autocomplete = "off" required> <br><br>
-                    <h6 id = "checker"><strong>   *     *     *   </strong></h6> <br>
-                    <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button> <br>
+                    <form action = "" method = "POST" id = "change-admin-pw-form">
+                        <input type = "password" placeholder = " Old Password" class = "change-pw-input third inline" id = "oldPW" autocomplete = "off" required>
+                        <input type = "password" placeholder = " New Password" class = "change-pw-input third inline" id = "newPW1" autocomplete = "off" required>
+                        <input type = "password" placeholder = " Verify New Password" class = "change-pw-input inline" id = "newPW2" autocomplete = "off" required> <br><br>
+                        <h6 id = "checker"><strong>   *     *     *   </strong></h6> <br>
+                        <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button> <br>
+                    </form>
                 </div>
                 <!-- <footer class = "footer">
                     <p> Las Positas College Student Government </p>
@@ -134,7 +138,8 @@
         var pwtext = document.getElementById("checker");
         var opw = document.getElementById("oldPW");
 
-        $("#submit-pw-change").click(function() {
+        $("#change-admin-pw-form").submit(function(e) {
+            e.preventDefault();
             if(pw1.value == pw2.value && pw1.value.length > 7){
                 $.ajax ({
                     type: "POST",
@@ -271,7 +276,8 @@
         });
         
 
-        $("#submit-new-market-date-btn").click(function() {
+        $("#new-market-form").submit(function(e) {
+            e.preventDefault();
             $.ajax( {
                 type: "POST",
                 url: "funcs.php",

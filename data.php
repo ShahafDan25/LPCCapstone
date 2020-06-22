@@ -70,7 +70,7 @@
             unset($prevnames[$randindex]);
         }
         
-        sleep(rand(20,125));
+        sleep(rand(10,497));
         
         $s_active = $c -> prepare($sql_active);
         $s_active -> execute();

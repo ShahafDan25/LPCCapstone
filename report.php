@@ -4,9 +4,6 @@
         <title> Market - Report </title>
         <link rel="icon" href="otherFiles/pics/lpcLogo2.png"/>
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
-                
-        <!-- CSS HARDCODE FILE LINK -->
-        <link href='capstone.css' rel='stylesheet'></link>
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
@@ -36,6 +33,9 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+        <!-- CSS HARDCODE FILE LINK -->
+        <link href = 'capstone.css' rel = 'stylesheet'></link>
     </head>
 
     <!-- ---------------------------------------------------------------- -->

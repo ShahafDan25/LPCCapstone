@@ -366,6 +366,9 @@
     function insertPat($f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id) {
         $c = connDB(); //set connection
 
+        if(strlen(strval($id)) < 6) return "shortid";
+        else if (strlen(strval($id)) > 6) return "longid";
+
         if($ss == "yes") $student_status = TRUE;
         else $student_status = FALSE;
 
@@ -637,24 +640,24 @@
         while($interval < intval($ct)) 
         {
             if(!$first_person) {
-                $sql_amount_a = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".($interval)." AND Markets_idByDate = ".$d.";";
+                $sql_amount_a = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval." AND Markets_idByDate = ".$d.";";
                 $stmt_amount_a = $c -> query($sql_amount_a);
                 $a = $stmt_amount_a -> fetchColumn(); 
 
                 if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
-                else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
+                else if(strlen(strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
                 $interval_b = $interval + 10; 
-                $interval = $interval_b;
+                // $interval = $interval_b;
             } 
             else {
-                if($interval % 100 == 60) {$interval += 40;} 
+                if($interval % 100 == 60) $interval += 40;
                 $interval_b = $interval + 10; 
     
-                $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < '".$interval_b."' AND time_stamp >= '".$interval."' AND Markets_idByDate = ".$d.";";
+                $sql_i = "SELECT COUNT('Patrons_patID') FROM MarketLogins WHERE time_stamp < ".$interval_b." AND time_stamp >= ".$interval." AND Markets_idByDate = ".$d.";";
                 $stmt_i = $c -> query($sql_i);
     
                 if(strlen(strval($interval)) == 3) $intervalte = substr(strval($interval), 0, 1).":".substr(strval($interval), 1, 2);
-                else if(strlen(Strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
+                else if(strlen(strval($interval)) == 4) $intervalte = substr(strval($interval),0,2).":".substr(strval($interval),2,2);
     
                 $a = $stmt_i -> fetchColumn();
                          
@@ -662,12 +665,13 @@
             }
             $chart_data [] = array (
                 "TIME" => $dformat.$intervalte,
-                "AMOUNT" => $a 
+                "AMOUNT" => $a
             );  
             $first_person = true;
         }
         
         $c = null; //close connection
+        array_splice($chart_data, 0, 1);
         return json_encode($chart_data);
     }
 

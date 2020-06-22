@@ -369,12 +369,35 @@
         if($ss == "yes") $student_status = TRUE;
         else $student_status = FALSE;
 
-        $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
-        ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod, patID, firstMarket)
-        VALUES ('".$f."', '".$l."', '".($student_status?1:0)."', 
-        '".((int)$ca)."', '".((int)$aa)."', '".((int)$sa)."', 
-        '".$ea."', '".$pn."', '".$pm."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
-
+        if($ea == "" && $pn == "") {
+            $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
+            ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod, patID, firstMarket)
+            VALUES ('".$f."', '".$l."', '".($student_status?1:0)."', 
+            '".((int)$ca)."', '".((int)$aa)."', '".((int)$sa)."', 
+            '".$pm."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
+        } 
+        else if($ea == "" && $pn != "") {
+            $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
+            ChildrenAmount, AdultsAmount, SeniorsAmount, PhoneNumber, PromotionMethod, patID, firstMarket)
+            VALUES ('".$f."', '".$l."', '".($student_status?1:0)."', 
+            '".((int)$ca)."', '".((int)$aa)."', '".((int)$sa)."', 
+            '".$pn."', '".$pm."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
+        }
+        else if($ea != "" && $pn == "") {
+            $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
+            ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PromotionMethod, patID, firstMarket)
+            VALUES ('".$f."', '".$l."', '".($student_status?1:0)."', 
+            '".((int)$ca)."', '".((int)$aa)."', '".((int)$sa)."', 
+            '".$ea."', '".$pm."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
+        }
+        else if($ea != "" && $pn != "") {
+            $sql  = "INSERT INTO Patrons (FirstName, LastName, StudentStatus,
+            ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PhoneNumber, PromotionMethod, patID, firstMarket)
+            VALUES ('".$f."', '".$l."', '".($student_status?1:0)."', 
+            '".((int)$ca)."', '".((int)$aa)."', '".((int)$sa)."', 
+            '".$ea."', '".$pn."', '".$pm."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
+        }
+        
 
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql); 
@@ -515,6 +538,11 @@
 
     function activateMarket($date) {
         $c = connDB(); //set connection
+        $sql = "SELECT idByDate FROM Markets WHERE active = 1;";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        if($s -> fetch(PDO::FETCH_ASSOC)) return "thereexistsanactiveone";
+
         date_default_timezone_set("America/Los_Angeles"); 
         $activationtime = date("H:i"); 
         $activation_time_format = substr($activationtime, 0, 2).substr($activationtime, 3, 2);
@@ -1267,6 +1295,17 @@
 
     function commitSignUp($vol, $mar, $start, $end) {
         $c = connDB();
+        $sql = "SELECT starttime, closetime FROM Markets WHERE idByDate = ".$mar.";";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        if($r['starttime'] > intval(substr($start,0,2).substr($start,2,2))) { //if they signed up to a time earlier then start time
+            return "tooearly";
+        }
+        else if($r['closetime'] < intval(substr($end,0,2).substr($end,2,2))){
+            return "toolate";
+        }  
+
         $sql = "INSERT INTO SignUps VALUES ('".$vol."', ".$mar.", '".$start.":00', '".$end.":00');";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);

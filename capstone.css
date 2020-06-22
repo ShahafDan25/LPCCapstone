@@ -241,16 +241,20 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     margin-left: 15% !important;
 }
 .index-registration-input{
-    border: none !important;
-    border-bottom: 2px solid black !important;
+    border: none;
+    outline: none !important;
+    border-bottom: 2px solid black;
     width: 80% !important;
     margin-bottom: 2% !important;
     padding: 0.5% 0  0.5% 0 !important;
     transition: 0.3s !important;
 }
+.index-registration-input {
+    box-shadow: none !important;
+}
 .index-registration-input:focus {
     outline: none !important;
-    border-bottom: 3px solid rgb(102, 124, 246) !important;
+    border-bottom: 3px solid rgb(102, 124, 246);
     transition: all 0.3s ease-in-out !important;
     font-size: 105% !important;
     font-weight: bold !important;

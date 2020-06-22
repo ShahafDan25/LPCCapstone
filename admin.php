@@ -265,6 +265,7 @@
                     else if(data == "cantactivateterminated") alertify.error("Can't activate a terminated market");
                     else if(data == "alreadyactive") alertify.warning("Already Active");
                     else if(data == "nodatechosen") alertify.warning("Please choose a date");
+                    else if(data == "thereexistsanactiveone") alertify.warning("Can't have two active markets!");
                 }
             });
         });

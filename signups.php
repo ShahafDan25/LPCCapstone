@@ -96,8 +96,9 @@
                     date: document.getElementById("marketid").value
                 },
                 success: function(data) {
-
                     if(data == "committedsignup") alertify.message("Thank you for signing up !");
+                    else if(data == "tooearly") alertify.error("Sign Up in the requested time frames");
+                    else if(data == "toolate") alertify.error("Sign up in the request time frames");
                 }
             });
         });

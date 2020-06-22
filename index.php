@@ -4,9 +4,6 @@
         <title>The Market </title>
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
-        <!-- CSS HARDCODE FILE LINK -->
-        <link href="capstone.css?" rel="stylesheet"></link>
-
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 
@@ -15,10 +12,11 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
         <!-- FONTAWESOME ICON --> 
         <script src = "https://use.fontawesome.com/9f04ec4af7.js"></script>
 
-        <!-- ALERTIFY.JS: JavaScrip and CSS -->
+        <!-- ALERTIFY.JS JavaScrip and CSS -->
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
@@ -28,6 +26,9 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
+
+          <!-- CSS HARDCODE FILE LINK -->
+        <link href='capstone.css' rel='stylesheet'></link>
     </head>
     <body class = "index-page-body">
         <header class = "index-registration-page-header">
@@ -185,29 +186,28 @@
                 <button class = "btn spanish-new-member-page" id = "returning-member" onclick = "spanishPageReturning();"> Spanish </button>
                 <br><br>
                 <p> <strong> Login with your Market ID </strong></p>
-                <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "Market ID" name = "patronID" required></label>
+                <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "Market ID" id = "patron-loginid-english" required></label>
                 <br><br>
                 <p> <strong> FORGOT YOUR ID? </strong> Look for you name below!</p>
                 <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id = "myInput" type="text" placeholder = " Search.." autocomplete = "off"> </span>
                 <br>
                 <ul class = "list-group" id = "myList"></ul>  
                 <br>
-                <button class = "btn submit-returning-patron-login" onclick = "login_patron();"> SUBMIT </button>
+                <button class = "btn submit-returning-patron-login" onclick = "login_patron_english();"> SUBMIT </button>
             </div>
             <!------------------- RETURNING MEMBERS DIVISION ~ Spanish ----------------------->
             <div class = "returning-members" id = "returning-members-spanish" style = "display: none">
                 <button class = "btn spanish-new-member-page" id = "returning-member-spanish" onclick = "englishPageReturning();"> English </button>
                 <br><br>
                 <p> <strong> Inicie sesión con su identificación </strong></p>
-                <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "  Identificación" name = "patronID"></label>
+                <span><i class = "fa fa-user inline" aria-hidden = "true"></i><input type = "number" class = "index-registration-input full-share-icon inline" placeholder = "  Identificación" id = "patron-loginid-spanish"></label>
                 <br><br>
                 <p> <strong> ¿Olvidaste tu identificación? </strong> Busca tu nombre ! </p>
                 <span><i class = "fa fa-search inline" aria-hidden = "true"></i> <input class = "index-registration-input full-share-icon inline" id = "myInput-spanish" type = "text" placeholder = " Busca.." autocomplete = "off"> </span>
                 <br>
                 <ul class = "list-group" id = "myList-spanish"></ul>  
                 <br>
-                <input type="hidden" value = "patronLogin" name = "message">
-                <button class = "btn submit-returning-patron-login" onclick = "login_patron():"> Enviar </button>
+                <button class = "btn submit-returning-patron-login" onclick = "login_patron_spanish():"> Enviar </button>
             </div>
             <!------------------- ADMIN LOGIN DIVISION ----------------------->
             <div class = "admin-login" id = "admin-login" style = "display: none">
@@ -245,9 +245,9 @@
             </footer>  -->
         </div>
     </body>
-    <script>
+    <script type = "text/javascript">
         alertify.set("notifier","position", "bottom-center"); //set position    
-        alertify.set("notifier","delay", 1.45); //set dellay    
+        alertify.set("notifier","delay", 2.00); //set dellay    
 
         var adminBtn = document.getElementById("goToAdminBtn");
         var toAdminForm = document.getElementById("goToAdminForm");
@@ -269,6 +269,7 @@
                 ids = data;
             }  
         });
+        cleanupRadioBtns();
 
         $("#volunteer-request-btn").click(function() {
             $.ajax ({
@@ -357,39 +358,78 @@
             });         
         });
         
-        function login_patron() {
+        function login_patron_english() {
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
                 data: {
-                    patronID: document.getElementByName("patronID").value,
+                    patronID: document.getElementById("patron-loginid-english").value,
                     message: "patronLogin"
                 },
                 success: function(data) 
                 {
+                    console.log(data);
                     if(data == "false") {
                         alertify.error("You are already logged in");
                     } 
                     else if(data == "true") {
-                        alertify.success("Welcome ! \r\n Enjoy The Market !");
-                        responsive_sidebar_item("index-index-sender");
+                        alertify.success("Welcome ! \r\n Enjoy The Market !").ondismiss = function() {
+                            document.getElementById("patron-loginid-english").value = null;
+                            document.getElementById("myInput").value = null;
+                            responsive_sidebar_item("index-index-sender");
+                        }
+                    }
+                }  
+            });
+        }
+
+        function login_patron_spanish() {
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    patronID: document.getElementById("patron-loginid-spanish").value,
+                    message: "patronLogin"
+                },
+                success: function(data) 
+                {
+                    console.log(data);
+                    if(data == "false") {
+                        alertify.error("You are already logged in");
+                    } 
+                    else if(data == "true") {
+                        alertify.success("Bienvenidos ! \r\n Disfruta el mercado").ondismiss = function() {
+                            document.getElementById("patron-loginid-spanish").value = null;
+                            document.getElementById("myInput-spanish").value = null;
+                            responsive_sidebar_item("index-index-sender");
+                        }
                     }
                 }  
             });
         }
         
-        idInput.onkeyup = function(event){
+        idInput.onkeyup = function(event) {
             if (event.target.value.length == 0)  {
                 text.innerHTML = "";
                 text.style.display = "none";
+                idInput.style.borderBottom = "2px solid black";
             }
             else {
                 text.style.display = "block";
-                if(event.target.value.length != 6) text.innerHTML = "ID has to be 6 digits!";
-                else 
+                if(event.target.value.length != 6)  {
+                    text.innerHTML = "ID has to be 6 digits!";
+                    idInput.style.borderBottom = "4.5px solid #FFC107";
+                }
+                else if(event.target.value.length == 6)
                 {
-                    if(ids.includes(event.target.value)) text.innerHTML = "ALERT: This ID is already in use!";
-                    else text.innerHTML = "ID availability confirmed";
+                    if(ids.includes(event.target.value)) {
+                        text.innerHTML = "ALERT: This ID is already used !";
+                        idInput.style.borderBottom = "4.5px solid #DC3545";
+                    }
+                    else {
+                        text.innerHTML = "ID's availability confirmed";
+                        idInput.style.borderBottom = "4.5px solid #28A745";
+                    }
                 }
             }
         }
@@ -398,14 +438,24 @@
             if (event.target.value.length == 0)  {
                 text_spanish.innerHTML = "";
                 text_spanish.style.display = "none";
+                idInput_spanish.style.borderBottom = "2px solid black";
             }
             else {
                 text_spanish.style.display = "block";
-                if(event.target.value.length != 6) text_spanish.innerHTML = "ID has to be 6 digits!";
+                if(event.target.value.length != 6) {
+                    text_spanish.innerHTML = "ID has to be 6 digits!";
+                    idInput_spanish.style.borderBottom = "4.5px solid $FFC107";
+                }
                 else 
                 {
-                    if(ids.includes(event.target.value)) text_spanish.innerHTML = "ALERT: This ID is already in use!";
-                    else text_spanish.innerHTML = "ID availability confirmed";
+                    if(ids.includes(event.target.value)) {
+                        text_spanish.innerHTML = "ALERT: This ID is already in use!";
+                        idInput_spanish.style.borderBottom = "4.5px solid #DC3545";
+                    }
+                    else {
+                        text_spanish.innerHTML = "ID availability confirmed";
+                        idInput_spanish.style.borderBottom = "4.5px solid #28A745";
+                    }
                 }
             }
         }
@@ -453,11 +503,8 @@
             a = div.getElementsByTagName("a");
             for (i = 0; i < a.length; i++) {
                 txtValue = a[i].textContent || a[i].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    a[i].style.display = "";
-                    } else {
-                    a[i].style.display = "none";
-                }
+                if (txtValue.toUpperCase().indexOf(filter) > -1) a[i].style.display = "";
+                else a[i].style.display = "none";
             }
         }
 
@@ -490,15 +537,13 @@
                     message: "verifyPassword"
                 },
                 success: function(data) {
-                    console.log(data);
                     if(data == "false") alert("Incorrect Password");
                     else if(data == "true") location.replace("admin.php");
                 }
             });
         }
 
-        function insert_patron_english() 
-        {
+        function insert_patron_english() {
             var promotions = document.getElementsByName("promotion-english");
             for(var i = 0 ;i < promotions.length; i++) {
                 if(promotions[i].checked) {
@@ -513,36 +558,42 @@
                 }
             }
 
-            $.ajax ({
-                type: "POST",
-                url: "funcs.php",
-                data: {
-                    patron_id: document.getElementById("idSignUpInput").value,
-                    first_name: document.getElementById("first_name").value,
-                    last_name: document.getElementById("last_name").value,
-                    studentStatus: studentStatusCheck,
-                    children_amount: document.getElementById("children_amount").value,
-                    adults_amount: document.getElementById("adults_amount").value,
-                    seniors_amount: document.getElementById("seniors_amount").value,
-                    email_address: document.getElementById("email_address").value,
-                    phone_number: document.getElementById("phone_number").value,
-                    promotion: selectedPromotionMethod,
-                    message: "insertNewPats"
-                },
-                success: function(data) {
-                    if(data == "true"){
-                        alertify.success("Welcome! Enjoy The Market").ondismiss = function() {
-                            cleanupInputs();
-                            responsive_sidebar_item("index-index-sender");
+            if(!ids.includes(document.getElementById("idSignUpInput").value)) {
+                $.ajax ({
+                    type: "POST",
+                    url: "funcs.php",
+                    data: {
+                        patron_id: document.getElementById("idSignUpInput").value,
+                        first_name: document.getElementById("first_name").value,
+                        last_name: document.getElementById("last_name").value,
+                        studentStatus: studentStatusCheck,
+                        children_amount: document.getElementById("children_amount").value,
+                        adults_amount: document.getElementById("adults_amount").value,
+                        seniors_amount: document.getElementById("seniors_amount").value,
+                        email_address: document.getElementById("email_address").value,
+                        phone_number: document.getElementById("phone_number").value,
+                        promotion: selectedPromotionMethod,
+                        message: "insertNewPats"
+                    },
+                    success: function(data) {
+                        if(data == "true"){
+                            alertify.success("Welcome! Enjoy The Market").ondismiss = function() {
+                                cleanupInputs();
+                                responsive_sidebar_item("index-index-sender");
+                            }
                         }
+                        else alertify.error("Something went wrong");
                     }
-                    else alertify.error("Something went wrong");
-                }
-            });
+                });
+            }
+            else {
+                alertify.error("This ID is already used!");
+            }
+
+            
         }
 
-        function insert_patron_spanish() 
-        {
+        function insert_patron_spanish() {
             var promotions = document.getElementsByName("promotion-spanish");
             for(var i = 0 ;i < promotions.length; i++) {
                 if(promotions[i].checked) {
@@ -586,24 +637,31 @@
         }
 
         function cleanupInputs() {
-            document.getElementById("idSignUpInput").value = "";
-            document.getElementById("first_name").value = "";
-            document.getElementById("last_name").value = "";
-            document.getElementById("children_amount").value = "";
-            document.getElementById("adults_amount").value = "";
-            document.getElementById("seniors_amount").value = "";
-            document.getElementById("email_address").value = "";
-            document.getElementById("phone_number").value = "";
+            document.getElementById("idSignUpInput").value = null;
+            document.getElementById("idSignUpInput").style.borderBottom = "2px solid black";
+            document.getElementById("first_name").value = null;
+            document.getElementById("last_name").value = null;
+            document.getElementById("children_amount").value = null;
+            document.getElementById("adults_amount").value = null;
+            document.getElementById("seniors_amount").value = null;
+            document.getElementById("email_address").value = null;
+            document.getElementById("phone_number").value = null;
 
-            document.getElementById("idSignUpInput-spanish").value = "";
-            document.getElementById("first_name-spanish").value = "";
-            document.getElementById("last_name-spanish").value = "";
-            document.getElementById("children_amount-spanish").value = "";
-            document.getElementById("adults_amount-spanish").value = "";
-            document.getElementById("seniors_amount-spanish").value = "";
-            document.getElementById("email_address-spanish").value = "";
-            document.getElementById("phone_number-spanish").value = "";
+            document.getElementById("idSignUpInput-spanish").value = null;
+            document.getElementById("idSignUpInput-spanish").style.borderBottom = "2px solid black";
+            document.getElementById("first_name-spanish").value = null;
+            document.getElementById("last_name-spanish").value = null;
+            document.getElementById("children_amount-spanish").value = null;
+            document.getElementById("adults_amount-spanish").value = null;
+            document.getElementById("seniors_amount-spanish").value = null;
+            document.getElementById("email_address-spanish").value = null;
+            document.getElementById("phone_number-spanish").value = null;
 
+            cleanupRadioBtns();
+
+        }
+
+        function cleanupRadioBtns() {
             var promotions = document.getElementsByName("promotion-spanish");
             for(var i = 0 ;i < promotions.length; i++) {
                 promotions[i].checked = false;
@@ -623,7 +681,6 @@
             for(var i = 0 ;i < studentStatus.length; i++) {
                 studentStatus[i].checked = false;
             }
-
         }
         
     </script>

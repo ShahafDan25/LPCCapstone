@@ -127,7 +127,7 @@
     </body>
     <script>
         alertify.set('notifier','position', 'bottom-center'); //set position    
-        alertify.set('notifier','delay', 2.25); //set dellay
+        alertify.set('notifier','delay', 1.75); //set dellay
 
         var pw1 = document.getElementById("newPW1");
         var pw2 = document.getElementById("newPW2");

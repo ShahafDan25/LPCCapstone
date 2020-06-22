@@ -267,18 +267,8 @@
                 },
                 success: function(data) {
                     alertify.success(data + "has been reactivated !");
+                    loadVolunteers();
                     displayTheDeactivated("deactivated-volunteers");
-                }
-            });
-
-            $.ajax({
-                type: "POST",
-                url: "funcs.php", 
-                data: {
-                    message: "load-volunteers-table"
-                },
-                success: function(data){
-                    $("#all-volunteers-container").html(data);
                 }
             });
         }
@@ -293,7 +283,8 @@
                     vol_email: x
                 },
                 success: function(data) {
-                    $("#deactivated-volunteers-div").html(data);
+                    displayTheDeactivated("deactivated-volunteers");
+                    alertify.success(data + "was removed")
                 }
             });
         }

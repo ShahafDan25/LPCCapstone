@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>The Market </title>
+        <title>Sign Up - The Market </title>
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
-        <!-- CSS HARDCODE FILE LINK -->
-        <link href='capstone.css?version=1' rel='stylesheet'></link>
-
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 
@@ -29,6 +26,9 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
+
+        <!-- CSS HARDCODE FILE LINK -->
+        <link href='capstone.css' rel='stylesheet'></link>
     </head>
     <body class = "signups-page-body">
         <header class = "nav-bar" style = "margin-right: 5% !important;">
@@ -58,25 +58,8 @@
         <br><br>
     </body>
     <script>
-        $("#remove-signup-commit-btn").click(function() {
-            $.ajax({
-                type: "POST",
-                url: "funcs.php", 
-                data: {
-                    message: "remove-signup-commit",
-                    date: document.getElementById("marketid").value,
-                    starttime: document.getElementById("starttime-remove-commit").value,
-                    endtime: document.getElementById("endtime-remove-commit").value
-                },
-                succes: function(data){
-                    if(data == "commit-removed") alert("Sign pp commit was removed");
-                }
-            });
-        });
-
-        function showbtns() { //just so we have no console errors
-            return;
-        }
+        alertify.set('notifier','position', 'bottom-center'); //set position    
+        alertify.set('notifier','delay', 2.25); //set dellay
 
         $(document).ready(function() {
             $.ajax({
@@ -114,7 +97,7 @@
                 },
                 success: function(data) {
 
-                    if(data == "committedsignup") alert("Thank you for signing up to volunteer!");
+                    if(data == "committedsignup") alertify.message("Thank you for signing up !");
                 }
             });
         });
@@ -188,6 +171,7 @@
                 },
                 success: function (data) {
                     $("#signup-commits").html(data);
+                    alertify.message("Sign up commit was removed");
                 }
             });
         });

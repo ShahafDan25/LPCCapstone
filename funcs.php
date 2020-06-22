@@ -219,7 +219,7 @@
         echo displayVolunteerCommits($_SESSION['volunteer-id'], $_POST['date']);
     }
 
-    if($_POST['message'] == "remove-signup-commit") {
+    if($_POST['message'] == "remove-then-display-volunteer-signup-commits") {
         echo removeSignUpCommit($_SESSION['volunteer-id'], $_POST['date'], $_POST['starttime'], $_POST['endtime']);
     }
 
@@ -241,8 +241,7 @@
     }
 
     if($_POST['message'] == "remove-volunteer") {
-        removeVolunteer($_POST['vol_email']);
-        echo displayDeactivatedVolunteers();
+        echo removeVolunteer($_POST['vol_email']);
     }
 
     if($_POST['message'] == "display-deactivated-volunteers") {
@@ -1049,14 +1048,6 @@
         return;
     }
 
-    function deleteVolunteer($id) {
-        $c = connDB();
-        $sql = "DELETE FROM Volunteers WHERE Email = '".$id."';";
-        $c -> prepare($sql) -> execute();
-        $c = null; 
-        return;
-    }
-
     function displayVolunteerEmailList() {
         $c = connDB();
         $sql = "SELECT Email FROM Volunteers WHERE Active = 1";
@@ -1163,22 +1154,31 @@
         $c = connDB();
         $sql = "UPDATE Volunteers SET Active = 1 WHERE Email = '".$email."';";
         $c -> prepare($sql) -> execute();
+
         $sql = "SELECT First_Name, Last_Name FROM Volunteers WHERE Email = '".$email."';";
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
         $name = $r['First_Name']." ".$r['Last_Name'];
+
         $c = null;
         return $name;
     }
 
     function removeVolunteer($email) {
         $c = connDB();
+        $sql = "SELECT First_Name, Last_Name FROM Volunteers WHERE Email = '".$email."';";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        $name = $r['First_Name']." ".$r['Last_Name'];
+
         $sql = "DELETE FROM SignUps WHERE Email = '".$email."';";
         $sql .= "DELETE FROM Volunteers WHERE Email = '".$email."';";
         $c -> prepare($sql) -> execute();
+
         $c = null; //close connection
-        return;
+        return $name;
     }
 
     // ======================================================== //

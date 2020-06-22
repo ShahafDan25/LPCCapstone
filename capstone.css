@@ -3,8 +3,8 @@
 .ajs-message,.ajs-success, .ajs-error, .ajs-warning { 
     font-size: 110% !important;
     font-weight: bold !important;
-    margin-bottom: 100px !important;
-    padding: 17px !important;
+    margin-bottom: 70px !important;
+    padding: 15px !important;
     width: 400px !important;
     color: black !important;
 }

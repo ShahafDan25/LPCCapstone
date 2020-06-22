@@ -5,7 +5,7 @@
         <link rel="shortcut icon" href="otherFiles/pics/lpcLogo2.png"/>
                 
         <!-- CSS HARDCODE FILE LINK -->
-        <link href='capstone.css?' rel='stylesheet'></link>
+        <link href="capstone.css?" rel="stylesheet"></link>
 
         <!-- Bootstrap for CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
@@ -65,118 +65,120 @@
             <!------------------- NEW MEMBERS DIVISION ~ ENGLISH ----------------------->
             <div class = "new-members" id = "new-members" style = "display: none">
                 <button class = "btn spanish-new-member-page" id = "spanish-new-member" onclick = "spanishPage();"> Español </button>
-                <br>
+                <br><br>
                 <h6 class = "registration-instructions-text"><strong><u> Please choose an ID, and enter your first and last names </u></strong></h6>
-                <input type = "number" class = "index-registration-input third inline" placeholder = " Market ID" id = "idSignUpInput" name = "patron_id" pattern = "\S+.*" min = "100000" max = "999999" autocomplete = "off" required> &nbsp;
-                <input type = "text" class = "index-registration-input third inline" placeholder = " First Name" class = "firstName" name = "first_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
-                <input type = "text" class = "index-registration-input third inline" placeholder = " Last Name" class = "lastName" name = "last_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
-                <p id = "alertedIDdiv" style = "display: none !important;"></p>
+                <input type = "number" class = "index-registration-input third inline" placeholder = " Market ID" id = "idSignUpInput" pattern = "\S+.*" min = "100000" max = "999999" autocomplete = "off" required> &nbsp;
+                <input type = "text" class = "index-registration-input third inline" placeholder = " First Name" class = "firstName" id = "first_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                <input type = "text" class = "index-registration-input third inline" placeholder = " Last Name" class = "lastName" id = "last_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                <p id = "alertedIDdiv" style = "display: none !important;"> - </p>
                 <br>
-                <h6 class = "registration-instructions-text"><strong><u> Are you a student as Las Positas? </strong></u></h6>
+                <h6 class = "registration-instructions-text"><strong><u> Are you a student at Las Positas? </strong></u></h6>
                 <ul class = "new-member-options-list">
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "studentStatus" value = "yes" class = "new-member-option inline">
+                        <input type = "radio" name = "studentStatus-english" value = "yes" class = "new-member-option inline" id = "yes-student-option">
                         <label for = "yes-student-option"  class = "admin-option-label inline"> Yes </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "studentStatus" value = "no" class = "new-member-option inline">
+                        <input type = "radio" name = "studentStatus-english" value = "no" class = "new-member-option inline" id = "no-student-option">
                         <label for = "no-student-option"  class = "admin-option-label inlin"> No </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                 </ul>
                 <br>
                 <h6 class = "registration-instructions-text"><strong><u> How many people are in your household? </u></strong></h6>
-                <input type = "number" class = "index-registration-input third inline" name = "children_amount" placeholder = "Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
-                <input type = "number" class = "index-registration-input third inline" name = "adults_amount" placeholder = "Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                <input type = "number" class = "index-registration-input third inline" name = "seniors_amount" placeholder = "Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                <br>
+                <input type = "number" class = "index-registration-input third inline" id = "children_amount" placeholder = "Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
+                <input type = "number" class = "index-registration-input third inline" id = "adults_amount" placeholder = "Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                <input type = "number" class = "index-registration-input third inline" id = "seniors_amount" placeholder = "Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                <br><br>
                 <h6 class = "registration-instructions-text"><strong><u> Contact Information </strong></u></h6>
-                <input type = "text" class = "index-registration-input half inline" name = "email_address" placeholder = " Email" autocomplete = "off"> &nbsp;
-                <input type = "text" class = "index-registration-input half inline" name = "phone_number" placeholder = " Phone Number" autocomplete = "off"> &nbsp;
-                <br>
+                <input type = "text" class = "index-registration-input half inline" id = "email_address" placeholder = " Email" autocomplete = "off"> &nbsp;
+                <input type = "text" class = "index-registration-input half inline" id = "phone_number" placeholder = " Phone Number" autocomplete = "off"> &nbsp;
+                <br><br>
                 <h6><strong><u> How did you hear about the market? </strong></u></h6>
                 <ul class = "new-member-options-list">
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "promotion" id = "classroom-option" value = "Classroom" class = "new-member-option inline">
+                        <input type = "radio" name = "promotion-english" id = "classroom-option" value = "Classroom" class = "new-member-option inline">
                         <label for = "classroom-option"  class = "admin-option-label inline"> Classroom </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "promotion" id = "fnf-option" value = "FriendsAndFamily" class = "new-member-option inline">
+                        <input type = "radio" name = "promotion-english" id = "fnf-option" value = "FriendsAndFamily" class = "new-member-option inline">
                         <label for = "fnf-option"  class = "admin-option-label inline"> Friends and Family </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "promotion" id = "community-option" value = "Community" class = "new-member-option inline">
+                        <input type = "radio" name = "promotion-english" id = "community-option" value = "Community" class = "new-member-option inline">
                         <label for = "community-option"  class = "admin-option-label inline"> Community </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "promotion" id = "other-option" value = "Other" class = "new-member-option inline">
+                        <input type = "radio" name = "promotion-english" id = "other-option" value = "Other" class = "new-member-option inline">
                         <label for = "other-option"  class = "admin-option-label inline"> Other </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                 </ul>
-                <button class = "btn btn-submit-new-patron" id = "newPatSubmission" onclick = "insert_patron();"> SUBMIT </button>
+                <br>
+                <button class = "btn btn-submit-new-patron" id = "newPatSubmission" onclick = "insert_patron_english();"> SUBMIT </button>
             </div>
             <!------------------- NEW MEMBERS DIVISION ~ SPANISH ----------------------->
             <div class = "new-members" id = "spanish-new-members" style = "display: none">
                 <button class = "btn spanish-new-member-page" id = "new-member" onclick = "englishPage();"> English </button>
-                <br>
+                <br><br>
                 <h6 class = "registration-instructions-text"><strong><u> Por favor, elija un número de identificación e ingrese su nombre y apellido </u></strong></h6>
-                <input type = "number" class = "index-registration-input third inline" placeholder=" Identificación" id = "idSignUpInput" name = "patron_id" pattern = "\S+.*" min = "6" max = "6" autocomplete = "off" required> &nbsp;
-                <input type = "text" class = "index-registration-input third inline" placeholder = " Nombre" class = "firstName" name = "first_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
-                <input type = "text" class = "index-registration-input third inline" placeholder = " Apellido" class = "lastName" name = "last_name" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
-                <p id = "alertedIDdiv" style = "display: none !important;"></p>
+                <input type = "number" class = "index-registration-input third inline" placeholder=" Identificación" id = "idSignUpInput-spanish" pattern = "\S+.*" min = "6" max = "6" autocomplete = "off" required> &nbsp;
+                <input type = "text" class = "index-registration-input third inline" placeholder = " Nombre" class = "firstName" id = "first_name-spanish" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                <input type = "text" class = "index-registration-input third inline" placeholder = " Apellido" class = "lastName" id = "last_name-spanish" pattern = "\S+.*" autocomplete = "off" required> &nbsp;
+                <p id = "alertedIDdiv-spanish" style = "display: none !important;"> - </p>
                 <br>
                 <h6 class = "registration-instructions-text"><strong><u> ¿Eres estudiante en Las Positas College? </strong></u></h6>
                 <ul class = "new-member-options-list">
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "studentStatus" value = "yes" class = "new-member-option inline">
+                        <input type = "radio" name = "studentStatus-spanish" value = "yes" class = "new-member-option inline">
                         <label for = "yes-student-option"  class = "admin-option-label inline"> Si </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "studentStatus" value = "no" class = "new-member-option inline">
+                        <input type = "radio" name = "studentStatus-spanish" value = "no" class = "new-member-option inline">
                         <label for = "no-student-option"  class = "admin-option-label inlin"> No </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                 </ul>
                 <br>
                 <h6 class = "registration-instructions-text"><strong><u> ¿Cuantos personas hay en tu hogar? </u></strong></h6>
-                <input type = "number" class = "index-registration-input third inline" name = "children_amount" placeholder = " Niños (Años 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
-                <input type = "number" class = "index-registration-input third inline" name = "adults_amount" placeholder = " Adultos (Años 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                <input type = "number" class = "index-registration-input third inline" name = "seniors_amount" placeholder = " Personas mayores (Años 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                <br>
+                <input type = "number" class = "index-registration-input third inline" id = "children_amount-spanish" placeholder = " Niños (Años 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
+                <input type = "number" class = "index-registration-input third inline" id = "adults_amount-spanish" placeholder = " Adultos (Años 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                <input type = "number" class = "index-registration-input third inline" id = "seniors_amount-spanish" placeholder = " Personas mayores (Años 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                <br><br>
                 <h6 class = "registration-instructions-text"><strong><u> Información del contacto </strong></u></h6>
-                <input type = "text" class = "index-registration-input half inline" name = "email_address" placeholder = " Correo electrónico" autocomplete = "off"> &nbsp;
-                <input type = "text" class = "index-registration-input half inline" name = "phone_number" placeholder = " Número de teléfono" autocomplete = "off"> &nbsp;
-                <br>
+                <input type = "text" class = "index-registration-input half inline" id = "email_address-spanish" placeholder = " Correo electrónico" autocomplete = "off"> &nbsp;
+                <input type = "text" class = "index-registration-input half inline" id = "phone_number-spanish" placeholder = " Número de teléfono" autocomplete = "off"> &nbsp;
+                <br><br>
                 <h6><strong><u> ¿Cómo se enteró del mercado? </strong></u></h6>
                 <ul class = "new-member-options-list">
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "promotion" value = "Classroom" class = "new-member-option inline" id = "classroom-option-spanish">
+                        <input type = "radio" name = "promotion-spanish" value = "Classroom" class = "new-member-option inline" id = "classroom-option-spanish">
                         <label for = "classroom-option-spanish"  class = "admin-option-label inline"> Aula </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "promotion" value = "FriendsAndFamily" class = "new-member-option inline" id = "fnf-option-spanish">
+                        <input type = "radio" name = "promotion-spanish" value = "FriendsAndFamily" class = "new-member-option inline" id = "fnf-option-spanish">
                         <label for = "fnf-option-spanish"  class = "admin-option-label inline"> Amigos y familia </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "promotion" value = "Community" class = "new-member-option inline" id = "community-option-spanish">
+                        <input type = "radio" name = "promotion-spanish" value = "Community" class = "new-member-option inline" id = "community-option-spanish">
                         <label for = "community-option-spanish"  class = "admin-option-label inline"> Comunidad </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                     <li class = "new-member-options-list-item inline">
-                        <input type = "radio" name = "promotion" value = "Other" class = "new-member-option inline" id = "other-option-spanish">
+                        <input type = "radio" name = "promotion-spanish" value = "Other" class = "new-member-option inline" id = "other-option-spanish">
                         <label for = "other-option-spanish"  class = "admin-option-label inline"> Otra </label>
                         <div class = "new-member-check inline"></div>
                     </li>
                 </ul>
-                <button class = "btn btn-submit-new-patron" id = "newPatSubmission-spanish" onclick = "insert_patron();"> Enviar </button>
+                <br>
+                <button class = "btn btn-submit-new-patron" id = "newPatSubmission-spanish" onclick = "insert_patron_spanish();"> Enviar </button>
             </div>
             <!------------------- RETURNING MEMBERS DIVISION ~ English ----------------------->
             <div class = "returning-members" id = "returning-members" style = "display: none">
@@ -244,6 +246,30 @@
         </div>
     </body>
     <script>
+        alertify.set("notifier","position", "bottom-center"); //set position    
+        alertify.set("notifier","delay", 1.45); //set dellay    
+
+        var adminBtn = document.getElementById("goToAdminBtn");
+        var toAdminForm = document.getElementById("goToAdminForm");
+        var toAdminInput = document.getElementById("inputAdminBtn");
+        var toAdminBtn = document.getElementById("inputAdminPW");
+        var idInput = document.getElementById("idSignUpInput");
+        var idInput_spanish = document.getElementById("idSignUpInput-spanish");
+        var text = document.getElementById("alertedIDdiv");
+        var text_spanish = document.getElementById("alertedIDdiv-spanish");
+        var ids = new Array();
+        $.ajax ({
+            type: "POST",
+            url: "funcs.php",
+            data: {
+                message: "loadidsarray"
+            },
+            dataType: "json",
+            success: function(data) {
+                ids = data;
+            }  
+        });
+
         $("#volunteer-request-btn").click(function() {
             $.ajax ({
                 type: "POST",
@@ -284,19 +310,6 @@
                 type: "POST",
                 url: "funcs.php",
                 data: {
-                    message: "loadidsarray"
-                },
-                success: function(data) {
-                    var ids = new Array(data);
-                }  
-            });
-        });
-
-        $( document ).ready(function() {
-            $.ajax ({
-                type: "POST",
-                url: "funcs.php",
-                data: {
                     message: "get-current-market-date"
                 },
                 success: function(data) {
@@ -304,11 +317,6 @@
                 }  
             });
         });
-
-        var adminBtn = document.getElementById("goToAdminBtn");
-        var toAdminForm = document.getElementById("goToAdminForm");
-        var toAdminInput = document.getElementById("inputAdminBtn");
-        var toAdminBtn = document.getElementById("inputAdminPW");
 
         $("#myInput").keyup(function() {
             $.ajax ({
@@ -353,21 +361,22 @@
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
-                data: {patronID: document.getElementByName("patronID").value,message: "patronLogin"},
+                data: {
+                    patronID: document.getElementByName("patronID").value,
+                    message: "patronLogin"
+                },
                 success: function(data) 
                 {
                     if(data == "false") {
-                        alert("You are already logged in !");
+                        alertify.error("You are already logged in");
                     } 
                     else if(data == "true") {
-                        alert ("Thank you! \r\n Enjoy the Market");
+                        alertify.success("Welcome ! \r\n Enjoy The Market !");
                         responsive_sidebar_item("index-index-sender");
                     }
                 }  
             });
         }
-        var idInput = document.getElementById("idSignUpInput");
-        var text = document.getElementById("alertedIDdiv");
         
         idInput.onkeyup = function(event){
             if (event.target.value.length == 0)  {
@@ -381,6 +390,22 @@
                 {
                     if(ids.includes(event.target.value)) text.innerHTML = "ALERT: This ID is already in use!";
                     else text.innerHTML = "ID availability confirmed";
+                }
+            }
+        }
+
+        idInput_spanish.onkeyup = function(event){
+            if (event.target.value.length == 0)  {
+                text_spanish.innerHTML = "";
+                text_spanish.style.display = "none";
+            }
+            else {
+                text_spanish.style.display = "block";
+                if(event.target.value.length != 6) text_spanish.innerHTML = "ID has to be 6 digits!";
+                else 
+                {
+                    if(ids.includes(event.target.value)) text_spanish.innerHTML = "ALERT: This ID is already in use!";
+                    else text_spanish.innerHTML = "ID availability confirmed";
                 }
             }
         }
@@ -472,32 +497,134 @@
             });
         }
 
-        function insert_patron() 
+        function insert_patron_english() 
         {
+            var promotions = document.getElementsByName("promotion-english");
+            for(var i = 0 ;i < promotions.length; i++) {
+                if(promotions[i].checked) {
+                    var selectedPromotionMethod = promotions[i].value;
+                }
+            }
+
+            var studentStatus = document.getElementsByName("studentStatus-english");
+            for(var i = 0 ;i < studentStatus.length; i++) {
+                if(studentStatus[i].checked) {
+                    var studentStatusCheck = studentStatus[i].value;
+                }
+            }
+
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",
                 data: {
-                    patron_id: document.getElementByName("patron_id").value,
-                    first_name: document.getElementByName("first_name").value,
-                    last_name: document.getElementByName("last_name").value,
-                    studentStatus: document.getElementByName("studentStatus").value,
-                    children_amount: document.getElementByName("children_amount").value,
-                    adults_amount: document.getElementByName("adults_amount").value,
-                    seniors_amount: document.getElementByName("seniors_amount").value,
-                    email_address: document.getElementByName("email_address").value,
-                    phone_number: document.getElementByName("phone_number").value,
-                    promotion: document.getElementByName("promotion").value,
+                    patron_id: document.getElementById("idSignUpInput").value,
+                    first_name: document.getElementById("first_name").value,
+                    last_name: document.getElementById("last_name").value,
+                    studentStatus: studentStatusCheck,
+                    children_amount: document.getElementById("children_amount").value,
+                    adults_amount: document.getElementById("adults_amount").value,
+                    seniors_amount: document.getElementById("seniors_amount").value,
+                    email_address: document.getElementById("email_address").value,
+                    phone_number: document.getElementById("phone_number").value,
+                    promotion: selectedPromotionMethod,
                     message: "insertNewPats"
                 },
                 success: function(data) {
-                    responsive_sidebar_item("index-index-sender");
-
-                    
+                    if(data == "true"){
+                        alertify.success("Welcome! Enjoy The Market").ondismiss = function() {
+                            cleanupInputs();
+                            responsive_sidebar_item("index-index-sender");
+                        }
+                    }
+                    else alertify.error("Something went wrong");
                 }
             });
         }
 
+        function insert_patron_spanish() 
+        {
+            var promotions = document.getElementsByName("promotion-spanish");
+            for(var i = 0 ;i < promotions.length; i++) {
+                if(promotions[i].checked) {
+                    var selectedPromotionMethod = promotions[i].value;
+                }
+            }
+
+            var studentStatus = document.getElementsByName("studentStatus-spanish");
+            for(var i = 0 ;i < studentStatus.length; i++) {
+                if(studentStatus[i].checked) {
+                    var studentStatusCheck = studentStatus[i].value;
+                }
+            }
+
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    patron_id: document.getElementById("idSignUpInput-spanish").value,
+                    first_name: document.getElementById("first_name-spanish").value,
+                    last_name: document.getElementById("last_name-spanish").value,
+                    studentStatus: studentStatusCheck,
+                    children_amount: document.getElementById("children_amount-spanish").value,
+                    adults_amount: document.getElementById("adults_amount-spanish").value,
+                    seniors_amount: document.getElementById("seniors_amount-spanish").value,
+                    email_address: document.getElementById("email_address-spanish").value,
+                    phone_number: document.getElementById("phone_number-spanish").value,
+                    promotion: selectedPromotionMethod,
+                    message: "insertNewPats"
+                },
+                success: function(data) {
+                    if(data == "true"){
+                        alertify.success("Bienvenidos ! \r\n Disfruta el mercado").ondismiss = function() {
+                            cleanupInputs();
+                            responsive_sidebar_item("index-index-sender");
+                        }
+                    }
+                    else alertify.error("Algo salió mal");
+                }
+            });
+        }
+
+        function cleanupInputs() {
+            document.getElementById("idSignUpInput").value = "";
+            document.getElementById("first_name").value = "";
+            document.getElementById("last_name").value = "";
+            document.getElementById("children_amount").value = "";
+            document.getElementById("adults_amount").value = "";
+            document.getElementById("seniors_amount").value = "";
+            document.getElementById("email_address").value = "";
+            document.getElementById("phone_number").value = "";
+
+            document.getElementById("idSignUpInput-spanish").value = "";
+            document.getElementById("first_name-spanish").value = "";
+            document.getElementById("last_name-spanish").value = "";
+            document.getElementById("children_amount-spanish").value = "";
+            document.getElementById("adults_amount-spanish").value = "";
+            document.getElementById("seniors_amount-spanish").value = "";
+            document.getElementById("email_address-spanish").value = "";
+            document.getElementById("phone_number-spanish").value = "";
+
+            var promotions = document.getElementsByName("promotion-spanish");
+            for(var i = 0 ;i < promotions.length; i++) {
+                promotions[i].checked = false;
+            }
+
+            var studentStatus = document.getElementsByName("studentStatus-spanish");
+            for(var i = 0 ;i < studentStatus.length; i++) {
+                studentStatus[i].checked = false;
+            }
+
+            var promotions = document.getElementsByName("promotion-english");
+            for(var i = 0 ;i < promotions.length; i++) {
+                promotions[i].checked = false;
+            }
+
+            var studentStatus = document.getElementsByName("studentStatus-english");
+            for(var i = 0 ;i < studentStatus.length; i++) {
+                studentStatus[i].checked = false;
+            }
+
+        }
         
     </script>
 </html>

@@ -173,8 +173,6 @@
             pw2.value = "";
             pwtext.innerHTML = "   *     *     *   ";
         });
-           
-        
             
         function responsive_sidebar_item(x) {
             var targets = ["new-market", "market-actions", "change-password", "index-index"];

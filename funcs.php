@@ -168,10 +168,8 @@
         else echo "false";
     }
 
-    if($_POST['message'] == 'insertNewPats') //new patron visited the market, add to DB
-    {
-        insertPat($_POST["first_name"], $_POST["last_name"], $_POST["studentStatus"], $_POST["children_amount"], $_POST["adults_amount"], $_POST["seniors_amount"], $_POST["email_address"], $_POST["phone_number"], $_POST["promotion"],$_POST["patron_id"]);
-        loginPat($_POST['patron_id']);
+    if($_POST['message'] == 'insertNewPats') {
+        echo insertPat($_POST["first_name"], $_POST["last_name"], $_POST["studentStatus"], $_POST["children_amount"], $_POST["adults_amount"], $_POST["seniors_amount"], $_POST["email_address"], $_POST["phone_number"], $_POST["promotion"],$_POST["patron_id"]);
     }
 
     if($_POST['message'] == 'patronLogin') {
@@ -365,8 +363,7 @@
     // ------------- REGISTRATION PAGE FUNCTIONS ---------------//
     // ======================================================== //
 
-    function insertPat($f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id) //new patrons to DB
-    {
+    function insertPat($f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id) {
         $c = connDB(); //set connection
 
         if($ss == "yes") $student_status = TRUE;
@@ -379,9 +376,11 @@
         '".$ea."', '".$pn."', '".$pm."', ".$id.", (SELECT idByDate FROM Markets WHERE active = 1));";
 
 
-        $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $c->exec($sql); 
-        return;
+        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c -> exec($sql); 
+        $c = null; //close connection
+
+        return loginPat($id);
     }
 
     function getPassword() {
@@ -397,16 +396,15 @@
     function populateArrayWithIds() {
         $c = connDB(); //set connection
         $idsArray = "";
-        $sql = "SELECT patID FROM Patrons";
+        $sql = "SELECT patID FROM Patrons ORDER BY patID;";
         $s = $c -> prepare($sql);
         $s -> execute(); 
-        $r = $s -> fetch(PDO::FETCH_ASSOC);
-        $idsArrays .= '"'.$r['patID'].'"';
+        $data[] = array();
         while ($r = $s -> fetch(PDO::FETCH_ASSOC)){ 
-            $idsArrays .= ', "'.$r['patID'].'"';
+            array_push($data, $r['patID']);
         }
         $c = null; //close connection
-        return $idsArrays;
+        return json_encode($data);
     }
 
     function populate_dropdown($likename) {
@@ -569,8 +567,6 @@
     // ======================================================== //
     // -------------- REPORT PAGE FUNCTIONS --------------------//
     // ======================================================== //
-
-   
 
     function pdf_report($date) {
         $c = connDB(); //create connection
@@ -827,8 +823,7 @@
         return 0; //no such item in the database
     }
 
-    function populateItemTable($date) //insert items to inventory html in table format
-    {
+    function populateItemTable($date) {
         $c = connDB();
         $tableItemData = ""; 
         $sql = "SELECT DISTINCT Name FROM Items WHERE Markets_idByDate <= '".$date."';";
@@ -877,8 +872,7 @@
         return $tableItemData;
     }
 
-    function updateInventoryItem($n, $a, $marketdate, $namechange) //update an inventory item
-    {
+    function updateInventoryItem($n, $a, $marketdate, $namechange) {
         $c = connDB();
         
         $total = 0;

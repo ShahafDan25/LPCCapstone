@@ -7,11 +7,11 @@
     $prevnames = [];
     $counter = 0;
 
-    $sql = "SELECT patID, FirstName, LastName FROM Patrons WHERE firstMarket < 20200630";
+    $sql = "SELECT patID, FirstName, LastName FROM Patrons WHERE firstMarket < 20200707";
     $s = $c -> prepare($sql);
     $s -> execute();
     while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-        $sql = "SELECT * FROM MarketLogins WHERE Patrons_patID = ".$r['patID']." AND Markets_idByDate = 20200630;";
+        $sql = "SELECT * FROM MarketLogins WHERE Patrons_patID = ".$r['patID']." AND Markets_idByDate = 20200707;";
         $sb = $c -> prepare($sql);
         $sb -> execute();
         if(!$sb -> fetch(PDO::FETCH_ASSOC)){
@@ -21,7 +21,7 @@
     }
 
     $active = false;
-    $sql_active = "SELECT active FROM Markets WHERE idByDate = 20200630;";
+    $sql_active = "SELECT active FROM Markets WHERE idByDate = 20200707;";
     $s_active = $c -> prepare($sql_active);
     $s_active -> execute();
     $r_active = $s_active -> fetch(PDO::FETCH_ASSOC);
@@ -31,7 +31,7 @@
         $c = connDB(); //set connection
         $counter++;
 
-        if(rand(0,99) < 35) {
+        if(rand(0,99) < 41) {
             $id = rand(100000,999999);
             $sql = "SELECT * FROM Patrons WHERE patID = ".$id.";";
             $s = $c -> prepare($sql);
@@ -49,10 +49,10 @@
                 $prom = $promotions[rand(0,count($promotions))];
         
                 $nuller = rand(0,3);
-                if($nuller == 0) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$prom."', ".$id.", 20200630);";
-                else if($nuller == 1) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."','".$prom."', ".$id.", 20200630);";
-                else if($nuller == 2) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PhoneNumber, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."','".$prom."', ".$id.", 20200630);";
-                else if($nuller == 3) $sql = "INSERT INTO Patrons VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."', '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."', '".$prom."', ".$id.", 20200630);";
+                if($nuller == 0) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$prom."', ".$id.", 20200707);";
+                else if($nuller == 1) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, EmailAdd, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."','".$prom."', ".$id.", 20200707);";
+                else if($nuller == 2) $sql = "INSERT INTO Patrons (FirstName, LastName, StudentStatus, ChildrenAmount, AdultsAmount, SeniorsAmount, PhoneNumber, PromotionMethod, patID, firstMarket) VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."','".$prom."', ".$id.", 20200707);";
+                else if($nuller == 3) $sql = "INSERT INTO Patrons VALUES ('".$first."', '".$last."', ".$studentStatus.", ".$child.", ".$adult.", ".$senior.", '".$first.".".$last.strval(rand(1,99))."@gmail.com"."', '".strval(rand(100,999)).strval(rand(100,999)).strval(rand(1000,9999))."', '".$prom."', ".$id.", 20200707);";
         
                 $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $c -> exec($sql);
@@ -79,8 +79,8 @@
 
         date_default_timezone_set("America/Los_Angeles");
         $time = intval(substr(date("H:i"),0,2).substr(date("H:i"),0,2));
-        if($time > 1637) {
-            $sql = "UPDATE Markets SET active = 2, terminationtime = '".$time."' WHERE idByDate = 20200630";
+        if($time > 1325) {
+            $sql = "UPDATE Markets SET active = 2, terminationtime = '".$time."' WHERE idByDate = 20200707";
             $c -> prepare($sql) -> execute();
             $active = false;
         }     
@@ -105,7 +105,7 @@
         date_default_timezone_set("America/Los_Angeles");
         $time_digits = substr(date("H:i"), 0, 2).substr(date("H:i"), 3, 2);
 
-        $sql = "INSERT INTO MarketLogins VALUES (20200630, ".$id.", '".$time_digits."');";
+        $sql = "INSERT INTO MarketLogins VALUES (20200707, ".$id.", '".$time_digits."');";
         $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $c -> exec($sql);
     }

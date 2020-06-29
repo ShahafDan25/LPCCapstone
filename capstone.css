@@ -669,6 +669,14 @@ div.content {
     border: none !important;
     text-shadow: 0.3px 0.3px black;
     font-weight: bolder !important;
+    box-shadow: 5px 5px 7px #303030 !important;
+    transform: 0.5s;
+}
+.report-option-btn:active, .report-option-btn:focus {
+    top: 5px !important;
+    transform: translateX(5px);
+    box-shadow: none !important;
+    transform: all 0.5 linear !important;
 }
 .download-pdf-report-btn {
     width: 25% !important;

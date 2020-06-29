@@ -302,7 +302,7 @@
                         alertify.success("Your request has been submitted!");
                         location.replace("index.php");
                     }
-                    else if (data == "false") alert("Your email is not a registered volunteer. \r\n You can request a volunteer access below.")
+                    else if (data == "false") alertify.error("Your email is not a registered volunteer. \r\n You can request a volunteer access below.")
                 }  
             });
         });
@@ -560,7 +560,7 @@
                     message: "verifyPassword"
                 },
                 success: function(data) {
-                    if(data == "false") alert("Incorrect Password");
+                    if(data == "false") alertify.error("Incorrect Password");
                     else if(data == "true") location.replace("admin.php");
                 }
             });

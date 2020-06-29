@@ -308,6 +308,8 @@
         });
 
         $("#vol-login-form").submit(function(e) {
+            alertify.set("notifier", "delay", 3.00); //set dellay    
+
             e.preventDefault();
             $.ajax ({
                 type: "POST",
@@ -318,7 +320,8 @@
                 },
                 success: function(data) {
                     if(data == "true") location.replace("signups.php");
-                    else if (data == "false") alert("Your email is not a registered volunteer. \r\n You can request a volunteer access below.")
+                    else if (data == "false") alertify.error("Your email is not a registered volunteer. \r\n You can request a volunteer access below.");
+                    else if (data == "pending") alertify.warning("You're yet to be activated... Can't Login");
                 }  
             });
         });

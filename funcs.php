@@ -192,9 +192,16 @@
     }
 
     if($_POST['message'] == "volunteer-login") {
+        
         if(verifyVolunteer($_POST['volunteerEmail'])) {
             $_SESSION['volunteer-id'] = $_POST['volunteerEmail'];
-            echo "true"; 
+            $c = connDB(); //set connection
+            $sql = "SELECT Active FROM Volunteers WHERE Email = '".$_POST['volunteerEmail']."';";
+            $s = $c -> prepare($sql);
+            $s -> execute();
+            $r = $s -> fetch(PDO::FETCH_ASSOC);
+            if($r['Active'] == 2) echo "pending";
+            else echo "true"; 
         }
         else echo "false";
     }

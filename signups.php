@@ -85,6 +85,35 @@
             });
         });
 
+        function refreshUserSignUps() {
+            //populate the commits already made by the user
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "display-volunteer-signup-commits",
+                    date: document.getElementById("marketid").value
+                },
+                success: function (data) {
+                    $("#signup-commits").html(data);
+                }
+            });  
+            //populate sign up sheet in divs format 
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "display-signup-sheet",
+                    date: document.getElementById("marketid").value
+                },
+                success: function(data) {
+                    $("#signup-sheet-container").html(data);
+                    document.getElementById("signup-sheet-container").style.display = "block";
+                    document.getElementById("signup-sheet-container-registration").style.display = "block";
+                }
+            });
+        }
+
         $("#submit-signup-commit-form").submit(function(e) {
             e.preventDefault();
             $.ajax ({
@@ -97,7 +126,10 @@
                     date: document.getElementById("marketid").value
                 },
                 success: function(data) {
-                    if(data == "committedsignup") alertify.message("Thank you for signing up !");
+                    if(data == "committedsignup") {
+                        alertify.message("Thank you for signing up !");
+                        refreshUserSignUps(); 
+                    }
                     else if(data == "tooearly") alertify.error("Sign Up in the requested time frames");
                     else if(data == "toolate") alertify.error("Sign up in the request time frames");
                 }
@@ -160,7 +192,7 @@
             });
         }
 
-        $("#remove-signup-commit-btn").click (function (event) {
+        function removeSignUpCommit(x) {
             //removing a sign up commit from table
             $.ajax ({
                 type: "POST",
@@ -168,14 +200,16 @@
                 data: {
                     message: "remove-then-display-volunteer-signup-commits",
                     date: document.getElementById("marketid").value,
-                    starttime: document.getElementById("starttime-input").value,
-                    endtime: document.getElementById("endtime-input").value
+                    starttime: document.getElementById("starttime-remove-commit-"+x).value,
+                    endtime: document.getElementById("endtime-remove-commit-"+x).value
                 },
                 success: function (data) {
-                    $("#signup-commits").html(data);
-                    alertify.message("Sign up commit was removed");
+                    if(data == "commit-removed") {
+                        alertify.message("Sign up commit was removed");
+                        refreshUserSignUps(); 
+                    }                    
                 }
             });
-        });
+        };
     </script>
 </html>

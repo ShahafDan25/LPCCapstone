@@ -1306,7 +1306,7 @@
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-        if($r['starttime'] > intval(substr($start,0,2).substr($start,2,2))) { //if they signed up to a time earlier then start time
+        if($r['starttime'] > intval(substr($start,0,2).substr($start,3,2))) { //if they signed up to a time earlier then start time
             return "tooearly";
         }
         else if($r['closetime'] < intval(substr($end,0,2).substr($end,2,2))){
@@ -1340,18 +1340,20 @@
         $sql = "SELECT Start_Time, End_Time FROM SignUps WHERE Email = '".$vol."' AND Market = ".$mar.";";
         $s = $c -> prepare($sql);
         $s -> execute();
+        $counter = 0;
         while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
             $data .= '<tr>
                 <td>'.substr($r['Start_Time'],0,5).'</td>
                 <td>'.substr($r['End_Time'],0,5).'</td>
                 <td>
-                    <input type = "hidden" id = "starttime-remove-commit" value = "'.substr($r['Start_Time'],0,5).'">
-                    <input type = "hidden" id = "endtime-remove-commit" value = "'.substr($r['End_Time'],0,5).'">
-                    <button class = "btn remove-signup-commit" id = "remove-signup-commit-btn">
+                    <input type = "hidden" id = "starttime-remove-commit-'.$counter.'" value = "'.substr($r['Start_Time'],0,5).'">
+                    <input type = "hidden" id = "endtime-remove-commit-'.$counter.'" value = "'.substr($r['End_Time'],0,5).'">
+                    <button class = "btn remove-signup-commit" id = "remove-signup-commit-btn" onclick = "removeSignUpCommit('.$counter.');">
                         <i class = "fa fa-times" aria-hidden = "true"></i>
                     </button>
                 </td>
             </tr>';
+            $counter++;
         }
         $c = null; //close connection
         if(strlen($data) < 2) return "<br>";

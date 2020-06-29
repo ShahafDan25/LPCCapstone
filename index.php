@@ -299,7 +299,7 @@
                 },
                 success: function(data) {
                     if(data == "true") {
-                        alert("Your request has been submitted!");
+                        alertify.success("Your request has been submitted!");
                         location.replace("index.php");
                     }
                     else if (data == "false") alert("Your email is not a registered volunteer. \r\n You can request a volunteer access below.")
@@ -548,7 +548,7 @@
         }
 
         $("#admin-login-form").submit(function(e){
-            e.preventDeault();
+            e.preventDefault();
             $.ajax ({
                 type: "POST",
                 url: "funcs.php",

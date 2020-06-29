@@ -825,14 +825,6 @@
     }
 
     function displayInventory($date) {
-        $pre_table = 
-        '<p class = "pull-left">*  Inventories of Previous Markets</p><br><br>
-        <form action = "" method = "POST" id = "add-inv-form">
-            <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off" required>
-            <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off" required>
-            <button class = "btn add-to-inventory op4 inline"><i class="fa fa-plus" aria-hidden="true"></i></button>
-        </form>
-        <br><br>';
         $table_begin = 
         '<table class = "table inv_table">
             <thead>
@@ -846,8 +838,8 @@
         $table_end = 
             '</tbody>
         </table>';
-        if(populateItemTable($date) == "") return $pre_table.'<br><br><p> No item in the inventory at the moment </p>';
-        else return $pre_table.$table_begin.populateItemTable($date).$table_end;
+        if(populateItemTable($date) == "") return '<br><br><p> No items found </p>';
+        else return $table_begin.populateItemTable($date).$table_end;
     }
 
     function insertItem($n, $a, $d) //insert item to the database

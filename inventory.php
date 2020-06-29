@@ -43,10 +43,22 @@
             <div id = "marketid-container"></div>
             <br>
             <!-- Table with the current updated inventory -->
-            <div class = "page-sub-container" id = "view_inv" style = "display: none"></div>
+            <div class = "page-sub-container" id = "ext-container-inv" style = "display: none">
+                <p class = "pull-left">*  Inventories of Previous Markets</p><br><br>
+                <form action = "" method = "POST" id = "add-inv-form">
+                    <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off" required>
+                    <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off" required>
+                    <button class = "btn add-to-inventory op4 inline"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </form>
+                <br><br>
+                <div id = "view_inv" style = "display: none"></div>
+            </div>
         </div>
     </body>
     <script>
+        alertify.set('notifier','position', 'top-right'); //set position    
+        alertify.set('notifier','delay', 1.75); //set dellay
+
         $(document).ready(function() {
             $.ajax({
                 type: "POST",
@@ -56,23 +68,6 @@
                 },
                 success: function(data){
                     $("#marketid-container").html(data);
-                }
-            });
-        });
-
-        $(document).on('change', '#marketid', function() {
-            // populate inventory view table
-            $.ajax ({
-                type: "POST",
-                url: "funcs.php",
-                data: {
-                    date: document.getElementById("marketid").value, 
-                    message: "display-inventory-table"
-                },
-                success: function(data) {
-                    document.getElementById("view_inv").style.display = "block";
-                    document.getElementById("view_inv").innerHTML = "";
-                    $("#view_inv").html(data);
                 }
             });
         });
@@ -89,8 +84,10 @@
                     message: "insertItem"
                 },
                 success: function(data) {
-                    document.getElementById("view_inv").innerHTML = "";
+                    alertify.success("Item Added !")
                     $("#view_inv").html(data);
+                    document.getElementById("item_number").value = "":
+                    document.getElementById("item_name").value = "";
                 }
             });
         });
@@ -105,7 +102,7 @@
                     message: "remove-item"
                 },
                 success: function(data) {
-                    document.getElementById("view_inv").innerHTML = "";
+                    alertify.message("Item Removed");
                     $("#view_inv").html(data);
                 }
             });
@@ -124,7 +121,7 @@
                     message: "update-inventory-item"
                 },
                 success: function(data) {
-                    document.getElementById("view_inv").innerHTML = "";
+                    alertify.message("Item Updated! ");
                     $("#view_inv").html(data);
                 }
             });
@@ -134,8 +131,21 @@
             document.getElementById("tr-"+x).style.display = "none";
         }
 
-        function changeMarketId() {
-            //only to avoid console.log errors
+        function changedMarketId() {
+            document.getElementById("ext-container-inv").style.display = "block";
+            // populate inventory view table
+            $.ajax ({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    date: document.getElementById("marketid").value, 
+                    message: "display-inventory-table"
+                },
+                success: function(data) {
+                    document.getElementById("view_inv").style.display = "block";
+                    $("#view_inv").html(data);
+                }
+            });            
             return;
         }
     </script>

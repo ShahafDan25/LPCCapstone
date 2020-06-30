@@ -93,17 +93,17 @@
                     <br>
                     <ul class = "admin-options-list">
                         <li class = "admin-options-list-item">
-                            <input type = "radio" id = "option-1" name = "adminOption" value = "invoke" class = "admin-option">
+                            <input type = "radio" id = "option-1" name = "admin-option" value = "invoke" class = "admin-option">
                             <label for = "option-1"  class = "admin-option-label"> Activate </label>
                             <div class = "check"></div>
                         </li>
                         <li class = "admin-options-list-item">
-                            <input type = "radio" id = "option-2" name = "adminOption" value = "terminate" class = "admin-option">
+                            <input type = "radio" id = "option-2" name = "admin-option" value = "terminate" class = "admin-option">
                             <label for = "option-2"  class = "admin-option-label"> Terminate </label>
                             <div class = "check"></div>
                         </li>
                         <li class = "admin-options-list-item">
-                            <input type = "radio" id = "option-3" name = "adminOption" value = "delete" class = "admin-option">
+                            <input type = "radio" id = "option-3" name = "admin-option" value = "delete" class = "admin-option">
                             <label for = "option-3" class = "admin-option-label"> Delete </label>
                             <div class = "check"></div>
                         </li>
@@ -131,7 +131,7 @@
     </body>
     <script>
         alertify.set('notifier','position', 'bottom-center'); //set position    
-        alertify.set('notifier','delay', 1.75); //set dellay
+        alertify.set('notifier','delay', 1.375); //set dellay
 
         var pw1 = document.getElementById("newPW1");
         var pw2 = document.getElementById("newPW2");
@@ -140,6 +140,8 @@
 
         $("#change-admin-pw-form").submit(function(e) {
             e.preventDefault();
+            alertify.set('notifier','position', 'bottom-center'); //set position    
+            alertify.set('notifier','delay', 1.75); //set dellay
             if(pw1.value == pw2.value && pw1.value.length > 7){
                 $.ajax ({
                     type: "POST",
@@ -187,6 +189,10 @@
             }
             document.getElementById(x).className += " active";
             document.getElementById(x.substring(0, x.length - 7)).style.display = "block";
+            var options = document.getElementsByName("adminOption"); //clean up radio buttons
+            for(var i = 0 ;i < options.length; i++) {
+                options[i].value = "";                       
+            }
         }
 
         pw2.onkeyup = function(event){
@@ -234,22 +240,37 @@
         }
 
         $("#submit-market-operation-option").click(function() {
-            var options = document.getElementsByName("adminOption");
+            var options = document.getElementsByName("admin-option");
             for(var i = 0 ;i < options.length; i++) {
                 if(options[i].checked) {
                     var checkedAdminOption = options[i].value;
                 }
             }
             var date = document.getElementById("marketid").value;
+            if(checkedAdminOption == "delete") {
+                alertify.confirm("Are you sure you want to delete this market? \r\n All related records will be deleted!", 
+                    function() { //yes
+                        alertify.message("Ok, Market will be deleted");
+                        performAction(checkedAdminOption, date);
+                    },
+                    function () { //no
+                        alertify.message("Operation Cancelled.");
+                    }
+                );
+            }
+        });
+        
+        function performAction(passedaction, passeddate) {
             $.ajax({
                 type: "POST",
                 url: "funcs.php",
                 data: {
                     message: "adminOption",
-                    adminOption: checkedAdminOption,
-                    date: document.getElementById("marketid").value
+                    adminOption: passedaction,
+                    date: passeddate
                 },
                 success: function(data) {
+                    cleanRadioAdminOptions();
                     if(data == "deleted")  {
                         alertify.success("Market Deleted").ondismiss = function() {
                             responsive_sidebar_item("index-index-sender");
@@ -273,8 +294,15 @@
                     else if(data == "thereexistsanactiveone") alertify.warning("Can't have two active markets!");
                 }
             });
-        });
-        
+        }
+
+        function cleanRadioAdminOptions() {
+            var options = document.getElementsByName("admin-option");
+            for(var i = 0 ;i < options.length; i++) {
+                options[i].checked = false; //set to unchecked for all admin options
+            }
+            return;
+        }
 
         $("#new-market-form").submit(function(e) {
             e.preventDefault();

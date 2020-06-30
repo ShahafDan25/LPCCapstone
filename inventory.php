@@ -86,7 +86,7 @@
                 success: function(data) {
                     alertify.success("Item Added !")
                     $("#view_inv").html(data);
-                    document.getElementById("item_number").value = "":
+                    document.getElementById("item_number").value = "";
                     document.getElementById("item_name").value = "";
                 }
             });

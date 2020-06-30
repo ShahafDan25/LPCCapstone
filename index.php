@@ -93,7 +93,7 @@
                     <input type = "number" class = "index-registration-input third inline" id = "adults_amount" placeholder = "Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     <input type = "number" class = "index-registration-input third inline" id = "seniors_amount" placeholder = "Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     <br><br>
-                    <h6 class = "registration-instructions-text"><strong><u> Contact Information </strong></u></h6>
+                    <h6 class = "registration-instructions-text"><strong><u> Contact Information (Optional)</strong></u></h6>
                     <input type = "text" class = "index-registration-input half inline" id = "email_address" placeholder = " Email" autocomplete = "off"> &nbsp;
                     <input type = "text" class = "index-registration-input half inline" id = "phone_number" placeholder = " Phone Number" autocomplete = "off"> &nbsp;
                     <br><br>
@@ -154,7 +154,7 @@
                     <input type = "number" class = "index-registration-input third inline" id = "adults_amount-spanish" placeholder = " Adultos (Años 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     <input type = "number" class = "index-registration-input third inline" id = "seniors_amount-spanish" placeholder = " Personas mayores (Años 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     <br><br>
-                    <h6 class = "registration-instructions-text"><strong><u> Información del contacto </strong></u></h6>
+                    <h6 class = "registration-instructions-text"><strong><u> Información del contacto (Opcional)</strong></u></h6>
                     <input type = "text" class = "index-registration-input half inline" id = "email_address-spanish" placeholder = " Correo electrónico" autocomplete = "off"> &nbsp;
                     <input type = "text" class = "index-registration-input half inline" id = "phone_number-spanish" placeholder = " Número de teléfono" autocomplete = "off"> &nbsp;
                     <br><br>
@@ -273,6 +273,7 @@
         var text = document.getElementById("alertedIDdiv");
         var text_spanish = document.getElementById("alertedIDdiv-spanish");
         var ids = new Array();
+
         $.ajax ({
             type: "POST",
             url: "funcs.php",

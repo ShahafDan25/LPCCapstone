@@ -28,10 +28,6 @@
     background-color: #fafbb5 !important; 
     border: 3px solid rgb(212, 200, 23) !important;
 }
-
-
-
-
 /* ------------ ONSIES CSS ----------------------- */
 .mr10{margin-right: 8% !important;}
 .inv_label{width: 40% !important;}
@@ -111,13 +107,7 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     color: #303030 !important;
     border: 2px solid #303030 !important;
 }
-.alertify, .ajs-dialog {
-    top: 50%;
-    transform: translateY(-50%);
-    margin: auto;
-    padding: none !important;
-    border: 3px solid black !important;
-}
+
 /* ------------ Signups Page ---------------- */
 .index-signups-page-header-title {
     background-image: linear-gradient(to right,rgb(134, 151, 246),rgb(102, 124, 246)) !important; /* rgb(79, 249, 255)*/

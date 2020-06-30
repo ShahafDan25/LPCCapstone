@@ -44,7 +44,9 @@
             <br>
             <!-- Table with the current updated inventory -->
             <div class = "page-sub-container" id = "ext-container-inv" style = "display: none">
-                <p class = "pull-left">*  Inventories of Previous Markets</p><br><br>
+                <p class = "pull-left">*  Inventories of Previous Markets</p>
+                <button class = "pull-right btn inventory-report-btn" id = "inventory-report-btn"> Report <i class="fa fa-file-text"></i></button>
+                <br><br><br>
                 <form action = "" method = "POST" id = "add-inv-form">
                     <input type = "text" id = "item_name" class = "add-inventory-input half inline" placeholder = " Item Name" autocomplete = "off" required>
                     <input type = "number" id = "item_number" class = "add-inventory-input half inline" placeholder = " Quantity" autocomplete = "off" required>
@@ -56,7 +58,7 @@
         </div>
     </body>
     <script>
-        alertify.set('notifier','position', 'top-right'); //set position    
+        alertify.set('notifier','position', 'top-left'); //set position    
         alertify.set('notifier','delay', 1.75); //set dellay
 
         $(document).ready(function() {
@@ -68,6 +70,24 @@
                 },
                 success: function(data){
                     $("#marketid-container").html(data);
+                }
+            });
+        });
+
+        $("#inventory-report-btn").click(function() {
+            var date = document.getElementById("marketid").value;
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "generate-inventory-report",
+                    date: document.getElementById("marketid").value
+                },
+                success: function(data) {
+                    alertify.set('notifier','delay', 1); //set dellay
+                    alertify.success("Success! report generated!").ondismiss = function() {
+                        window.open("inventory_"+date);
+                    }
                 }
             });
         });

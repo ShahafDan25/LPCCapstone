@@ -89,11 +89,12 @@
                     </ul>
                     <br>
                     <h6 class = "registration-instructions-text"><strong><u> How many people are in your household? </u></strong></h6>
-                    <input type = "number" class = "index-registration-input third inline" id = "children_amount" placeholder = "Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
-                    <input type = "number" class = "index-registration-input third inline" id = "adults_amount" placeholder = "Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
-                    <input type = "number" class = "index-registration-input third inline" id = "seniors_amount" placeholder = "Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                    <input type = "number" class = "index-registration-input third inline" id = "children_amount" placeholder = "  Children (Ages 0 - 17)" min = "0" max = "20" required pattern="\S+.*" autocomplete = "off"> &nbsp;
+                    <input type = "number" class = "index-registration-input third inline" id = "adults_amount" placeholder = "  Adults (Ages 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
+                    <input type = "number" class = "index-registration-input third inline" id = "seniors_amount" placeholder = "  Seniors (Ages 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     <br><br>
-                    <h6 class = "registration-instructions-text"><strong><u> Contact Information (Optional)</strong></u></h6>
+                    <h6 class = "registration-instructions-text inline"><strong><u> Contact Information (Optional)</strong></u> &ensp;</h6><a class = "btn explainContact inline" onmouseover = "explainContantEnglish()"><i class="fa fa-question-circle"></i></a>
+                    <br>
                     <input type = "text" class = "index-registration-input half inline" id = "email_address" placeholder = " Email" autocomplete = "off"> &nbsp;
                     <input type = "text" class = "index-registration-input half inline" id = "phone_number" placeholder = " Phone Number" autocomplete = "off"> &nbsp;
                     <br><br>
@@ -154,7 +155,8 @@
                     <input type = "number" class = "index-registration-input third inline" id = "adults_amount-spanish" placeholder = " Adultos (Años 18 - 64)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     <input type = "number" class = "index-registration-input third inline" id = "seniors_amount-spanish" placeholder = " Personas mayores (Años 64 +)"  min = "0" max = "20" required pattern = "\S+.*" autocomplete = "off"> &nbsp;
                     <br><br>
-                    <h6 class = "registration-instructions-text"><strong><u> Información del contacto (Opcional)</strong></u></h6>
+                    <h6 class = "registration-instructions-text inline"><strong><u> Información del contacto (Opcional)</strong></u></h6><a class = "btn explainContact inline" onmouseover = "explainContantSpanish()"><i class="fa fa-question-circle"></i></a>
+                    <br>
                     <input type = "text" class = "index-registration-input half inline" id = "email_address-spanish" placeholder = " Correo electrónico" autocomplete = "off"> &nbsp;
                     <input type = "text" class = "index-registration-input half inline" id = "phone_number-spanish" placeholder = " Número de teléfono" autocomplete = "off"> &nbsp;
                     <br><br>
@@ -709,6 +711,18 @@
             for(var i = 0 ;i < studentStatus.length; i++) {
                 studentStatus[i].checked = false;
             }
+        }
+
+        function explainContantEnglish() {
+            alertify.alert('Giving your contact information',
+                'Giving your contact information is completely optional! By doing so, you register to get notification from us about future markets!');
+            return;
+        }
+
+        function explainContantSpanish() {
+            alertify.alert('Dando su información de contacto',
+                '¡Dar su información de contacto es completamente opcional! ¡Al hacerlo, se registra para recibir notificaciones de nosotros sobre futuros mercados!');
+            return;
         }
         
     </script>

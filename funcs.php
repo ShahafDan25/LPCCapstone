@@ -108,6 +108,56 @@
             $this -> Cell(40, 6, 'Director of Programs and Services');
             return;
         }
+
+
+        // -------- CODE FOR INVENTORY REPORT ---------//
+        function invHead($d)
+        {
+            $months = ["January", "February", "March", "April", "May", " June", "July", "August", "September", "October", "November", "December"];
+            $this -> SetFont('Arial', 'B', 20); 
+            $this -> Cell(40,12,'The Market   |   LPCSG ', 'C');
+            
+            $this->Cell( 40, 10, $this->Image("otherFiles/pics/lpcsgLogo.jpg", 120, 5, 35), 0, 0, 'L', false );
+            $this->Cell( 40, 10, $this->Image("otherFiles/pics/lpcLogo2.png", 160, 5, 35), 0, 0, 'L', false );
+
+            $this -> Ln();
+            $this -> SetFont('Arial', 'B', 12); 
+            $this -> Cell (40, 10, 'Inventory '.$months[(intval(substr($d,4,2)))]." ".substr($d,6,2).", ".substr($d,0,4),'C');
+            $this -> Ln();
+            $this -> Ln();
+            return;
+        }
+
+        function invTableHead() 
+        {
+            $this -> SetFont('Arial', 'B', 14); 
+            $this -> Cell(60, 10, 'Item', 1, 0, 'C'); 
+            $this -> SetFont('Arial', 'B', 14); 
+            $this -> Cell(120, 10, 'Quantity', 1, 0, 'C');
+            $this -> Ln(); 
+            $this -> SetFont('Arial', 'B', 11); 
+            $this -> Cell(60, 8, '   -   ', 1, 0, 'C');
+            $this -> Cell(40, 8, 'Past Markets', 1, 0, 'C');
+            $this -> Cell(40, 8, 'This Market', 1, 0, 'C');
+            $this -> Cell(40, 8, 'Total', 1, 0, 'C');
+            $this -> Ln(); 
+            return;
+        }
+
+        function invTableBody($date)
+        {
+            $c = connDB(); //set connection
+            $this -> SetFont('Arial', 'B', 10); 
+            $sql = "SELECT Name, Amount FROM Items WHERE Markets_idByDate = ".$date." GROUP BY Name ORDER BY Markets_idByDate;";
+            $s = $c -> prepare($sql);
+            $s -> execute();
+            while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
+                $this ->
+            }
+            return;      
+        }
+
+
     }
     // ======================================================== //
     // -------------------- POSTS MESSAGES ---------------------//
@@ -315,6 +365,11 @@
 
     if($_POST['message'] == "display-noobies-graph") {
         echo getRetVSNew($_POST['date']);
+    }
+
+    if($_POST['message'] == "generate-inventory-report") {
+        generateInventoryReport($_POST['date']);
+        echo "true";
     }
 
     // ======================================================== //
@@ -619,7 +674,7 @@
 
         $reportFile = fopen('report_'.strval($date).'.pdf', 'w+');
         fclose($reportFile);
-        $pdf -> Output('report_'.$date.'.pdf', 'F');
+        $pdf -> Output('report_'.strval($date).'.pdf', 'F');
         return "true";
     }
 
@@ -816,6 +871,21 @@
     // -------------- INVENTORY PAGE FUNCTIONS -----------------//
     // ======================================================== //
 
+    function generateInventoryReport($date) {
+        $c = connDB(); 
+        $pdf = new myFPDFClass(); 
+        $pdf -> AddPage();
+        $pdf -> invHead($date);
+        $pdf -> invTableHead();
+        $pdf -> invTableBody($date);
+        $pdf -> invSignature();
+
+        $inventoryFile = fopen('inventory_'.strval($date).'.pdf', 'w+');
+        fclose($inventoryFile);
+        $pdf -> Output('inventory_'.strval($date).'.pdf', 'F');
+        return "true";
+    }
+     
     function removeInventoryItem($name) {
         $c = connDB(); //set connection
         $sql = "DELETE FROM Items WHERE Name = '".$name."';";

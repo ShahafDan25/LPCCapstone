@@ -364,6 +364,12 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     font-size: 165% !important;
     font-weight: bolder !important;
 }
+.explainContact {
+    margin: 0;
+    padding: 1px;
+    background-color: rgb(102, 124, 246) !important;
+    color: rgb(102, 124, 246) !important;
+}
 
 #myInput /* search box */
 {
@@ -685,7 +691,13 @@ div.content {
     transition: all 0.3s ease-in-out !important;
 }
 /* ------------ Inventory Page ------------------- */
-
+.inventory-report-btn {
+    color: black !important;
+    font-size: 105%;
+    background-color: rgb(102, 124, 246) !important;
+    border-radius: 5px;
+    box-shadow: 4px 4px 7px #303030;
+}
 .add-to-inventory {
     background-color: rgb(131, 255, 137) !important;
     margin-right: 6.5% !important;

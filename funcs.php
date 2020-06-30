@@ -13,7 +13,7 @@
 
             $this -> Ln();
             $this -> SetFont('Arial', 'B', 12); 
-            $this -> Cell (40, 10, 'Report '.$months[(intval(substr($d,4,2)))]." ".substr($d,6,2).", ".substr($d,0,4),'C');
+            $this -> Cell (40, 10, 'Report '.$months[(intval(substr($d,4,2)))-1]." ".substr($d,6,2).", ".substr($d,0,4),'C');
             $this -> Ln();
             $this -> Ln();
             return;
@@ -122,7 +122,7 @@
 
             $this -> Ln();
             $this -> SetFont('Arial', 'B', 12); 
-            $this -> Cell (40, 10, 'Inventory '.$months[(intval(substr($d,4,2)))]." ".substr($d,6,2).", ".substr($d,0,4),'C');
+            $this -> Cell (40, 10, 'Inventory '.$months[(intval(substr($d,4,2)))-1]." ".substr($d,6,2).", ".substr($d,0,4),'C');
             $this -> Ln();
             $this -> Ln();
             return;
@@ -148,12 +148,38 @@
         {
             $c = connDB(); //set connection
             $this -> SetFont('Arial', 'B', 10); 
-            $sql = "SELECT Name, Amount FROM Items WHERE Markets_idByDate = ".$date." GROUP BY Name ORDER BY Markets_idByDate;";
+            $sql = "SELECT DISTINCT Name FROM Items WHERE Markets_idByDate <= ".$date.";";
             $s = $c -> prepare($sql);
             $s -> execute();
             while($r = $s -> fetch(PDO::FETCH_ASSOC)) {
-                $this ->
+                $this -> Cell(60, 9, $r['Name'], 1, 0, 'C');
+
+                $total = 0;
+
+                $sqlb = "SELECT SUM(Amount) FROM Items WHERE Name = '".$r['Name']."' AND Markets_idByDate < ".$date.";";
+                $sb = $c -> prepare($sqlb);
+                $sb -> execute();
+                if($rb = $sb -> fetch(PDO::FETCH_ASSOC)) {
+                     $this -> Cell(40, 9, $rb['SUM(Amount)'], 1, 0, 'C');
+                     $total += $rb['SUM(Amount)'];
+                }
+                else $this -> Cell(40, 9, '0', 1, 0, 'C');
+                   
+                $sqlc = "SELECT Amount FROM Items WHERE Name = '".$r['Name']."' AND Markets_idByDate = ".$date.";";
+                $sc = $c -> prepare($sqlc);
+                $sc -> execute();
+
+                if($rc = $sc -> fetch(PDO::FETCH_ASSOC))  {
+                    $total += $this -> Cell(40, 9, $rc['Amount'], 1, 0, 'C');
+                    $total += $rc['Amount'];
+                }
+                else $this -> Cell(40, 9, '0', 1, 0, 'C');
+                
+                $this -> Cell(40, 9, $total, 1, 0, 'C');
+                
+                $this -> Ln(); 
             }
+            $this -> Ln();
             return;      
         }
 
@@ -878,7 +904,7 @@
         $pdf -> invHead($date);
         $pdf -> invTableHead();
         $pdf -> invTableBody($date);
-        $pdf -> invSignature();
+        $pdf -> signature();
 
         $inventoryFile = fopen('inventory_'.strval($date).'.pdf', 'w+');
         fclose($inventoryFile);

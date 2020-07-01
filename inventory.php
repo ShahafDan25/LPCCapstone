@@ -84,10 +84,11 @@
                     date: document.getElementById("marketid").value
                 },
                 success: function(data) {
-                    alertify.set('notifier','delay', 1); //set dellay
-                    alertify.success("Success! report generated!").ondismiss = function() {
-                        window.open("inventory_"+date);
-                    }
+                    // alertify.set('notifier','delay', 1); //set dellay
+                    // alertify.success("Success! report generated!").ondismiss = function() {
+                    //     window.open("inventory_"+date);
+                    // }
+                    window.open("inventory_"+date);
                 }
             });
         });

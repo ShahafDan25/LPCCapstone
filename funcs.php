@@ -402,6 +402,12 @@
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
 
+    function timeMilitaryToAMPM($time) {
+        $timeasint = intval(strval(substr($time,0,2).substr($time,3,2)));
+        if($timeasint > 1259) $timeasint = $timeasint - 1200;
+        return strval(substr($timeasint,0,strlen(strval($timeasint))-2).":".substr($timeasint,strlen(strval($timeasint))-2,2));
+    }
+
     function reformatidByDate($idByDate) {
         return substr($idByDate, 4,2)."\t|\t".substr($idByDate,6,2)."\t|\t".substr($idByDate,0,4);
     }
@@ -1385,7 +1391,7 @@
             if($_SESSION['volunteer-id'] == $r['Email']) $data .= "Me";
             else $data .= $personName;
             $data .= '<br>';
-            $data .= substr($r['Start_Time'],0,5)." <i class = 'fa fa-arrow-right' aria-hidden = 'true' style = 'margin-right: 1% !important; margin-left: 1% !important;'></i> ".substr($r['End_Time'],0,5);
+            $data .= timeMilitaryToAMPM(substr($r['Start_Time'],0,5))." <i class = 'fa fa-arrow-right' aria-hidden = 'true' style = 'margin-right: 1% !important; margin-left: 1% !important;'></i> ".timeMilitaryToAMPM(substr($r['End_Time'],0,5));
             $data .= '</div>
             </div>
             ';

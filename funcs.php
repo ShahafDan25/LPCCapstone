@@ -398,6 +398,17 @@
         echo "true";
     }
 
+    if($_POST['message'] == "populate-welcome-index") {
+        echo populateWelcomeIndex();
+    }
+
+    if($_POST['message'] == "populate-edit-welcome-inputs") {
+        echo populateWelcomeIndexEditForm();
+    }
+
+    if($_POST['message'] == "edit-welcome-message") {
+        echo updateNewWelcomeMessage($_POST['subTitle'], $_POST['mainTitle'], $_POST['mainText'], $_POST['location'], $_POST['contact']);
+    }
     // ======================================================== //
     // ------------------- GENERAL FUNCTIONS -------------------//
     // ======================================================== //
@@ -460,6 +471,74 @@
     // ======================================================== //
     // ------------- REGISTRATION PAGE FUNCTIONS ---------------//
     // ======================================================== //
+
+    function updateNewWelcomeMessage($sub, $main, $text, $loc, $con) {
+        $c = connDB();
+        //step 1: update all db record to inactive
+        $sql = "UPDATE IndexDetails SET active = 0;";
+        $c -> prepare($sql) -> execute();
+        //step 2: get maximum ID so far
+        $sql = "SELECT MAX(ID)+1 FROM IndexDetails";
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $max = $s -> fetchColumn();
+        //step 3: insert into database with update ID
+        $sql = "INSERT INTO IndexDetails VALUES (".$max.", ".$sub.", ".$main.", ".$text.", ".$loc.", ".$con.", 1);";
+        try {
+            $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $c -> exec($sql);
+        }
+        catch (PDOException $e) {
+            return "false";
+        }
+
+        return "true";
+    }
+
+    function populateWelcomeIndexEditForm() {
+        $sql = "SELECT subTitle, mainTitle, Text, Location, Contact FROM IndexDetails WHERE active = 1;";
+        $c = connDB(); //set connection
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+
+        $data = "";
+        $data = "<form action = '' method = 'POST' id = 'submit-welcome-index-change'>";
+        $data .= "<h4> <input type = 'text' value = '".$r['subTitle']."' id = 'sub-title-WE' class = 'welcome-edit-input' required> </h4><br>";
+        $data .= "<h1> <input type = 'text' value = '".$r['mainTitle']."' id = 'main-title-WE' class = 'welcome-edit-input'  required> </h1><br><br>";
+        $data .= "<p style = 'text-align: justify !important;'>";
+        $data .= "<input type = 'text' value = '".$r['Text']."' id = 'main-text-WE' class = 'welcome-edit-input' required>";
+        $data .= "</p><br><br>";        
+        $data .= "<h6><i class = 'fa fa-map-marker'></i>  &nbsp; <input type = 'text' value = '".$r['Location']."' id = 'location-WE' class = 'welcome-edit-input' required> </h6><br>";
+        $data .= "<h6><i class = 'fa fa-phone'></i>  &nbsp;  <input type = 'text' value = '".$r['Contact']."' id = 'contact-WE' class = 'welcome-edit-input' required> </h6><br><br>";
+        $data .= "<img src = 'otherFiles/pics/lpcLogo.png' class = 'index-registration-page-header-image inline'>";
+        $data .= "<button class = 'submit-welcome-index-change'>Submit</button>";
+        $data .= "</form>";
+
+        $c = null; //return connection
+        return $data;
+    }
+
+    function populateWelcomeIndex() {
+        $sql = "SELECT subTitle, mainTitle, Text, Location, Contact FROM IndexDetails WHERE active = 1;";
+        $c = connDB();
+        $s = $c -> prepare($sql);
+        $s -> execute();
+        $r = $s -> fetch(PDO::FETCH_ASSOC);
+        
+        $data = "";
+        $data .= "<h4> ".$r['subTitle']." </h4><br>";
+        $data .= "<h1> ".$r['mainTitle']." </h1><br><br>";
+        $data .= "<p style = 'text-align: justify !important;'>";
+        $data .= $r['Text'];
+        $data .= "</p><br><br>";        
+        $data .= "<h6><i class = 'fa fa-map-marker'></i>  &nbsp; ".$r['Location']." </h6><br>";
+        $data .= "<h6><i class = 'fa fa-phone'></i>  &nbsp;  ".$r['Contact']." </h6><br><br>";
+        $data .= "<img src = 'otherFiles/pics/lpcLogo.png' class = 'index-registration-page-header-image inline'>";
+
+        $c = null //close connection
+        return $data;
+    }
 
     function insertPat($f, $l, $ss, $ca, $aa, $sa, $ea, $pn, $pm, $id) {
         $c = connDB(); //set connection

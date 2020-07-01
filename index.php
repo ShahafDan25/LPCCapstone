@@ -340,6 +340,18 @@
                     $("#currentMarketDate").html(data);
                 }  
             });
+
+            //populate the index welcome portion
+            $.ajax({
+                type: "POST",
+                url: "funcs.php", 
+                data: {
+                    message: "populate-welcome-index"
+                },
+                success: function(data) {
+                    $("#index-index").html(data);
+                }
+            });
         });
 
         $("#myInput").keyup(function() {

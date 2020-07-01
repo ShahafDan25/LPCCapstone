@@ -371,19 +371,18 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     color: rgb(102, 124, 246) !important;
 }
 
-#myInput /* search box */
-{
+#myInput {
     box-sizing: border-box;
     font-size: 16px;
     padding: 14px 20px 12px 45px;
 }
-.dropdown
-{
+
+.dropdown {
     position: relative;
     display: inline-block;
 }
-.dropdown-content 
-{    
+
+.dropdown-content {    
     background-color: #f6f6f6;
     opacity: 0.75;
     min-width: 230px;
@@ -393,16 +392,17 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     border-bottom-right-radius: 10px;
     z-index: 1;
 }
-.dropdown-content a 
-{
+
+.dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
 
-
-#myList li:nth-of-type(1n+7){display: none;}
+#myList li:nth-of-type(1n+7){
+    display: none;
+}
 /* ------------ Admin Page ----------------------- */
 .sidebar {
     margin: 0;
@@ -431,6 +431,7 @@ input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
     color: white !important;
     outline: none;
 }
+
 .sidebar a:hover:not(.active) {
     background-color: rgb(177, 189, 253);
     color: white !important;
@@ -591,6 +592,30 @@ div.content {
     color: #0DFF92;
     font-size: 165% !important;
     font-weight: bolder !important;
+}
+
+.submit-welcome-index-change {
+    background-color: #28a745 !important;
+    width: 90% !important;
+    padding: 0.9% 0% 0.9% 0% !important;
+    text-transform: uppercase;
+    transition: 0.3s !important;
+    color: white !important;
+    border: 0.5px solid white !important;
+    font-family: "Gill Sans" !important;
+    margin-bottom: 5% !important;
+}
+
+.welcome-edit-input {
+    border: none;
+    border-bottom: 2px solid black;
+    font-family: "Gill Sans" !important;
+    color: #303030 !important;
+    transform: 0.3s linear;
+}
+.welcome-edit-input:focus {
+    border-bottom: 3px rgb(102, 124, 246);
+    transform: 0.3 all linear;
 }
 /* ------------ Report Page ---------------------- */
 .report_box_class{

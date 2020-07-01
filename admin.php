@@ -45,6 +45,8 @@
                 <a class = "a-item" id = "new-market-sender" onclick = "responsive_sidebar_item(this.id);"> New Market </a>
                 <a class = "a-item" id = "market-actions-sender" onclick = "responsive_sidebar_item(this.id);"> Market Actions </a>
                 <a class = "a-item" id = "change-password-sender" onclick = "responsive_sidebar_item(this.id);"> Change Password</a>
+                <a class = "a-item" id = "change-welcome-sender" onclick = "responsive_sidebar_item(this.id);"> Change Password</a>
+
         </div>
         <div class = "page-container">
             <div class="content">
@@ -122,6 +124,10 @@
                         <button class = "btn submit-pw-change-btn" id = "submit-pw-change">  Submit </button> <br>
                     </form>
                 </div>
+                <!---- CHANGE WELCOME MESSAGE OPTION -->
+                <div class = "sub-admin-page-container" id = "change-welcome" style = "display: none">
+
+                </div>
                 <!-- <footer class = "footer">
                     <p> Las Positas College Student Government </p>
                     <p class = "shahaf-signature"> Shahaf Dan Productions </p>
@@ -137,6 +143,40 @@
         var pw2 = document.getElementById("newPW2");
         var pwtext = document.getElementById("checker");
         var opw = document.getElementById("oldPW");
+
+        $(document).ready(function() {
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "populate-edit-welcome-inputs"
+                },
+                success: function(data) {
+                    $("#change-welcome").html(data);
+                }
+            });
+        });
+
+        $("#submit-welcome-index-change").submit(function(e) {
+            e.preventDefault();
+            //change in database
+            $.ajax({
+                type: "POST",
+                url: "funcs.php",
+                data: {
+                    message: "edit-welcome-message",
+                    subTitle: document.getElementById("sub-title-WE").value,
+                    mainTitle: document.getElementById("main-title-WE").value,
+                    mainText: document.getElementById("main-text-WE").value,
+                    location: document.getElementById("location-WE").value,
+                    contact: document.getElementById("contact-WE").value
+                },
+                success: function(data) {
+                    if(data == "true") alertify.success("Welcome Message Changes!");
+                    else if(data == "false") alertify.error("Something went wrong. Try Again Later");
+                }
+            });
+        })
 
         $("#change-admin-pw-form").submit(function(e) {
             e.preventDefault();
@@ -182,7 +222,7 @@
         });
             
         function responsive_sidebar_item(x) {
-            var targets = ["new-market", "market-actions", "change-password", "index-index"];
+            var targets = ["new-market", "market-actions", "change-password", "index-index", "change-welcome"];
             for(var i = 0; i < targets.length; i++) { //do for all
                 document.getElementById(targets[i] + "-sender").className = "a-item";
                 document.getElementById(targets[i]).style.display = "none";

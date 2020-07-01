@@ -403,6 +403,9 @@
     // ======================================================== //
 
     function timeMilitaryToAMPM($time) {
+        //step 1: convert to the necessary format
+        if(intval(substr($time,0,strlen(strval($time))-2)) < 10 && substr($time,0,1) != "0") $time = "0".$time;
+        //step 2: convert
         $timeasint = intval(strval(substr($time,0,2).substr($time,3,2)));
         if($timeasint > 1259) $timeasint = $timeasint - 1200;
         return strval(substr($timeasint,0,strlen(strval($timeasint))-2).":".substr($timeasint,strlen(strval($timeasint))-2,2));
@@ -1349,12 +1352,12 @@
         $r = $s -> fetch(PDO::FETCH_ASSOC);
         $st = $r['starttime'];
         $et = $r['closetime'];
-        $data = "<h6><strong><u>Volunteer Schedule</strong></u>  ".substr($st,0,strlen($st)-2).":".substr($st,strlen($st)-2,2)."<i class = 'fa fa-arrow-right' aria-hidden = 'true' style = 'margin-right: 1% !important; margin-left: 1% !important;'></i>".substr($et,0,strlen($et)-2).":".substr($et,strlen($et)-2,2)."</h6><br>";
+        $data = "<h6><strong><u>Volunteer Schedule</strong></u>  ".timeMilitaryToAMPM(substr($st,0,strlen($st)-2).":".substr($st,strlen($st)-2,2))."<i class = 'fa fa-arrow-right' aria-hidden = 'true' style = 'margin-right: 1% !important; margin-left: 1% !important;'></i>".timeMilitaryToAMPM(substr($et,0,strlen($et)-2).":".substr($et,strlen($et)-2,2))."</h6><br>";
         $diffHours = intval(substr($et, 0, strlen($et)-2)) - intval(substr($st, 0, strlen($st)-2)) - 1;
         $begDiffMin = 6 - intval(substr($st, strlen($st)-2, 2))/10;
         $finDiffMin = intval(substr($et, strlen($et)-2, 2))/10 + 1;
         $totalTensMins = $diffHours*6 + $begDiffMin + $finDiffMin;
-        $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time, v.Email FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = '".$marketDate."' ORDER BY su.Start_Time;";
+        $sql = "SELECT v.First_Name, v.Last_Name, v.Profile_Picture, su.Start_Time, su.End_Time, v.Email FROM Volunteers v JOIN SignUps su ON su.Email = v.Email WHERE su.Market = '".$marketDate."' ORDER BY su.Start_Time, (su.End_Time - su.Start_Time) ASC;";
         $s = $c -> prepare($sql);
         $s -> execute();
         $counter = -1;

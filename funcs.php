@@ -502,20 +502,20 @@
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
 
-        $data = "";
+        $data = "<h2> Edit Information Presented in the Welcome Message </h2><br>";
         $data = "<form action = '' method = 'POST' id = 'submit-welcome-index-change'>";
         $data .= "<h4> <input type = 'text' value = '".$r['subTitle']."' id = 'sub-title-WE' class = 'welcome-edit-input' required> </h4><br>";
         $data .= "<h1> <input type = 'text' value = '".$r['mainTitle']."' id = 'main-title-WE' class = 'welcome-edit-input'  required> </h1><br><br>";
         $data .= "<p style = 'text-align: justify !important;'>";
-        $data .= "<input type = 'text' value = '".$r['Text']."' id = 'main-text-WE' class = 'welcome-edit-input' required>";
+        $data .= "<textarea type = 'text' id = 'main-text-WE' class = 'welcome-edit-input' required style = 'margin-left: 5% !importantt; width: 93% !important;'>".$r['Text']."</textarea>";
         $data .= "</p><br><br>";        
-        $data .= "<h6><i class = 'fa fa-map-marker'></i>  &nbsp; <input type = 'text' value = '".$r['Location']."' id = 'location-WE' class = 'welcome-edit-input' required> </h6><br>";
-        $data .= "<h6><i class = 'fa fa-phone'></i>  &nbsp;  <input type = 'text' value = '".$r['Contact']."' id = 'contact-WE' class = 'welcome-edit-input' required> </h6><br><br>";
-        $data .= "<img src = 'otherFiles/pics/lpcLogo.png' class = 'index-registration-page-header-image inline'>";
-        $data .= "<button class = 'submit-welcome-index-change'>Submit</button>";
+        $data .= "<h6><i class = 'fa fa-map-marker'></i>  &nbsp; <input type = 'text' value = '".$r['Location']."' id = 'location-WE' class = 'welcome-edit-input' required> &ensp; <a id = 'location-char-count'> / 100 Characters</h6><br>";
+        $data .= "<h6><i class = 'fa fa-phone'></i>  &nbsp;  <input type = 'text' value = '".$r['Contact']."' id = 'contact-WE' class = 'welcome-edit-input' required> &ensp; <a id = 'contact-char-count'> / 100 Characters</h6><br><br>";
+        // $data .= "<img src = 'otherFiles/pics/lpcLogo.png' class = 'index-registration-page-header-image inline'>";
+        $data .= "<br><br><button class = 'btn submit-welcome-index-change'>Submit</button>";
         $data .= "</form>";
 
-        $c = null; //return connection
+        $c = null; //close connection
         return $data;
     }
 
@@ -536,7 +536,7 @@
         $data .= "<h6><i class = 'fa fa-phone'></i>  &nbsp;  ".$r['Contact']." </h6><br><br>";
         $data .= "<img src = 'otherFiles/pics/lpcLogo.png' class = 'index-registration-page-header-image inline'>";
 
-        $c = null //close connection
+        $c = null; //close connection
         return $data;
     }
 

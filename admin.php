@@ -45,7 +45,7 @@
                 <a class = "a-item" id = "new-market-sender" onclick = "responsive_sidebar_item(this.id);"> New Market </a>
                 <a class = "a-item" id = "market-actions-sender" onclick = "responsive_sidebar_item(this.id);"> Market Actions </a>
                 <a class = "a-item" id = "change-password-sender" onclick = "responsive_sidebar_item(this.id);"> Change Password</a>
-                <a class = "a-item" id = "change-welcome-sender" onclick = "responsive_sidebar_item(this.id);"> Change Password</a>
+                <a class = "a-item" id = "change-welcome-sender" onclick = "responsive_sidebar_item(this.id);"> Welcome Message</a>
 
         </div>
         <div class = "page-container">

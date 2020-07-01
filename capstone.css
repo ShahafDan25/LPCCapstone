@@ -492,7 +492,7 @@ div.content {
     margin-bottom: 0.45% !important;
 }
 
-.submit-pw-change-btn:hover, .submit-admin-market-option:hover, .submit-new-market-date:hover {
+.submit-pw-change-btn:hover, .submit-admin-market-option:hover, .submit-new-market-date:hover, .submit-welcome-index-change:hover {
     padding: 1.25% 0% 1.25% 0% !important;
     width: 95% !important;
     margin-bottom: 0% !important;
@@ -596,7 +596,7 @@ div.content {
 
 .submit-welcome-index-change {
     background-color: #28a745 !important;
-    width: 90% !important;
+    width: 85% !important;
     padding: 0.9% 0% 0.9% 0% !important;
     text-transform: uppercase;
     transition: 0.3s !important;
@@ -612,10 +612,11 @@ div.content {
     font-family: "Gill Sans" !important;
     color: #303030 !important;
     transform: 0.3s linear;
+    width: 92%;
 }
 .welcome-edit-input:focus {
-    border-bottom: 3px rgb(102, 124, 246);
-    transform: 0.3 all linear;
+    border-bottom: 3px solid rgb(102, 124, 246);
+    transform: 0.3s all linear;
 }
 /* ------------ Report Page ---------------------- */
 .report_box_class{

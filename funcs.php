@@ -483,9 +483,9 @@
         $s -> execute();
         $max = $s -> fetchColumn();
         //step 3: insert into database with update ID
-        $sql = "INSERT INTO IndexDetails VALUES (".$max.", ".$sub.", ".$main.", ".$text.", ".$loc.", ".$con.", 1);";
+        $sql = "INSERT INTO IndexDetails VALUES (".$max.", '".$sub."', '".$main."', '".$text."', '".$loc."', '".$con."', 1);";
         try {
-            $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $c -> exec($sql);
         }
         catch (PDOException $e) {
@@ -501,9 +501,7 @@
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-
-        $data = "<h2> Edit Information Presented in the Welcome Message </h2><br>";
-        $data = "<form action = '' method = 'POST' id = 'submit-welcome-index-change' onsubmit = 'this.preventDefault();'>";
+        
         $data .= "<h4> <input type = 'text' value = '".$r['subTitle']."' id = 'sub-title-WE' class = 'welcome-edit-input' onkeyup = 'showSubTitleCharCount(this.value.length)' required> &ensp; <a class = 'par-size-text' id = 'sub-title-char-count'>".strlen($r['subTitle'])."</a> <a class = 'par-size-text'> / 65 </a> </h4><br>";
         $data .= "<h1> <input type = 'text' value = '".$r['mainTitle']."' id = 'main-title-WE' class = 'welcome-edit-input' onkeyup = 'showMainTitleCharCount(this.value.length)' required> &ensp; <a class = 'par-size-text'  id = 'main-title-char-count'>".strlen($r['mainTitle'])."</a> <a class = 'par-size-text'> / 65 </a> </h1><br><br>";
         $data .= "<p style = 'text-align: justify !important;'>";
@@ -511,10 +509,7 @@
         $data .= "</p><br><br>";        
         $data .= "<h6><i class = 'fa fa-map-marker'></i>  &nbsp; <input type = 'text' value = '".$r['Location']."' id = 'location-WE' class = 'welcome-edit-input' required onkeyup = 'showLocationCharCount(this.value.length);'> &ensp; <a id = 'location-char-count'>".strlen($r['Location'])."</a> / 100 </h6><br>";
         $data .= "<h6><i class = 'fa fa-phone'></i>  &nbsp;  <input type = 'text' value = '".$r['Contact']."' id = 'contact-WE' class = 'welcome-edit-input' required onkeyup = 'showContactCharCount(this.value.length);'> &ensp; <a id = 'contact-char-count'>".strlen($r['Contact'])."</a> / 100 </h6><br><br>";
-        // $data .= "<img src = 'otherFiles/pics/lpcLogo.png' class = 'index-registration-page-header-image inline'>";
-        $data .= "<br><br><button class = 'btn submit-welcome-index-change'>Submit</button>";
-        $data .= "</form>";
-
+        $data .= "<button class = 'btn submit-welcome-index-change'>Submit</button>";
         $c = null; //close connection
         return $data;
     }

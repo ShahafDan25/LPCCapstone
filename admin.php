@@ -126,7 +126,10 @@
                 </div>
                 <!---- CHANGE WELCOME MESSAGE OPTION -->
                 <div class = "sub-admin-page-container" id = "change-welcome" style = "display: none">
-
+                    <h3> <u> Edit Information Presented in the Welcome Message </u> </h3><br>
+                    <form action = '' method = 'POST' id = 'submit-welcome-index-change'>
+                        <div id = "change-welcome-inner-form"></div>
+                    </form>
                 </div>
                 <!-- <footer class = "footer">
                     <p> Las Positas College Student Government </p>
@@ -152,7 +155,7 @@
                     message: "populate-edit-welcome-inputs"
                 },
                 success: function(data) {
-                    $("#change-welcome").html(data);
+                    $("#change-welcome-inner-form").html(data);
                 }
             });
         });

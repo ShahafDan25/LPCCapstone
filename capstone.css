@@ -39,6 +39,9 @@
 input:not(:placeholder-shown) {border-color: hsl(120, 76%, 50%) !important;} */
 .inline{display: inline-block !important; display:flex; flex-direction: row;}
 .invi{display: none !important}
+.par-size-text {
+    font-size: 1rem !important;
+}
 /* ------- BODIES AND CONTAINERS ---- */
 .volunteer-page-body, .report-page-body, .inventory-page-body, .admin-page-body, .index-page-body, .signups-page-body, .profile-page-body {
     text-align: center;
@@ -612,7 +615,7 @@ div.content {
     font-family: "Gill Sans" !important;
     color: #303030 !important;
     transform: 0.3s linear;
-    width: 92%;
+    width: 80%;
 }
 .welcome-edit-input:focus {
     border-bottom: 3px solid rgb(102, 124, 246);

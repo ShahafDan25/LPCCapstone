@@ -176,7 +176,7 @@
                     else if(data == "false") alertify.error("Something went wrong. Try Again Later");
                 }
             });
-        })
+        });
 
         $("#change-admin-pw-form").submit(function(e) {
             e.preventDefault();
@@ -277,6 +277,26 @@
             //just to avoid any console error that may occur for now,
             //may use this for later (read plans in diary)
             return;
+        }
+
+        function showSubTitleCharCount(len) {
+            document.getElementById("sub-title-char-count").innerHTML = len;
+            if(len > 65) documet.getElementById("sub-title-WE").value.substr(0,65);
+        }
+
+        function showMainTitleCharCount(len) {
+            document.getElementById("main-title-char-count").innerHTML = len;
+            if(len > 65) documet.getElementById("main-title-WE").value.substr(0,65);
+        }
+
+        function showLocationCharCount(len) {
+            document.getElementById("location-char-count").innerHTML = len;
+            if(len > 100) documet.getElementById("location-WE").value.substr(0,100);
+        }
+
+        function showContactCharCount(len) {
+            document.getElementById("contact-char-count").innerHTML = len;
+            if(len > 100) documet.getElementById("contact-WE").value.substr(0,100);
         }
 
         $("#submit-market-operation-option").click(function() {

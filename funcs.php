@@ -503,14 +503,14 @@
         $r = $s -> fetch(PDO::FETCH_ASSOC);
 
         $data = "<h2> Edit Information Presented in the Welcome Message </h2><br>";
-        $data = "<form action = '' method = 'POST' id = 'submit-welcome-index-change'>";
-        $data .= "<h4> <input type = 'text' value = '".$r['subTitle']."' id = 'sub-title-WE' class = 'welcome-edit-input' required> </h4><br>";
-        $data .= "<h1> <input type = 'text' value = '".$r['mainTitle']."' id = 'main-title-WE' class = 'welcome-edit-input'  required> </h1><br><br>";
+        $data = "<form action = '' method = 'POST' id = 'submit-welcome-index-change' onsubmit = 'this.preventDefault();'>";
+        $data .= "<h4> <input type = 'text' value = '".$r['subTitle']."' id = 'sub-title-WE' class = 'welcome-edit-input' onkeyup = 'showSubTitleCharCount(this.value.length)' required> &ensp; <a class = 'par-size-text' id = 'sub-title-char-count'>".strlen($r['subTitle'])."</a> <a class = 'par-size-text'> / 65 </a> </h4><br>";
+        $data .= "<h1> <input type = 'text' value = '".$r['mainTitle']."' id = 'main-title-WE' class = 'welcome-edit-input' onkeyup = 'showMainTitleCharCount(this.value.length)' required> &ensp; <a class = 'par-size-text'  id = 'main-title-char-count'>".strlen($r['mainTitle'])."</a> <a class = 'par-size-text'> / 65 </a> </h1><br><br>";
         $data .= "<p style = 'text-align: justify !important;'>";
-        $data .= "<textarea type = 'text' id = 'main-text-WE' class = 'welcome-edit-input' required style = 'margin-left: 5% !importantt; width: 93% !important;'>".$r['Text']."</textarea>";
+        $data .= "<textarea type = 'text' rows = '5' id = 'main-text-WE' class = 'welcome-edit-input' required style = 'margin-left: 5% !importantt; width: 93% !important;'>".$r['Text']."</textarea>";
         $data .= "</p><br><br>";        
-        $data .= "<h6><i class = 'fa fa-map-marker'></i>  &nbsp; <input type = 'text' value = '".$r['Location']."' id = 'location-WE' class = 'welcome-edit-input' required> &ensp; <a id = 'location-char-count'> / 100 Characters</h6><br>";
-        $data .= "<h6><i class = 'fa fa-phone'></i>  &nbsp;  <input type = 'text' value = '".$r['Contact']."' id = 'contact-WE' class = 'welcome-edit-input' required> &ensp; <a id = 'contact-char-count'> / 100 Characters</h6><br><br>";
+        $data .= "<h6><i class = 'fa fa-map-marker'></i>  &nbsp; <input type = 'text' value = '".$r['Location']."' id = 'location-WE' class = 'welcome-edit-input' required onkeyup = 'showLocationCharCount(this.value.length);'> &ensp; <a id = 'location-char-count'>".strlen($r['Location'])."</a> / 100 </h6><br>";
+        $data .= "<h6><i class = 'fa fa-phone'></i>  &nbsp;  <input type = 'text' value = '".$r['Contact']."' id = 'contact-WE' class = 'welcome-edit-input' required onkeyup = 'showContactCharCount(this.value.length);'> &ensp; <a id = 'contact-char-count'>".strlen($r['Contact'])."</a> / 100 </h6><br><br>";
         // $data .= "<img src = 'otherFiles/pics/lpcLogo.png' class = 'index-registration-page-header-image inline'>";
         $data .= "<br><br><button class = 'btn submit-welcome-index-change'>Submit</button>";
         $data .= "</form>";

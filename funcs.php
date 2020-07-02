@@ -473,24 +473,28 @@
     // ======================================================== //
 
     function updateNewWelcomeMessage($sub, $main, $text, $loc, $con) {
+
+        //first get rid of any single quotes:
+        $text = str_replace("'", "''", $text);
+        $sub = str_replace("'", "''", $sub);
+        $main = str_replace("'", "''", $main);
+        $loc = str_replace("'", "''", $loc);
+        $con = str_replace("'", "''", $con);
+
+
         $c = connDB();
         //step 1: update all db record to inactive
         $sql = "UPDATE IndexDetails SET active = 0;";
         $c -> prepare($sql) -> execute();
         //step 2: get maximum ID so far
-        $sql = "SELECT MAX(ID)+1 FROM IndexDetails";
+        $sql = "SELECT MAX(ID)+1 FROM IndexDetails;";
         $s = $c -> prepare($sql);
         $s -> execute();
         $max = $s -> fetchColumn();
         //step 3: insert into database with update ID
-        $sql = "INSERT INTO IndexDetails VALUES (".$max.", '".$sub."', '".$main."', '".$text."', '".$loc."', '".$con."', 1);";
-        try {
-            $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $c -> exec($sql);
-        }
-        catch (PDOException $e) {
-            return "false";
-        }
+        $sql = "INSERT INTO IndexDetails VALUES (".$max.", '".$sub."', '".$main."', '".$text."', '".$loc."', '".$con."', 1, CURDATE());";
+        $c -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $c -> exec($sql);
 
         return "true";
     }
@@ -501,7 +505,8 @@
         $s = $c -> prepare($sql);
         $s -> execute();
         $r = $s -> fetch(PDO::FETCH_ASSOC);
-        
+
+        $data = "";
         $data .= "<h4> <input type = 'text' value = '".$r['subTitle']."' id = 'sub-title-WE' class = 'welcome-edit-input' onkeyup = 'showSubTitleCharCount(this.value.length)' required> &ensp; <a class = 'par-size-text' id = 'sub-title-char-count'>".strlen($r['subTitle'])."</a> <a class = 'par-size-text'> / 65 </a> </h4><br>";
         $data .= "<h1> <input type = 'text' value = '".$r['mainTitle']."' id = 'main-title-WE' class = 'welcome-edit-input' onkeyup = 'showMainTitleCharCount(this.value.length)' required> &ensp; <a class = 'par-size-text'  id = 'main-title-char-count'>".strlen($r['mainTitle'])."</a> <a class = 'par-size-text'> / 65 </a> </h1><br><br>";
         $data .= "<p style = 'text-align: justify !important;'>";

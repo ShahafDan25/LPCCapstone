@@ -175,7 +175,9 @@
                     contact: document.getElementById("contact-WE").value
                 },
                 success: function(data) {
-                    if(data == "true") alertify.success("Welcome Message Changes!");
+                    if(data == "true") alertify.success("Welcome Message Changes!").ondismiss = function() {
+                        responsive_sidebar_item("index-index-sender");
+                    }
                     else if(data == "false") alertify.error("Something went wrong. Try Again Later");
                 }
             });
